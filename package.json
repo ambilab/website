@@ -15,9 +15,8 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier --write \"**/*.{ts,astro,svelte,json,md,mdx,css}\"",
     "typecheck": "tsc --noEmit",
-    "validate:i18n": "tsx src/scripts/validate-i18n-sync.ts",
     "validate:security": "tsx src/scripts/validate-security-headers.ts",
-    "validate:all": "npm run validate:i18n && npm run validate:security"
+    "validate:all": "npm run validate:security"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",

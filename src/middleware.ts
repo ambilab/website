@@ -7,21 +7,20 @@ import { generateNonce, applySecurityHeaders } from '@config/security';
  * Astro middleware for locale detection and security headers.
  *
  * This middleware uses shared utilities from @i18n/utils and @i18n/config,
- * ensuring consistency with the rest of the application.
+ * ensuring consistency across the application.
  *
- * NOTE: When modifying locale detection logic, also check:
- * - functions/_middleware.ts (Cloudflare Pages middleware - has duplicated code)
- * - src/i18n/config.ts (source of truth for locale configuration)
+ * With Cloudflare adapter in advanced mode, this is the single source of truth
+ * for locale detection and security headers - no code duplication needed!
  */
 export const onRequest = defineMiddleware(async (context, next) => {
   const { request } = context;
   const url = new URL(request.url);
   const hostname = url.hostname;
 
-  // Generate nonce for production CSP
+  // Generate nonce for CSP
   // In development, we still generate it for consistency but don't enforce it in CSP
   // (Astro dev toolbar and Vite inject inline scripts/styles without nonces)
-  const nonce = request.headers.get('x-nonce') || generateNonce();
+  const nonce = generateNonce();
   context.locals.nonce = nonce;
 
   // Check cookie first
