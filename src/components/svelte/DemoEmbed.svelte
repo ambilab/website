@@ -6,9 +6,10 @@
     title?: string;
     aspectRatio?: string;
     class?: string;
+    desktopOnly?: boolean;
   }
 
-  let { src, title, aspectRatio = '16/9', class: className = '' }: Props = $props();
+  let { src, title, aspectRatio = '16/9', class: className = '', desktopOnly = true }: Props = $props();
 
   // In development, the demo site blocks localhost due to CSP frame-ancestors
   // Show a link instead of iframe to avoid CSP violations
@@ -21,6 +22,11 @@
   });
 
   const shouldShowLink = isDev && isLocalhost;
+
+  // Build minimal allow attribute: always autoplay, sensors only if not desktop-only
+  const allowPermissions = $derived(
+    desktopOnly ? 'autoplay' : 'autoplay; accelerometer; gyroscope'
+  );
 </script>
 
 <figure class={`demo-embed ${className}`}>
@@ -62,7 +68,7 @@
       {title}
       style="aspect-ratio: {aspectRatio}; width: 100%;"
       loading="lazy"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope"
+      allow={allowPermissions}
       allowfullscreen
       sandbox="allow-scripts allow-same-origin allow-presentation"
       class="rounded-lg border border-gray-200 dark:border-gray-800"
