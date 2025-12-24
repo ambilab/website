@@ -46,7 +46,15 @@ export const animateTextSwap = (
   return tl;
 };
 
-export const extractTextNodes = (container: HTMLElement): HTMLElement[] => {
+export const extractTextNodes = (
+  container: HTMLElement,
+  includeWhitespace: boolean = false
+): HTMLElement[] => {
+  // SSR guard: return empty array if document is undefined or container is falsy
+  if (typeof document === 'undefined' || !container) {
+    return [];
+  }
+
   const textNodes: HTMLElement[] = [];
   const walker = document.createTreeWalker(container, NodeFilter.SHOW_ELEMENT, {
     acceptNode: (node) => {
@@ -55,7 +63,7 @@ export const extractTextNodes = (container: HTMLElement): HTMLElement[] => {
       if (
         element.tagName === 'SCRIPT' ||
         element.tagName === 'STYLE' ||
-        !element.textContent?.trim()
+        (!includeWhitespace && !element.textContent?.trim())
       ) {
         return NodeFilter.FILTER_REJECT;
       }
