@@ -65,7 +65,7 @@
 </script>
 
 {#if isLoading}
-  <span class={className} style={sizeStyle} aria-hidden={!ariaLabel} aria-label={ariaLabel} role={ariaLabel ? 'img' : undefined}></span>
+  <span class={className} style={sizeStyle} aria-hidden="true"></span>
 {:else if svgContent}
   <span class={className} style={sizeStyle} aria-hidden={!ariaLabel} aria-label={ariaLabel} role={ariaLabel ? 'img' : undefined}>{@html svgContent}</span>
 {/if}
