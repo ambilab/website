@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.astro/
+.histoire/
+histoire-dist/
+pnpm-lock.yaml
+package-lock.json
+

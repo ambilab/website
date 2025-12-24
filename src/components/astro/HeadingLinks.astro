@@ -1,0 +1,115 @@
+---
+// Auto-generates anchor links for headings in MDX content
+---
+
+<script>
+  import { createLogger } from '@utils/logger';
+  import { safeExecute } from '@utils/safe-execute';
+  import { smoothScrollTo } from '@utils/scroll';
+
+  const logger = createLogger({ prefix: 'HeadingLinks' });
+
+  class HeadingLinksManager {
+    private usedIds: Map<string, number> = new Map();
+
+    constructor() {
+      this.refresh = this.refresh.bind(this);
+    }
+
+    private generateId(text: string | null): string {
+      if (!text) return '';
+
+      const baseId = text
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-|-$/g, '');
+
+      if (!baseId) return '';
+
+      if (this.usedIds.has(baseId)) {
+        const count = this.usedIds.get(baseId)! + 1;
+        this.usedIds.set(baseId, count);
+        return `${baseId}-${count}`;
+      }
+
+      this.usedIds.set(baseId, 1);
+      return baseId;
+    }
+
+    private createAnchor(id: string): HTMLAnchorElement {
+      const anchor = document.createElement('a');
+      anchor.className = 'anchor';
+      anchor.href = `#${id}`;
+      anchor.setAttribute('aria-hidden', 'true');
+      anchor.textContent = '#';
+
+      anchor.addEventListener('click', (e) => {
+        e.preventDefault();
+        smoothScrollTo({ targetId: id });
+        history.pushState(null, '', `#${id}`);
+        navigator.clipboard.writeText(window.location.href).catch(() => {});
+      });
+
+      return anchor;
+    }
+
+    public refresh(): void {
+      this.usedIds.clear();
+
+      const headings = document.querySelectorAll(
+        '.mdx-content h1, .mdx-content h2, .mdx-content h3, .mdx-content h4'
+      );
+
+      headings.forEach((heading) => {
+        if (heading.querySelector('.anchor')) return; // Already processed
+
+        const id = this.generateId(heading.textContent);
+        if (id) {
+          heading.id = id;
+          heading.insertAdjacentElement('afterbegin', this.createAnchor(id));
+        }
+      });
+
+      logger.info(`Processed ${headings.length} headings`);
+    }
+  }
+
+  safeExecute(() => {
+    const manager = new HeadingLinksManager();
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', manager.refresh);
+    } else {
+      manager.refresh();
+    }
+
+    document.addEventListener('astro:page-load', manager.refresh);
+  }, undefined, 'Failed to initialize HeadingLinks');
+</script>
+
+<style>
+  :global(.mdx-content h1, .mdx-content h2, .mdx-content h3, .mdx-content h4) {
+    position: relative;
+  }
+
+  :global(.mdx-content .anchor) {
+    position: absolute;
+    left: -1.5rem;
+    opacity: 0;
+    transition: opacity 0.2s;
+    text-decoration: none;
+    color: #9ca3af;
+  }
+
+  :global(.mdx-content h1:hover .anchor),
+  :global(.mdx-content h2:hover .anchor),
+  :global(.mdx-content h3:hover .anchor),
+  :global(.mdx-content h4:hover .anchor) {
+    opacity: 1;
+  }
+
+  :global(.dark .mdx-content .anchor) {
+    color: #6b7280;
+  }
+</style>
+
