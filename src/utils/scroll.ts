@@ -87,6 +87,11 @@ export const smoothScrollTo = async ({
 };
 
 export const scrollToTop = (smooth = true): void => {
+  // SSR guard: return early if window is undefined
+  if (typeof window === 'undefined') {
+    return;
+  }
+
   window.scrollTo({
     top: 0,
     behavior: smooth ? 'smooth' : 'auto',
