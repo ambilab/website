@@ -15,6 +15,9 @@ const { title, description, ogImage, permalink, locale = 'en' } = Astro.props;
 
 const canonical = permalink.endsWith('/') ? permalink.slice(0, -1) : permalink;
 const siteDomain = Astro.url.origin;
+
+// Get the nonce from context for inline scripts/styles (CSP requirement)
+const nonce = Astro.locals.nonce;
 ---
 
 <!-- Security headers -->
@@ -39,7 +42,7 @@ const siteDomain = Astro.url.origin;
 />
 
 <!-- Font stylesheet with non-blocking load -->
-<style>
+<style is:inline nonce={nonce}>
   @font-face {
     font-family: 'Innovator Grotesk';
     src: url('https://fonts.vancura.dev/InnovatorGrotesk-Medium.woff2') format('woff2');
@@ -103,6 +106,7 @@ const siteDomain = Astro.url.origin;
 <script
   is:inline
   type="application/ld+json"
+  nonce={nonce}
   set:html={JSON.stringify({
     '@context': 'https://schema.org',
     '@type': 'WebSite',

@@ -15,6 +15,7 @@ declare global {
   namespace App {
     interface Locals {
       locale: Locale;
+      nonce: string;
     }
   }
 }

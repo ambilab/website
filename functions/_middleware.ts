@@ -5,6 +5,15 @@ type Env = {
 };
 
 /**
+ * Generate a cryptographically secure nonce for CSP
+ */
+function generateNonce(): string {
+  const array = new Uint8Array(16);
+  crypto.getRandomValues(array);
+  return btoa(String.fromCharCode(...array));
+}
+
+/**
  * NOTE: Code Duplication Required for Cloudflare Pages Runtime
  *
  * This middleware runs in Cloudflare Pages runtime, which has constraints that prevent
@@ -14,6 +23,7 @@ type Env = {
  * - defaultLocale
  * - getLocaleFromCookie
  * - detectLocaleFromHostname
+ * - generateNonce (for CSP)
  *
  * SYNCHRONIZATION REQUIREMENT:
  * When adding, removing, or modifying locales, you MUST update THREE locations:
@@ -71,6 +81,9 @@ export const onRequest: PagesFunction<Env> = async (context) => {
   const url = new URL(request.url);
   const hostname = url.hostname;
 
+  // Generate a cryptographically secure nonce for this request
+  const nonce = generateNonce();
+
   // Check cookie first
   const cookieHeader = request.headers.get('Cookie') || '';
   let locale = getLocaleFromCookie(cookieHeader);
@@ -84,9 +97,11 @@ export const onRequest: PagesFunction<Env> = async (context) => {
   // This guarantees consistency with src/middleware.ts
   locale = locale || defaultLocale;
 
-  // Create a new request with the x-locale header
+  // Create a new request with the x-locale and x-nonce headers
+  // x-nonce will be used by Astro middleware to set context.locals.nonce
   const newHeaders = new Headers(request.headers);
   newHeaders.set('x-locale', locale);
+  newHeaders.set('x-nonce', nonce);
 
   const newRequest = new Request(request, {
     headers: newHeaders,
@@ -99,11 +114,12 @@ export const onRequest: PagesFunction<Env> = async (context) => {
   const responseHeaders = new Headers(response.headers);
 
   // Content Security Policy
-  // NOTE: 'unsafe-inline' is currently required for inline JSON-LD structured data script.
-  // TODO: Consider implementing nonces (Astro v5 supports this) to remove 'unsafe-inline' for better XSS protection.
+  // Using nonce-based CSP for inline scripts and styles
+  // 'unsafe-hashes' allows inline style attributes (e.g., style="...")
+  // Cloudflare Pages middleware only runs in production, so we use strict CSP
   responseHeaders.set(
     'Content-Security-Policy',
-    "default-src 'self'; script-src 'self' https://plausible.io 'unsafe-inline'; style-src 'self' https://fonts.vancura.dev 'unsafe-inline'; img-src 'self' data: blob: https://blit-tech-demos.ambilab.com; font-src 'self' https://fonts.vancura.dev data:; connect-src 'self' https://plausible.io https://api.buttondown.email; frame-src https://blit-tech-demos.ambilab.com; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;"
+    `default-src 'self'; script-src 'self' https://plausible.io 'nonce-${nonce}'; style-src 'self' https://fonts.vancura.dev 'nonce-${nonce}' 'unsafe-hashes'; img-src 'self' data: blob: https://blit-tech-demos.ambilab.com; font-src 'self' https://fonts.vancura.dev data:; connect-src 'self' https://plausible.io https://api.buttondown.email; frame-src https://blit-tech-demos.ambilab.com; frame-ancestors 'self'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;`
   );
 
   // X-Content-Type-Options
