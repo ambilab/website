@@ -1,13 +1,14 @@
 ---
 import { SITE } from '@config/site';
 import type { ISEOMetadata } from '@type/seo';
+import type { Locale } from '@type/locale';
 
 export interface Props extends ISEOMetadata {
   title: string;
   description: string;
   permalink: string;
   ogImage?: string;
-  locale?: 'en' | 'cs';
+  locale?: Locale;
 }
 
 const { title, description, ogImage, permalink, locale = 'en' } = Astro.props;
