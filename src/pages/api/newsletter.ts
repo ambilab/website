@@ -1,55 +1,32 @@
 import type { APIRoute } from 'astro';
 
+const jsonResponse = (data: object, status: number) => {
+  return new Response(JSON.stringify(data), {
+    status,
+    headers: { 'Content-Type': 'application/json' },
+  });
+};
+
 export const POST: APIRoute = async ({ request }) => {
   try {
     const body = await request.json();
     const { email } = body;
 
     if (!email || typeof email !== 'string') {
-      return new Response(
-        JSON.stringify({
-          error: 'Email is required',
-        }),
-        {
-          status: 400,
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      );
+      return jsonResponse({ error: 'Email is required' }, 400);
     }
 
     // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      return new Response(
-        JSON.stringify({
-          error: 'Invalid email format',
-        }),
-        {
-          status: 400,
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      );
+      return jsonResponse({ error: 'Invalid email format' }, 400);
     }
 
     const buttondownApiKey = import.meta.env.BUTTONDOWN_API_KEY;
 
     if (!buttondownApiKey) {
       console.error('BUTTONDOWN_API_KEY is not set');
-      return new Response(
-        JSON.stringify({
-          error: 'Newsletter service is not configured',
-        }),
-        {
-          status: 500,
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      );
+      return jsonResponse({ error: 'Newsletter service is not configured' }, 500);
     }
 
     // Subscribe to Buttondown
@@ -84,45 +61,20 @@ export const POST: APIRoute = async ({ request }) => {
         // Failed to read response body, status code already logged above
       }
 
-      return new Response(
-        JSON.stringify({
-          error: 'Failed to subscribe. Please try again later.',
-        }),
-        {
-          status: response.status,
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
+      return jsonResponse(
+        { error: 'Failed to subscribe. Please try again later.' },
+        response.status
       );
     }
 
-    return new Response(
-      JSON.stringify({
-        success: true,
-        message: 'Successfully subscribed!',
-      }),
-      {
-        status: 200,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
+    return jsonResponse(
+      { success: true, message: 'Successfully subscribed!' },
+      200
     );
   } catch (error) {
     console.error('Newsletter API error:', error);
 
-    return new Response(
-      JSON.stringify({
-        error: 'An unexpected error occurred',
-      }),
-      {
-        status: 500,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    );
+    return jsonResponse({ error: 'An unexpected error occurred' }, 500);
   }
 };
 
