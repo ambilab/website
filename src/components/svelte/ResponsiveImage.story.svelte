@@ -14,6 +14,8 @@
         <ResponsiveImage
           src="/logo-placeholder.png"
           alt="Sample image"
+          width={400}
+          height={400}
           sizes="(max-width: 768px) 100vw, 50vw"
         />
       </div>
