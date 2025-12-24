@@ -31,8 +31,7 @@ export default defineConfig({
     // Expressive Code MUST come before mdx()
     expressiveCode({
       themes: ['github-dark', 'github-light'],
-      themeCssSelector: (theme) =>
-        theme.name === 'github-dark' ? '.dark' : ':root:not(.dark)',
+      themeCssSelector: (theme) => (theme.name === 'github-dark' ? '.dark' : ':root:not(.dark)'),
       defaultProps: {
         showLineNumbers: false,
         wrap: true,
@@ -69,4 +68,3 @@ export default defineConfig({
     },
   },
 });
-

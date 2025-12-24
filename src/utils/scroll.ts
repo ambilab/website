@@ -97,4 +97,3 @@ export const scrollToTop = (smooth = true): void => {
     behavior: smooth ? 'smooth' : 'auto',
   });
 };
-

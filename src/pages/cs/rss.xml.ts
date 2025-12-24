@@ -7,9 +7,7 @@ import { getBlogPostLink } from '@utils/rss';
 export async function GET(context: APIContext) {
   const posts = await getCollection('blog', ({ data }) => !data.draft && data.locale === 'cs');
 
-  const sortedPosts = posts.sort(
-    (a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime()
-  );
+  const sortedPosts = posts.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
 
   return rss({
     title: `${SITE.NAME} - Čeština`,
@@ -25,4 +23,3 @@ export async function GET(context: APIContext) {
     customData: `<language>cs-cz</language>`,
   });
 }
-

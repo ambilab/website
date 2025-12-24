@@ -52,4 +52,3 @@ export const initDarkMode = (): void => {
     document.documentElement.classList.add('dark');
   }
 };
-

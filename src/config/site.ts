@@ -15,4 +15,3 @@ export const SITE = {
     GITHUB: 'https://github.com/ambilab',
   },
 } as const;
-

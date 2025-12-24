@@ -11,4 +11,3 @@ export const setLocale = (locale: Locale): void => {
 export const getLocale = (): Locale => {
   return $currentLocale.get();
 };
-

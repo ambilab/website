@@ -6,7 +6,7 @@ type Env = {
 
 /**
  * NOTE: Code Duplication Required for Cloudflare Pages Runtime
- * 
+ *
  * This middleware runs in Cloudflare Pages runtime, which has constraints that prevent
  * importing from the shared i18n utilities in `src/i18n/`. As a result, we must duplicate
  * the following logic here:
@@ -14,13 +14,13 @@ type Env = {
  * - defaultLocale
  * - getLocaleFromCookie
  * - detectLocaleFromHostname
- * 
+ *
  * SYNCHRONIZATION REQUIREMENT:
  * When adding, removing, or modifying locales, you MUST update THREE locations:
  * 1. src/i18n/config.ts (source of truth)
  * 2. src/middleware.ts (Astro middleware - can import from i18n utils)
  * 3. functions/_middleware.ts (this file - Cloudflare Pages middleware)
- * 
+ *
  * The validation logic in getLocaleFromCookie MUST match the locales array in
  * src/i18n/config.ts to prevent synchronization bugs.
  */
@@ -29,7 +29,7 @@ type Env = {
 const domainLocaleMap: Record<string, string> = {
   'ambilab.com': 'en',
   'ambilab.cz': 'cs',
-  'localhost': 'en',
+  localhost: 'en',
   '127.0.0.1': 'en',
 };
 
@@ -41,7 +41,7 @@ const defaultLocale = 'en';
 const validLocales = ['en', 'cs'] as const;
 
 const isValidLocale = (locale: string): boolean => {
-  return validLocales.includes(locale as typeof validLocales[number]);
+  return validLocales.includes(locale as (typeof validLocales)[number]);
 };
 
 const getLocaleFromCookie = (cookieString: string): string | null => {
@@ -93,7 +93,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
 
   // Add security headers to the response
   const responseHeaders = new Headers(response.headers);
-  
+
   // Content Security Policy
   // NOTE: 'unsafe-inline' is currently required for inline JSON-LD structured data script.
   // TODO: Consider implementing nonces (Astro v5 supports this) to remove 'unsafe-inline' for better XSS protection.
@@ -101,10 +101,10 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     'Content-Security-Policy',
     "default-src 'self'; script-src 'self' https://plausible.io 'unsafe-inline'; style-src 'self' https://fonts.vancura.dev 'unsafe-inline'; img-src 'self' data: blob: https://blit-tech-demos.ambilab.com; font-src 'self' https://fonts.vancura.dev data:; connect-src 'self' https://plausible.io https://api.buttondown.email; frame-src https://blit-tech-demos.ambilab.com; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;"
   );
-  
+
   // X-Content-Type-Options
   responseHeaders.set('X-Content-Type-Options', 'nosniff');
-  
+
   // Permissions-Policy
   responseHeaders.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
 
@@ -115,4 +115,3 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     headers: responseHeaders,
   });
 };
-

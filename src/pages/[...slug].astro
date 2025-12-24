@@ -23,8 +23,9 @@ let entry;
 let type: 'page' | 'blog';
 
 if (isBlogPost) {
-  const blogPosts = await getCollection('blog', ({ data }) => 
-    !data.draft && data.locale === detectedLocale
+  const blogPosts = await getCollection(
+    'blog',
+    ({ data }) => !data.draft && data.locale === detectedLocale
   );
   entry = blogPosts.find((e) => {
     const entrySlug = e.id.replace(/\.(mdx|md)$/, '').replace(/^[^/]+\//, '');
@@ -32,9 +33,7 @@ if (isBlogPost) {
   });
   type = 'blog';
 } else {
-  const pages = await getCollection('pages', ({ data }) => 
-    data.locale === detectedLocale
-  );
+  const pages = await getCollection('pages', ({ data }) => data.locale === detectedLocale);
   entry = pages.find((e) => {
     const entrySlug = e.id.replace(/\.(mdx|md)$/, '').replace(/^[^/]+\//, '');
     return entrySlug === actualSlug;
@@ -64,7 +63,7 @@ const permalink = `${siteUrl}/${entrySlug === 'index' ? '' : entrySlug}`;
       locale={locale}
     >
       <article class="container mx-auto px-4 py-12">
-        <div class="prose prose-lg mx-auto max-w-4xl dark:prose-invert mdx-content">
+        <div class="prose prose-lg dark:prose-invert mdx-content mx-auto max-w-4xl">
           <Content />
         </div>
       </article>
@@ -85,4 +84,3 @@ const permalink = `${siteUrl}/${entrySlug === 'index' ? '' : entrySlug}`;
     </BlogPostLayout>
   ) : null
 }
-

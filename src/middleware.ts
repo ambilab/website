@@ -4,10 +4,10 @@ import { getLocaleFromCookie, detectLocaleFromHostname } from '@i18n/utils';
 
 /**
  * Astro middleware for locale detection.
- * 
+ *
  * This middleware uses shared utilities from @i18n/utils and @i18n/config,
  * ensuring consistency with the rest of the application.
- * 
+ *
  * NOTE: When modifying locale detection logic, also check:
  * - functions/_middleware.ts (Cloudflare Pages middleware - has duplicated code)
  * - src/i18n/config.ts (source of truth for locale configuration)
@@ -43,4 +43,3 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
   return response;
 });
-

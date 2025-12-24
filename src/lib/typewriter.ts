@@ -90,4 +90,3 @@ export const extractTextNodes = (
 
   return textNodes;
 };
-

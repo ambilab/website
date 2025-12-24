@@ -74,17 +74,21 @@
     }
   }
 
-  safeExecute(() => {
-    const manager = new HeadingLinksManager();
+  safeExecute(
+    () => {
+      const manager = new HeadingLinksManager();
 
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', manager.refresh);
-    } else {
-      manager.refresh();
-    }
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', manager.refresh);
+      } else {
+        manager.refresh();
+      }
 
-    document.addEventListener('astro:page-load', manager.refresh);
-  }, undefined, 'Failed to initialize HeadingLinks');
+      document.addEventListener('astro:page-load', manager.refresh);
+    },
+    undefined,
+    'Failed to initialize HeadingLinks'
+  );
 </script>
 
 <style>
@@ -112,4 +116,3 @@
     color: #6b7280;
   }
 </style>
-

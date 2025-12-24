@@ -17,4 +17,3 @@ export const getResponsiveSizes = (sizes?: string): string => {
     `(max-width: ${imageBreakpoints.sm}px) 100vw, (max-width: ${imageBreakpoints.md}px) 90vw, (max-width: ${imageBreakpoints.lg}px) 80vw, 1200px`
   );
 };
-

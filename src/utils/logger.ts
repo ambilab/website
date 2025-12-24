@@ -43,4 +43,3 @@ class Logger implements ILogger {
 }
 
 export const createLogger = (options: LoggerOptions = {}): ILogger => new Logger(options);
-

@@ -22,4 +22,3 @@ export interface Page {
   translationSlug?: string;
   disableTypewriter: boolean;
 }
-

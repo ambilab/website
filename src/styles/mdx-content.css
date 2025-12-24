@@ -21,7 +21,7 @@
     @apply relative scroll-mt-20 font-bold;
 
     & .anchor {
-      @apply absolute -left-6 opacity-0 transition-opacity no-underline text-gray-400 dark:text-gray-600;
+      @apply absolute -left-6 text-gray-400 no-underline opacity-0 transition-opacity dark:text-gray-600;
     }
 
     &:hover .anchor {
@@ -30,19 +30,19 @@
   }
 
   & h1 {
-    @apply text-4xl mt-8 mb-4;
+    @apply mt-8 mb-4 text-4xl;
   }
 
   & h2 {
-    @apply text-3xl mt-12 mb-4 pt-8 border-t border-gray-200 dark:border-gray-800;
+    @apply mt-12 mb-4 border-t border-gray-200 pt-8 text-3xl dark:border-gray-800;
   }
 
   & h3 {
-    @apply text-2xl font-semibold mt-8 mb-3;
+    @apply mt-8 mb-3 text-2xl font-semibold;
   }
 
   & h4 {
-    @apply text-xl font-semibold mt-6 mb-2;
+    @apply mt-6 mb-2 text-xl font-semibold;
   }
 
   /* Paragraphs and lists */
@@ -56,11 +56,11 @@
   }
 
   & ul li {
-    @apply list-disc mb-2;
+    @apply mb-2 list-disc;
   }
 
   & ol li {
-    @apply list-decimal mb-2;
+    @apply mb-2 list-decimal;
   }
 
   /* Nested lists */
@@ -78,17 +78,17 @@
   & p code,
   & li code,
   & td code {
-    @apply rounded px-1.5 py-0.5 text-sm bg-gray-100 text-gray-900 dark:bg-gray-800 dark:text-gray-100 font-mono;
+    @apply rounded bg-gray-100 px-1.5 py-0.5 font-mono text-sm text-gray-900 dark:bg-gray-800 dark:text-gray-100;
   }
 
   /* Code blocks are handled by Expressive Code */
   & pre {
-    @apply my-6 rounded-lg overflow-x-auto;
+    @apply my-6 overflow-x-auto rounded-lg;
   }
 
   /* Images */
   & img {
-    @apply rounded-lg my-4 max-w-full h-auto;
+    @apply my-4 h-auto max-w-full rounded-lg;
   }
 
   & figure {
@@ -101,7 +101,7 @@
 
   /* Blockquotes */
   & blockquote {
-    @apply border-l-4 border-blue-500 pl-4 my-4 italic text-gray-700 dark:text-gray-300;
+    @apply my-4 border-l-4 border-blue-500 pl-4 text-gray-700 italic dark:text-gray-300;
 
     & p {
       @apply mb-2;
@@ -110,14 +110,14 @@
 
   /* Tables */
   & table {
-    @apply w-full my-4 border-collapse;
+    @apply my-4 w-full border-collapse;
 
     & th {
-      @apply text-left font-semibold p-2 border-b-2 border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900;
+      @apply border-b-2 border-gray-300 bg-gray-50 p-2 text-left font-semibold dark:border-gray-700 dark:bg-gray-900;
     }
 
     & td {
-      @apply p-2 border-b border-gray-200 dark:border-gray-800;
+      @apply border-b border-gray-200 p-2 dark:border-gray-800;
     }
 
     & tr:last-child td {
@@ -146,17 +146,17 @@
 
   /* Mark/highlight */
   & mark {
-    @apply bg-yellow-200 dark:bg-yellow-800 px-1 rounded;
+    @apply rounded bg-yellow-200 px-1 dark:bg-yellow-800;
   }
 
   /* Keyboard input */
   & kbd {
-    @apply px-2 py-1 text-sm font-mono bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded shadow-sm;
+    @apply rounded border border-gray-300 bg-gray-100 px-2 py-1 font-mono text-sm shadow-sm dark:border-gray-700 dark:bg-gray-800;
   }
 
   /* Details/summary */
   & details {
-    @apply my-4 p-4 border border-gray-200 dark:border-gray-800 rounded-lg;
+    @apply my-4 rounded-lg border border-gray-200 p-4 dark:border-gray-800;
 
     & summary {
       @apply cursor-pointer font-semibold select-none;
@@ -181,4 +181,3 @@
     @apply align-super;
   }
 }
-

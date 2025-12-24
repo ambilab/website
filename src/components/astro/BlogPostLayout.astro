@@ -18,7 +18,16 @@ export interface Props extends ISEOMetadata {
   content: string;
 }
 
-const { locale, title, pubDate, updatedDate, author, tags = [], content, ...seoProps } = Astro.props;
+const {
+  locale,
+  title,
+  pubDate,
+  updatedDate,
+  author,
+  tags = [],
+  content,
+  ...seoProps
+} = Astro.props;
 const t = getTranslation(locale);
 const readingTime = calculateReadingTime(content);
 
@@ -45,7 +54,8 @@ const formatDate = (date: Date) => {
         <div class="flex items-center gap-2">
           <Icon name="solar:calendar-bold" class="h-4 w-4" />
           <time datetime={pubDate.toISOString()}>
-            {t.blog.publishedOn} {formatDate(pubDate)}
+            {t.blog.publishedOn}
+            {formatDate(pubDate)}
           </time>
         </div>
 
@@ -63,7 +73,8 @@ const formatDate = (date: Date) => {
         <div class="flex items-center gap-2">
           <Icon name="solar:clock-circle-bold" class="h-4 w-4" />
           <span>
-            {readingTime} {t.blog.minutesShort}
+            {readingTime}
+            {t.blog.minutesShort}
           </span>
         </div>
       </div>
@@ -82,11 +93,10 @@ const formatDate = (date: Date) => {
       }
     </header>
 
-    <div class="prose prose-lg mx-auto max-w-3xl dark:prose-invert mdx-content">
+    <div class="prose prose-lg dark:prose-invert mdx-content mx-auto max-w-3xl">
       <slot />
     </div>
   </article>
 
   <HeadingLinks />
 </PageLayout>
-

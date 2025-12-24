@@ -6,4 +6,3 @@ export interface ISEOMetadata {
   articlePublishedTime?: Date;
   articleModifiedTime?: Date;
 }
-

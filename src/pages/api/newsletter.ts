@@ -44,7 +44,7 @@ export const POST: APIRoute = async ({ request }) => {
     if (!response.ok) {
       // Log only the status code to avoid exposing sensitive information
       console.error(`Buttondown API error: Status ${response.status}`);
-      
+
       // Optionally extract a safe error message if available
       try {
         const errorText = await response.text();
@@ -67,14 +67,10 @@ export const POST: APIRoute = async ({ request }) => {
       );
     }
 
-    return jsonResponse(
-      { success: true, message: 'Successfully subscribed!' },
-      200
-    );
+    return jsonResponse({ success: true, message: 'Successfully subscribed!' }, 200);
   } catch (error) {
     console.error('Newsletter API error:', error);
 
     return jsonResponse({ error: 'An unexpected error occurred' }, 500);
   }
 };
-

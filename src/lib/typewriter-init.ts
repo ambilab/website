@@ -9,7 +9,7 @@ import { COMPONENT_CONFIG } from '@config/components';
 const initTypewriter = () => {
   // Check if we should trigger the typewriter effect
   const shouldAnimate = sessionStorage.getItem('typewriter-trigger') === 'true';
-  
+
   if (!shouldAnimate) {
     return;
   }
@@ -19,7 +19,7 @@ const initTypewriter = () => {
 
   // Find the main content container
   const contentContainer = document.querySelector('.mdx-content');
-  
+
   if (!contentContainer) {
     return;
   }
@@ -54,4 +54,3 @@ if (document.readyState === 'loading') {
 } else {
   initTypewriter();
 }
-

@@ -139,4 +139,3 @@ export const translations: Record<Locale, Translations> = {
 export const getTranslation = (locale: Locale): Translations => {
   return translations[locale] || translations.en;
 };
-

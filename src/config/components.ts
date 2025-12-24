@@ -13,4 +13,3 @@ export const COMPONENT_CONFIG = {
     ease: 'none',
   },
 } as const;
-

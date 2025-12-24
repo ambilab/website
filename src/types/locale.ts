@@ -11,4 +11,3 @@ export interface TranslationLink {
   slug: string;
   url: string;
 }
-

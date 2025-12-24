@@ -7,7 +7,7 @@ export const defaultLocale: Locale = 'en';
 export const domainLocaleMap: Record<string, Locale> = {
   'ambilab.com': 'en',
   'ambilab.cz': 'cs',
-  'localhost': 'en',
+  localhost: 'en',
   '127.0.0.1': 'en',
 };
 
@@ -27,4 +27,3 @@ export const localeConfigs: Record<Locale, LocaleConfig> = {
 export const isValidLocale = (locale: string): locale is Locale => {
   return locales.includes(locale as Locale);
 };
-

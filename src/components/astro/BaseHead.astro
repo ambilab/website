@@ -17,15 +17,11 @@ const canonical = permalink.endsWith('/') ? permalink.slice(0, -1) : permalink;
 const siteDomain = Astro.url.origin;
 ---
 
-<!-- Security headers -->
-<!-- NOTE: CSP is now set via HTTP headers in middleware for better security.
+<!-- Security headers --><!-- NOTE: CSP is now set via HTTP headers in middleware for better security.
      Meta tag CSP can be bypassed or modified by injected content.
      See: src/middleware.ts and functions/_middleware.ts -->
 <meta http-equiv="X-Content-Type-Options" content="nosniff" />
-<meta
-  http-equiv="Permissions-Policy"
-  content="camera=(), microphone=(), geolocation=()"
-/>
+<meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()" />
 
 <!-- Font preconnect and prefetch (critical for performance) -->
 <link rel="preconnect" href="https://fonts.vancura.dev" crossorigin />
@@ -98,8 +94,8 @@ const siteDomain = Astro.url.origin;
 <!-- Favicons with dark mode support -->
 <link href="/favicon.png" rel="icon" media="(prefers-color-scheme: light)" />
 <link href="/favicon-dark.png" rel="icon" media="(prefers-color-scheme: dark)" />
-  <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-title" content={SITE.NAME} />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-title" content={SITE.NAME} />
 
 <!-- Structured Data -->
 <script
@@ -130,7 +126,6 @@ const siteDomain = Astro.url.origin;
 <!-- Plausible Analytics (production only) -->
 {
   import.meta.env.PROD && (
-    <script is:inline defer data-domain="ambilab.com" src="https://plausible.io/js/script.js"></script>
+    <script is:inline defer data-domain="ambilab.com" src="https://plausible.io/js/script.js" />
   )
 }
-
