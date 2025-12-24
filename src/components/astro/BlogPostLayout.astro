@@ -6,6 +6,7 @@ import type { Locale } from '@type/locale';
 import type { ISEOMetadata } from '@type/seo';
 import { getTranslation } from '@i18n/translations';
 import { calculateReadingTime } from '@i18n/utils';
+import { localeToIntl } from '@i18n/config';
 import '@/styles/mdx-content.css';
 
 export interface Props extends ISEOMetadata {
@@ -32,7 +33,7 @@ const t = getTranslation(locale);
 const readingTime = calculateReadingTime(content);
 
 const formatDate = (date: Date) => {
-  return new Intl.DateTimeFormat(locale === 'cs' ? 'cs-CZ' : 'en-US', {
+  return new Intl.DateTimeFormat(localeToIntl[locale], {
     year: 'numeric',
     month: 'long',
     day: 'numeric',

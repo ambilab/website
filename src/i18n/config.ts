@@ -24,6 +24,15 @@ export const localeConfigs: Record<Locale, LocaleConfig> = {
   },
 };
 
+/**
+ * Maps locale codes to Intl locale strings for date/time formatting.
+ * Used by Intl.DateTimeFormat and other Intl APIs.
+ */
+export const localeToIntl: Record<Locale, string> = {
+  en: 'en-US',
+  cs: 'cs-CZ',
+};
+
 export const isValidLocale = (locale: string): locale is Locale => {
   return locales.includes(locale as Locale);
 };
