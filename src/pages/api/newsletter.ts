@@ -69,16 +69,20 @@ export const POST: APIRoute = async ({ request }) => {
       let errorText: string | undefined;
       
       try {
-        errorData = await response.json();
-        console.error('Buttondown API error:', errorData);
-      } catch (jsonError) {
-        // Fallback to text if JSON parsing fails
+        // Read as text first, then try to parse as JSON
+        // This allows us to log the raw text if JSON parsing fails
+        errorText = await response.text();
+        
+        // Try to parse as JSON
         try {
-          errorText = await response.text();
+          errorData = JSON.parse(errorText);
+          console.error('Buttondown API error:', errorData);
+        } catch {
+          // If JSON parsing fails, log the raw text
           console.error('Buttondown API error (non-JSON):', errorText);
-        } catch (textError) {
-          console.error('Buttondown API error: Failed to read response body', textError);
         }
+      } catch (textError) {
+        console.error('Buttondown API error: Failed to read response body', textError);
       }
 
       return new Response(
