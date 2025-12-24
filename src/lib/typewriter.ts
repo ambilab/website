@@ -19,6 +19,11 @@ export const animateTextSwap = (
   textElements: TextElement[],
   options: TypewriterOptions = {}
 ): gsap.core.Timeline => {
+  // SSR guard: return empty timeline if window is undefined
+  if (typeof window === 'undefined') {
+    return gsap.timeline();
+  }
+
   const { duration = 0.5, stagger = 0.1, ease = 'none' } = options;
 
   // Respect prefers-reduced-motion
