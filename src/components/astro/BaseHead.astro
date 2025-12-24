@@ -17,11 +17,13 @@ const canonical = permalink.endsWith('/') ? permalink.slice(0, -1) : permalink;
 const siteDomain = Astro.url.origin;
 ---
 
-<!-- Security headers --><!-- NOTE: CSP is now set via HTTP headers in middleware for better security.
-     Meta tag CSP can be bypassed or modified by injected content.
+<!-- Security headers -->
+<!-- NOTE: All security headers (CSP, X-Content-Type-Options, Permissions-Policy, etc.)
+     are set via HTTP headers in middleware for better security. HTTP headers are:
+     - Enforced before HTML parsing begins
+     - Cannot be modified by injected content
+     - More consistently honored across browsers
      See: src/middleware.ts and functions/_middleware.ts -->
-<meta http-equiv="X-Content-Type-Options" content="nosniff" />
-<meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()" />
 
 <!-- Font preconnect and prefetch (critical for performance) -->
 <link rel="preconnect" href="https://fonts.vancura.dev" crossorigin />
