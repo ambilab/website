@@ -15,6 +15,7 @@ export interface Translations {
   footer: {
     copyright: string;
     allRightsReserved: string;
+    description: string;
   };
   newsletter: {
     title: string;
@@ -59,6 +60,7 @@ export const translations: Record<Locale, Translations> = {
     footer: {
       copyright: 'Copyright',
       allRightsReserved: 'All rights reserved',
+      description: 'A web-based pixel art game engine and editor for kids to learn programming.',
     },
     newsletter: {
       title: 'Subscribe to Our Newsletter',
@@ -101,6 +103,7 @@ export const translations: Record<Locale, Translations> = {
     footer: {
       copyright: 'Copyright',
       allRightsReserved: 'Všechna práva vyhrazena',
+      description: 'Webová pixel art herní engine a editor pro děti, aby se učily programovat.',
     },
     newsletter: {
       title: 'Odebírejte náš newsletter',
