@@ -60,9 +60,12 @@ export const extractTextNodes = (
     acceptNode: (node) => {
       const element = node as HTMLElement;
       // Skip script, style, and elements with no text content
+      // Always reject completely empty elements, regardless of includeWhitespace
+      // Only reject whitespace-only elements when includeWhitespace is false
       if (
         element.tagName === 'SCRIPT' ||
         element.tagName === 'STYLE' ||
+        !element.textContent ||
         (!includeWhitespace && !element.textContent?.trim())
       ) {
         return NodeFilter.FILTER_REJECT;
