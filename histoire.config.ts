@@ -15,7 +15,7 @@ export default defineConfig({
     groups: [
       {
         title: 'Components',
-        include: (file) => file.path.includes('components/svelte'),
+        include: (file) => file.path.startsWith('src/components/svelte/'),
       },
     ],
   },
