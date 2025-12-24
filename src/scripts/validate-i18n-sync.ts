@@ -114,8 +114,22 @@ function validateSynchronization(): ValidationResult {
     const sourceDefaultLocale = extractDefaultLocale(configContent);
     const sourceDomainMap = extractDomainLocaleMap(configContent);
 
-    // Read Astro middleware (should import from config, so we skip validation)
-    // But we can still check that it imports correctly
+    // Validate Astro middleware imports
+    const astroMiddlewarePath = join(projectRoot, 'src/middleware.ts');
+    const astroMiddlewareContent = readFileSync(astroMiddlewarePath, 'utf-8');
+
+    // Check for required imports
+    if (!astroMiddlewareContent.includes('from \'@i18n/config\'') && !astroMiddlewareContent.includes('from "@i18n/config"')) {
+      errors.push('src/middleware.ts does not import from @i18n/config');
+    }
+    if (!astroMiddlewareContent.includes('from \'@i18n/utils\'') && !astroMiddlewareContent.includes('from "@i18n/utils"')) {
+      errors.push('src/middleware.ts does not import from @i18n/utils');
+    }
+
+    // Check for hardcoded locale arrays (shouldn't exist)
+    if (astroMiddlewareContent.match(/const\s+(validLocales|locales)\s*=/)) {
+      errors.push('src/middleware.ts contains hardcoded locale definitions');
+    }
 
     // Read Cloudflare Pages middleware
     const cfMiddlewarePath = join(projectRoot, 'functions/_middleware.ts');
