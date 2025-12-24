@@ -48,8 +48,9 @@
   let { src, title, aspectRatio = '16/9', class: className = '', desktopOnly = true }: Props = $props();
 
   // Validate and sanitize src URL
-  const validatedSrc = $derived(validateSrcUrl(src) ?? SAFE_FALLBACK_URL);
-  const isValidSrc = $derived(validateSrcUrl(src) !== null);
+  const validationResult = $derived(validateSrcUrl(src));
+  const validatedSrc = $derived(validationResult ?? SAFE_FALLBACK_URL);
+  const isValidSrc = $derived(validationResult !== null);
 
   // In development, the demo site blocks localhost due to CSP frame-ancestors
   // Show a link instead of iframe to avoid CSP violations
