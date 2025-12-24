@@ -5,8 +5,8 @@ import { defaultLocale } from '@i18n/config';
 import { getTranslation } from '@i18n/translations';
 import { getLocalizedPath } from '@i18n/utils';
 
-// Get the detected locale from middleware (via x-locale header)
-const detectedLocale = (Astro.request.headers.get('x-locale') as Locale) || defaultLocale;
+// Get the detected locale from middleware (via context.locals)
+const detectedLocale = Astro.locals.locale || defaultLocale;
 const t = getTranslation(detectedLocale);
 
 const siteUrl = Astro.url.origin;

@@ -5,8 +5,8 @@ import BlogPostLayout from '@components/astro/BlogPostLayout.astro';
 import type { Locale } from '@type/locale';
 import { defaultLocale } from '@i18n/config';
 
-// Get the detected locale from middleware (via x-locale header)
-const detectedLocale = (Astro.request.headers.get('x-locale') as Locale) || defaultLocale;
+// Get the detected locale from middleware (via context.locals)
+const detectedLocale = Astro.locals.locale || defaultLocale;
 
 // Get the slug from URL
 const { slug } = Astro.params;

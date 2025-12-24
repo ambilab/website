@@ -40,8 +40,8 @@ export const onRequest = defineMiddleware(async (context, next) => {
     locale = detectLocaleFromHostname(hostname);
   }
 
-  // Set the locale in the request headers so pages can access it
-  request.headers.set('x-locale', locale);
+  // Store locale in context for pages to access
+  context.locals.locale = locale;
 
   return next();
 });
