@@ -43,7 +43,7 @@ const initTypewriter = () => {
     animateTextSwap(textElements, {
       duration: COMPONENT_CONFIG.typewriter.duration,
       stagger: COMPONENT_CONFIG.typewriter.stagger,
-      ease: 'none',
+      ease: COMPONENT_CONFIG.typewriter.ease,
     });
   }, 100);
 };
