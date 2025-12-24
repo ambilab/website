@@ -1,7 +1,7 @@
 <script lang="ts">
   interface Props {
     src: string;
-    title: string;
+    title?: string;
     aspectRatio?: string;
     class?: string;
   }
