@@ -1,25 +1,38 @@
 <script lang="ts">
   import { getResponsiveSizes } from '@lib/images';
+  import type { ImageMetadata } from 'astro';
 
-  interface Props {
-    src: string;
-    alt: string;
-    sizes?: string;
-    class?: string;
-    width?: number;
-    height?: number;
-  }
+  type Props =
+    | {
+        src: string;
+        alt: string;
+        width: number;
+        height: number;
+        sizes?: string;
+        class?: string;
+      }
+    | {
+        src: ImageMetadata;
+        alt: string;
+        width?: number;
+        height?: number;
+        sizes?: string;
+        class?: string;
+      };
 
   let { src, alt, sizes, class: className = '', width, height }: Props = $props();
 
   const responsiveSizes = getResponsiveSizes(sizes);
+  const imageSrc = typeof src === 'string' ? src : src.src;
+  const imageWidth = width ?? (typeof src === 'string' ? undefined : src.width);
+  const imageHeight = height ?? (typeof src === 'string' ? undefined : src.height);
 </script>
 
 <img
-  src={src}
+  src={imageSrc}
   alt={alt}
-  width={width}
-  height={height}
+  width={imageWidth}
+  height={imageHeight}
   sizes={responsiveSizes}
   class="rounded-lg {className}"
   loading="lazy"

@@ -22,6 +22,16 @@
   alt="ambilab editor"
   sizes="(max-width: 768px) 100vw, 50vw"
 />`}</code></pre>
+      <p class="mt-4">
+        <strong>Note:</strong> When using remote URLs (string), width and height are required:
+      </p>
+      <pre><code>{`<ResponsiveImage 
+  src="https://example.com/image.jpg" 
+  alt="Remote image"
+  width={1200}
+  height={800}
+  sizes="(max-width: 768px) 100vw, 50vw"
+/>`}</code></pre>
     </div>
   </Hst.Variant>
 </Hst.Story>
