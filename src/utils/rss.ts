@@ -25,7 +25,7 @@ export async function generateRssFeed(
   languageCode: string
 ) {
   const posts = await getCollection('blog', ({ data }) => !data.draft && data.locale === locale);
-  const sortedPosts = posts.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+  const sortedPosts = [...posts].sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
   const recentPosts = sortedPosts.slice(0, 20); // Limit to 20 most recent posts
 
   const t = getTranslation(locale);
