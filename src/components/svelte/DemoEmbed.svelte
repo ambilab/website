@@ -17,6 +17,7 @@
     loading="lazy"
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope"
     allowfullscreen
+    sandbox="allow-scripts allow-same-origin allow-presentation"
     class="rounded-lg border border-gray-200 dark:border-gray-800"
   ></iframe>
   {#if title}
