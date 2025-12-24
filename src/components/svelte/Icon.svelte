@@ -10,14 +10,15 @@
 
   let { name, class: className = '', size, ariaLabel }: Props = $props();
 
-  const sizeStyle = size ? `width: ${size}px; height: ${size}px;` : '';
+  const sizeStyle = $derived(size ? `width: ${size}px; height: ${size}px;` : '');
   
   // Extract icon set and icon name from format like "solar:home-bold"
-  const parts = name.split(':');
-  const [iconSet, iconName] = parts;
+  const parts = $derived(name.split(':'));
+  const iconSet = $derived(parts[0]);
+  const iconName = $derived(parts[1]);
   
   // Validate icon name format (must have exactly two parts: set:name)
-  const isValidFormat = parts.length === 2 && iconSet && iconName;
+  const isValidFormat = $derived(parts.length === 2 && iconSet && iconName);
   if (!isValidFormat) {
     console.error(`Invalid icon name format: "${name}". Expected format: "set:name"`);
   }
