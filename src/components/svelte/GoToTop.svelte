@@ -27,7 +27,10 @@
       isVisible = true;
     } else {
       window.addEventListener('scroll', handleScroll);
-      return () => window.removeEventListener('scroll', handleScroll);
+      return () => {
+        window.removeEventListener('scroll', handleScroll);
+        handleScroll.cancel();
+      };
     }
   });
 </script>

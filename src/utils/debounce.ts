@@ -1,15 +1,25 @@
 export const debounce = <T extends (...args: Parameters<T>) => ReturnType<T>>(
   func: T,
   wait: number
-): ((...args: Parameters<T>) => void) => {
+): {
+  (...args: Parameters<T>): void;
+  cancel(): void;
+} => {
   let timeout: ReturnType<typeof setTimeout> | null = null;
 
-  return (...args: Parameters<T>) => {
+  const wrapped = (...args: Parameters<T>) => {
     if (timeout) clearTimeout(timeout);
     timeout = setTimeout(() => {
       func(...args);
       timeout = null;
     }, wait);
   };
+
+  wrapped.cancel = () => {
+    if (timeout) clearTimeout(timeout);
+    timeout = null;
+  };
+
+  return wrapped;
 };
 
