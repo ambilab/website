@@ -27,18 +27,18 @@ class Logger implements ILogger {
 
   public info(message: string): void {
     if (this.shouldLog('info')) {
-      console.info(`${this.prefix} ${message}`);
+      console.info(this.prefix ? `${this.prefix} ${message}` : message);
     }
   }
 
   public warn(message: string): void {
     if (this.shouldLog('warning')) {
-      console.warn(`${this.prefix} ${message}`);
+      console.warn(this.prefix ? `${this.prefix} ${message}` : message);
     }
   }
 
   public error(message: string, error?: unknown): void {
-    console.error(`${this.prefix} ${message}`, error || '');
+    console.error(this.prefix ? `${this.prefix} ${message}` : message, error || '');
   }
 }
 
