@@ -168,9 +168,7 @@ function validateSecurityHeaders(): ValidationResult[] {
       'Permissions-Policy',
     ];
 
-    const missingHeaders = expectedHeaders.filter(
-      (header) => !(header in STATIC_SECURITY_HEADERS)
-    );
+    const missingHeaders = expectedHeaders.filter((header) => !(header in STATIC_SECURITY_HEADERS));
 
     if (missingHeaders.length > 0) {
       results.push({
@@ -220,7 +218,7 @@ function validateSecurityHeaders(): ValidationResult[] {
 
 // Run validation
 console.log('🔒 Validating Security Headers Configuration\n');
-console.log('=' .repeat(60));
+console.log('='.repeat(60));
 
 const results = validateSecurityHeaders();
 const failures = results.filter((r) => !r.success);
@@ -229,7 +227,7 @@ results.forEach((result) => {
   console.log(result.message);
 });
 
-console.log('=' .repeat(60));
+console.log('='.repeat(60));
 
 if (failures.length === 0) {
   console.log('\n✅ All security header validations passed!');
@@ -238,4 +236,3 @@ if (failures.length === 0) {
   console.log(`\n❌ ${failures.length} validation(s) failed`);
   process.exit(1);
 }
-

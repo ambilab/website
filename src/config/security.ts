@@ -97,4 +97,3 @@ export function applySecurityHeaders(headers: Headers, config: CSPConfig): void 
     headers.set(key, value);
   });
 }
-
