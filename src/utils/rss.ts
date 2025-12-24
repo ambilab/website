@@ -11,6 +11,10 @@ import { getTranslation } from '@i18n/translations';
  * Example: "en/hello-world.mdx" -> "/blog/hello-world"
  */
 export function getBlogPostLink(postId: string): string {
+  if (!postId.includes('/')) {
+    throw new Error(`Invalid post ID format: ${postId}. Expected format: "locale/slug.mdx"`);
+  }
+
   return `/blog/${postId.replace(/\.(mdx|md)$/, '').replace(/^[^/]+\//, '')}`;
 }
 
