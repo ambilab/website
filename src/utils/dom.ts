@@ -12,6 +12,16 @@ export const isDarkMode = (): boolean => {
 };
 
 export const toggleDarkMode = (): void => {
+  // SSR guard: return early if not in a browser environment
+  if (
+    typeof window === 'undefined' ||
+    typeof document === 'undefined' ||
+    !document.documentElement ||
+    typeof localStorage === 'undefined'
+  ) {
+    return;
+  }
+
   document.documentElement.classList.toggle('dark');
   localStorage.setItem(
     'theme',
