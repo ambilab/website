@@ -44,7 +44,7 @@
   sizes="(max-width: 768px) 100vw, 50vw"
 />`}</code></pre>
       <p class="mt-4 text-sm text-gray-600 dark:text-gray-400">
-        <strong>Note:</strong> For ImageMetadata sources, Astro automatically handles format optimization (AVIF/WebP with fallbacks). For remote string URLs, ensure your image service provides multiple formats or use Astro's Image component in Astro files for full format support.
+        <strong>Note:</strong> This component uses a standard HTML img element with responsive sizes. It does not perform automatic format optimization (AVIF/WebP conversion). For advanced image optimization with automatic format conversion, consider using Astro's Image or Picture components in Astro files instead.
       </p>
     </div>
   </Hst.Variant>
