@@ -7,8 +7,8 @@
   <Hst.Variant title="Usage Example">
     <div class="prose">
       <p>
-        ResponsiveImage component wraps Astro's Image component with responsive sizes
-        configuration. It automatically generates AVIF/WebP variants at multiple breakpoints.
+        ResponsiveImage component provides responsive image rendering with sizes configuration.
+        It uses standard HTML img tag with responsive sizes for optimal loading.
       </p>
       <div class="my-4">
         <ResponsiveImage

@@ -1,10 +1,8 @@
 <script lang="ts">
-  import { Image } from 'astro:assets';
-  import type { ImageMetadata } from 'astro';
   import { getResponsiveSizes } from '@lib/images';
 
   interface Props {
-    src: ImageMetadata | string;
+    src: string;
     alt: string;
     sizes?: string;
     class?: string;
@@ -17,14 +15,13 @@
   const responsiveSizes = getResponsiveSizes(sizes);
 </script>
 
-<Image
-  {src}
-  {alt}
-  {width}
-  {height}
+<img
+  src={src}
+  alt={alt}
+  width={width}
+  height={height}
   sizes={responsiveSizes}
   class="rounded-lg {className}"
   loading="lazy"
-  format="avif"
 />
 
