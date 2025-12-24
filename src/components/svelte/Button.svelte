@@ -38,10 +38,17 @@
   };
 
   const classes = `${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${className}`;
+
+  function handleKeydown(event: KeyboardEvent) {
+    if (event.key === ' ' || event.key === 'Spacebar' || event.code === 'Space') {
+      event.preventDefault();
+      (event.currentTarget as HTMLAnchorElement).click();
+    }
+  }
 </script>
 
 {#if href}
-  <a {href} class={classes} role="button">
+  <a {href} class={classes} role="button" onkeydown={handleKeydown}>
     {@render children?.()}
   </a>
 {:else}
