@@ -26,8 +26,9 @@ export const onRequest = defineMiddleware(async (context, next) => {
     locale = detectLocaleFromHostname(hostname);
   }
 
-  // Store locale in context for pages to access
-  context.locals.locale = locale;
+  // Ensure locale is always defined (fallback to defaultLocale)
+  // This guarantees Locals.locale is always Locale, never undefined
+  context.locals.locale = locale || defaultLocale;
 
   const response = await next();
 

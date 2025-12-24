@@ -6,7 +6,8 @@ import type { Locale } from '@type/locale';
 import { defaultLocale } from '@i18n/config';
 
 // Get the detected locale from middleware (via context.locals)
-const detectedLocale = Astro.locals.locale || defaultLocale;
+// Middleware guarantees this is always defined
+const detectedLocale = Astro.locals.locale;
 
 // Get the slug from URL
 const { slug } = Astro.params;

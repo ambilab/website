@@ -80,6 +80,10 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     locale = detectLocaleFromHostname(hostname);
   }
 
+  // Ensure locale is always defined (fallback to defaultLocale)
+  // This guarantees consistency with src/middleware.ts
+  locale = locale || defaultLocale;
+
   // Create a new request with the x-locale header
   const newHeaders = new Headers(request.headers);
   newHeaders.set('x-locale', locale);
