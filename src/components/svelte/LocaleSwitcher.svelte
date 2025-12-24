@@ -1,6 +1,10 @@
 <script lang="ts">
   import type { Locale } from '@type/locale';
   import { localeConfigs } from '@i18n/config';
+  import { setLocaleCookie } from '@i18n/utils';
+  import { createLogger } from '@utils/logger';
+
+  const logger = createLogger({ prefix: 'LocaleSwitcher' });
 
   interface Props {
     currentLocale: Locale;
@@ -21,7 +25,7 @@
 
     try {
       // Set locale cookie
-      document.cookie = `locale=${otherLocale}; path=/; max-age=31536000; SameSite=Lax`;
+      document.cookie = setLocaleCookie(otherLocale);
       
       // Set flag to trigger typewriter animation on next page load
       sessionStorage.setItem('typewriter-trigger', 'true');
@@ -29,7 +33,7 @@
       // Reload page to apply new locale
       window.location.reload();
     } catch (error) {
-      console.error('Failed to switch locale:', error);
+      logger.error('Failed to switch locale', error);
       isAnimating = false;
     }
   };
