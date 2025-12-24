@@ -65,24 +65,23 @@ export const POST: APIRoute = async ({ request }) => {
     });
 
     if (!response.ok) {
-      let errorData: unknown;
-      let errorText: string | undefined;
+      // Log only the status code to avoid exposing sensitive information
+      console.error(`Buttondown API error: Status ${response.status}`);
       
+      // Optionally extract a safe error message if available
       try {
-        // Read as text first, then try to parse as JSON
-        // This allows us to log the raw text if JSON parsing fails
-        errorText = await response.text();
-        
-        // Try to parse as JSON
+        const errorText = await response.text();
         try {
-          errorData = JSON.parse(errorText);
-          console.error('Buttondown API error:', errorData);
+          const errorData = JSON.parse(errorText) as { message?: string; error?: string };
+          // Only log sanitized error identifiers, not the full response
+          if (errorData.message || errorData.error) {
+            console.error(`Buttondown API error message: ${errorData.message || errorData.error}`);
+          }
         } catch {
-          // If JSON parsing fails, log the raw text
-          console.error('Buttondown API error (non-JSON):', errorText);
+          // JSON parsing failed, don't log raw text to avoid exposing sensitive data
         }
-      } catch (textError) {
-        console.error('Buttondown API error: Failed to read response body', textError);
+      } catch {
+        // Failed to read response body, status code already logged above
       }
 
       return new Response(
