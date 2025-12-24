@@ -1,8 +1,8 @@
 import type { PagesFunction } from '@cloudflare/workers-types';
 
-interface Env {
+type Env = {
   // Add any environment bindings here if needed
-}
+};
 
 /**
  * NOTE: Code Duplication Required for Cloudflare Pages Runtime
