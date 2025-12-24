@@ -72,6 +72,7 @@ export function buildCSP(config: CSPConfig): string {
     `frame-ancestors 'self'`,
     `base-uri 'self'`,
     `form-action 'self'`,
+    `object-src 'none'`,
   ];
 
   // Add upgrade-insecure-requests only in production
