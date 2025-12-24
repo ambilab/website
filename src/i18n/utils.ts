@@ -40,7 +40,11 @@ export const getLocalizedPath = (slug: string, locale: Locale): string => {
 
 export const calculateReadingTime = (content: string): number => {
   const wordsPerMinute = 200;
-  const words = content.trim().split(/\s+/).length;
+  const trimmed = content.trim();
+  if (!trimmed) {
+    return 0;
+  }
+  const words = trimmed.split(/\s+/).length;
   return Math.ceil(words / wordsPerMinute);
 };
 
