@@ -1,30 +1,6 @@
 import { defineMiddleware } from 'astro:middleware';
-import type { Locale } from '@type/locale';
 import { defaultLocale } from '@i18n/config';
-
-const domainLocaleMap: Record<string, Locale> = {
-  'ambilab.com': 'en',
-  'ambilab.cz': 'cs',
-  'localhost': 'en',
-  '127.0.0.1': 'en',
-};
-
-const getLocaleFromCookie = (cookieString: string): Locale | null => {
-  const cookies = cookieString.split(';').map((c) => c.trim());
-  const localeCookie = cookies.find((c) => c.startsWith('locale='));
-
-  if (localeCookie) {
-    const locale = localeCookie.split('=')[1];
-    return locale === 'en' || locale === 'cs' ? (locale as Locale) : null;
-  }
-
-  return null;
-};
-
-const detectLocaleFromHostname = (hostname: string): Locale => {
-  const locale = domainLocaleMap[hostname];
-  return locale || defaultLocale;
-};
+import { getLocaleFromCookie, detectLocaleFromHostname } from '@i18n/utils';
 
 export const onRequest = defineMiddleware(async (context, next) => {
   const { request } = context;
