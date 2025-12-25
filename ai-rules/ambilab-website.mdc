@@ -1,0 +1,345 @@
+---
+description: Core project rules for Ambilab marketing website
+globs: ["**/*"]
+alwaysApply: true
+---
+
+# Ambilab Website Project Rules
+
+Ambilab Website is a bilingual (English/Czech) marketing website and blog for Ambilab - a web-based pixel art game
+engine and editor for kids to learn programming.
+
+## CRITICAL RULES
+
+### No Emoji
+
+NEVER use emoji in:
+
+- Source code (comments, strings, identifiers)
+- Documentation (markdown files, JSDoc)
+- Commit messages
+- Pull request titles and descriptions
+- Error messages or log output
+
+This rule has no exceptions. Use plain text descriptions instead.
+
+### TypeScript Strict Mode
+
+All code must pass strict TypeScript checks:
+
+- `strict: true` with all strict sub-options enabled
+- No `any` types unless absolutely necessary (use `unknown` instead)
+- Proper null/undefined handling with optional chaining
+- Type-only imports for interfaces and type aliases
+
+## Architecture
+
+### Tech Stack
+
+- **Framework**: Astro 5 with SSR (Cloudflare adapter)
+- **UI Components**: Svelte 5 (hydratable)
+- **Styling**: Tailwind CSS 4 with custom theme
+- **Language**: TypeScript (strict mode)
+- **Content**: MDX via Astro Content Collections
+- **State Management**: Nanostores
+- **Animation**: GSAP (reduced-motion aware)
+- **Icons**: Solar icons via Iconify + custom SVGs
+- **Package Manager**: pnpm
+- **Deployment**: Cloudflare Pages
+
+### Project Structure
+
+```text
+ambilab-website/
+  functions/              # Cloudflare edge functions
+  public/                 # Static assets (favicons, OG images)
+  src/
+    assets/              # Images (Git LFS) and icons
+    components/
+      astro/             # Astro-only components
+      svelte/            # Interactive Svelte components + stories
+    config/              # Site, security, component config
+    content/
+      blog/              # Blog posts by locale (en/, cs/)
+      pages/             # Static pages by locale
+    i18n/                # Locale config, translations, utils
+    lib/                 # Reusable libraries (typewriter, images)
+    pages/               # Astro pages and API routes
+    scripts/             # Utility scripts
+    stores/              # Nanostores for state
+    styles/              # Global and MDX styles
+    types/               # TypeScript type definitions
+    utils/               # Utility functions
+    middleware.ts        # Locale detection, security headers
+    env.d.ts             # Environment types
+```
+
+### Bilingual Content
+
+The site supports English and Czech with domain-based detection:
+
+- `ambilab.com` -> English
+- `ambilab.cz` -> Czech
+- Localhost -> English (default)
+
+**Detection Priority:**
+
+1. Cookie override (`locale` cookie)
+2. Domain/hostname detection
+3. Default fallback (en)
+
+**Content Translation Linking:**
+
+Each MDX file links to its translation via frontmatter:
+
+```yaml
+---
+title: 'Hello World'
+locale: 'en'
+translationSlug: 'ahoj-svete'
+---
+```
+
+## Component Patterns
+
+### Astro Components
+
+Located in `src/components/astro/`:
+
+- Server-rendered by default
+- Use for layouts, SEO, static content
+- Import Svelte components with `client:*` directives
+
+```astro
+---
+import Button from '@components/svelte/Button.svelte';
+---
+
+<Button client:load>Click me</Button>
+```
+
+### Svelte Components
+
+Located in `src/components/svelte/`:
+
+- Interactive, hydratable components
+- Each component should have a `.story.svelte` file for Histoire
+- Use TypeScript with strict typing
+- Props should be typed and documented
+
+```svelte
+<script lang="ts">
+    interface Props {
+        /** Button variant style */
+        variant?: 'primary' | 'secondary';
+        /** Disabled state */
+        disabled?: boolean;
+    }
+
+    let { variant = 'primary', disabled = false }: Props = $props();
+</script>
+```
+
+### Component Hydration
+
+Use appropriate `client:*` directives:
+
+- `client:load` - Hydrate immediately (interactive elements)
+- `client:visible` - Hydrate when visible (below fold)
+- `client:idle` - Hydrate when browser is idle
+- `client:only="svelte"` - Skip SSR entirely
+
+## Content Collections
+
+### Blog Posts
+
+Schema defined in `src/content/config.ts`:
+
+```typescript
+const blogSchema = z.object({
+    title: z.string(),
+    description: z.string(),
+    slug: z.string(),
+    locale: z.enum(['en', 'cs']),
+    translationSlug: z.string().optional(),
+    pubDate: z.date(),
+    updatedDate: z.date().optional(),
+    author: z.string().default('Ambilab'),
+    tags: z.array(z.string()).default([]),
+    draft: z.boolean().default(false),
+});
+```
+
+### Adding Content
+
+1. Create MDX file in `src/content/blog/en/` or `src/content/blog/cs/`
+2. Add frontmatter with required fields
+3. Link translations via `translationSlug`
+4. Write content in MDX
+
+## Security
+
+### CSP and Security Headers
+
+Configured in `src/config/security.ts` and applied via `src/middleware.ts`:
+
+- Content Security Policy with nonce support
+- X-Content-Type-Options, X-Frame-Options, X-XSS-Protection
+- Referrer-Policy, Permissions-Policy
+- Environment-aware (relaxed in development)
+
+### Demo Embeds
+
+Use the `DemoEmbed` component for sandboxed iframes:
+
+- Strict URL allowlist
+- Sandboxed with permissions model
+- Dev localhost support
+
+## Styling
+
+### Tailwind CSS 4
+
+- Dark mode with class strategy
+- Custom theme in `tailwind.config.ts`
+- Typography plugin for prose content
+
+### CSS Organization
+
+- Global styles in `src/styles/global.css`
+- MDX content styles in `src/styles/mdx-content.css`
+- Component-specific styles via Tailwind utilities
+
+## Code Style
+
+### Formatting
+
+Enforced by Biome (TS/JS/JSON/CSS) and Prettier (Astro/Svelte/Markdown):
+
+- **Indent**: 4 spaces (2 for JSON/YAML/Markdown)
+- **Line width**: 120 characters max
+- **Quotes**: Single quotes for strings
+- **Semicolons**: Always required
+- **Trailing commas**: Always
+
+### Imports
+
+Use type imports for type-only imports:
+
+```typescript
+// Correct
+import type { BlogPost } from '@type/content';
+import { formatDate } from '@utils/date';
+
+// Wrong
+import { BlogPost } from '@type/content'; // If only used as type
+```
+
+### Path Aliases
+
+Use configured path aliases:
+
+- `@/*` - src/\*
+- `@components/*` - src/components/\*
+- `@config/*` - src/config/\*
+- `@lib/*` - src/lib/\*
+- `@utils/*` - src/utils/\*
+- `@type/*` - src/types/\*
+- `@i18n/*` - src/i18n/\*
+- `@stores/*` - src/stores/\*
+- `@assets/*` - src/assets/\*
+
+## Git Commits
+
+### Conventional Commits
+
+All commits must follow the Conventional Commits format:
+
+```text
+<type>(<scope>): <description>
+
+[optional body]
+
+[optional footer(s)]
+```
+
+**Rules:**
+
+- Header (first line) max 100 characters
+- Subject must be lowercase
+- Subject must not end with period
+
+**Types:**
+
+- `feat` - New feature
+- `fix` - Bug fix
+- `docs` - Documentation only
+- `style` - Formatting, no code change
+- `refactor` - Code change that neither fixes a bug nor adds a feature
+- `perf` - Performance improvement
+- `test` - Adding or updating tests
+- `build` - Build system or dependencies
+- `ci` - CI configuration
+- `chore` - Other changes
+
+**Suggested Scopes:**
+
+- `blog` - Blog content or features
+- `i18n` - Internationalization
+- `components` - UI components
+- `seo` - SEO and meta tags
+- `security` - Security headers/CSP
+- `api` - API routes
+- `ci` - CI/CD configuration
+- `docs` - Documentation
+
+### Signed-Off Commits
+
+All commits must include a sign-off line (DCO):
+
+```text
+Signed-off-by: Your Name <your.email@example.com>
+```
+
+Use `git commit -s` to automatically add the sign-off.
+
+### AI-Assisted Commits
+
+When AI tools are used, include the AI trailer:
+
+```text
+feat(blog): add reading time calculation
+
+Signed-off-by: Your Name <your.email@example.com>
+
+Co-Authored-By: Claude <noreply@anthropic.com>
+```
+
+## Development Commands
+
+```bash
+pnpm dev              # Start development server
+pnpm build            # Build for production
+pnpm preview          # Preview production build
+pnpm check            # Run Astro check
+pnpm story:dev        # Start Histoire
+pnpm lint             # Lint code
+pnpm lint:fix         # Fix linting issues
+pnpm format           # Format code
+pnpm format:check     # Check formatting
+pnpm typecheck        # Run TypeScript checks
+pnpm spellcheck       # Check spelling
+pnpm preflight        # Run all quality checks
+pnpm sync-rules       # Sync AI rules to editor configs
+```
+
+## Common Mistakes to Avoid
+
+1. **Using emoji** - Never allowed anywhere
+2. **Forgetting hydration directives** - Svelte components need `client:*`
+3. **Missing translations** - Always create both en/cs versions
+4. **Skipping frontmatter fields** - Required fields must be present
+5. **Using `any` type** - Use proper types or `unknown`
+6. **Hardcoding strings** - Use `src/i18n/translations.ts`
+7. **Missing alt text** - All images need alt attributes
+8. **Ignoring reduced motion** - Animations must respect `prefers-reduced-motion`
