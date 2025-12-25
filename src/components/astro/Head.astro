@@ -1,0 +1,14 @@
+---
+import BaseHead from './BaseHead.astro';
+import type { ISEOMetadata } from '@type/seo';
+
+export interface Props extends ISEOMetadata {
+  locale?: 'en' | 'cs';
+}
+
+const props = Astro.props;
+---
+
+<head>
+  <BaseHead {...props} />
+</head>

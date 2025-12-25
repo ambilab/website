@@ -129,6 +129,7 @@ The site automatically detects locale based on the domain:
 - Localhost → English (default)
 
 Detection priority:
+
 1. Cookie override (`locale` cookie)
 2. Domain detection
 3. Default fallback (en)
@@ -136,11 +137,13 @@ Detection priority:
 ### Testing Locales Locally
 
 Option 1: Add to `/etc/hosts`:
-```
+
+```bash
 127.0.0.1 ambilab.cz
 ```
 
 Option 2: Use query parameter (development only):
+
 ```
 http://localhost:4321/?locale=cs
 ```
@@ -151,9 +154,9 @@ Each MDX file links to its translation via frontmatter:
 
 ```yaml
 ---
-title: "Hello World"
-locale: "en"
-translationSlug: "ahoj-svete"  # Links to Czech version
+title: 'Hello World'
+locale: 'en'
+translationSlug: 'ahoj-svete' # Links to Czech version
 ---
 ```
 
@@ -172,6 +175,7 @@ The site is deployed automatically when you push to GitHub:
 **Important**: ALL environment variables must be set in **Cloudflare Pages dashboard** under Settings > Environment Variables.
 
 Required variables:
+
 - `BUTTONDOWN_API_KEY` - Buttondown newsletter API key
 - `NODE_VERSION` - Set to `20`
 
@@ -196,14 +200,14 @@ Example:
 
 ```mdx
 ---
-title: "My Post"
-description: "Post description"
-slug: "my-post"
-locale: "en"
-translationSlug: "muj-prispevek"
+title: 'My Post'
+description: 'Post description'
+slug: 'my-post'
+locale: 'en'
+translationSlug: 'muj-prispevek'
 pubDate: 2024-01-15T00:00:00.000Z
-author: "ambilab"
-tags: ["tutorial", "games"]
+author: 'ambilab'
+tags: ['tutorial', 'games']
 ---
 
 # My Post Content
@@ -220,8 +224,8 @@ Same process as blog posts, but place files in `src/content/pages/`.
 Use the `DemoEmbed` component in MDX:
 
 ```mdx
-<DemoEmbed 
-  src="https://blit-tech-demos.ambilab.com/pong" 
+<DemoEmbed
+  src="https://blit-tech-demos.ambilab.com/pong"
   title="Play Pong"
   aspectRatio="16/9"
   client:load
@@ -268,7 +272,7 @@ To update font files, change the URLs in `src/components/astro/BaseHead.astro`.
 Primary icon system via `astro-icon`:
 
 ```astro
-<Icon name="solar:game-controller-bold" class="w-6 h-6" />
+<Icon name="solar:game-controller-bold" class="h-6 w-6" />
 ```
 
 Browse: https://www.figma.com/community/file/1166831539721848736
@@ -319,4 +323,3 @@ Copyright © 2024 ambilab. All rights reserved.
 ---
 
 Built with ❤️ using Astro, Svelte, and Tailwind CSS.
-

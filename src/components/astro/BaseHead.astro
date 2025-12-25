@@ -1,0 +1,153 @@
+---
+import { SITE } from '@config/site';
+import type { ISEOMetadata } from '@type/seo';
+import type { Locale } from '@type/locale';
+
+export interface Props extends ISEOMetadata {
+  title: string;
+  description: string;
+  permalink: string;
+  ogImage?: string;
+  locale?: Locale;
+}
+
+const { title, description, ogImage, permalink, locale = 'en' } = Astro.props;
+
+const canonical = permalink.endsWith('/') ? permalink.slice(0, -1) : permalink;
+const siteDomain = Astro.url.origin;
+const currentDomain = Astro.url.hostname;
+
+// Get the nonce from context for inline scripts/styles (CSP requirement)
+const nonce = Astro.locals.nonce;
+---
+
+<!-- Security headers -->
+<!-- NOTE: All security headers (CSP, X-Content-Type-Options, Permissions-Policy, etc.)
+     are set via HTTP headers in middleware for better security. HTTP headers are:
+     - Enforced before HTML parsing begins
+     - Cannot be modified by injected content
+     - More consistently honored across browsers
+     See: src/middleware.ts and functions/_middleware.ts -->
+
+<!-- Font preconnect and prefetch (critical for performance) -->
+<!-- Only load external font in production to avoid CORS issues in development -->
+{
+  import.meta.env.PROD && (
+    <>
+      <link rel="preconnect" href="https://fonts.vancura.dev" crossorigin />
+      <link rel="dns-prefetch" href="https://fonts.vancura.dev" />
+
+      <!-- Prefetch Innovator Grotesk font -->
+      <link
+        rel="preload"
+        href="https://fonts.vancura.dev/InnovatorGrotesk-Medium.woff2"
+        as="font"
+        type="font/woff2"
+        crossorigin
+      />
+    </>
+  )
+}
+
+<!-- Font stylesheet with non-blocking load -->
+<!-- In development, use system font fallback to avoid CORS issues -->
+<style is:inline nonce={nonce}>
+  {
+    import.meta.env.PROD
+      ? `@font-face {
+    font-family: 'Innovator Grotesk';
+    src: url('https://fonts.vancura.dev/InnovatorGrotesk-Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+  }`
+      : `/* Using system font fallback in development to avoid CORS issues */
+  :root {
+    --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  }`
+  }
+</style>
+
+<!-- Analytics preconnect -->
+<link rel="preconnect" href="https://plausible.io" />
+<link rel="dns-prefetch" href="https://plausible.io" />
+
+<!-- Core meta -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="canonical" href={canonical} />
+<link rel="sitemap" href="/sitemap-index.xml" />
+<link
+  rel="alternate"
+  type="application/rss+xml"
+  href={`/${locale}/rss.xml`}
+  title={`${SITE.NAME} RSS`}
+/>
+
+<title>{title}</title>
+
+<!-- SEO meta -->
+<meta name="title" content={title} />
+<meta name="description" content={description} />
+<meta name="generator" content={Astro.generator} />
+<meta name="robots" content="index, follow" />
+<meta name="author" content={SITE.AUTHOR} />
+<meta name="language" content={locale === 'cs' ? 'cs-CZ' : 'en-US'} />
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content={permalink} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:site_name" content={SITE.NAME} />
+<meta property="og:image" content={ogImage || SITE.DEFAULT_OG_IMAGE} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:locale" content={locale === 'cs' ? 'cs_CZ' : 'en_US'} />
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:url" content={permalink} />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage || SITE.DEFAULT_OG_IMAGE} />
+
+<!-- Favicons with dark mode support -->
+<link href="/favicon.png" rel="icon" media="(prefers-color-scheme: light)" />
+<link href="/favicon-dark.png" rel="icon" media="(prefers-color-scheme: dark)" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-title" content={SITE.NAME} />
+
+<!-- Structured Data -->
+<script
+  is:inline
+  type="application/ld+json"
+  nonce={nonce}
+  set:html={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: SITE.NAME,
+    description: SITE.DESCRIPTION,
+    url: siteDomain,
+    author: {
+      '@type': 'Organization',
+      name: SITE.AUTHOR,
+      url: SITE.URL,
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: SITE.NAME,
+      logo: {
+        '@type': 'ImageObject',
+        url: `${siteDomain}/logo-placeholder.png`,
+      },
+    },
+  })}
+/>
+
+<!-- Plausible Analytics (production only) -->
+{
+  import.meta.env.PROD && (
+    <script is:inline defer data-domain={currentDomain} src="https://plausible.io/js/script.js" />
+  )
+}
