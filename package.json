@@ -3,6 +3,15 @@
   "version": "1.0.0",
   "description": "Marketing website and blog for Ambilab - a web-based pixel art game engine for kids",
   "type": "module",
+  "syncRules": {
+    "source": "ai-rules",
+    "targets": {
+      "cursor": true,
+      "webstorm": true,
+      "zed": true,
+      "claude": true
+    }
+  },
   "scripts": {
     "dev": "astro dev --host",
     "build": "astro build",
