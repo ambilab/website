@@ -25,10 +25,10 @@
     }
   });
   
-  // Use Iconify's CDN API to fetch SVG
-  const iconifyUrl = iconMeta.isValid 
+  // Use Iconify's CDN API to fetch SVG - must be $derived to react to name changes
+  const iconifyUrl = $derived(iconMeta.isValid 
     ? `https://api.iconify.design/${iconMeta.iconSet}/${iconMeta.iconName}.svg`
-    : '';
+    : '');
   
   // Store SVG content - starts empty for SSR
   let svgContent = $state<string>('');
