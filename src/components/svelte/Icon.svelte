@@ -21,9 +21,11 @@
     return { iconSet, iconName, isValid };
   });
   
-  if (!iconMeta.isValid) {
-    console.error(`Invalid icon name format: "${name}". Expected format: "set:name"`);
-  }
+  $effect(() => {
+    if (!iconMeta.isValid) {
+      console.error(`Invalid icon name format: "${name}". Expected format: "set:name"`);
+    }
+  });
   
   // Use Iconify's CDN API to fetch SVG
   const iconifyUrl = iconMeta.isValid 
