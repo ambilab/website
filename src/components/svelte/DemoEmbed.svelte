@@ -21,6 +21,13 @@
   const SAFE_FALLBACK_URL = 'about:blank';
 
   /**
+   * Type guard to check if a hostname is in the allowlist.
+   */
+  function isAllowedHostname(hostname: string): hostname is typeof ALLOWED_HOSTNAMES[number] {
+    return ALLOWED_HOSTNAMES.includes(hostname as typeof ALLOWED_HOSTNAMES[number]);
+  }
+
+  /**
    * Validates that a URL is from an allowed hostname and uses HTTPS.
    * Returns the validated URL or null if validation fails.
    */
@@ -34,7 +41,7 @@
       }
       
       // Check if hostname is in allowlist
-      if (!ALLOWED_HOSTNAMES.includes(parsedUrl.hostname as typeof ALLOWED_HOSTNAMES[number])) {
+      if (!isAllowedHostname(parsedUrl.hostname)) {
         return null;
       }
       
