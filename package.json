@@ -15,6 +15,7 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier --write \"**/*.{ts,astro,svelte,json,md,mdx,css}\"",
     "typecheck": "tsc --noEmit",
+    "prepare": "husky",
     "validate:security": "tsx src/scripts/validate-security-headers.ts",
     "validate:all": "npm run validate:security"
   },
@@ -48,6 +49,7 @@
     "eslint-plugin-svelte": "^2.46.1",
     "histoire": "^0.17.17",
     "prettier": "^3.3.3",
+    "husky": "^9.1.7",
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-svelte": "^3.2.8",
     "prettier-plugin-tailwindcss": "^0.6.9",

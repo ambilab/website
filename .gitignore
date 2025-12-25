@@ -29,3 +29,6 @@ histoire-dist/
 npm-debug.log*
 pnpm-debug.log*
 
+# Husky runtime
+.husky/_/
+
