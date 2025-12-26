@@ -91,6 +91,8 @@
     "sync-rules": "node scripts/sync-rules.mjs",
     "prepare": "husky",
     "validate:security": "tsx src/scripts/validate-security-headers.ts",
-    "validate:all": "pnpm validate:security"
+    "validate:all": "pnpm validate:security",
+    "security:audit": "pnpm audit --audit-level=moderate",
+    "security:audit:fix": "pnpm audit --fix"
   }
 }
