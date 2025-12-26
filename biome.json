@@ -8,8 +8,8 @@
   "assist": { "actions": { "source": { "organizeImports": "off" } } },
   "files": {
     "includes": [
-      "**/src/**/*.ts",
-      "**/src/**/*.js",
+      "**/*.ts",
+      "**/*.js",
       "**/*.json",
       "**/*.jsonc",
       "**/*.css",
