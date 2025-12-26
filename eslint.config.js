@@ -79,6 +79,9 @@ export default [
         rules: {
             'simple-import-sort/imports': 'error',
             'simple-import-sort/exports': 'error',
+
+            // Disabled: Svelte compilation errors are already caught by `astro check` and build process
+            // Enabling this can cause duplicate errors and performance issues during development
             'svelte/valid-compile': 'off',
             'svelte/no-at-html-tags': 'warn',
         },
