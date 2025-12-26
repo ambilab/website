@@ -22,11 +22,7 @@ export default defineConfig({
     }),
 
     integrations: [
-        svelte({
-            compilerOptions: {
-                hydratable: true,
-            },
-        }),
+        svelte(),
 
         // Expressive Code MUST come before mdx()
         expressiveCode({
