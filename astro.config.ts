@@ -1,13 +1,13 @@
-import { defineConfig } from 'astro/config';
-import svelte from '@astrojs/svelte';
-import mdx from '@astrojs/mdx';
 import cloudflare from '@astrojs/cloudflare';
+import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
+import svelte from '@astrojs/svelte';
+import tailwindcss from '@tailwindcss/vite';
+import { defineConfig } from 'astro/config';
 import expressiveCode from 'astro-expressive-code';
 import icon from 'astro-icon';
 import remarkGfm from 'remark-gfm';
 import remarkSmartypants from 'remark-smartypants';
-import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
