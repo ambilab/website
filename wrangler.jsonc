@@ -1,0 +1,9 @@
+{
+  // Cloudflare Pages configuration
+  // Note: Actual deployment is handled by GitHub Actions using cloudflare/pages-action
+  // This file is primarily for documentation and local wrangler CLI usage
+
+  "name": "ambilab-website",
+  "compatibility_date": "2025-12-20",
+  "pages_build_output_dir": "./dist"
+}

@@ -1,11 +1,17 @@
+# System files
+.DS_Store
+Thumbs.db
+
 # Dependencies
 node_modules/
+.pnpm-store/
 
 # Build output
 dist/
 .astro/
+*.tsbuildinfo
 
-# Environment
+# Environment variables
 .env
 .env.*
 !.env.example
@@ -17,18 +23,49 @@ dist/
 .histoire/
 histoire-dist/
 
-# IDE
-.vscode/
-.idea/
+# Generated AI assistant rules (source of truth: ai-rules/*.mdc)
+.cursor/rules/
+.aiassistant/
+.rules
+CLAUDE.md
+.claude
 
-# OS
-.DS_Store
+# IDE and editor files
+.vscode/launch.json
+.vscode/*.code-workspace
+!.vscode/settings.json
+!.vscode/extensions.json
+.idea/
+*.iml
+.zed/
+.cursor/
+*.swp
+*.swo
+*~
 
 # Logs
 *.log
-npm-debug.log*
 pnpm-debug.log*
+
+# Testing
+coverage/
+test-results/
+.vitest/
+
+# Cache
+.eslintcache
+.cache/
+
+# Temporary folders
+tmp/
+temp/
+
+# Output of 'npm pack'
+*.tgz
 
 # Husky runtime
 .husky/_/
 
+# Minified files
+*.min.js
+*.min.css

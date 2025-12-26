@@ -1,56 +1,105 @@
-import eslintPluginAstro from 'eslint-plugin-astro';
-import eslintPluginSvelte from 'eslint-plugin-svelte';
 import tseslint from '@typescript-eslint/eslint-plugin';
 import tsparser from '@typescript-eslint/parser';
 import eslintConfigPrettier from 'eslint-config-prettier';
+import eslintPluginAstro from 'eslint-plugin-astro';
+import promise from 'eslint-plugin-promise';
+import security from 'eslint-plugin-security';
+import simpleImportSort from 'eslint-plugin-simple-import-sort';
+import eslintPluginSvelte from 'eslint-plugin-svelte';
 
 export default [
-  // TypeScript files
-  {
-    files: ['**/*.ts', '**/*.tsx'],
-    languageOptions: {
-      parser: tsparser,
-      parserOptions: {
-        ecmaVersion: 'latest',
-        sourceType: 'module',
-      },
-    },
-    plugins: {
-      '@typescript-eslint': tseslint,
-    },
-    rules: {
-      ...tseslint.configs.recommended.rules,
-      '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
-      '@typescript-eslint/no-explicit-any': 'warn',
-    },
-  },
+    // TypeScript files
+    {
+        files: ['**/*.ts', '**/*.tsx'],
+        languageOptions: {
+            parser: tsparser,
+            parserOptions: {
+                ecmaVersion: 'latest',
+                sourceType: 'module',
+            },
+        },
+        plugins: {
+            '@typescript-eslint': tseslint,
+            'simple-import-sort': simpleImportSort,
+            security: security,
+            promise: promise,
+        },
+        rules: {
+            ...tseslint.configs.recommended.rules,
+            '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+            '@typescript-eslint/no-explicit-any': 'warn',
+            '@typescript-eslint/consistent-type-imports': ['error', { prefer: 'type-imports' }],
 
-  // Astro files
-  ...eslintPluginAstro.configs.recommended,
+            // Import sorting
+            'simple-import-sort/imports': 'error',
+            'simple-import-sort/exports': 'error',
 
-  // Svelte files
-  ...eslintPluginSvelte.configs['flat/recommended'],
-  {
-    files: ['**/*.svelte'],
-    languageOptions: {
-      parserOptions: {
-        parser: tsparser,
-      },
+            // Security rules
+            'security/detect-object-injection': 'off',
+            'security/detect-non-literal-regexp': 'warn',
+
+            // Promise rules
+            'promise/always-return': 'warn',
+            'promise/no-return-wrap': 'error',
+            'promise/param-names': 'error',
+            'promise/catch-or-return': 'warn',
+            'promise/no-nesting': 'warn',
+        },
     },
-  },
 
-  // Prettier config (must be last)
-  eslintConfigPrettier,
+    // JavaScript files
+    {
+        files: ['**/*.js', '**/*.mjs', '**/*.cjs'],
+        plugins: {
+            'simple-import-sort': simpleImportSort,
+            security: security,
+            promise: promise,
+        },
+        rules: {
+            'simple-import-sort/imports': 'error',
+            'simple-import-sort/exports': 'error',
+        },
+    },
 
-  // Ignore patterns
-  {
-    ignores: [
-      'dist/',
-      '.astro/',
-      'node_modules/',
-      '.histoire/',
-      'histoire-dist/',
-    ],
-  },
+    // Astro files
+    ...eslintPluginAstro.configs.recommended,
+
+    // Svelte files
+    ...eslintPluginSvelte.configs['flat/recommended'],
+    {
+        files: ['**/*.svelte'],
+        languageOptions: {
+            parserOptions: {
+                parser: tsparser,
+            },
+        },
+        plugins: {
+            'simple-import-sort': simpleImportSort,
+        },
+        rules: {
+            'simple-import-sort/imports': 'error',
+            'simple-import-sort/exports': 'error',
+        },
+    },
+
+    // Prettier config (must be last)
+    eslintConfigPrettier,
+
+    // Ignore patterns
+    {
+        ignores: [
+            'dist/',
+            '.astro/',
+            'node_modules/',
+            '.histoire/',
+            'histoire-dist/',
+            '.wrangler/',
+            '*.min.js',
+            '*.min.css',
+            '.env',
+            '.env.*',
+            'CLAUDE.md',
+            '.rules',
+        ],
+    },
 ];
-

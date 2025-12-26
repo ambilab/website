@@ -1,8 +1,28 @@
+# Dependencies and build
 node_modules/
 dist/
 .astro/
 .histoire/
 histoire-dist/
+.wrangler/
+
+# Lock files
 pnpm-lock.yaml
 package-lock.json
 
+# Generated files
+CLAUDE.md
+.rules
+CHANGELOG.md
+
+# Minified files
+*.min.js
+*.min.css
+
+# JSON is handled by Biome
+*.json
+!.prettierrc
+
+# Temporarily ignored due to prettier-plugin-astro parser issue
+# (HTML comments inside JSX fragments cause parsing errors)
+src/components/astro/BaseHead.astro
