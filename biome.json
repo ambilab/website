@@ -64,7 +64,7 @@
       "quoteStyle": "single"
     },
     "linter": {
-      "enabled": true
+      "enabled": false
     }
   },
   "linter": {
