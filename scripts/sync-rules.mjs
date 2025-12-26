@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 /**
  * Sync AI assistant rules across different tools.
  *

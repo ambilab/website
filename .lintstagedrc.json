@@ -1,0 +1,9 @@
+{
+  "*.{ts,tsx}": ["biome check --write", "eslint --fix", "cspell --no-progress"],
+  "*.{js,cjs,mjs}": ["biome check --write", "eslint --fix"],
+  "*.{json,jsonc,css}": ["biome format --write"],
+  "*.astro": ["prettier --write", "eslint --fix"],
+  "*.svelte": ["eslint --fix"],
+  "*.{md,mdx}": ["prettier --write", "cspell --no-progress"],
+  "*.{yaml,yml}": ["prettier --write"]
+}

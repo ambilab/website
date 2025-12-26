@@ -1,10 +1,11 @@
 # Ambilab Marketing Website
 
-A bilingual (English/Czech) marketing website and blog for **Ambilab** — a web-based pixel art game engine and editor for kids to learn programming.
+A bilingual (English/Czech) marketing website and blog for **Ambilab** — a web-based pixel art game engine and editor
+for kids to learn programming.
 
 ## Overview
 
-This project establishes a complete foundational scaffolding for an SSR-first Astro marketing site with:
+This project establishes complete foundational scaffolding for an SSR-first Astro marketing site with:
 
 - Server-side rendering via Cloudflare adapter
 - Bilingual support (English and Czech) with domain-based detection
@@ -17,7 +18,7 @@ This project establishes a complete foundational scaffolding for an SSR-first As
 
 - **Framework**: Astro 5 with SSR (Cloudflare adapter with platformProxy)
 - **UI Components**: Svelte 5 (hydratable)
-- **Styling**: Tailwind CSS 4 with custom theme
+- **Styling**: Tailwind CSS 4 with a custom theme
 - **Language**: TypeScript (strict mode) everywhere
 - **Content**: MDX via Astro Content Collections
 - **Code Highlighting**: Expressive Code (Shiki-based)
@@ -27,60 +28,60 @@ This project establishes a complete foundational scaffolding for an SSR-first As
 - **Package Manager**: pnpm
 - **Deployment**: Cloudflare Pages with edge functions
 - **Component Development**: Histoire for Svelte component documentation
-- **Linting**: ESLint (TS/Astro/Svelte), Prettier (with Astro/Svelte/Tailwind plugins)
+- **Linting & Formatting**: Biome (TS/JS/JSON/CSS), Prettier (Astro/Svelte/Markdown), ESLint (TS/Astro/Svelte)
 - **Version Control**: Git LFS for images
 
 ## Features
 
 ### Core Features
 
-- ✅ **Bilingual Support**: English and Czech with domain/cookie-based locale detection
-- ✅ **GSAP Typewriter Transitions**: Smooth locale switching with character-by-character animation
-- ✅ **Responsive Images**: Automatic AVIF/WebP generation with PNG fallback
-- ✅ **Demo Embeds**: Sandboxed iframe components with strict URL allowlist
-- ✅ **Newsletter Integration**: Buttondown API proxy with server-side validation
-- ✅ **RSS Feeds**: Separate feeds for each locale with language tags
-- ✅ **Auto Heading Links**: GitHub-style anchor links with copy-to-clipboard
-- ✅ **Dark Mode**: System preference detection with manual toggle
-- ✅ **Cookie Banner**: Simple, dismissible privacy notice
-- ✅ **Go To Top**: Smooth scroll button after 300px
-- ✅ **Analytics**: Plausible (privacy-friendly)
+- **Bilingual Support**: English and Czech with the domain/cookie-based locale detection
+- **GSAP Typewriter Transitions**: Smooth locale switching with character-by-character animation
+- **Responsive Images**: An automatic AVIF/WebP generation with PNG fallback
+- **Demo Embeds**: Sandboxed iframe components with strict URL allowlist
+- **Newsletter Integration**: Buttondown API proxy with server-side validation
+- **RSS Feeds**: Separate feeds for each locale with language tags
+- **Auto Heading Links**: GitHub-style anchor links with copy-to-clipboard
+- **Dark Mode**: System preference detection with manual toggle
+- **Cookie Banner**: Simple, dismissible privacy notice
+- **Go To Top**: Smooth scroll button after 300px
+- **Analytics**: Plausible (privacy-friendly)
 
 ### SEO & Meta
 
-- ✅ **Structured Data**: JSON-LD schema markup
-- ✅ **Open Graph**: Full OG meta tags for social sharing
-- ✅ **Twitter Cards**: Optimized Twitter/X card meta
-- ✅ **Sitemap**: Auto-generated sitemap.xml
-- ✅ **Canonical URLs**: Proper canonical link handling
+- **Structured Data**: JSON-LD schema markup
+- **Open Graph**: Full OG meta tags for social sharing
+- **Twitter Cards**: Optimized Twitter/X card meta
+- **Sitemap**: Auto-generated sitemap.xml
+- **Canonical URLs**: Proper canonical link handling
 
 ### Security
 
-- ✅ **CSP Headers**: Content Security Policy with nonce support (env-aware)
-- ✅ **Permissions Policy**: Restricted browser feature access
-- ✅ **Security Headers**: Comprehensive static security headers
-- ✅ **Validation Script**: Header verification tooling
+- **CSP Headers**: Content Security Policy with nonce support (env-aware)
+- **Permissions Policy**: Restricted browser feature access
+- **Security Headers**: Comprehensive static security headers
+- **Validation Script**: Header verification tooling
 
 ### Accessibility
 
-- ✅ **Semantic HTML**: Proper document structure
-- ✅ **ARIA Labels**: Where needed for screen readers
-- ✅ **Keyboard Navigation**: Full keyboard support
-- ✅ **Focus Indicators**: Visible focus-visible outlines
-- ✅ **Color Contrast**: WCAG AA compliant
-- ✅ **Reduced Motion**: `prefers-reduced-motion` support
-- ✅ **Screen Reader Friendly**: Tested with assistive tech
-- ✅ **Alt Text**: On all images
+- **Semantic HTML**: Proper document structure
+- **ARIA Labels**: Where needed for screen readers
+- **Keyboard Navigation**: Full keyboard support
+- **Focus Indicators**: Visible focus-visible outlines
+- **Color Contrast**: WCAG AA compliant
+- **Reduced Motion**: `prefers-reduced-motion` support
+- **Screen Reader Friendly**: Tested with assistive tech
+- **Alt Text**: On all images
 
 ### Performance
 
-- ✅ **Font Preloading**: Critical font resources
-- ✅ **DNS Prefetch**: External resource hints
-- ✅ **Responsive Images**: AVIF/WebP with responsive breakpoints/sizes
-- ✅ **Code Splitting**: Automatic chunk optimization
-- ✅ **CSS Purging**: Unused styles removed
-- ✅ **Lazy Loading**: Deferred non-critical resources
-- ✅ **Edge Caching**: Cloudflare CDN distribution
+- **Font Preloading**: Critical font resources
+- **DNS Prefetch**: External resource hints
+- **Responsive Images**: AVIF/WebP with responsive breakpoints/sizes
+- **Code Splitting**: Automatic chunk optimization
+- **CSS Purging**: Unused styles removed
+- **Lazy Loading**: Deferred non-critical resources
+- **Edge Caching**: Cloudflare CDN distribution
 
 ## Component Library
 
@@ -120,8 +121,11 @@ All components are written in Svelte with TypeScript and include Histoire storie
 
 ```text
 ambilab-website/
-├── functions/
-│   └── _middleware.ts          # Cloudflare edge locale detection
+├── ai-rules/
+│   ├── ambilab-website.mdc     # Project-specific rules
+│   ├── astro-svelte.mdc        # Astro/Svelte conventions
+│   ├── file-structure.mdc      # Region organization
+│   └── typescript.mdc          # TypeScript conventions
 ├── public/
 │   ├── favicon.png             # Light mode favicon
 │   ├── favicon-dark.png        # Dark mode favicon
@@ -188,11 +192,12 @@ ambilab-website/
 ├── .env.example                # Environment variable template
 ├── .gitattributes              # Git LFS configuration
 ├── .gitignore
-├── .prettierrc
 ├── .prettierignore
 ├── astro.config.ts
+├── biome.json
 ├── eslint.config.js
 ├── histoire.config.ts
+├── prettier.config.js
 ├── svelte.config.js
 ├── tailwind.config.ts
 ├── tsconfig.json
@@ -233,15 +238,19 @@ pnpm story:build      # Build Histoire
 pnpm story:preview    # Preview Histoire build
 pnpm lint             # Lint code
 pnpm lint:fix         # Fix linting issues
-pnpm format           # Format code with Prettier
-pnpm typecheck        # Run TypeScript checks
+pnpm format           # Format code with Biome and Prettier
+pnpm format:check     # Check formatting
+pnpm typecheck        # Run TypeScript and Astro checks
+pnpm spellcheck       # Check spelling
+pnpm preflight        # Run all quality checks
+pnpm sync-rules       # Sync AI rules to editor configs
 ```
 
 ## Internationalization (i18n)
 
 ### Domain-Based Detection
 
-The site automatically detects locale based on the domain:
+The site automatically detects the locale based on the domain:
 
 - `ambilab.com` → English
 - `ambilab.cz` → Czech
@@ -260,7 +269,7 @@ The middleware (`src/middleware.ts`) handles:
 - Automatic locale resolution from cookies or hostname
 - Nonce generation for CSP
 - Security header application
-- Locale injection into `App.Locals`
+- Locale injection into `Astro.locals`
 
 ### Testing Locales Locally
 
@@ -296,7 +305,7 @@ Each MDX file links to its translation via frontmatter:
 ---
 title: 'Hello World'
 locale: 'en'
-translationSlug: 'ahoj-svete' # Links to Czech version
+translationSlug: 'ahoj-svete' # Links to the Czech version
 ---
 ```
 
@@ -312,7 +321,8 @@ The site is deployed automatically when you push to GitHub:
 
 ### Environment Variables
 
-**Important**: ALL environment variables must be set in **Cloudflare Pages dashboard** under Settings > Environment Variables.
+**Important**: ALL environment variables must be set in **Cloudflare Pages dashboard** under Settings > Environment
+Variables.
 
 Required variables:
 
@@ -321,7 +331,7 @@ Required variables:
 
 See `.env.example` for the template.
 
-**Do NOT** use GitHub Secrets for this project.
+**Don’t** use GitHub Secrets for this project.
 
 ### Build Settings (Cloudflare)
 
@@ -366,18 +376,13 @@ Same process as blog posts, but place files in `src/content/pages/`.
 Use the `DemoEmbed` component in MDX:
 
 ```mdx
-<DemoEmbed
-  src="https://blit-tech-demos.ambilab.com/pong"
-  title="Play Pong"
-  aspectRatio="16/9"
-  client:load
-/>
+<DemoEmbed src="https://blit-tech-demos.ambilab.com/pong" title="Play Pong" aspectRatio="16/9" client:load />
 ```
 
 The component includes:
 
 - Strict URL allowlist for security
-- Sandboxed iframe with permissions model
+- A sandboxed iframe with a permissions model
 - Dev localhost support for local testing
 - SSR-safe hydration handling
 
@@ -385,7 +390,7 @@ The component includes:
 
 ### Newsletter (`/api/newsletter`)
 
-POST endpoint that proxies to Buttondown:
+POST-endpoint that proxies to Buttondown:
 
 - Server-side email validation
 - Consistent JSON responses
@@ -499,7 +504,7 @@ pnpm tsx src/scripts/validate-security-headers.ts
 - Chrome/Edge (last 2 versions)
 - Firefox (last 2 versions)
 - Safari (last 2 versions)
-- Mobile browsers (iOS Safari, Chrome Android)
+- Mobile browsers (Safari on iOS, Chrome on Android)
 
 ## Architecture Highlights
 

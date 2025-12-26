@@ -268,6 +268,7 @@ All commits must follow the Conventional Commits format:
 - Header (first line) max 100 characters
 - Subject must be lowercase
 - Subject must not end with period
+- Commit message body must wrap at 72 characters per line
 
 **Types:**
 
