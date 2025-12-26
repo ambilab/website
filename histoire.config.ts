@@ -2,21 +2,21 @@ import { HstSvelte } from '@histoire/plugin-svelte';
 import { defineConfig } from 'histoire';
 
 export default defineConfig({
-  plugins: [HstSvelte()],
+    plugins: [HstSvelte()],
 
-  setupFile: './src/histoire.setup.ts',
+    setupFile: './src/histoire.setup.ts',
 
-  theme: {
-    title: 'Ambilab Components',
-    favicon: '/favicon.png',
-  },
+    theme: {
+        title: 'Ambilab Components',
+        favicon: '/favicon.png',
+    },
 
-  tree: {
-    groups: [
-      {
-        title: 'Components',
-        include: (file) => file.path.startsWith('src/components/svelte/'),
-      },
-    ],
-  },
+    tree: {
+        groups: [
+            {
+                title: 'Components',
+                include: (file) => file.path.startsWith('src/components/svelte/'),
+            },
+        ],
+    },
 });

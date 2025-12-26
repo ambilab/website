@@ -1,6 +1,5 @@
 export default {
-  compilerOptions: {
-    runes: true,
-  },
+    compilerOptions: {
+        runes: true,
+    },
 };
-
