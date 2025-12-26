@@ -26,6 +26,8 @@ export default [
         },
         rules: {
             ...tseslint.configs.recommended.rules,
+            ...security.configs.recommended.rules,
+            ...promise.configs.recommended.rules,
             '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
             '@typescript-eslint/no-explicit-any': 'warn',
             '@typescript-eslint/consistent-type-imports': ['error', { prefer: 'type-imports' }],
@@ -34,11 +36,11 @@ export default [
             'simple-import-sort/imports': 'error',
             'simple-import-sort/exports': 'error',
 
-            // Security rules
+            // Security rule overrides
             'security/detect-object-injection': 'off',
             'security/detect-non-literal-regexp': 'warn',
 
-            // Promise rules
+            // Promise rule overrides
             'promise/always-return': 'warn',
             'promise/no-return-wrap': 'error',
             'promise/param-names': 'error',
