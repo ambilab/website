@@ -75,7 +75,8 @@
         "noNonNullAssertion": "warn",
         "useConst": "error",
         "useBlockStatements": "off",
-        "noParameterAssign": "warn"
+        "noParameterAssign": "warn",
+        "useImportType": "error"
       },
       "suspicious": {
         "noExplicitAny": "warn",
