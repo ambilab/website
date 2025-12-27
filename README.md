@@ -313,13 +313,26 @@ translationSlug: 'ahoj-svete' # Links to the Czech version
 
 ### Cloudflare Pages
 
-The site is deployed automatically when you push to GitHub:
+The site is deployed automatically via GitHub Actions when you push to the `main` branch.
+
+#### Deployment Workflow
 
 1. Push changes to the `main` branch
-2. Cloudflare detects the push and builds
-3. Cloudflare deploys to its edge network
+2. GitHub Actions runs quality checks (formatting, linting, type checking, spell checking)
+3. GitHub Actions builds the site
+4. GitHub Actions deploys to Cloudflare Pages using Wrangler
 
-### Environment Variables
+#### Required GitHub Secrets
+
+Configure these secrets in your GitHub repository (Settings > Secrets and variables > Actions):
+
+- `CLOUDFLARE_API_TOKEN` — Cloudflare API token with Pages permissions
+  - Create at: https://dash.cloudflare.com/profile/api-tokens
+  - Required permissions: `Cloudflare Pages:Edit`
+- `CLOUDFLARE_ACCOUNT_ID` — Your Cloudflare account ID
+  - Find at: https://dash.cloudflare.com/ (right sidebar)
+
+#### Environment Variables
 
 **Important**: ALL environment variables must be set in **Cloudflare Pages dashboard** under Settings > Environment
 Variables.
@@ -331,9 +344,9 @@ Required variables:
 
 See `.env.example` for the template.
 
-**Don’t** use GitHub Secrets for this project.
+**Don't** use GitHub Secrets for environment variables.
 
-### Build Settings (Cloudflare)
+#### Build Settings (Cloudflare)
 
 - **Build command**: `pnpm build`
 - **Build output directory**: `dist`
