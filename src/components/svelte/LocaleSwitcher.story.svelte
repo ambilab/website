@@ -1,5 +1,6 @@
 <script lang="ts">
   import { Hst } from '@histoire/plugin-svelte';
+
   import LocaleSwitcher from './LocaleSwitcher.svelte';
 </script>
 

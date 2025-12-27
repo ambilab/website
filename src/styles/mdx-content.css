@@ -1,183 +1,183 @@
-@reference "../styles/global.css";
+@reference '../styles/global.css';
 
 /* MDX Content Styling */
 .mdx-content {
-  /* Links with external indicator */
-  & a:not(.anchor) {
-    @apply relative font-medium text-blue-600 underline underline-offset-4 transition-colors hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300;
+    /* Links with external indicator */
+    & a:not(.anchor) {
+        @apply relative font-medium text-blue-600 underline underline-offset-4 transition-colors hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300;
 
-    /* External links get arrow indicator */
-    &[href^='http']::after,
-    &[href^='https']::after {
-      @apply ml-1 inline-block text-xs content-['↗'];
-    }
-  }
-
-  /* Headings with anchor links */
-  & h1,
-  & h2,
-  & h3,
-  & h4 {
-    @apply relative scroll-mt-20 font-bold;
-
-    & .anchor {
-      @apply absolute -left-6 text-gray-400 no-underline opacity-0 transition-opacity dark:text-gray-600;
+        /* External links get arrow indicator */
+        &[href^='http']::after,
+        &[href^='https']::after {
+            @apply ml-1 inline-block text-xs content-['↗'];
+        }
     }
 
-    &:hover .anchor {
-      @apply opacity-100;
+    /* Headings with anchor links */
+    & h1,
+    & h2,
+    & h3,
+    & h4 {
+        @apply relative scroll-mt-20 font-bold;
+
+        & .anchor {
+            @apply absolute -left-6 text-gray-400 no-underline opacity-0 transition-opacity dark:text-gray-600;
+        }
+
+        &:hover .anchor {
+            @apply opacity-100;
+        }
     }
-  }
 
-  & h1 {
-    @apply mt-8 mb-4 text-4xl;
-  }
-
-  & h2 {
-    @apply mt-12 mb-4 border-t border-gray-200 pt-8 text-3xl dark:border-gray-800;
-  }
-
-  & h3 {
-    @apply mt-8 mb-3 text-2xl font-semibold;
-  }
-
-  & h4 {
-    @apply mt-6 mb-2 text-xl font-semibold;
-  }
-
-  /* Paragraphs and lists */
-  & p {
-    @apply mb-4 leading-relaxed;
-  }
-
-  & ul,
-  & ol {
-    @apply mb-4 pl-6;
-  }
-
-  & ul li {
-    @apply mb-2 list-disc;
-  }
-
-  & ol li {
-    @apply mb-2 list-decimal;
-  }
-
-  /* Nested lists */
-  & ul ul,
-  & ol ul {
-    @apply mt-2 mb-2;
-  }
-
-  & ul ol,
-  & ol ol {
-    @apply mt-2 mb-2;
-  }
-
-  /* Inline code (Expressive Code handles code blocks) */
-  & p code,
-  & li code,
-  & td code {
-    @apply rounded bg-gray-100 px-1.5 py-0.5 font-mono text-sm text-gray-900 dark:bg-gray-800 dark:text-gray-100;
-  }
-
-  /* Code blocks are handled by Expressive Code */
-  & pre {
-    @apply my-6 overflow-x-auto rounded-lg;
-  }
-
-  /* Images */
-  & img {
-    @apply my-4 h-auto max-w-full rounded-lg;
-  }
-
-  & figure {
-    @apply my-6;
-
-    & figcaption {
-      @apply mt-2 text-center text-sm text-gray-600 dark:text-gray-400;
+    & h1 {
+        @apply mt-8 mb-4 text-4xl;
     }
-  }
 
-  /* Blockquotes */
-  & blockquote {
-    @apply my-4 border-l-4 border-blue-500 pl-4 text-gray-700 italic dark:text-gray-300;
+    & h2 {
+        @apply mt-12 mb-4 border-t border-gray-200 pt-8 text-3xl dark:border-gray-800;
+    }
 
+    & h3 {
+        @apply mt-8 mb-3 text-2xl font-semibold;
+    }
+
+    & h4 {
+        @apply mt-6 mb-2 text-xl font-semibold;
+    }
+
+    /* Paragraphs and lists */
     & p {
-      @apply mb-2;
-    }
-  }
-
-  /* Tables */
-  & table {
-    @apply my-4 w-full border-collapse;
-
-    & th {
-      @apply border-b-2 border-gray-300 bg-gray-50 p-2 text-left font-semibold dark:border-gray-700 dark:bg-gray-900;
+        @apply mb-4 leading-relaxed;
     }
 
-    & td {
-      @apply border-b border-gray-200 p-2 dark:border-gray-800;
+    & ul,
+    & ol {
+        @apply mb-4 pl-6;
     }
 
-    & tr:last-child td {
-      @apply border-b-0;
-    }
-  }
-
-  /* Horizontal rule */
-  & hr {
-    @apply my-8 border-t border-gray-200 dark:border-gray-800;
-  }
-
-  /* Strong and emphasis */
-  & strong {
-    @apply font-bold text-gray-900 dark:text-gray-100;
-  }
-
-  & em {
-    @apply italic;
-  }
-
-  /* Abbreviations */
-  & abbr {
-    @apply cursor-help border-b border-dotted border-gray-400 dark:border-gray-600;
-  }
-
-  /* Mark/highlight */
-  & mark {
-    @apply rounded bg-yellow-200 px-1 dark:bg-yellow-800;
-  }
-
-  /* Keyboard input */
-  & kbd {
-    @apply rounded border border-gray-300 bg-gray-100 px-2 py-1 font-mono text-sm shadow-sm dark:border-gray-700 dark:bg-gray-800;
-  }
-
-  /* Details/summary */
-  & details {
-    @apply my-4 rounded-lg border border-gray-200 p-4 dark:border-gray-800;
-
-    & summary {
-      @apply cursor-pointer font-semibold select-none;
+    & ul li {
+        @apply mb-2 list-disc;
     }
 
-    &[open] summary {
-      @apply mb-2;
+    & ol li {
+        @apply mb-2 list-decimal;
     }
-  }
 
-  /* Subscript and superscript */
-  & sub,
-  & sup {
-    @apply text-xs;
-  }
+    /* Nested lists */
+    & ul ul,
+    & ol ul {
+        @apply mt-2 mb-2;
+    }
 
-  & sub {
-    @apply align-sub;
-  }
+    & ul ol,
+    & ol ol {
+        @apply mt-2 mb-2;
+    }
 
-  & sup {
-    @apply align-super;
-  }
+    /* Inline code (Expressive Code handles code blocks) */
+    & p code,
+    & li code,
+    & td code {
+        @apply rounded bg-gray-100 px-1.5 py-0.5 font-mono text-sm text-gray-900 dark:bg-gray-800 dark:text-gray-100;
+    }
+
+    /* Code blocks are handled by Expressive Code */
+    & pre {
+        @apply my-6 overflow-x-auto rounded-lg;
+    }
+
+    /* Images */
+    & img {
+        @apply my-4 h-auto max-w-full rounded-lg;
+    }
+
+    & figure {
+        @apply my-6;
+
+        & figcaption {
+            @apply mt-2 text-center text-sm text-gray-600 dark:text-gray-400;
+        }
+    }
+
+    /* Blockquotes */
+    & blockquote {
+        @apply my-4 border-l-4 border-blue-500 pl-4 text-gray-700 italic dark:text-gray-300;
+
+        & p {
+            @apply mb-2;
+        }
+    }
+
+    /* Tables */
+    & table {
+        @apply my-4 w-full border-collapse;
+
+        & th {
+            @apply border-b-2 border-gray-300 bg-gray-50 p-2 text-left font-semibold dark:border-gray-700 dark:bg-gray-900;
+        }
+
+        & td {
+            @apply border-b border-gray-200 p-2 dark:border-gray-800;
+        }
+
+        & tr:last-child td {
+            @apply border-b-0;
+        }
+    }
+
+    /* Horizontal rule */
+    & hr {
+        @apply my-8 border-t border-gray-200 dark:border-gray-800;
+    }
+
+    /* Strong and emphasis */
+    & strong {
+        @apply font-bold text-gray-900 dark:text-gray-100;
+    }
+
+    & em {
+        @apply italic;
+    }
+
+    /* Abbreviations */
+    & abbr {
+        @apply cursor-help border-b border-dotted border-gray-400 dark:border-gray-600;
+    }
+
+    /* Mark/highlight */
+    & mark {
+        @apply rounded bg-yellow-200 px-1 dark:bg-yellow-800;
+    }
+
+    /* Keyboard input */
+    & kbd {
+        @apply rounded border border-gray-300 bg-gray-100 px-2 py-1 font-mono text-sm shadow-sm dark:border-gray-700 dark:bg-gray-800;
+    }
+
+    /* Details/summary */
+    & details {
+        @apply my-4 rounded-lg border border-gray-200 p-4 dark:border-gray-800;
+
+        & summary {
+            @apply cursor-pointer font-semibold select-none;
+        }
+
+        &[open] summary {
+            @apply mb-2;
+        }
+    }
+
+    /* Subscript and superscript */
+    & sub,
+    & sup {
+        @apply text-xs;
+    }
+
+    & sub {
+        @apply align-sub;
+    }
+
+    & sup {
+        @apply align-super;
+    }
 }

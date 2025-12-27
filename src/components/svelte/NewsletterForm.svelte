@@ -1,6 +1,6 @@
 <script lang="ts">
-  import type { Locale } from '@type/locale';
   import { getTranslation } from '@i18n/translations';
+  import type { Locale } from '@type/locale';
 
   interface Props {
     locale?: Locale;

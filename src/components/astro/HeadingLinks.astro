@@ -3,126 +3,126 @@
 ---
 
 <script>
-  import { createLogger } from '@utils/logger';
-  import { safeExecute } from '@utils/safe-execute';
-  import { smoothScrollTo } from '@utils/scroll';
+    import { createLogger } from '@utils/logger';
+    import { safeExecute } from '@utils/safe-execute';
+    import { smoothScrollTo } from '@utils/scroll';
 
-  const logger = createLogger({ prefix: 'HeadingLinks' });
+    const logger = createLogger({ prefix: 'HeadingLinks' });
 
-  class HeadingLinksManager {
-    private usedIds: Set<string> = new Set();
+    class HeadingLinksManager {
+        private usedIds: Set<string> = new Set();
 
-    constructor() {
-      this.refresh = this.refresh.bind(this);
-    }
-
-    private generateId(text: string | null): string {
-      if (!text) return '';
-
-      const baseId = text
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, '-')
-        .replace(/^-|-$/g, '');
-
-      if (!baseId) return '';
-
-      // If the base ID is available, use it
-      if (!this.usedIds.has(baseId)) {
-        this.usedIds.add(baseId);
-        return baseId;
-      }
-
-      // Otherwise, find the next available ID with a numeric suffix
-      let counter = 2;
-      let candidateId = `${baseId}-${counter}`;
-      while (this.usedIds.has(candidateId)) {
-        counter++;
-        candidateId = `${baseId}-${counter}`;
-      }
-
-      this.usedIds.add(candidateId);
-      return candidateId;
-    }
-
-    private createAnchor(id: string): HTMLAnchorElement {
-      const anchor = document.createElement('a');
-      anchor.className = 'anchor';
-      anchor.href = `#${id}`;
-      anchor.setAttribute('aria-hidden', 'true');
-      anchor.textContent = '#';
-
-      anchor.addEventListener('click', (e) => {
-        e.preventDefault();
-        smoothScrollTo({ targetId: id });
-        history.pushState(null, '', `#${id}`);
-        navigator.clipboard.writeText(window.location.href).catch(() => {});
-      });
-
-      return anchor;
-    }
-
-    public refresh(): void {
-      this.usedIds.clear();
-
-      const headings = document.querySelectorAll(
-        '.mdx-content h1, .mdx-content h2, .mdx-content h3, .mdx-content h4'
-      );
-
-      let processedCount = 0;
-      headings.forEach((heading) => {
-        if (heading.querySelector('.anchor')) return; // Already processed
-
-        const id = this.generateId(heading.textContent);
-        if (id) {
-          heading.id = id;
-          heading.insertAdjacentElement('afterbegin', this.createAnchor(id));
-          processedCount++;
+        constructor() {
+            this.refresh = this.refresh.bind(this);
         }
-      });
 
-      logger.info(`Processed ${processedCount} new headings (${headings.length} total)`);
+        private generateId(text: string | null): string {
+            if (!text) return '';
+
+            const baseId = text
+                .toLowerCase()
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/^-|-$/g, '');
+
+            if (!baseId) return '';
+
+            // If the base ID is available, use it
+            if (!this.usedIds.has(baseId)) {
+                this.usedIds.add(baseId);
+                return baseId;
+            }
+
+            // Otherwise, find the next available ID with a numeric suffix
+            let counter = 2;
+            let candidateId = `${baseId}-${counter}`;
+            while (this.usedIds.has(candidateId)) {
+                counter++;
+                candidateId = `${baseId}-${counter}`;
+            }
+
+            this.usedIds.add(candidateId);
+            return candidateId;
+        }
+
+        private createAnchor(id: string): HTMLAnchorElement {
+            const anchor = document.createElement('a');
+            anchor.className = 'anchor';
+            anchor.href = `#${id}`;
+            anchor.setAttribute('aria-hidden', 'true');
+            anchor.textContent = '#';
+
+            anchor.addEventListener('click', (e) => {
+                e.preventDefault();
+                smoothScrollTo({ targetId: id });
+                history.pushState(null, '', `#${id}`);
+                navigator.clipboard.writeText(window.location.href).catch(() => {});
+            });
+
+            return anchor;
+        }
+
+        public refresh(): void {
+            this.usedIds.clear();
+
+            const headings = document.querySelectorAll(
+                '.mdx-content h1, .mdx-content h2, .mdx-content h3, .mdx-content h4',
+            );
+
+            let processedCount = 0;
+            headings.forEach((heading) => {
+                if (heading.querySelector('.anchor')) return; // Already processed
+
+                const id = this.generateId(heading.textContent);
+                if (id) {
+                    heading.id = id;
+                    heading.insertAdjacentElement('afterbegin', this.createAnchor(id));
+                    processedCount++;
+                }
+            });
+
+            logger.info(`Processed ${processedCount} new headings (${headings.length} total)`);
+        }
     }
-  }
 
-  safeExecute(
-    () => {
-      const manager = new HeadingLinksManager();
+    safeExecute(
+        () => {
+            const manager = new HeadingLinksManager();
 
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', manager.refresh);
-      } else {
-        manager.refresh();
-      }
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', manager.refresh);
+            } else {
+                manager.refresh();
+            }
 
-      document.addEventListener('astro:page-load', manager.refresh);
-    },
-    undefined,
-    'Failed to initialize HeadingLinks'
-  );
+            document.addEventListener('astro:page-load', manager.refresh);
+        },
+        undefined,
+        'Failed to initialize HeadingLinks',
+    );
 </script>
 
 <style>
-  :global(.mdx-content h1, .mdx-content h2, .mdx-content h3, .mdx-content h4) {
-    position: relative;
-  }
+    :global(.mdx-content h1, .mdx-content h2, .mdx-content h3, .mdx-content h4) {
+        position: relative;
+    }
 
-  :global(.mdx-content .anchor) {
-    position: absolute;
-    left: -1.5rem;
-    opacity: 0;
-    transition: opacity 0.2s;
-    text-decoration: none;
-    color: #9ca3af;
-  }
+    :global(.mdx-content .anchor) {
+        position: absolute;
+        left: -1.5rem;
+        opacity: 0;
+        transition: opacity 0.2s;
+        text-decoration: none;
+        color: #9ca3af;
+    }
 
-  :global(.mdx-content h1:hover .anchor),
-  :global(.mdx-content h2:hover .anchor),
-  :global(.mdx-content h3:hover .anchor),
-  :global(.mdx-content h4:hover .anchor) {
-    opacity: 1;
-  }
+    :global(.mdx-content h1:hover .anchor),
+    :global(.mdx-content h2:hover .anchor),
+    :global(.mdx-content h3:hover .anchor),
+    :global(.mdx-content h4:hover .anchor) {
+        opacity: 1;
+    }
 
-  :global(.dark .mdx-content .anchor) {
-    color: #6b7280;
-  }
+    :global(.dark .mdx-content .anchor) {
+        color: #6b7280;
+    }
 </style>

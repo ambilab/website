@@ -1,11 +1,11 @@
 ---
 import LocaleSwitcher from '@components/svelte/LocaleSwitcher.svelte';
-import type { Locale } from '@type/locale';
 import { getTranslation } from '@i18n/translations';
+import type { Locale } from '@type/locale';
 
 export interface Props {
-  locale: Locale;
-  currentPath: string;
+    locale: Locale;
+    currentPath: string;
 }
 
 const { locale, currentPath } = Astro.props;
@@ -13,50 +13,48 @@ const t = getTranslation(locale);
 ---
 
 <header class="border-b border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-900">
-  <nav class="container mx-auto flex items-center justify-between px-4 py-4">
-    <a href="/" class="flex items-center gap-2 text-xl font-bold">
-      <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect x="4" y="8" width="16" height="10" rx="2" stroke="currentColor" stroke-width="2"
-        ></rect>
-        <circle cx="8" cy="13" r="1.5" fill="currentColor"></circle>
-        <circle cx="16" cy="13" r="1.5" fill="currentColor"></circle>
-        <path d="M12 10V16" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
-        <path d="M9 13H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
-      </svg>
-      <span>Ambilab</span>
-    </a>
+    <nav class="container mx-auto flex items-center justify-between px-4 py-4">
+        <a href="/" class="flex items-center gap-2 text-xl font-bold">
+            <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="4" y="8" width="16" height="10" rx="2" stroke="currentColor" stroke-width="2"></rect>
+                <circle cx="8" cy="13" r="1.5" fill="currentColor"></circle>
+                <circle cx="16" cy="13" r="1.5" fill="currentColor"></circle>
+                <path d="M12 10V16" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+                <path d="M9 13H15" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+            </svg>
+            <span>Ambilab</span>
+        </a>
 
-    <div class="flex items-center gap-6">
-      <a
-        href="/"
-        class:list={[
-          'transition-colors hover:text-blue-600',
-          currentPath === '/' && 'font-semibold text-blue-600',
-        ]}
-      >
-        {t.nav.home}
-      </a>
-      <a
-        href={locale === 'en' ? '/about' : '/o-projektu'}
-        class:list={[
-          'transition-colors hover:text-blue-600',
-          (currentPath === '/about' || currentPath === '/o-projektu') &&
-            'font-semibold text-blue-600',
-        ]}
-      >
-        {t.nav.about}
-      </a>
-      <a
-        href="/blog"
-        class:list={[
-          'transition-colors hover:text-blue-600',
-          currentPath.startsWith('/blog') && 'font-semibold text-blue-600',
-        ]}
-      >
-        {t.nav.blog}
-      </a>
+        <div class="flex items-center gap-6">
+            <a
+                href="/"
+                class:list={[
+                    'transition-colors hover:text-blue-600',
+                    currentPath === '/' && 'font-semibold text-blue-600',
+                ]}
+            >
+                {t.nav.home}
+            </a>
+            <a
+                href={locale === 'en' ? '/about' : '/o-projektu'}
+                class:list={[
+                    'transition-colors hover:text-blue-600',
+                    (currentPath === '/about' || currentPath === '/o-projektu') && 'font-semibold text-blue-600',
+                ]}
+            >
+                {t.nav.about}
+            </a>
+            <a
+                href="/blog"
+                class:list={[
+                    'transition-colors hover:text-blue-600',
+                    currentPath.startsWith('/blog') && 'font-semibold text-blue-600',
+                ]}
+            >
+                {t.nav.blog}
+            </a>
 
-      <LocaleSwitcher client:load currentLocale={locale} currentPath={currentPath} />
-    </div>
-  </nav>
+            <LocaleSwitcher client:load currentLocale={locale} currentPath={currentPath} />
+        </div>
+    </nav>
 </header>

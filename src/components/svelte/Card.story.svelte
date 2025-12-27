@@ -1,5 +1,6 @@
 <script lang="ts">
   import { Hst } from '@histoire/plugin-svelte';
+
   import Card from './Card.svelte';
 </script>
 

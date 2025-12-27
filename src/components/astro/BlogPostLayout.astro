@@ -1,103 +1,96 @@
 ---
-import PageLayout from './PageLayout.astro';
-import HeadingLinks from './HeadingLinks.astro';
-import { Icon } from 'astro-icon/components';
-import type { Locale } from '@type/locale';
-import type { ISEOMetadata } from '@type/seo';
-import { getTranslation } from '@i18n/translations';
-import { calculateReadingTime } from '@i18n/utils';
-import { localeToIntl } from '@i18n/config';
 import '@/styles/mdx-content.css';
 
+import { localeToIntl } from '@i18n/config';
+import { getTranslation } from '@i18n/translations';
+import { calculateReadingTime } from '@i18n/utils';
+import type { Locale } from '@type/locale';
+import type { ISEOMetadata } from '@type/seo';
+import { Icon } from 'astro-icon/components';
+
+import HeadingLinks from './HeadingLinks.astro';
+import PageLayout from './PageLayout.astro';
+
 export interface Props extends ISEOMetadata {
-  locale: Locale;
-  title: string;
-  pubDate: Date;
-  updatedDate?: Date;
-  author: string;
-  tags?: string[];
-  content: string;
+    locale: Locale;
+    title: string;
+    pubDate: Date;
+    updatedDate?: Date;
+    author: string;
+    tags?: string[];
+    content: string;
 }
 
-const {
-  locale,
-  title,
-  pubDate,
-  updatedDate,
-  author,
-  tags = [],
-  content,
-  ...seoProps
-} = Astro.props;
+const { locale, title, pubDate, updatedDate, author, tags = [], content, ...seoProps } = Astro.props;
 const t = getTranslation(locale);
 const readingTime = calculateReadingTime(content);
 
 const formatDate = (date: Date) => {
-  return new Intl.DateTimeFormat(localeToIntl[locale], {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  }).format(date);
+    return new Intl.DateTimeFormat(localeToIntl[locale], {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+    }).format(date);
 };
 ---
 
 <PageLayout locale={locale} title={title} {...seoProps}>
-  <article class="container mx-auto px-4 py-12">
-    <header class="mb-12">
-      <h1 class="mb-4 text-4xl font-bold md:text-5xl">{title}</h1>
+    <article class="container mx-auto px-4 py-12">
+        <header class="mb-12">
+            <h1 class="mb-4 text-4xl font-bold md:text-5xl">{title}</h1>
 
-      <div class="flex flex-wrap items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
-        <div class="flex items-center gap-2">
-          <Icon name="solar:user-bold" class="h-4 w-4" />
-          <span>{author}</span>
-        </div>
+            <div class="flex flex-wrap items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
+                <div class="flex items-center gap-2">
+                    <Icon name="solar:user-bold" class="h-4 w-4" />
+                    <span>{author}</span>
+                </div>
 
-        <div class="flex items-center gap-2">
-          <Icon name="solar:calendar-bold" class="h-4 w-4" />
-          <time datetime={pubDate.toISOString()}>
-            {t.blog.publishedOn}
-            {formatDate(pubDate)}
-          </time>
-        </div>
+                <div class="flex items-center gap-2">
+                    <Icon name="solar:calendar-bold" class="h-4 w-4" />
+                    <time datetime={pubDate.toISOString()}>
+                        {t.blog.publishedOn}
+                        {formatDate(pubDate)}
+                    </time>
+                </div>
 
-        {
-          updatedDate && (
-            <div class="flex items-center gap-2">
-              <Icon name="solar:refresh-bold" class="h-4 w-4" />
-              <time datetime={updatedDate.toISOString()}>
-                {t.blog.updatedOn} {formatDate(updatedDate)}
-              </time>
+                {
+                    updatedDate && (
+                        <div class="flex items-center gap-2">
+                            <Icon name="solar:refresh-bold" class="h-4 w-4" />
+                            <time datetime={updatedDate.toISOString()}>
+                                {t.blog.updatedOn} {formatDate(updatedDate)}
+                            </time>
+                        </div>
+                    )
+                }
+
+                <div class="flex items-center gap-2">
+                    <Icon name="solar:clock-circle-bold" class="h-4 w-4" />
+                    <span>
+                        {readingTime}
+                        {t.blog.minutesShort}
+                    </span>
+                </div>
             </div>
-          )
-        }
 
-        <div class="flex items-center gap-2">
-          <Icon name="solar:clock-circle-bold" class="h-4 w-4" />
-          <span>
-            {readingTime}
-            {t.blog.minutesShort}
-          </span>
+            {
+                tags.length > 0 && (
+                    <div class="mt-4 flex flex-wrap items-center gap-2">
+                        <Icon name="solar:tag-bold" class="h-4 w-4 text-gray-600 dark:text-gray-400" />
+                        {tags.map((tag) => (
+                            <span class="rounded-full bg-blue-100 px-3 py-1 text-xs font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                                {tag}
+                            </span>
+                        ))}
+                    </div>
+                )
+            }
+        </header>
+
+        <div class="prose prose-lg dark:prose-invert mdx-content mx-auto max-w-3xl">
+            <slot />
         </div>
-      </div>
+    </article>
 
-      {
-        tags.length > 0 && (
-          <div class="mt-4 flex flex-wrap items-center gap-2">
-            <Icon name="solar:tag-bold" class="h-4 w-4 text-gray-600 dark:text-gray-400" />
-            {tags.map((tag) => (
-              <span class="rounded-full bg-blue-100 px-3 py-1 text-xs font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-200">
-                {tag}
-              </span>
-            ))}
-          </div>
-        )
-      }
-    </header>
-
-    <div class="prose prose-lg dark:prose-invert mdx-content mx-auto max-w-3xl">
-      <slot />
-    </div>
-  </article>
-
-  <HeadingLinks />
+    <HeadingLinks />
 </PageLayout>

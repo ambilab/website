@@ -1,9 +1,9 @@
 <script lang="ts">
+  import { COMPONENT_CONFIG } from '@config/components';
+  import { debounce } from '@utils/debounce';
+  import { scrollToTop } from '@utils/scroll';
   import { onMount } from 'svelte';
   import { fade } from 'svelte/transition';
-  import { scrollToTop } from '@utils/scroll';
-  import { debounce } from '@utils/debounce';
-  import { COMPONENT_CONFIG } from '@config/components';
 
   interface Props {
     forceVisible?: boolean;

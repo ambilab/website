@@ -1,9 +1,8 @@
 ---
 import PageLayout from '@components/astro/PageLayout.astro';
-import type { Locale } from '@type/locale';
+import { SITE } from '@config/site';
 import { getTranslation } from '@i18n/translations';
 import { getLocalizedPath } from '@i18n/utils';
-import { SITE } from '@config/site';
 
 // Get the detected locale from middleware (via context.locals)
 // Middleware guarantees this is always defined
@@ -15,23 +14,21 @@ const homePath = getLocalizedPath('', detectedLocale);
 ---
 
 <PageLayout
-  title={`404 - ${t.notFound.title} | ${SITE.NAME}`}
-  description={t.notFound.description}
-  permalink={`${siteUrl}/404`}
-  locale={detectedLocale}
+    title={`404 - ${t.notFound.title} | ${SITE.NAME}`}
+    description={t.notFound.description}
+    permalink={`${siteUrl}/404`}
+    locale={detectedLocale}
 >
-  <main
-    class="container mx-auto flex min-h-[60vh] flex-col items-center justify-center px-4 py-12 text-center"
-  >
-    <h1 class="mb-4 text-6xl font-bold">{t.notFound.title}</h1>
-    <p class="mb-8 text-xl text-gray-600 dark:text-gray-400">
-      {t.notFound.description}
-    </p>
-    <a
-      href={homePath}
-      class="rounded-lg bg-blue-600 px-6 py-3 font-medium text-white transition-colors hover:bg-blue-700"
-    >
-      {t.notFound.goHome}
-    </a>
-  </main>
+    <main class="container mx-auto flex min-h-[60vh] flex-col items-center justify-center px-4 py-12 text-center">
+        <h1 class="mb-4 text-6xl font-bold">{t.notFound.title}</h1>
+        <p class="mb-8 text-xl text-gray-600 dark:text-gray-400">
+            {t.notFound.description}
+        </p>
+        <a
+            href={homePath}
+            class="rounded-lg bg-blue-600 px-6 py-3 font-medium text-white transition-colors hover:bg-blue-700"
+        >
+            {t.notFound.goHome}
+        </a>
+    </main>
 </PageLayout>

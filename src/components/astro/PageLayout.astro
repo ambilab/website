@@ -1,15 +1,17 @@
 ---
-import Head from './Head.astro';
-import Header from './Header.astro';
-import Footer from './Footer.astro';
-import GoToTop from '@components/svelte/GoToTop.svelte';
-import CookieBanner from '@components/svelte/CookieBanner.svelte';
-import type { Locale } from '@type/locale';
-import type { ISEOMetadata } from '@type/seo';
 import '@/styles/global.css';
 
+import CookieBanner from '@components/svelte/CookieBanner.svelte';
+import GoToTop from '@components/svelte/GoToTop.svelte';
+import type { Locale } from '@type/locale';
+import type { ISEOMetadata } from '@type/seo';
+
+import Footer from './Footer.astro';
+import Head from './Head.astro';
+import Header from './Header.astro';
+
 export interface Props extends ISEOMetadata {
-  locale: Locale;
+    locale: Locale;
 }
 
 const { locale, ...seoProps } = Astro.props;
@@ -18,24 +20,25 @@ const currentPath = Astro.url.pathname;
 
 <!doctype html>
 <html lang={locale} class="scroll-smooth">
-  <Head {...seoProps} locale={locale} />
+    <Head {...seoProps} locale={locale} />
 
-  <body class="bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100">
-    <Header locale={locale} currentPath={currentPath} />
+    <body class="bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100">
+        <Header locale={locale} currentPath={currentPath} />
 
-    <main class="min-h-screen">
-      <slot />
-    </main>
+        <main class="min-h-screen">
+            <slot />
+        </main>
 
-    <Footer locale={locale} />
+        <Footer locale={locale} />
 
-    <GoToTop client:idle />
-    <CookieBanner client:idle locale={locale} />
+        <GoToTop client:idle />
+        <CookieBanner client:idle locale={locale} />
 
-    <script>
-      import { initDarkMode } from '@utils/dom';
-      import '@lib/typewriter-init';
-      initDarkMode();
-    </script>
-  </body>
+        <script>
+            import '@lib/typewriter-init';
+
+            import { initDarkMode } from '@utils/dom';
+            initDarkMode();
+        </script>
+    </body>
 </html>

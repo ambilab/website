@@ -1,7 +1,7 @@
 <script lang="ts">
-  import type { Locale } from '@type/locale';
   import { localeConfigs } from '@i18n/config';
   import { setLocaleCookie } from '@i18n/utils';
+  import type { Locale } from '@type/locale';
   import { createLogger } from '@utils/logger';
 
   const logger = createLogger({ prefix: 'LocaleSwitcher' });

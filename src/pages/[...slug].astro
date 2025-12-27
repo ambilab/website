@@ -1,8 +1,9 @@
 ---
-import { getCollection } from 'astro:content';
-import PageLayout from '@components/astro/PageLayout.astro';
 import BlogPostLayout from '@components/astro/BlogPostLayout.astro';
+import PageLayout from '@components/astro/PageLayout.astro';
 import type { Locale } from '@type/locale';
+import type { CollectionEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
 
 // Get the detected locale from middleware (via context.locals)
 // Middleware guarantees this is always defined
@@ -23,27 +24,30 @@ let entry;
 let type: 'page' | 'blog';
 
 if (isBlogPost) {
-  const blogPosts = await getCollection(
-    'blog',
-    ({ data }) => !data.draft && data.locale === detectedLocale
-  );
-  entry = blogPosts.find((e) => {
-    const entrySlug = e.id.replace(/\.(mdx|md)$/, '').replace(/^[^/]+\//, '');
-    return entrySlug === actualSlug;
-  });
-  type = 'blog';
+    const blogPosts = await getCollection(
+        'blog',
+        (entry: CollectionEntry<'blog'>) => !entry.data.draft && entry.data.locale === detectedLocale,
+    );
+    entry = blogPosts.find((e: CollectionEntry<'blog'>) => {
+        const entrySlug = e.id.replace(/\.(mdx|md)$/, '').replace(/^[^/]+\//, '');
+        return entrySlug === actualSlug;
+    });
+    type = 'blog';
 } else {
-  const pages = await getCollection('pages', ({ data }) => data.locale === detectedLocale);
-  entry = pages.find((e) => {
-    const entrySlug = e.id.replace(/\.(mdx|md)$/, '').replace(/^[^/]+\//, '');
-    return entrySlug === actualSlug;
-  });
-  type = 'page';
+    const pages = await getCollection(
+        'pages',
+        (entry: CollectionEntry<'pages'>) => entry.data.locale === detectedLocale,
+    );
+    entry = pages.find((e: CollectionEntry<'pages'>) => {
+        const entrySlug = e.id.replace(/\.(mdx|md)$/, '').replace(/^[^/]+\//, '');
+        return entrySlug === actualSlug;
+    });
+    type = 'page';
 }
 
 // 404 if not found
 if (!entry) {
-  return Astro.redirect('/404');
+    return Astro.redirect('/404');
 }
 
 const { Content } = await entry.render();
@@ -51,38 +55,37 @@ const { Content } = await entry.render();
 const locale: Locale = entry.data.locale;
 const siteUrl = Astro.url.origin;
 const entrySlug = entry.id.replace(/\.(mdx|md)$/, '').replace(/^[^/]+\//, '');
-const permalink = type === 'blog'
-  ? `${siteUrl}/blog/${entrySlug}`
-  : `${siteUrl}/${entrySlug === 'index' ? '' : entrySlug}`;
+const permalink =
+    type === 'blog' ? `${siteUrl}/blog/${entrySlug}` : `${siteUrl}/${entrySlug === 'index' ? '' : entrySlug}`;
 ---
 
 {
-  type === 'page' ? (
-    <PageLayout
-      title={`${entry.data.title} | Ambilab`}
-      description={entry.data.description}
-      permalink={permalink}
-      locale={locale}
-    >
-      <article class="container mx-auto px-4 py-12">
-        <div class="prose prose-lg dark:prose-invert mdx-content mx-auto max-w-4xl">
-          <Content />
-        </div>
-      </article>
-    </PageLayout>
-  ) : type === 'blog' ? (
-    <BlogPostLayout
-      title={`${entry.data.title} | Ambilab`}
-      description={entry.data.description}
-      permalink={permalink}
-      locale={locale}
-      pubDate={entry.data.pubDate}
-      updatedDate={entry.data.updatedDate}
-      author={entry.data.author}
-      tags={entry.data.tags}
-      content={entry.body}
-    >
-      <Content />
-    </BlogPostLayout>
-  ) : null
+    type === 'page' ? (
+        <PageLayout
+            title={`${entry.data.title} | Ambilab`}
+            description={entry.data.description}
+            permalink={permalink}
+            locale={locale}
+        >
+            <article class="container mx-auto px-4 py-12">
+                <div class="prose prose-lg dark:prose-invert mdx-content mx-auto max-w-4xl">
+                    <Content />
+                </div>
+            </article>
+        </PageLayout>
+    ) : type === 'blog' ? (
+        <BlogPostLayout
+            title={`${entry.data.title} | Ambilab`}
+            description={entry.data.description}
+            permalink={permalink}
+            locale={locale}
+            pubDate={entry.data.pubDate}
+            updatedDate={entry.data.updatedDate}
+            author={entry.data.author}
+            tags={entry.data.tags}
+            content={entry.body}
+        >
+            <Content />
+        </BlogPostLayout>
+    ) : null
 }

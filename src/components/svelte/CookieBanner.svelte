@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
-  import type { Locale } from '@type/locale';
-  import { getTranslation } from '@i18n/translations';
   import { COMPONENT_CONFIG } from '@config/components';
+  import { getTranslation } from '@i18n/translations';
+  import type { Locale } from '@type/locale';
+  import { onMount } from 'svelte';
 
   interface Props {
     locale?: Locale;

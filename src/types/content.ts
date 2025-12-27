@@ -1,24 +1,24 @@
 import type { Locale } from './locale';
 
 export interface BlogPost {
-  title: string;
-  description: string;
-  slug: string;
-  locale: Locale;
-  translationSlug?: string;
-  pubDate: Date;
-  updatedDate?: Date;
-  author: string;
-  tags: string[];
-  disableTypewriter: boolean;
-  draft: boolean;
+    title: string;
+    description: string;
+    slug: string;
+    locale: Locale;
+    translationSlug?: string;
+    pubDate: Date;
+    updatedDate?: Date;
+    author: string;
+    tags: string[];
+    disableTypewriter: boolean;
+    draft: boolean;
 }
 
 export interface Page {
-  title: string;
-  description: string;
-  slug: string;
-  locale: Locale;
-  translationSlug?: string;
-  disableTypewriter: boolean;
+    title: string;
+    description: string;
+    slug: string;
+    locale: Locale;
+    translationSlug?: string;
+    disableTypewriter: boolean;
 }

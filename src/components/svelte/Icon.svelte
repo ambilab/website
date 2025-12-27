@@ -88,6 +88,7 @@
 {#if isLoading}
   <span class={className} style={sizeStyle} aria-hidden="true"></span>
 {:else if svgContent}
+  <!-- eslint-disable-next-line svelte/no-at-html-tags -->
   <span class={className} style={sizeStyle} aria-hidden={!ariaLabel} aria-label={ariaLabel} role={ariaLabel ? 'img' : undefined}>{@html svgContent}</span>
 {/if}
 

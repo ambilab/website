@@ -1,153 +1,153 @@
 @import 'tailwindcss';
 
 @theme {
-  --font-family-sans: 'Innovator Grotesk', system-ui, sans-serif;
-  --font-family-mono: ui-monospace, 'SF Mono', Menlo, Monaco, Consolas, monospace;
+    --font-family-sans: 'Innovator Grotesk', system-ui, sans-serif;
+    --font-family-mono: ui-monospace, 'SF Mono', Menlo, Monaco, Consolas, monospace;
 }
 
 /* Dark mode initialization */
 :root {
-  color-scheme: light dark;
+    color-scheme: light dark;
 }
 
 .dark {
-  color-scheme: dark;
+    color-scheme: dark;
 }
 
 /* Base styles */
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 html {
-  font-family: var(--font-family-sans);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    font-family: var(--font-family-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 body {
-  min-height: 100vh;
-  text-rendering: optimizeLegibility;
+    min-height: 100vh;
+    text-rendering: optimizeLegibility;
 }
 
 /* Focus styles for accessibility */
 *:focus-visible {
-  outline: 2px solid theme('colors.blue.600');
-  outline-offset: 2px;
+    outline: 2px solid theme('colors.blue.600');
+    outline-offset: 2px;
 }
 
 /* Smooth scroll behavior (respects prefers-reduced-motion) */
 @media (prefers-reduced-motion: no-preference) {
-  html {
-    scroll-behavior: smooth;
-  }
+    html {
+        scroll-behavior: smooth;
+    }
 }
 
 /* Selection colors */
 ::selection {
-  background-color: theme('colors.blue.200');
-  color: theme('colors.blue.900');
+    background-color: theme('colors.blue.200');
+    color: theme('colors.blue.900');
 }
 
 .dark ::selection {
-  background-color: theme('colors.blue.800');
-  color: theme('colors.blue.100');
+    background-color: theme('colors.blue.800');
+    color: theme('colors.blue.100');
 }
 
 /* Custom scrollbar */
 /* Firefox scrollbar styles */
 html {
-  scrollbar-width: thin;
-  scrollbar-color: theme('colors.gray.400') theme('colors.gray.100');
+    scrollbar-width: thin;
+    scrollbar-color: theme('colors.gray.400') theme('colors.gray.100');
 }
 
 .dark {
-  scrollbar-color: theme('colors.gray.600') theme('colors.gray.900');
+    scrollbar-color: theme('colors.gray.600') theme('colors.gray.900');
 }
 
 /* WebKit scrollbar styles */
 ::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+    width: 10px;
+    height: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: theme('colors.gray.100');
+    background: theme('colors.gray.100');
 }
 
 .dark ::-webkit-scrollbar-track {
-  background: theme('colors.gray.900');
+    background: theme('colors.gray.900');
 }
 
 ::-webkit-scrollbar-thumb {
-  background: theme('colors.gray.400');
-  border-radius: 5px;
+    background: theme('colors.gray.400');
+    border-radius: 5px;
 }
 
 .dark ::-webkit-scrollbar-thumb {
-  background: theme('colors.gray.600');
+    background: theme('colors.gray.600');
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: theme('colors.gray.500');
+    background: theme('colors.gray.500');
 }
 
 .dark ::-webkit-scrollbar-thumb:hover {
-  background: theme('colors.gray.500');
+    background: theme('colors.gray.500');
 }
 
 /* Print styles */
 @media print {
-  * {
-    background: transparent !important;
-    color: black !important;
-    box-shadow: none !important;
-    text-shadow: none !important;
-  }
+    * {
+        background: transparent !important;
+        color: black !important;
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
 
-  a,
-  a:visited {
-    text-decoration: underline;
-  }
+    a,
+    a:visited {
+        text-decoration: underline;
+    }
 
-  a[href]::after {
-    content: ' (' attr(href) ')';
-  }
+    a[href]::after {
+        content: ' (' attr(href) ')';
+    }
 
-  abbr[title]::after {
-    content: ' (' attr(title) ')';
-  }
+    abbr[title]::after {
+        content: ' (' attr(title) ')';
+    }
 
-  pre,
-  blockquote {
-    border: 1px solid #999;
-    page-break-inside: avoid;
-  }
+    pre,
+    blockquote {
+        border: 1px solid #999;
+        page-break-inside: avoid;
+    }
 
-  thead {
-    display: table-header-group;
-  }
+    thead {
+        display: table-header-group;
+    }
 
-  tr,
-  img {
-    page-break-inside: avoid;
-  }
+    tr,
+    img {
+        page-break-inside: avoid;
+    }
 
-  img {
-    max-width: 100% !important;
-  }
+    img {
+        max-width: 100% !important;
+    }
 
-  p,
-  h2,
-  h3 {
-    orphans: 3;
-    widows: 3;
-  }
+    p,
+    h2,
+    h3 {
+        orphans: 3;
+        widows: 3;
+    }
 
-  h2,
-  h3 {
-    page-break-after: avoid;
-  }
+    h2,
+    h3 {
+        page-break-after: avoid;
+    }
 }
