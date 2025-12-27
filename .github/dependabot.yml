@@ -1,0 +1,49 @@
+version: 2
+updates:
+  - package-ecosystem: 'npm'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+      day: 'monday'
+      time: '09:00'
+      timezone: 'Europe/Prague'
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: 'build(deps)'
+    labels:
+      - 'dependencies'
+    groups:
+      astro:
+        patterns:
+          - '@astrojs/*'
+          - 'astro'
+          - 'astro-*'
+      svelte:
+        patterns:
+          - 'svelte'
+          - '@sveltejs/*'
+          - 'eslint-plugin-svelte'
+          - 'prettier-plugin-svelte'
+      eslint:
+        patterns:
+          - 'eslint'
+          - 'eslint-*'
+          - '@typescript-eslint/*'
+      tailwind:
+        patterns:
+          - 'tailwindcss'
+          - '@tailwindcss/*'
+          - 'prettier-plugin-tailwindcss'
+
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+      day: 'monday'
+      time: '09:00'
+      timezone: 'Europe/Prague'
+    commit-message:
+      prefix: 'ci(deps)'
+    labels:
+      - 'dependencies'
+      - 'github-actions'
