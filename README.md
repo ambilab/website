@@ -226,6 +226,25 @@ pnpm story:dev
 
 The dev server will be available at `http://localhost:4321`
 
+### Workspace Setup
+
+This project can work both as a standalone repository and as part of a pnpm workspace:
+
+- **Standalone (CI/CD)**: The repository includes its own `pnpm-lock.yaml` for deterministic builds in GitHub Actions
+- **Workspace (Local Dev)**: When part of a parent workspace, the workspace's lock file takes precedence
+
+This hybrid approach allows:
+
+- Independent deployment and CI without requiring the full workspace
+- Shared dependencies and tooling when developing locally in the monorepo
+- Consistent builds across environments
+
+To regenerate the standalone lock file (when updating dependencies):
+
+```bash
+pnpm install --ignore-workspace --lockfile-only
+```
+
 ### Available Scripts
 
 ```bash
