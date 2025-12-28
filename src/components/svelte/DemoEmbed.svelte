@@ -24,9 +24,23 @@
         desktopOnly?: boolean;
         /** Enable top-level navigation. Only enable if the demo explicitly requires it. */
         allowTopNavigation?: boolean;
+        /** Enable autoplay permission. Defaults to true for most demos. */
+        allowAutoplay?: boolean;
+        /** Enable motion sensors (accelerometer, gyroscope). Defaults to false for desktop demos. */
+        allowMotionSensors?: boolean;
     }
 
-    // Allowlist of trusted hostnames for demo embeds
+    /**
+     * Allowlist of trusted hostnames for demo embeds.
+     *
+     * GOVERNANCE: Adding new hostnames requires security review to ensure:
+     * - The domain is owned/controlled by Ambilab
+     * - Content served is trusted and safe for iframe embedding
+     * - HTTPS is properly configured with valid certificates
+     * - CSP and security headers are appropriately set
+     *
+     * Do not add third-party domains without explicit approval.
+     */
     const ALLOWED_HOSTNAMES = ['blit-tech-demos.ambilab.com'] as const;
     const SAFE_FALLBACK_URL = 'about:blank';
 
@@ -69,6 +83,8 @@
         class: className = '',
         desktopOnly = true,
         allowTopNavigation = false,
+        allowAutoplay = true,
+        allowMotionSensors = !desktopOnly,
     }: Props = $props();
 
     // Validate and sanitize src URL
@@ -93,15 +109,21 @@
 
     const shouldShowLink = $derived(isDev && isLocalhost);
 
-    // Build minimal allow attribute: only include features actually needed
-    // - autoplay: required for demos that auto-start
-    // - accelerometer/gyroscope: only for mobile demos (when not desktop-only)
-    const allowPermissions = $derived(desktopOnly ? 'autoplay' : 'autoplay; accelerometer; gyroscope');
+    // Build minimal allow attribute: only include features explicitly requested
+    const allowPermissions = $derived(() => {
+        const permissions: string[] = [];
+        if (allowAutoplay) permissions.push('autoplay');
+        if (allowMotionSensors) permissions.push('accelerometer', 'gyroscope');
+        return permissions.join('; ');
+    });
 
     // Build sandbox permissions: start with safe defaults, add top-navigation only if explicitly requested
     const sandboxPermissions = $derived(
         `allow-scripts allow-same-origin allow-forms${allowTopNavigation ? ' allow-top-navigation' : ''}`,
     );
+
+    // Extract aspect-ratio style to avoid repetition
+    const aspectRatioStyle = $derived(`aspect-ratio: ${aspectRatio}; width: 100%;`);
 </script>
 
 <figure class={`demo-embed ${className}`}>
@@ -109,7 +131,7 @@
         <!-- Show link in development/localhost to avoid CSP frame-ancestors violation -->
         <div
             class="flex min-h-[200px] flex-col items-center justify-center rounded-lg border border-gray-200 bg-gray-50 p-8 text-center dark:border-gray-800 dark:bg-gray-900"
-            style="aspect-ratio: {aspectRatio}; width: 100%;"
+            style={aspectRatioStyle}
         >
             <p class="mb-4 text-sm text-gray-600 dark:text-gray-400">
                 Demo preview is not available in development due to CSP restrictions.
@@ -139,7 +161,7 @@
         <!-- Show warning if src URL is invalid/not allowlisted -->
         <div
             class="flex min-h-[200px] flex-col items-center justify-center rounded-lg border border-yellow-200 bg-yellow-50 p-8 text-center dark:border-yellow-900 dark:bg-yellow-950"
-            style="aspect-ratio: {aspectRatio}; width: 100%;"
+            style={aspectRatioStyle}
         >
             <p class="mb-2 text-sm font-medium text-yellow-800 dark:text-yellow-200">
                 Invalid or untrusted demo source
@@ -152,7 +174,7 @@
         <iframe
             src={validatedSrc}
             title={title ?? 'Demo embed'}
-            style="aspect-ratio: {aspectRatio}; width: 100%;"
+            style={aspectRatioStyle}
             loading="lazy"
             allow={allowPermissions}
             allowfullscreen
