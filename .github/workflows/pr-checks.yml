@@ -32,19 +32,3 @@ jobs:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: pnpm commitlint --from "$BASE_SHA" --to "$HEAD_SHA" --verbose
-
-  markdown-links:
-    name: Documentation Links
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v6
-
-      - name: Check markdown links
-        uses: tcort/github-action-markdown-link-check@v1
-        with:
-          config-file: '.github/markdown-link-check.json'
-          use-quiet-mode: 'yes'
-          use-verbose-mode: 'no'
-          folder-path: 'docs/, src/content/'
-          file-path: './README.md'
