@@ -5,6 +5,14 @@
      * SECURITY: Only trusted, allowlisted sources are supported. The src URL is
      * validated against an explicit allowlist of hostnames and must use HTTPS.
      * Invalid URLs will fall back to a safe default or be rejected.
+     *
+     * The iframe sandbox includes:
+     * - allow-scripts: Execute JavaScript
+     * - allow-same-origin: Access localStorage, cookies, and same-origin APIs
+     * - allow-forms: Submit forms within the iframe
+     * - allow-top-navigation: Navigate the top-level browsing context
+     *
+     * These permissions are safe because all sources are explicitly allowlisted.
      */
     interface Props {
         src: string;
@@ -132,7 +140,7 @@
             loading="lazy"
             allow={allowPermissions}
             allowfullscreen
-            sandbox="allow-scripts"
+            sandbox="allow-scripts allow-same-origin allow-forms allow-top-navigation"
             class="rounded-lg border border-gray-200 dark:border-gray-800"
         ></iframe>
     {/if}
