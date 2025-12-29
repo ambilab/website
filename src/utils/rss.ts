@@ -6,6 +6,10 @@ import type { APIContext } from 'astro';
 import type { CollectionEntry } from 'astro:content';
 import { getCollection } from 'astro:content';
 
+import { createLogger } from './logger';
+
+const logger = createLogger({ prefix: 'RSS' });
+
 /**
  * Converts a content collection post ID to a blog post URL.
  * Expected format: "locale/slug.mdx" or "locale/slug.md"
@@ -29,28 +33,49 @@ export async function generateRssFeed(
     localeLabel: string,
     languageCode: string,
 ): Promise<Response> {
-    const posts = await getCollection(
-        'blog',
-        (entry: CollectionEntry<'blog'>) => !entry.data.draft && entry.data.locale === locale,
-    );
-    const sortedPosts = [...posts].sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
-    const recentPosts = sortedPosts.slice(0, 20); // Limit to 20 most recent posts
+    try {
+        const posts = await getCollection(
+            'blog',
+            (entry: CollectionEntry<'blog'>) => !entry.data.draft && entry.data.locale === locale,
+        );
 
-    const t = getTranslation(locale);
-    // Use localized description from translations instead of hardcoded SITE.DESCRIPTION
-    const description = t.footer.description;
+        const sortedPosts = [...posts].sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
 
-    return rss({
-        title: `${SITE.NAME} - ${localeLabel}`,
-        description,
-        site: context.site?.toString() || SITE.URL,
-        items: recentPosts.map((post) => ({
-            title: post.data.title,
-            description: post.data.description,
-            pubDate: post.data.pubDate,
-            link: getBlogPostLink(post.id),
-            categories: post.data.tags,
-        })),
-        customData: `<language>${languageCode}</language>`,
-    });
+        const recentPosts = sortedPosts.slice(0, 20); // Limit to 20 most recent posts
+
+        const t = getTranslation(locale);
+
+        // Use localized description from translations instead of hardcoded SITE.DESCRIPTION
+        const description = t.footer.description;
+
+        return rss({
+            title: `${SITE.NAME} - ${localeLabel}`,
+            description,
+            site: context.site?.toString() || SITE.URL,
+            items: recentPosts.map((post) => ({
+                title: post.data.title,
+                description: post.data.description,
+                pubDate: post.data.pubDate,
+                link: getBlogPostLink(post.id),
+                categories: post.data.tags,
+            })),
+            customData: `<language>${languageCode}</language>`,
+        });
+    } catch (error) {
+        logger.error(`Failed to generate RSS feed for locale ${locale}`, error);
+
+        // Return a 500 error response with XML content type
+        return new Response(
+            `<?xml version="1.0" encoding="utf-8"?>
+<error>
+    <message>Failed to generate RSS feed. Please try again later.</message>
+</error>`,
+            {
+                status: 500,
+                headers: {
+                    'Content-Type': 'application/xml',
+                },
+            },
+        );
+    }
 }

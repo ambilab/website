@@ -58,6 +58,7 @@ This project establishes complete foundational scaffolding for an SSR-first Astr
 - **Permissions Policy**: Restricted browser feature access
 - **Security Headers**: Comprehensive static security headers
 - **Validation Script**: Header verification tooling
+- **Error Handling**: Comprehensive error pages (404, 500, 503) with secure logging
 
 ### Accessibility
 
@@ -139,6 +140,7 @@ ambilab-website/
 │   │   │   ├── Footer.astro    # Site footer
 │   │   │   ├── PageLayout.astro
 │   │   │   ├── BlogPostLayout.astro
+│   │   │   ├── ErrorPage.astro # Shared error page component
 │   │   │   └── HeadingLinks.astro
 │   │   └── svelte/             # Interactive Svelte components
 │   ├── config/
@@ -157,7 +159,9 @@ ambilab-website/
 │   │   ├── images.ts           # Image pipeline (breakpoints, formats, sizes)
 │   ├── pages/
 │   │   ├── [...slug].astro     # Dynamic routing (pages + blog)
-│   │   ├── 404.astro           # Localized 404 page
+│   │   ├── 404.astro           # Not found error page
+│   │   ├── 500.astro           # Server error page
+│   │   ├── 503.astro           # Service unavailable page
 │   │   ├── en/rss.xml.ts       # English RSS feed
 │   │   ├── cs/rss.xml.ts       # Czech RSS feed
 │   │   └── api/
@@ -301,7 +305,9 @@ UI translations are organized in `src/i18n/translations.ts`:
 - `newsletter` — Newsletter form
 - `cookie` — Cookie banner
 - `blog` — Blog-related strings
-- `404` — Not found page
+- `notFound` — 404 error page
+- `serverError` — 500 error page
+- `serviceUnavailable` — 503 error page
 
 ### Content Translation Linking
 
@@ -415,6 +421,94 @@ POST-endpoint that proxies to Buttondown:
 - Consistent JSON responses
 - Robust error handling
 - Uses `BUTTONDOWN_API_KEY` environment variable
+
+## Error Handling
+
+The site includes comprehensive error handling for all HTTP error codes:
+
+### Error Pages
+
+- **404 Not Found** (`src/pages/404.astro`) - Custom localized page for missing content
+- **500 Server Error** (`src/pages/500.astro`) - Handles middleware and rendering failures
+- **503 Service Unavailable** (`src/pages/503.astro`) - For maintenance windows
+
+All error pages:
+
+- Use a shared `ErrorPage` component for consistent design
+- Are fully localized (EN/CS) with proper translations
+- Include a "Go Home" button for easy navigation
+- Follow the same styling as the rest of the site
+- Are properly configured for SEO with appropriate meta tags
+
+### Error Handling Strategy
+
+**Middleware** (`src/middleware.ts`):
+
+- Wrapped in try-catch to prevent complete site failures
+- Logs errors without exposing sensitive information
+- Redirects to `/500` on critical failures
+- Sets safe defaults (locale, nonce) on error
+
+**RSS Feed Generation** (`src/utils/rss.ts`):
+
+- Try-catch around content collection operations
+- Returns XML error response with 500 status
+- Logs errors for debugging
+
+**Content Pages** (`src/pages/[...slug].astro`):
+
+- Try-catch around all content collection operations
+- Redirects to `/500` on rendering errors
+- Redirects to `/404` for missing content
+
+**API Routes** (e.g., `src/pages/api/newsletter.ts`):
+
+- Validates input with 400 errors for invalid data
+- Returns 500 errors for server failures
+- Sanitizes error messages (no sensitive data exposure)
+- Comprehensive error logging
+
+### Testing Error Pages
+
+**Local Development:**
+
+```bash
+# Start development server
+pnpm dev
+
+# Visit error pages directly
+# http://localhost:4321/404
+# http://localhost:4321/500
+# http://localhost:4321/503
+```
+
+**Production Testing:**
+
+After deployment, test these scenarios:
+
+1. **404 Errors**: Visit a non-existent page (e.g., `https://ambilab.com/non-existent-page`)
+2. **500 Errors**: Triggered automatically if middleware or content loading fails
+3. **503 Errors**: Can be used during maintenance windows
+
+### Cloudflare Configuration
+
+Error handling works automatically when deployed to Cloudflare Pages:
+
+1. **SSR Mode**: All routes are handled dynamically by Cloudflare Functions
+2. **Middleware Redirects**: Error redirects work out of the box
+3. **Localization**: Error pages respect the user's locale
+4. **Logging**: Available in Cloudflare Pages dashboard under Functions > Begin log stream
+
+**Monitoring:**
+
+- Real-time logs: `Pages > Your Project > Functions > Begin log stream`
+- Analytics: `Pages > Your Project > Analytics & Logs`
+- Set up alerts for high error rates in Cloudflare dashboard
+
+**Configuration Files:**
+
+- `wrangler.jsonc` - Cloudflare Pages configuration
+- `public/_routes.json` - Routes configuration (optimizes static asset serving)
 
 ## Fonts
 

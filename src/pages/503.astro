@@ -12,10 +12,10 @@ const homePath = getLocalizedPath('', detectedLocale);
 ---
 
 <ErrorPage
-    code={404}
-    title={t.notFound.title}
-    description={t.notFound.description}
-    homeButtonText={t.notFound.goHome}
+    code={503}
+    title={t.serviceUnavailable.title}
+    description={t.serviceUnavailable.description}
+    homeButtonText={t.serviceUnavailable.goHome}
     homeLink={homePath}
     locale={detectedLocale}
 />
