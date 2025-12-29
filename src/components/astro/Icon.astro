@@ -1,21 +1,9 @@
 ---
-import calendarIcon from '@assets/icons/calendar.svg?raw';
-import clockIcon from '@assets/icons/clock.svg?raw';
-import refreshIcon from '@assets/icons/refresh.svg?raw';
-import tagIcon from '@assets/icons/tag.svg?raw';
-import userIcon from '@assets/icons/user.svg?raw';
-
-const iconMap: Record<string, string> = {
-    user: userIcon,
-    calendar: calendarIcon,
-    refresh: refreshIcon,
-    clock: clockIcon,
-    tag: tagIcon,
-};
+import { iconMap, type IconName } from '@config/icons';
 
 export interface Props {
     /** Icon name (filename without .svg extension) */
-    name: keyof typeof iconMap;
+    name: IconName;
     /** CSS classes to apply to the SVG */
     class?: string;
     /** Whether the icon is decorative (adds aria-hidden="true") */
