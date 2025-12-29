@@ -62,7 +62,15 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
         if (url.pathname === '/404' || url.pathname === '/500' || url.pathname === '/503') {
             // Return a basic error response instead of redirecting
-            return new Response('Internal Server Error', { status: 500 });
+            const errorResponse = new Response('Internal Server Error', { status: 500 });
+
+            // Apply security headers even to error responses
+            applySecurityHeaders(errorResponse.headers, {
+                nonce: generateNonce(),
+                isDev: import.meta.env.DEV,
+            });
+
+            return errorResponse;
         }
 
         // Redirect to 500 page to maintain consistency
