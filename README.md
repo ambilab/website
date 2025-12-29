@@ -22,7 +22,6 @@ This project establishes complete foundational scaffolding for an SSR-first Astr
 - **Language**: TypeScript (strict mode) everywhere
 - **Content**: MDX via Astro Content Collections
 - **Code Highlighting**: Expressive Code (Shiki-based)
-- **Animation**: GSAP (reduced-motion aware)
 - **Icons**: Solar icons via Iconify + custom SVGs
 - **Fonts**: Innovator Grotesk from fonts.vancura.dev
 - **Package Manager**: pnpm
@@ -35,7 +34,6 @@ This project establishes complete foundational scaffolding for an SSR-first Astr
 ### Core Features
 
 - **Bilingual Support**: English and Czech with the domain/cookie-based locale detection
-- **GSAP Typewriter Transitions**: Smooth locale switching with character-by-character animation
 - **Responsive Images**: An automatic AVIF/WebP generation with PNG fallback
 - **Demo Embeds**: Sandboxed iframe components with strict URL allowlist
 - **Newsletter Integration**: Buttondown API proxy with server-side validation
