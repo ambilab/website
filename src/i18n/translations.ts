@@ -66,6 +66,10 @@ export interface Translations {
         description: string;
         goHome: string;
     };
+
+    rss: {
+        errorMessage: string;
+    };
 }
 
 export const translations: Record<Locale, Translations> = {
@@ -134,6 +138,10 @@ export const translations: Record<Locale, Translations> = {
             description: 'The service is temporarily unavailable. Please try again in a few moments.',
             goHome: 'Go Home',
         },
+
+        rss: {
+            errorMessage: 'Failed to generate RSS feed. Please try again later.',
+        },
     },
     cs: {
         nav: {
@@ -199,6 +207,10 @@ export const translations: Record<Locale, Translations> = {
             title: '503',
             description: 'Služba je dočasně nedostupná. Zkuste to prosím za chvíli.',
             goHome: 'Domů',
+        },
+
+        rss: {
+            errorMessage: 'Nepodařilo se vygenerovat RSS kanál. Zkuste to prosím později.',
         },
     },
 };

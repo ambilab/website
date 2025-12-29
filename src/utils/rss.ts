@@ -64,11 +64,13 @@ export async function generateRssFeed(
     } catch (error) {
         logger.error(`Failed to generate RSS feed for locale ${locale}`, error);
 
-        // Return a 500 error response with XML content type
+        const t = getTranslation(locale);
+
+        // Return a 500 error response with XML content type and localized error message
         return new Response(
             `<?xml version="1.0" encoding="utf-8"?>
 <error>
-    <message>Failed to generate RSS feed. Please try again later.</message>
+    <message>${t.rss.errorMessage}</message>
 </error>`,
             {
                 status: 500,
