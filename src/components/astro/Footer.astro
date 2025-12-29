@@ -12,13 +12,15 @@ const t = getTranslation(locale);
 const currentYear = new Date().getFullYear();
 ---
 
-<footer class="border-t border-gray-200 bg-gray-50 dark:border-gray-800 dark:bg-gray-950">
+<footer
+    class="border-border-default bg-page-bg-muted dark:border-border-default-dark dark:bg-page-bg-muted-dark border-t"
+>
     <div class="container mx-auto px-4 py-12">
         <div class="grid gap-8 md:grid-cols-3">
             <!-- Brand -->
             <div>
                 <h3 class="mb-4 text-lg font-bold">Ambilab</h3>
-                <p class="text-sm text-gray-600 dark:text-gray-400">
+                <p class="text-text-muted dark:text-text-muted-dark text-sm">
                     {t.footer.description}
                 </p>
             </div>
@@ -30,27 +32,33 @@ const currentYear = new Date().getFullYear();
                 </h4>
                 <ul class="space-y-2 text-sm">
                     <li>
-                        <a href="/" class="text-gray-600 transition-colors hover:text-blue-600 dark:text-gray-400">
+                        <a
+                            href="/"
+                            class="text-text-muted hover:text-link-hover dark:text-text-muted-dark transition-colors"
+                        >
                             {t.nav.home}
                         </a>
                     </li>
                     <li>
                         <a
                             href={locale === 'en' ? '/about' : '/o-projektu'}
-                            class="text-gray-600 transition-colors hover:text-blue-600 dark:text-gray-400"
+                            class="text-text-muted hover:text-link-hover dark:text-text-muted-dark transition-colors"
                         >
                             {t.nav.about}
                         </a>
                     </li>
                     <li>
-                        <a href="/blog" class="text-gray-600 transition-colors hover:text-blue-600 dark:text-gray-400">
+                        <a
+                            href="/blog"
+                            class="text-text-muted hover:text-link-hover dark:text-text-muted-dark transition-colors"
+                        >
                             {t.nav.blog}
                         </a>
                     </li>
                     <li>
                         <a
                             href={`/${locale}/rss.xml`}
-                            class="text-gray-600 transition-colors hover:text-blue-600 dark:text-gray-400"
+                            class="text-text-muted hover:text-link-hover dark:text-text-muted-dark transition-colors"
                         >
                             RSS Feed
                         </a>
@@ -66,7 +74,7 @@ const currentYear = new Date().getFullYear();
         </div>
 
         <div
-            class="mt-8 border-t border-gray-200 pt-8 text-center text-sm text-gray-600 dark:border-gray-800 dark:text-gray-400"
+            class="border-border-default text-text-muted dark:border-border-default-dark dark:text-text-muted-dark mt-8 border-t pt-8 text-center text-sm"
         >
             {t.footer.copyright} © {currentYear} Ambilab. {t.footer.allRightsReserved}.
         </div>

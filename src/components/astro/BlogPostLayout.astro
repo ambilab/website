@@ -40,7 +40,7 @@ const formatDate = (date: Date) => {
         <header class="mb-12">
             <h1 class="mb-4 text-4xl font-bold md:text-5xl">{title}</h1>
 
-            <div class="flex flex-wrap items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
+            <div class="text-text-muted dark:text-text-muted-dark flex flex-wrap items-center gap-4 text-sm">
                 <div class="flex items-center gap-2">
                     <Icon name="user" class="h-4 w-4" />
                     <span>{author}</span>
@@ -77,9 +77,9 @@ const formatDate = (date: Date) => {
             {
                 tags.length > 0 && (
                     <div class="mt-4 flex flex-wrap items-center gap-2">
-                        <Icon name="tag" class="h-4 w-4 text-gray-600 dark:text-gray-400" />
+                        <Icon name="tag" class="text-text-muted dark:text-text-muted-dark h-4 w-4" />
                         {tags.map((tag) => (
-                            <span class="rounded-full bg-blue-100 px-3 py-1 text-xs font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-200">
+                            <span class="bg-tag-bg text-tag-text dark:bg-tag-bg-dark dark:text-tag-text-dark rounded-full px-3 py-1 text-xs font-medium">
                                 {tag}
                             </span>
                         ))}

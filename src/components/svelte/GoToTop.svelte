@@ -40,7 +40,7 @@
     <button
         transition:fade={{ duration: 200 }}
         onclick={handleClick}
-        class="fixed bottom-8 right-8 z-40 rounded-full bg-blue-600 p-3 text-white shadow-lg transition-all hover:bg-blue-700 hover:shadow-xl"
+        class="bg-button-primary text-button-primary-text hover:bg-button-primary-hover fixed bottom-8 right-8 z-40 rounded-full p-3 shadow-lg transition-all hover:shadow-xl"
         aria-label="Go to top"
     >
         <svg class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">

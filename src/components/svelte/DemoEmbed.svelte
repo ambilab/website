@@ -141,10 +141,10 @@
     {#if shouldShowLink}
         <!-- Show link in development/localhost to avoid CSP frame-ancestors violation -->
         <div
-            class="flex min-h-[200px] flex-col items-center justify-center rounded-lg border border-gray-200 bg-gray-50 p-8 text-center dark:border-gray-800 dark:bg-gray-900"
+            class="border-border-default bg-page-bg-muted dark:border-border-default-dark dark:bg-page-bg-muted-dark flex min-h-[200px] flex-col items-center justify-center rounded-lg border p-8 text-center"
             style={aspectRatioStyle}
         >
-            <p class="mb-4 text-sm text-gray-600 dark:text-gray-400">
+            <p class="text-text-muted dark:text-text-muted-dark mb-4 text-sm">
                 Demo preview is not available in development due to CSP restrictions.
             </p>
             {#if isValidSrc}
@@ -152,7 +152,7 @@
                     href={validatedSrc}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
+                    class="bg-button-primary text-button-primary-text hover:bg-button-primary-hover inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
                 >
                     Open Demo in New Tab
                     <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -165,19 +165,19 @@
                     </svg>
                 </a>
             {:else}
-                <p class="text-sm text-red-600 dark:text-red-400">Invalid demo source URL</p>
+                <p class="text-error-text dark:text-error-text-dark text-sm">Invalid demo source URL</p>
             {/if}
         </div>
     {:else if !isValidSrc}
         <!-- Show warning if src URL is invalid/not allowlisted -->
         <div
-            class="flex min-h-[200px] flex-col items-center justify-center rounded-lg border border-yellow-200 bg-yellow-50 p-8 text-center dark:border-yellow-900 dark:bg-yellow-950"
+            class="border-warning-border bg-warning-bg dark:border-warning-border-dark dark:bg-warning-bg-dark flex min-h-[200px] flex-col items-center justify-center rounded-lg border p-8 text-center"
             style={aspectRatioStyle}
         >
-            <p class="mb-2 text-sm font-medium text-yellow-800 dark:text-yellow-200">
+            <p class="text-warning-heading dark:text-warning-heading-dark mb-2 text-sm font-medium">
                 Invalid or untrusted demo source
             </p>
-            <p class="text-xs text-yellow-600 dark:text-yellow-400">
+            <p class="text-warning-text dark:text-warning-text-dark text-xs">
                 Only allowlisted sources are allowed for security reasons.
             </p>
         </div>
@@ -190,11 +190,11 @@
             allow={allowPermissions}
             allowfullscreen
             sandbox={sandboxPermissions}
-            class="rounded-lg border border-gray-200 dark:border-gray-800"
+            class="border-border-default dark:border-border-default-dark rounded-lg border"
         ></iframe>
     {/if}
     {#if title}
-        <figcaption class="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
+        <figcaption class="text-text-muted dark:text-text-muted-dark mt-2 text-center text-sm">
             {title}
         </figcaption>
     {/if}

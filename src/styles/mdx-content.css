@@ -4,7 +4,7 @@
 .mdx-content {
     /* Links with external indicator */
     & a:not(.anchor) {
-        @apply relative font-medium text-blue-600 underline underline-offset-4 transition-colors hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300;
+        @apply text-link hover:text-link-hover dark:text-link-dark dark:hover:text-link-hover-dark relative font-medium underline underline-offset-4 transition-colors;
 
         /* External links get arrow indicator */
         &[href^='http']::after,
@@ -21,7 +21,7 @@
         @apply relative scroll-mt-20 font-bold;
 
         & .anchor {
-            @apply absolute -left-6 text-gray-400 no-underline opacity-0 transition-opacity dark:text-gray-600;
+            @apply text-anchor dark:text-anchor-dark absolute -left-6 no-underline opacity-0 transition-opacity;
         }
 
         &:hover .anchor {
@@ -30,19 +30,19 @@
     }
 
     & h1 {
-        @apply mt-8 mb-4 text-4xl;
+        @apply mb-4 mt-8 text-4xl;
     }
 
     & h2 {
-        @apply mt-12 mb-4 border-t border-gray-200 pt-8 text-3xl dark:border-gray-800;
+        @apply border-border-default dark:border-border-default-dark mb-4 mt-12 border-t pt-8 text-3xl;
     }
 
     & h3 {
-        @apply mt-8 mb-3 text-2xl font-semibold;
+        @apply mb-3 mt-8 text-2xl font-semibold;
     }
 
     & h4 {
-        @apply mt-6 mb-2 text-xl font-semibold;
+        @apply mb-2 mt-6 text-xl font-semibold;
     }
 
     /* Paragraphs and lists */
@@ -66,19 +66,19 @@
     /* Nested lists */
     & ul ul,
     & ol ul {
-        @apply mt-2 mb-2;
+        @apply mb-2 mt-2;
     }
 
     & ul ol,
     & ol ol {
-        @apply mt-2 mb-2;
+        @apply mb-2 mt-2;
     }
 
     /* Inline code (Expressive Code handles code blocks) */
     & p code,
     & li code,
     & td code {
-        @apply rounded bg-gray-100 px-1.5 py-0.5 font-mono text-sm text-gray-900 dark:bg-gray-800 dark:text-gray-100;
+        @apply bg-surface-code text-text-primary dark:bg-surface-code-dark dark:text-text-primary-dark rounded px-1.5 py-0.5 font-mono text-sm;
     }
 
     /* Code blocks are handled by Expressive Code */
@@ -95,13 +95,13 @@
         @apply my-6;
 
         & figcaption {
-            @apply mt-2 text-center text-sm text-gray-600 dark:text-gray-400;
+            @apply text-text-muted dark:text-text-muted-dark mt-2 text-center text-sm;
         }
     }
 
     /* Blockquotes */
     & blockquote {
-        @apply my-4 border-l-4 border-blue-500 pl-4 text-gray-700 italic dark:text-gray-300;
+        @apply border-info-border text-text-secondary dark:text-text-secondary-dark my-4 border-l-4 pl-4 italic;
 
         & p {
             @apply mb-2;
@@ -113,11 +113,11 @@
         @apply my-4 w-full border-collapse;
 
         & th {
-            @apply border-b-2 border-gray-300 bg-gray-50 p-2 text-left font-semibold dark:border-gray-700 dark:bg-gray-900;
+            @apply border-table-header-border bg-table-header-bg dark:border-table-header-border-dark dark:bg-table-header-bg-dark border-b-2 p-2 text-left font-semibold;
         }
 
         & td {
-            @apply border-b border-gray-200 p-2 dark:border-gray-800;
+            @apply border-table-border dark:border-table-border-dark border-b p-2;
         }
 
         & tr:last-child td {
@@ -127,12 +127,12 @@
 
     /* Horizontal rule */
     & hr {
-        @apply my-8 border-t border-gray-200 dark:border-gray-800;
+        @apply border-border-default dark:border-border-default-dark my-8 border-t;
     }
 
     /* Strong and emphasis */
     & strong {
-        @apply font-bold text-gray-900 dark:text-gray-100;
+        @apply text-text-primary dark:text-text-primary-dark font-bold;
     }
 
     & em {
@@ -141,25 +141,25 @@
 
     /* Abbreviations */
     & abbr {
-        @apply cursor-help border-b border-dotted border-gray-400 dark:border-gray-600;
+        @apply border-border-subtle dark:border-border-subtle-dark cursor-help border-b border-dotted;
     }
 
     /* Mark/highlight */
     & mark {
-        @apply rounded bg-yellow-200 px-1 dark:bg-yellow-800;
+        @apply bg-warning-highlight dark:bg-warning-highlight-dark rounded px-1;
     }
 
     /* Keyboard input */
     & kbd {
-        @apply rounded border border-gray-300 bg-gray-100 px-2 py-1 font-mono text-sm shadow-sm dark:border-gray-700 dark:bg-gray-800;
+        @apply border-border-medium bg-surface-code dark:border-border-medium-dark dark:bg-surface-code-dark rounded border px-2 py-1 font-mono text-sm shadow-sm;
     }
 
     /* Details/summary */
     & details {
-        @apply my-4 rounded-lg border border-gray-200 p-4 dark:border-gray-800;
+        @apply border-border-default dark:border-border-default-dark my-4 rounded-lg border p-4;
 
         & summary {
-            @apply cursor-pointer font-semibold select-none;
+            @apply cursor-pointer select-none font-semibold;
         }
 
         &[open] summary {

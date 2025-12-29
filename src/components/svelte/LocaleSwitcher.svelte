@@ -45,7 +45,7 @@
 <button
     onclick={handleLocaleSwitch}
     disabled={isAnimating}
-    class="flex items-center gap-2 rounded-lg border border-gray-200 px-3 py-2 transition-colors hover:bg-gray-100 disabled:opacity-50 dark:border-gray-800 dark:hover:bg-gray-800"
+    class="border-border-default hover:bg-surface-hover dark:border-border-default-dark dark:hover:bg-surface-hover-dark flex items-center gap-2 rounded-lg border px-3 py-2 transition-colors disabled:opacity-50"
     aria-label="Switch language"
 >
     <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

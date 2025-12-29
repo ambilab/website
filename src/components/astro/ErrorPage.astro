@@ -33,15 +33,15 @@ const { code, title, description, homeButtonText, homeLink = '/', locale } = Ast
     locale={locale}
 >
     <main class="container mx-auto flex min-h-[60vh] flex-col items-center justify-center px-4 py-12 text-center">
-        <h1 class="mb-4 text-6xl font-bold text-gray-900 dark:text-gray-100">{code}</h1>
+        <h1 class="text-text-primary dark:text-text-primary-dark mb-4 text-6xl font-bold">{code}</h1>
 
-        <p class="mb-8 text-xl text-gray-600 dark:text-gray-400">
+        <p class="text-text-muted dark:text-text-muted-dark mb-8 text-xl">
             {description}
         </p>
 
         <a
             href={homeLink}
-            class="rounded-lg bg-blue-600 px-6 py-3 font-medium text-white transition-colors hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
+            class="bg-button-primary text-button-primary-text hover:bg-button-primary-hover rounded-lg px-6 py-3 font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
         >
             {homeButtonText}
         </a>
