@@ -79,7 +79,7 @@
     "check": "astro check",
     "lint": "biome lint . && eslint .",
     "lint:fix": "biome lint --write . && eslint . --fix",
-    "format": "biome format --write . && prettier --write \"**/*.{astro,svelte,svg,md,mdx,yaml,yml}\" && eslint . --fix",
+    "format": "biome format --write . && eslint . --fix && prettier --write \"**/*.{astro,svelte,svg,md,mdx,yaml,yml}\"",
     "format:check": "biome format . && prettier --check \"**/*.{astro,svelte,svg,md,mdx,yaml,yml}\"",
     "format:biome": "biome format --write .",
     "format:prettier": "prettier --write \"**/*.{astro,svelte,svg,md,mdx,yaml,yml}\"",
