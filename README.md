@@ -22,7 +22,7 @@ This project establishes complete foundational scaffolding for an SSR-first Astr
 - **Language**: TypeScript (strict mode) everywhere
 - **Content**: MDX via Astro Content Collections
 - **Code Highlighting**: Expressive Code (Shiki-based)
-- **Icons**: Solar icons via Iconify + custom SVGs
+- **Icons**: Custom SVG icons
 - **Fonts**: Innovator Grotesk from fonts.vancura.dev
 - **Package Manager**: pnpm
 - **Deployment**: Cloudflare Pages with edge functions
@@ -88,7 +88,6 @@ All components are written in Svelte with TypeScript.
 
 - **Button** — Styled button with variants
 - **Card** — Content card container
-- **Icon** — Solar icons via Iconify with validation/fallback
 
 ### Layout Components
 
@@ -429,25 +428,11 @@ To update font files, change the URLs in `src/components/astro/BaseHead.astro`.
 
 ## Icons
 
-### Solar Icons
-
-Primary icon system via Iconify fetch:
-
-```astro
-<Icon name="solar:game-controller-bold" class="h-6 w-6" />
-```
-
-The Icon component includes:
-
-- Name parsing and validation
-- SVG fetch with caching
-- SSR-safe fallback behavior
-
-Browse: <https://www.figma.com/community/file/1166831539721848736>
-
 ### Custom Icons
 
-Place custom SVG icons in `src/assets/icons/`. See README.md in that directory for guidelines.
+The website uses custom inline SVG icons throughout. Icons are embedded directly in components as SVG elements for
+maximum flexibility and performance. Place additional custom SVG icons in `src/assets/icons/` if needed. See README.md
+in that directory for guidelines.
 
 ## Utilities
 

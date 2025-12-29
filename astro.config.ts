@@ -5,7 +5,6 @@ import svelte from '@astrojs/svelte';
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig } from 'astro/config';
 import expressiveCode from 'astro-expressive-code';
-import icon from 'astro-icon';
 import remarkGfm from 'remark-gfm';
 import remarkSmartypants from 'remark-smartypants';
 
@@ -43,12 +42,6 @@ export default defineConfig({
         }),
 
         sitemap(),
-
-        icon({
-            include: {
-                solar: ['*'],
-            },
-        }),
     ],
 
     image: {

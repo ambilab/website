@@ -42,7 +42,7 @@ All code must pass strict TypeScript checks:
 - **Language**: TypeScript (strict mode)
 - **Content**: MDX via Astro Content Collections
 - **State Management**: Nanostores
-- **Icons**: Solar icons via Iconify + custom SVGs
+- **Icons**: Custom SVGs
 - **Package Manager**: pnpm
 - **Deployment**: Cloudflare Pages
 
