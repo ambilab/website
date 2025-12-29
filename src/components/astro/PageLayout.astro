@@ -22,9 +22,9 @@ const currentPath = Astro.url.pathname;
 <!doctype html>
 <html lang={locale} class="scroll-smooth">
     <head>
-        <!-- Initialize dark mode immediately to prevent flash -->
+        <!-- Initialize dark mode immediately to prevent flash, and persist across view transitions -->
         <script is:inline>
-            (function () {
+            function applyTheme() {
                 const theme = localStorage.getItem('theme');
                 const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
                 const isDark = theme === 'dark' || (!theme && systemPrefersDark);
@@ -34,7 +34,13 @@ const currentPath = Astro.url.pathname;
                 } else {
                     document.documentElement.classList.remove('dark');
                 }
-            })();
+            }
+
+            // Apply theme immediately on page load
+            applyTheme();
+
+            // Reapply theme after view transitions (client-side navigation)
+            document.addEventListener('astro:after-swap', applyTheme);
         </script>
 
         <Head {...seoProps} locale={locale} />
