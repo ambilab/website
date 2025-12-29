@@ -153,4 +153,4 @@ NOTE: Only load external font in production to avoid CORS issues in development
 />
 
 <!-- Plausible Analytics -->
-{import.meta.env.PROD && <script defer data-domain={currentDomain} src="https://plausible.io/js/script.js" />}
+{import.meta.env.PROD && <script defer is:inline data-domain={currentDomain} src="https://plausible.io/js/script.js" />}
