@@ -3,6 +3,7 @@
     import { setLocaleCookie } from '@i18n/utils';
     import type { Locale } from '@type/locale';
     import { createLogger } from '@utils/logger';
+    import { navigate } from 'astro:transitions/client';
 
     const logger = createLogger({ prefix: 'LocaleSwitcher' });
 
@@ -28,11 +29,8 @@
             // Set locale cookie
             document.cookie = setLocaleCookie(otherLocale);
 
-            // Set a flag to trigger typewriter animation on the next page load
-            sessionStorage.setItem('typewriter-trigger', 'true');
-
-            // Reload page to apply a new locale
-            window.location.reload();
+            // Use Astro's navigate function to trigger View Transitions
+            await navigate(window.location.pathname);
         } catch (error) {
             logger.error('Failed to switch locale', error);
             isAnimating = false;

@@ -22,7 +22,7 @@ This project establishes complete foundational scaffolding for an SSR-first Astr
 - **Language**: TypeScript (strict mode) everywhere
 - **Content**: MDX via Astro Content Collections
 - **Code Highlighting**: Expressive Code (Shiki-based)
-- **Animation**: GSAP for typewriter effects (reduced-motion aware)
+- **Animation**: GSAP (reduced-motion aware)
 - **Icons**: Solar icons via Iconify + custom SVGs
 - **Fonts**: Innovator Grotesk from fonts.vancura.dev
 - **Package Manager**: pnpm
@@ -158,8 +158,6 @@ ambilab-website/
 │   │   └── utils.ts            # i18n helpers (detect, cookie, paths)
 │   ├── lib/
 │   │   ├── images.ts           # Image pipeline (breakpoints, formats, sizes)
-│   │   ├── typewriter.ts       # GSAP animation logic
-│   │   └── typewriter-init.ts  # Animation trigger setup
 │   ├── pages/
 │   │   ├── [...slug].astro     # Dynamic routing (pages + blog)
 │   │   ├── 404.astro           # Localized 404 page

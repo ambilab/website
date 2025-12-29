@@ -63,7 +63,7 @@ ambilab-website/
       blog/              # Blog posts by locale (en/, cs/)
       pages/             # Static pages by locale
     i18n/                # Locale config, translations, utils
-    lib/                 # Reusable libraries (typewriter, images)
+    lib/                 # Reusable libraries (images)
     pages/               # Astro pages and API routes
     scripts/             # Utility scripts
     stores/              # Nanostores for state

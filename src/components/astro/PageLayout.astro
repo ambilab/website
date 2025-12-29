@@ -35,8 +35,6 @@ const currentPath = Astro.url.pathname;
         <CookieBanner client:idle locale={locale} />
 
         <script>
-            import '@lib/typewriter-init';
-
             import { initDarkMode } from '@utils/dom';
 
             initDarkMode();

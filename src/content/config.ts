@@ -11,7 +11,6 @@ const blogCollection = defineCollection({
         updatedDate: z.coerce.date().optional(),
         author: z.string().default('ambilab'),
         tags: z.array(z.string()).default([]),
-        disableTypewriter: z.boolean().default(false),
         draft: z.boolean().default(false),
     }),
 });
@@ -23,7 +22,6 @@ const pagesCollection = defineCollection({
         description: z.string(),
         locale: z.enum(['en', 'cs']),
         translationSlug: z.string().optional(),
-        disableTypewriter: z.boolean().default(false),
     }),
 });
 

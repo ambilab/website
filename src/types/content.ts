@@ -10,7 +10,6 @@ export interface BlogPost {
     updatedDate?: Date;
     author: string;
     tags: string[];
-    disableTypewriter: boolean;
     draft: boolean;
 }
 
@@ -20,5 +19,4 @@ export interface Page {
     slug: string;
     locale: Locale;
     translationSlug?: string;
-    disableTypewriter: boolean;
 }

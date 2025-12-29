@@ -2,6 +2,7 @@
 import { SITE } from '@config/site';
 import type { Locale } from '@type/locale';
 import type { ISEOMetadata } from '@type/seo';
+import { ClientRouter } from 'astro:transitions';
 
 export interface Props extends ISEOMetadata {
     title: string;
@@ -32,6 +33,8 @@ See: src/middleware.ts and functions/_middleware.ts
 NOTE: Only load external font in production to avoid CORS issues in development
 */
 ---
+
+<ClientRouter />
 
 {
     import.meta.env.PROD && (
