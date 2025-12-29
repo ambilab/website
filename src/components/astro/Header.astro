@@ -1,5 +1,6 @@
 ---
 import LocaleSwitcher from '@components/svelte/LocaleSwitcher.svelte';
+import ThemeSwitcher from '@components/svelte/ThemeSwitcher.svelte';
 import { getTranslation } from '@i18n/translations';
 import type { Locale } from '@type/locale';
 
@@ -54,6 +55,7 @@ const t = getTranslation(locale);
                 {t.nav.blog}
             </a>
 
+            <ThemeSwitcher client:load />
             <LocaleSwitcher client:load currentLocale={locale} />
         </div>
     </nav>

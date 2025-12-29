@@ -23,7 +23,8 @@
       "!**/*.svelte",
       "!**/*.md",
       "!**/*.mdx",
-      "!**/pnpm-lock.yaml"
+      "!**/pnpm-lock.yaml",
+      "!**/src/styles/global.css"
     ]
   },
   "formatter": {

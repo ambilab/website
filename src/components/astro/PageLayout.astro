@@ -20,7 +20,24 @@ const currentPath = Astro.url.pathname;
 
 <!doctype html>
 <html lang={locale} class="scroll-smooth">
-    <Head {...seoProps} locale={locale} />
+    <head>
+        <!-- Initialize dark mode immediately to prevent flash -->
+        <script is:inline>
+            (function () {
+                const theme = localStorage.getItem('theme');
+                const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                const isDark = theme === 'dark' || (!theme && systemPrefersDark);
+
+                if (isDark) {
+                    document.documentElement.classList.add('dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                }
+            })();
+        </script>
+
+        <Head {...seoProps} locale={locale} />
+    </head>
 
     <body class="bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100">
         <Header locale={locale} currentPath={currentPath} />
@@ -32,12 +49,7 @@ const currentPath = Astro.url.pathname;
         <Footer locale={locale} />
 
         <GoToTop client:idle />
+
         <CookieBanner client:idle locale={locale} />
-
-        <script>
-            import { initDarkMode } from '@utils/dom';
-
-            initDarkMode();
-        </script>
     </body>
 </html>
