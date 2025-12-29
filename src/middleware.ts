@@ -59,10 +59,12 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
         // Prevent infinite redirect loop if already on error page
         const url = new URL(context.request.url);
+        const pathname = url.pathname.replace(/\/$/, '') || '/';
 
-        if (url.pathname === '/404' || url.pathname === '/500' || url.pathname === '/503') {
+        if (pathname === '/404' || pathname === '/500' || pathname === '/503') {
             // Return a basic error response instead of redirecting
-            const errorResponse = new Response('Internal Server Error', { status: 500 });
+            const status = pathname === '/404' ? 404 : 503;
+            const errorResponse = new Response('Error', { status });
 
             // Apply security headers even to error responses
             applySecurityHeaders(errorResponse.headers, {
