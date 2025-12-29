@@ -45,6 +45,25 @@ body {
     }
 }
 
+/* View Transitions (gradient wipe animation) */
+@media (prefers-reduced-motion: no-preference) {
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+        animation-duration: 300ms;
+        animation-timing-function: cubic-bezier(0.27, 0, 0.51, 1);
+    }
+}
+
+/* Reduced motion: instant transitions with no mask effects */
+@media (prefers-reduced-motion: reduce) {
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+        animation-duration: 0.001s;
+        animation-name: none;
+        mask-image: none;
+    }
+}
+
 /* Selection colors */
 ::selection {
     background-color: theme('colors.blue.200');
