@@ -38,6 +38,10 @@ export interface Translations {
         minutesShort: string;
         tags: string;
         author: string;
+        title: string;
+        description: string;
+        allPosts: string;
+        noPosts: string;
     };
     notFound: {
         title: string;
@@ -84,6 +88,10 @@ export const translations: Record<Locale, Translations> = {
             minutesShort: 'min',
             tags: 'Tags',
             author: 'Author',
+            title: 'Blog',
+            description: 'Latest articles and updates from Ambilab',
+            allPosts: 'All posts',
+            noPosts: 'No posts available yet.',
         },
         notFound: {
             title: '404',
@@ -128,6 +136,10 @@ export const translations: Record<Locale, Translations> = {
             minutesShort: 'min',
             tags: 'Štítky',
             author: 'Autor',
+            title: 'Blog',
+            description: 'Nejnovější články a aktuality z Ambilabu',
+            allPosts: 'Všechny příspěvky',
+            noPosts: 'Zatím nejsou k dispozici žádné příspěvky.',
         },
         notFound: {
             title: '404',

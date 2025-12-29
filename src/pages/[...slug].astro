@@ -1,6 +1,7 @@
 ---
 import BlogPostLayout from '@components/astro/BlogPostLayout.astro';
 import PageLayout from '@components/astro/PageLayout.astro';
+import { getTranslation } from '@i18n/translations';
 import type { Locale } from '@type/locale';
 import type { CollectionEntry } from 'astro:content';
 import { getCollection } from 'astro:content';
@@ -13,17 +14,38 @@ const detectedLocale = Astro.locals.locale;
 const { slug } = Astro.params;
 const requestPath = slug || 'index';
 
+// Check if this is the blog listing page
+const isBlogIndex = requestPath === 'blog';
+
 // Determine if it's a blog post or page
 const isBlogPost = requestPath.startsWith('blog/');
 
 // Extract the actual slug (remove blog/ prefix if present)
 const actualSlug = isBlogPost ? requestPath.replace('blog/', '') : requestPath;
 
-// Fetch the appropriate collection, filtered by detected locale
-let entry;
-let type: 'page' | 'blog';
+// Variables for rendering
+let renderType: 'blog-index' | 'blog-post' | 'page' | 'not-found';
+let entry: CollectionEntry<'blog'> | CollectionEntry<'pages'> | undefined;
+let sortedBlogPosts: CollectionEntry<'blog'>[] = [];
+let Content: any;
+let locale: Locale = detectedLocale;
+let siteUrl = Astro.url.origin;
+let permalink = '';
 
-if (isBlogPost) {
+// Handle blog index page
+if (isBlogIndex) {
+    const blogPosts = await getCollection(
+        'blog',
+        (entry: CollectionEntry<'blog'>) => !entry.data.draft && entry.data.locale === detectedLocale,
+    );
+    // Sort by publication date (newest first)
+    sortedBlogPosts = blogPosts.sort(
+        (a: CollectionEntry<'blog'>, b: CollectionEntry<'blog'>) => b.data.pubDate.getTime() - a.data.pubDate.getTime(),
+    );
+    permalink = `${siteUrl}/blog`;
+    renderType = 'blog-index';
+} else if (isBlogPost) {
+    // Handle individual blog post
     const blogPosts = await getCollection(
         'blog',
         (entry: CollectionEntry<'blog'>) => !entry.data.draft && entry.data.locale === detectedLocale,
@@ -32,8 +54,19 @@ if (isBlogPost) {
         const entrySlug = e.id.replace(/\.(mdx|md)$/, '').replace(/^[^/]+\//, '');
         return entrySlug === actualSlug;
     });
-    type = 'blog';
+
+    if (entry) {
+        const rendered = await entry.render();
+        Content = rendered.Content;
+        locale = entry.data.locale;
+        const entrySlug = entry.id.replace(/\.(mdx|md)$/, '').replace(/^[^/]+\//, '');
+        permalink = `${siteUrl}/blog/${entrySlug}`;
+        renderType = 'blog-post';
+    } else {
+        renderType = 'not-found';
+    }
 } else {
+    // Handle regular page
     const pages = await getCollection(
         'pages',
         (entry: CollectionEntry<'pages'>) => entry.data.locale === detectedLocale,
@@ -42,30 +75,114 @@ if (isBlogPost) {
         const entrySlug = e.id.replace(/\.(mdx|md)$/, '').replace(/^[^/]+\//, '');
         return entrySlug === actualSlug;
     });
-    type = 'page';
+
+    if (entry) {
+        const rendered = await entry.render();
+        Content = rendered.Content;
+        locale = entry.data.locale;
+        const entrySlug = entry.id.replace(/\.(mdx|md)$/, '').replace(/^[^/]+\//, '');
+        permalink = `${siteUrl}/${entrySlug === 'index' ? '' : entrySlug}`;
+        renderType = 'page';
+    } else {
+        renderType = 'not-found';
+    }
 }
 
 // 404 if not found
-if (!entry) {
+if (renderType === 'not-found') {
     return Astro.redirect('/404');
 }
 
-const { Content } = await entry.render();
+const t = getTranslation(detectedLocale);
 
-const locale: Locale = entry.data.locale;
-const siteUrl = Astro.url.origin;
-const entrySlug = entry.id.replace(/\.(mdx|md)$/, '').replace(/^[^/]+\//, '');
-const permalink =
-    type === 'blog' ? `${siteUrl}/blog/${entrySlug}` : `${siteUrl}/${entrySlug === 'index' ? '' : entrySlug}`;
+// Calculate translation path for locale switcher
+let translationPath: string | undefined;
+
+if (renderType === 'blog-index') {
+    // Blog index always stays at /blog
+    translationPath = '/blog';
+} else if (renderType === 'page' && entry) {
+    if (actualSlug === 'index') {
+        // Home page always stays at /
+        translationPath = '/';
+    } else if (entry.data.translationSlug) {
+        // Use translation slug for the page
+        translationPath = `/${entry.data.translationSlug}`;
+    }
+} else if (renderType === 'blog-post' && entry && entry.data.translationSlug) {
+    // Use translation slug for blog posts
+    translationPath = `/blog/${entry.data.translationSlug}`;
+}
 ---
 
 {
-    type === 'page' ? (
+    renderType === 'blog-index' ? (
+        <PageLayout
+            title={`${t.blog.title} | Ambilab`}
+            description={t.blog.description}
+            permalink={permalink}
+            locale={locale}
+            {...(translationPath ? { translationPath } : {})}
+        >
+            <div class="container mx-auto px-4 py-12">
+                <div class="mx-auto max-w-4xl">
+                    <h1 class="mb-4 text-4xl font-bold">{t.blog.title}</h1>
+                    <p class="mb-12 text-xl text-gray-600 dark:text-gray-400">{t.blog.description}</p>
+
+                    {sortedBlogPosts.length === 0 ? (
+                        <p class="text-gray-600 dark:text-gray-400">{t.blog.noPosts}</p>
+                    ) : (
+                        <div class="space-y-8">
+                            {sortedBlogPosts.map((post) => {
+                                const postSlug = post.id.replace(/\.(mdx|md)$/, '').replace(/^[^/]+\//, '');
+                                const postUrl = `/blog/${postSlug}`;
+                                const formattedDate = new Intl.DateTimeFormat(locale, {
+                                    year: 'numeric',
+                                    month: 'long',
+                                    day: 'numeric',
+                                }).format(post.data.pubDate);
+
+                                return (
+                                    <article class="border-b border-gray-200 pb-8 last:border-b-0 dark:border-gray-700">
+                                        <a href={postUrl} class="group">
+                                            <h2 class="mb-2 text-2xl font-bold transition-colors group-hover:text-blue-600 dark:group-hover:text-blue-400">
+                                                {post.data.title}
+                                            </h2>
+                                        </a>
+                                        <div class="mb-3 flex items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
+                                            <time datetime={post.data.pubDate.toISOString()}>{formattedDate}</time>
+                                            {post.data.tags.length > 0 && (
+                                                <div class="flex flex-wrap gap-2">
+                                                    {post.data.tags.map((tag: string) => (
+                                                        <span class="rounded-full bg-gray-100 px-3 py-1 text-xs dark:bg-gray-800">
+                                                            {tag}
+                                                        </span>
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </div>
+                                        <p class="mb-4 text-gray-700 dark:text-gray-300">{post.data.description}</p>
+                                        <a
+                                            href={postUrl}
+                                            class="inline-flex items-center font-medium text-blue-600 transition-colors hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
+                                        >
+                                            {t.buttons.readMore} →
+                                        </a>
+                                    </article>
+                                );
+                            })}
+                        </div>
+                    )}
+                </div>
+            </div>
+        </PageLayout>
+    ) : renderType === 'page' && entry ? (
         <PageLayout
             title={`${entry.data.title} | Ambilab`}
             description={entry.data.description}
             permalink={permalink}
             locale={locale}
+            {...(translationPath ? { translationPath } : {})}
         >
             <article class="container mx-auto px-4 py-12">
                 <div class="mdx-content prose prose-lg mx-auto max-w-4xl dark:prose-invert">
@@ -73,7 +190,7 @@ const permalink =
                 </div>
             </article>
         </PageLayout>
-    ) : type === 'blog' ? (
+    ) : renderType === 'blog-post' && entry ? (
         <BlogPostLayout
             title={`${entry.data.title} | Ambilab`}
             description={entry.data.description}
@@ -84,6 +201,7 @@ const permalink =
             author={entry.data.author}
             tags={entry.data.tags}
             content={entry.body}
+            {...(translationPath ? { translationPath } : {})}
         >
             <Content />
         </BlogPostLayout>
