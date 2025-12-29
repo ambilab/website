@@ -19,9 +19,10 @@ export interface Props extends ISEOMetadata {
     author: string;
     tags?: string[];
     content: string;
+    translationPath?: string;
 }
 
-const { locale, title, pubDate, updatedDate, author, tags = [], content, ...seoProps } = Astro.props;
+const { locale, title, pubDate, updatedDate, author, tags = [], content, translationPath, ...seoProps } = Astro.props;
 const t = getTranslation(locale);
 const readingTime = calculateReadingTime(content);
 
@@ -34,7 +35,7 @@ const formatDate = (date: Date) => {
 };
 ---
 
-<PageLayout locale={locale} title={title} {...seoProps}>
+<PageLayout locale={locale} title={title} translationPath={translationPath} {...seoProps}>
     <article class="container mx-auto px-4 py-12">
         <header class="mb-12">
             <h1 class="mb-4 text-4xl font-bold md:text-5xl">{title}</h1>

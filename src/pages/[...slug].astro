@@ -92,6 +92,25 @@ if (renderType === 'not-found') {
 }
 
 const t = getTranslation(detectedLocale);
+
+// Calculate translation path for locale switcher
+let translationPath: string | undefined;
+
+if (renderType === 'blog-index') {
+    // Blog index always stays at /blog
+    translationPath = '/blog';
+} else if (renderType === 'page' && entry) {
+    if (actualSlug === 'index') {
+        // Home page always stays at /
+        translationPath = '/';
+    } else if (entry.data.translationSlug) {
+        // Use translation slug for the page
+        translationPath = `/${entry.data.translationSlug}`;
+    }
+} else if (renderType === 'blog-post' && entry && entry.data.translationSlug) {
+    // Use translation slug for blog posts
+    translationPath = `/blog/${entry.data.translationSlug}`;
+}
 ---
 
 {
@@ -101,6 +120,7 @@ const t = getTranslation(detectedLocale);
             description={t.blog.description}
             permalink={permalink}
             locale={locale}
+            translationPath={translationPath}
         >
             <div class="container mx-auto px-4 py-12">
                 <div class="mx-auto max-w-4xl">
@@ -160,6 +180,7 @@ const t = getTranslation(detectedLocale);
             description={entry.data.description}
             permalink={permalink}
             locale={locale}
+            translationPath={translationPath}
         >
             <article class="container mx-auto px-4 py-12">
                 <div class="mdx-content prose prose-lg mx-auto max-w-4xl dark:prose-invert">
@@ -178,6 +199,7 @@ const t = getTranslation(detectedLocale);
             author={entry.data.author}
             tags={entry.data.tags}
             content={entry.body}
+            translationPath={translationPath}
         >
             <Content />
         </BlogPostLayout>

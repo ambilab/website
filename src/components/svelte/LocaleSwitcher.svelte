@@ -9,9 +9,10 @@
 
     interface Props {
         currentLocale: Locale;
+        translationPath?: string;
     }
 
-    let { currentLocale }: Props = $props();
+    let { currentLocale, translationPath }: Props = $props();
 
     let isAnimating = $state(false);
 
@@ -29,8 +30,11 @@
             // Set locale cookie
             document.cookie = setLocaleCookie(otherLocale);
 
+            // Use translation path if available, otherwise stay on current path
+            const targetPath = translationPath || window.location.pathname;
+
             // Use Astro's navigate function to trigger View Transitions
-            await navigate(window.location.pathname);
+            await navigate(targetPath);
         } catch (error) {
             logger.error('Failed to switch locale', error);
             isAnimating = false;

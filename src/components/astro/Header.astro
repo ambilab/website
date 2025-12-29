@@ -7,9 +7,10 @@ import type { Locale } from '@type/locale';
 export interface Props {
     locale: Locale;
     currentPath: string;
+    translationPath?: string;
 }
 
-const { locale, currentPath } = Astro.props;
+const { locale, currentPath, translationPath } = Astro.props;
 const t = getTranslation(locale);
 ---
 
@@ -56,7 +57,7 @@ const t = getTranslation(locale);
             </a>
 
             <ThemeSwitcher client:load />
-            <LocaleSwitcher client:load currentLocale={locale} />
+            <LocaleSwitcher client:load currentLocale={locale} translationPath={translationPath} />
         </div>
     </nav>
 </header>
