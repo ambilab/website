@@ -23,7 +23,7 @@ const currentPath = Astro.url.pathname;
 <html lang={locale}>
     <head>
         <!-- Initialize dark mode immediately to prevent flash, and persist across view transitions -->
-        <script is:inline>
+        <script is:inline nonce={Astro.locals.nonce}>
             function applyTheme() {
                 const theme = localStorage.getItem('theme');
                 const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
