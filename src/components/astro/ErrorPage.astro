@@ -1,6 +1,7 @@
 ---
 import PageLayout from '@components/astro/PageLayout.astro';
 import { SITE } from '@config/site';
+import type { Locale } from '@type/locale';
 
 interface Props {
     /** HTTP status code (e.g., 404, 500, 503) */
@@ -19,7 +20,7 @@ interface Props {
     homeLink?: string;
 
     /** Current locale */
-    locale: 'en' | 'cs';
+    locale: Locale;
 }
 
 const { code, title, description, homeButtonText, homeLink = '/', locale } = Astro.props;
