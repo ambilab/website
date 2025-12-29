@@ -511,6 +511,17 @@ pnpm tsx src/scripts/validate-security-headers.ts
 - **Performance-Optimized**: Lazy loading, font preloading, image optimization
 - **Developer Experience**: Path aliases, consistent formatting
 
+## Contributing
+
+Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details on:
+
+- Developer Certificate of Origin (DCO) requirements
+- Commit message format (Conventional Commits)
+- Code style guidelines
+- Pull request process
+
+All commits must be signed off with a DCO. Use `git commit -s` to automatically add the sign-off.
+
 ## License
 
 Copyright © 2024 Ambilab. All rights reserved.
