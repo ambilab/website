@@ -111,14 +111,20 @@
 
     // Build minimal allow attribute: only include features explicitly requested
     // Each feature needs an allowlist - we use 'src' to allow from the iframe's origin
-    // Note: 'autoplay' is not included as it's not widely supported in Permissions Policy
-    // and autoplay works by default with allow-scripts + allow-same-origin sandbox
+    // Note: autoplay is controlled by the Permissions-Policy HTTP header (via the allow attribute),
+    // not by sandbox tokens. The sandbox attribute has no 'allow-autoplay' token in the HTML spec.
     const allowPermissions = $derived.by(() => {
         const permissions: string[] = [];
+
+        if (allowAutoplay) {
+            permissions.push('autoplay');
+        }
+
         if (allowMotionSensors) {
             permissions.push("accelerometer 'src'");
             permissions.push("gyroscope 'src'");
         }
+
         return permissions.join('; ');
     });
 
