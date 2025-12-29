@@ -48,9 +48,9 @@ jobs:
           for commit in $COMMITS; do
             SUBJECT=$(git log --format=%s -n 1 $commit)
             if git log --format=%B -n 1 $commit | grep -q "^Signed-off-by: "; then
-              echo "✓ $commit: $SUBJECT"
+              echo "[PASS] $commit: $SUBJECT"
             else
-              echo "❌ $commit: $SUBJECT (missing DCO sign-off)"
+              echo "[FAIL] $commit: $SUBJECT (missing DCO sign-off)"
               FAILED=1
             fi
           done
@@ -58,7 +58,7 @@ jobs:
           if [ $FAILED -eq 1 ]; then
             echo ""
             echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-            echo "❌ DCO Check Failed"
+            echo "[FAILED] DCO Check Failed"
             echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
             echo ""
             echo "All commits must be signed off with a DCO (Developer Certificate of Origin)."
@@ -81,7 +81,7 @@ jobs:
           fi
 
           echo ""
-          echo "✓ All commits are properly signed off"
+          echo "[PASS] All commits are properly signed off"
 
       - name: Check DCO for Push
         if: github.event_name == 'push'
@@ -111,9 +111,9 @@ jobs:
           for commit in $COMMITS; do
             SUBJECT=$(git log --format=%s -n 1 $commit)
             if git log --format=%B -n 1 $commit | grep -q "^Signed-off-by: "; then
-              echo "✓ $commit: $SUBJECT"
+              echo "[PASS] $commit: $SUBJECT"
             else
-              echo "❌ $commit: $SUBJECT (missing DCO sign-off)"
+              echo "[FAIL] $commit: $SUBJECT (missing DCO sign-off)"
               FAILED=1
             fi
           done
@@ -121,7 +121,7 @@ jobs:
           if [ $FAILED -eq 1 ]; then
             echo ""
             echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-            echo "❌ DCO Check Failed"
+            echo "[FAILED] DCO Check Failed"
             echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
             echo ""
             echo "All commits must be signed off with a DCO (Developer Certificate of Origin)."
@@ -139,4 +139,4 @@ jobs:
           fi
 
           echo ""
-          echo "✓ All commits are properly signed off"
+          echo "[PASS] All commits are properly signed off"
