@@ -65,11 +65,6 @@ export const onRequest = defineMiddleware(async (context, next) => {
             return new Response('Internal Server Error', { status: 500 });
         }
 
-        // Set default locale in case of error
-        context.locals.locale = defaultLocale;
-        context.locals.nonce = generateNonce();
-
-        // Return a 500 error response
         // Redirect to 500 page to maintain consistency
         return context.redirect('/500');
     }
