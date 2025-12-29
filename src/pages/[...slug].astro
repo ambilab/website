@@ -3,8 +3,11 @@ import BlogPostLayout from '@components/astro/BlogPostLayout.astro';
 import PageLayout from '@components/astro/PageLayout.astro';
 import { getTranslation } from '@i18n/translations';
 import type { Locale } from '@type/locale';
+import { createLogger } from '@utils/logger';
 import type { CollectionEntry } from 'astro:content';
 import { getCollection } from 'astro:content';
+
+const logger = createLogger({ prefix: 'ContentPage' });
 
 // Get the detected locale from middleware (via context.locals)
 // Middleware guarantees this is always defined
@@ -24,7 +27,7 @@ const isBlogPost = requestPath.startsWith('blog/');
 const actualSlug = isBlogPost ? requestPath.replace('blog/', '') : requestPath;
 
 // Variables for rendering
-let renderType: 'blog-index' | 'blog-post' | 'page' | 'not-found';
+let renderType: 'blog-index' | 'blog-post' | 'page' | 'not-found' | 'error';
 let entry: CollectionEntry<'blog'> | CollectionEntry<'pages'> | undefined;
 let sortedBlogPosts: CollectionEntry<'blog'>[] = [];
 let Content: any;
@@ -32,63 +35,87 @@ let locale: Locale = detectedLocale;
 let siteUrl = Astro.url.origin;
 let permalink = '';
 
-// Handle blog index page
-if (isBlogIndex) {
-    const blogPosts = await getCollection(
-        'blog',
-        (entry: CollectionEntry<'blog'>) => !entry.data.draft && entry.data.locale === detectedLocale,
-    );
-    // Sort by publication date (newest first)
-    sortedBlogPosts = blogPosts.sort(
-        (a: CollectionEntry<'blog'>, b: CollectionEntry<'blog'>) => b.data.pubDate.getTime() - a.data.pubDate.getTime(),
-    );
-    permalink = `${siteUrl}/blog`;
-    renderType = 'blog-index';
-} else if (isBlogPost) {
-    // Handle individual blog post
-    const blogPosts = await getCollection(
-        'blog',
-        (entry: CollectionEntry<'blog'>) => !entry.data.draft && entry.data.locale === detectedLocale,
-    );
-    entry = blogPosts.find((e: CollectionEntry<'blog'>) => {
-        const entrySlug = e.id.replace(/\.(mdx|md)$/, '').replace(/^[^/]+\//, '');
-        return entrySlug === actualSlug;
-    });
+try {
+    // Handle blog index page
+    if (isBlogIndex) {
+        const blogPosts = await getCollection(
+            'blog',
+            (entry: CollectionEntry<'blog'>) => !entry.data.draft && entry.data.locale === detectedLocale,
+        );
 
-    if (entry) {
-        const rendered = await entry.render();
-        Content = rendered.Content;
-        locale = entry.data.locale;
-        const entrySlug = entry.id.replace(/\.(mdx|md)$/, '').replace(/^[^/]+\//, '');
-        permalink = `${siteUrl}/blog/${entrySlug}`;
-        renderType = 'blog-post';
-    } else {
-        renderType = 'not-found';
-    }
-} else {
-    // Handle regular page
-    const pages = await getCollection(
-        'pages',
-        (entry: CollectionEntry<'pages'>) => entry.data.locale === detectedLocale,
-    );
-    entry = pages.find((e: CollectionEntry<'pages'>) => {
-        const entrySlug = e.id.replace(/\.(mdx|md)$/, '').replace(/^[^/]+\//, '');
-        return entrySlug === actualSlug;
-    });
+        // Sort by publication date (newest first)
+        sortedBlogPosts = blogPosts.sort(
+            (a: CollectionEntry<'blog'>, b: CollectionEntry<'blog'>) =>
+                b.data.pubDate.getTime() - a.data.pubDate.getTime(),
+        );
 
-    if (entry) {
-        const rendered = await entry.render();
-        Content = rendered.Content;
-        locale = entry.data.locale;
-        const entrySlug = entry.id.replace(/\.(mdx|md)$/, '').replace(/^[^/]+\//, '');
-        permalink = `${siteUrl}/${entrySlug === 'index' ? '' : entrySlug}`;
-        renderType = 'page';
+        permalink = `${siteUrl}/blog`;
+        renderType = 'blog-index';
+    } else if (isBlogPost) {
+        // Handle individual blog post
+        const blogPosts = await getCollection(
+            'blog',
+            (entry: CollectionEntry<'blog'>) => !entry.data.draft && entry.data.locale === detectedLocale,
+        );
+
+        entry = blogPosts.find((e: CollectionEntry<'blog'>) => {
+            const entrySlug = e.id.replace(/\.(mdx|md)$/, '').replace(/^[^/]+\//, '');
+
+            return entrySlug === actualSlug;
+        });
+
+        if (entry) {
+            const rendered = await entry.render();
+
+            Content = rendered.Content;
+            locale = entry.data.locale;
+
+            const entrySlug = entry.id.replace(/\.(mdx|md)$/, '').replace(/^[^/]+\//, '');
+
+            permalink = `${siteUrl}/blog/${entrySlug}`;
+            renderType = 'blog-post';
+        } else {
+            renderType = 'not-found';
+        }
     } else {
-        renderType = 'not-found';
+        // Handle regular page
+        const pages = await getCollection(
+            'pages',
+            (entry: CollectionEntry<'pages'>) => entry.data.locale === detectedLocale,
+        );
+
+        entry = pages.find((e: CollectionEntry<'pages'>) => {
+            const entrySlug = e.id.replace(/\.(mdx|md)$/, '').replace(/^[^/]+\//, '');
+
+            return entrySlug === actualSlug;
+        });
+
+        if (entry) {
+            const rendered = await entry.render();
+
+            Content = rendered.Content;
+            locale = entry.data.locale;
+
+            const entrySlug = entry.id.replace(/\.(mdx|md)$/, '').replace(/^[^/]+\//, '');
+
+            permalink = `${siteUrl}/${entrySlug === 'index' ? '' : entrySlug}`;
+            renderType = 'page';
+        } else {
+            renderType = 'not-found';
+        }
     }
+} catch (error) {
+    // Log the error
+    logger.error(`Failed to load content for path: ${requestPath}`, error);
+
+    renderType = 'error';
 }
 
-// 404 if not found
+// Handle errors and not found
+if (renderType === 'error') {
+    return Astro.redirect('/500');
+}
+
 if (renderType === 'not-found') {
     return Astro.redirect('/404');
 }

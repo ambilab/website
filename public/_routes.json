@@ -1,0 +1,5 @@
+{
+  "version": 1,
+  "include": ["/*"],
+  "exclude": ["/favicon-dark.png", "/favicon.png", "/logo-placeholder.png", "/og-default.png", "/_astro/*"]
+}
