@@ -23,6 +23,24 @@ NEVER use emoji in:
 
 This rule has no exceptions. Use plain text descriptions instead.
 
+**What to avoid:**
+
+- Emoji characters: `📷`, `🐘`, `🦋`, `🔒`, `✅`, `❌`
+- Unicode decorative characters: `𝕏`, `◈`, `✓`, `✗`
+- Emoji shortcodes: `:rocket:`, `:fire:`, `:check:`
+
+**What to use instead:**
+
+- For icons: Create SVG files in `src/assets/icons/` and use the `Icon` component
+- For status indicators: Use text labels like `[PASS]`, `[FAIL]`, `[SUCCESS]`, `[ERROR]`
+- For visual markers: Use plain text like `Completed`, `Failed`, or semantic HTML
+
+**Why this matters:**
+
+- Screen reader experience: Emoji may be announced inconsistently or verbosely
+- Visual consistency: Emoji render differently across platforms and fonts
+- Professionalism: Plain text is clearer and more maintainable
+
 ### TypeScript Strict Mode
 
 All code must pass strict TypeScript checks:

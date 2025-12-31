@@ -31,12 +31,12 @@ function validateSecurityHeaders(): ValidationResult[] {
         if (nonce1 === nonce2) {
             results.push({
                 success: false,
-                message: '❌ Nonce generation: Multiple calls returned the same nonce',
+                message: '[FAIL] Nonce generation: Multiple calls returned the same nonce',
             });
         } else {
             results.push({
                 success: true,
-                message: '✓ Nonce generation: Produces unique nonces',
+                message: '[PASS] Nonce generation: Produces unique nonces',
             });
         }
 
@@ -45,18 +45,18 @@ function validateSecurityHeaders(): ValidationResult[] {
             atob(nonce1);
             results.push({
                 success: true,
-                message: '✓ Nonce format: Valid base64 encoding',
+                message: '[PASS] Nonce format: Valid base64 encoding',
             });
         } catch {
             results.push({
                 success: false,
-                message: '❌ Nonce format: Invalid base64 encoding',
+                message: '[FAIL] Nonce format: Invalid base64 encoding',
             });
         }
     } catch (error) {
         results.push({
             success: false,
-            message: `❌ Nonce generation: ${error}`,
+            message: `[FAIL] Nonce generation: ${error}`,
         });
     }
 
@@ -69,12 +69,12 @@ function validateSecurityHeaders(): ValidationResult[] {
         if (!prodCSP.includes(`'nonce-${testNonce}'`)) {
             results.push({
                 success: false,
-                message: '❌ Production CSP: Nonce not properly embedded',
+                message: '[FAIL] Production CSP: Nonce not properly embedded',
             });
         } else {
             results.push({
                 success: true,
-                message: '✓ Production CSP: Nonce properly embedded',
+                message: '[PASS] Production CSP: Nonce properly embedded',
             });
         }
 
@@ -82,12 +82,12 @@ function validateSecurityHeaders(): ValidationResult[] {
         if (!prodCSP.includes('upgrade-insecure-requests')) {
             results.push({
                 success: false,
-                message: '❌ Production CSP: Missing upgrade-insecure-requests',
+                message: '[FAIL] Production CSP: Missing upgrade-insecure-requests',
             });
         } else {
             results.push({
                 success: true,
-                message: '✓ Production CSP: Contains upgrade-insecure-requests',
+                message: '[PASS] Production CSP: Contains upgrade-insecure-requests',
             });
         }
 
@@ -95,18 +95,18 @@ function validateSecurityHeaders(): ValidationResult[] {
         if (prodCSP.includes("'unsafe-inline'")) {
             results.push({
                 success: false,
-                message: '❌ Production CSP: Should not contain unsafe-inline',
+                message: '[FAIL] Production CSP: Should not contain unsafe-inline',
             });
         } else {
             results.push({
                 success: true,
-                message: "✓ Production CSP: Doesn't contain unsafe-inline",
+                message: "[PASS] Production CSP: Doesn't contain unsafe-inline",
             });
         }
     } catch (error) {
         results.push({
             success: false,
-            message: `❌ Production CSP validation: ${error}`,
+            message: `[FAIL] Production CSP validation: ${error}`,
         });
     }
 
@@ -118,12 +118,12 @@ function validateSecurityHeaders(): ValidationResult[] {
         if (!devCSP.includes("'unsafe-inline'")) {
             results.push({
                 success: false,
-                message: '❌ Development CSP: Should contain unsafe-inline',
+                message: '[FAIL] Development CSP: Should contain unsafe-inline',
             });
         } else {
             results.push({
                 success: true,
-                message: '✓ Development CSP: Contains unsafe-inline',
+                message: '[PASS] Development CSP: Contains unsafe-inline',
             });
         }
 
@@ -131,12 +131,12 @@ function validateSecurityHeaders(): ValidationResult[] {
         if (devCSP.includes('upgrade-insecure-requests')) {
             results.push({
                 success: false,
-                message: '❌ Development CSP: Should not contain upgrade-insecure-requests',
+                message: '[FAIL] Development CSP: Should not contain upgrade-insecure-requests',
             });
         } else {
             results.push({
                 success: true,
-                message: "✓ Development CSP: Doesn't contain upgrade-insecure-requests",
+                message: "[PASS] Development CSP: Doesn't contain upgrade-insecure-requests",
             });
         }
 
@@ -144,18 +144,18 @@ function validateSecurityHeaders(): ValidationResult[] {
         if (!devCSP.includes('ws://localhost:*') || !devCSP.includes('ws://127.0.0.1:*')) {
             results.push({
                 success: false,
-                message: '❌ Development CSP: Missing WebSocket endpoints for HMR',
+                message: '[FAIL] Development CSP: Missing WebSocket endpoints for HMR',
             });
         } else {
             results.push({
                 success: true,
-                message: '✓ Development CSP: Contains WebSocket endpoints for HMR',
+                message: '[PASS] Development CSP: Contains WebSocket endpoints for HMR',
             });
         }
     } catch (error) {
         results.push({
             success: false,
-            message: `❌ Development CSP validation: ${error}`,
+            message: `[FAIL] Development CSP validation: ${error}`,
         });
     }
 
@@ -168,12 +168,12 @@ function validateSecurityHeaders(): ValidationResult[] {
         if (missingHeaders.length > 0) {
             results.push({
                 success: false,
-                message: `❌ Static headers: Missing ${missingHeaders.join(', ')}`,
+                message: `[FAIL] Static headers: Missing ${missingHeaders.join(', ')}`,
             });
         } else {
             results.push({
                 success: true,
-                message: '✓ Static headers: All required headers present',
+                message: '[PASS] Static headers: All required headers present',
             });
         }
 
@@ -181,30 +181,30 @@ function validateSecurityHeaders(): ValidationResult[] {
         if (STATIC_SECURITY_HEADERS['X-Content-Type-Options'] !== 'nosniff') {
             results.push({
                 success: false,
-                message: '❌ X-Content-Type-Options: Should be "nosniff"',
+                message: '[FAIL] X-Content-Type-Options: Should be "nosniff"',
             });
         } else {
             results.push({
                 success: true,
-                message: '✓ X-Content-Type-Options: Correctly set to "nosniff"',
+                message: '[PASS] X-Content-Type-Options: Correctly set to "nosniff"',
             });
         }
 
         if (STATIC_SECURITY_HEADERS['X-Frame-Options'] !== 'SAMEORIGIN') {
             results.push({
                 success: false,
-                message: '❌ X-Frame-Options: Should be "SAMEORIGIN"',
+                message: '[FAIL] X-Frame-Options: Should be "SAMEORIGIN"',
             });
         } else {
             results.push({
                 success: true,
-                message: '✓ X-Frame-Options: Correctly set to "SAMEORIGIN"',
+                message: '[PASS] X-Frame-Options: Correctly set to "SAMEORIGIN"',
             });
         }
     } catch (error) {
         results.push({
             success: false,
-            message: `❌ Static headers validation: ${error}`,
+            message: `[FAIL] Static headers validation: ${error}`,
         });
     }
 
@@ -212,7 +212,7 @@ function validateSecurityHeaders(): ValidationResult[] {
 }
 
 // Run validation
-console.log('🔒 Validating Security Headers Configuration\n');
+console.log('Validating Security Headers Configuration\n');
 console.log('='.repeat(60));
 
 const results = validateSecurityHeaders();
@@ -225,9 +225,9 @@ results.forEach((result) => {
 console.log('='.repeat(60));
 
 if (failures.length === 0) {
-    console.log('\n✅ All security header validations passed!');
+    console.log('\n[SUCCESS] All security header validations passed!');
     process.exit(0);
 } else {
-    console.log(`\n❌ ${failures.length} validation(s) failed`);
+    console.log(`\n[ERROR] ${failures.length} validation(s) failed`);
     process.exit(1);
 }

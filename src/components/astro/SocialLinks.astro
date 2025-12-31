@@ -1,20 +1,23 @@
 ---
+import type { IconName } from '@config/icons';
 import { SITE } from '@config/site';
+
+import Icon from './Icon.astro';
 
 interface SocialLink {
     name: string;
     url: string;
-    icon: string;
+    icon: IconName;
 }
 
 const socialLinks: SocialLink[] = [
-    { name: 'X (Twitter)', url: SITE.SOCIAL.X, icon: '𝕏' },
-    { name: 'Threads', url: SITE.SOCIAL.THREADS, icon: '◈' },
-    { name: 'Instagram', url: SITE.SOCIAL.INSTAGRAM, icon: '📷' },
-    { name: 'LinkedIn', url: SITE.SOCIAL.LINKEDIN, icon: 'in' },
-    { name: 'Mastodon', url: SITE.SOCIAL.MASTODON, icon: '🐘' },
-    { name: 'Bluesky', url: SITE.SOCIAL.BLUESKY, icon: '🦋' },
-    { name: 'GitHub', url: SITE.SOCIAL.GITHUB, icon: 'GH' },
+    { name: 'X (Twitter)', url: SITE.SOCIAL.X, icon: 'x' },
+    { name: 'Threads', url: SITE.SOCIAL.THREADS, icon: 'threads' },
+    { name: 'Instagram', url: SITE.SOCIAL.INSTAGRAM, icon: 'instagram' },
+    { name: 'LinkedIn', url: SITE.SOCIAL.LINKEDIN, icon: 'linkedin' },
+    { name: 'Mastodon', url: SITE.SOCIAL.MASTODON, icon: 'mastodon' },
+    { name: 'Bluesky', url: SITE.SOCIAL.BLUESKY, icon: 'bluesky' },
+    { name: 'GitHub', url: SITE.SOCIAL.GITHUB, icon: 'github' },
 ];
 ---
 
@@ -25,11 +28,11 @@ const socialLinks: SocialLink[] = [
                 href={link.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="border-border-default hover:bg-surface-hover dark:border-border-default-dark dark:hover:bg-surface-hover-dark flex h-9 w-9 items-center justify-center rounded-lg border text-sm font-medium transition-colors"
+                class="border-border-default hover:bg-surface-hover dark:border-border-default-dark dark:hover:bg-surface-hover-dark flex h-9 w-9 items-center justify-center rounded-lg border transition-colors"
                 aria-label={link.name}
                 title={link.name}
             >
-                {link.icon}
+                <Icon name={link.icon} class="h-5 w-5" ariaLabel={link.name} decorative={false} />
             </a>
         ))
     }
