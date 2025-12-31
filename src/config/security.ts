@@ -57,8 +57,8 @@ export function buildCSP(config: CSPConfig): string {
     // Connection sources
     // In dev: Allow WebSocket connections for HMR
     const connectSrc = isDev
-        ? `'self' https://plausible.io https://api.buttondown.email https://api.iconify.design ws://localhost:* ws://127.0.0.1:*`
-        : `'self' https://plausible.io https://api.buttondown.email https://api.iconify.design`;
+        ? `'self' https://plausible.io https://api.buttondown.email ws://localhost:* ws://127.0.0.1:*`
+        : `'self' https://plausible.io https://api.buttondown.email`;
 
     // Build the complete CSP
     const parts = [
