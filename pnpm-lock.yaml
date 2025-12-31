@@ -4,6 +4,10 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  vite-node: ^5.2.0
+  esbuild: ^0.25.0
+
 importers:
 
   .:
