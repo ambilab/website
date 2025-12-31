@@ -299,8 +299,6 @@ When AI tools are used, include the AI trailer:
 ```text
 feat(blog): add reading time calculation
 
-Signed-off-by: Your Name <your.email@example.com>
-
 Co-Authored-By: Claude <noreply@anthropic.com>
 ```
 

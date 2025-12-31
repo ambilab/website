@@ -22,7 +22,7 @@ This project establishes complete foundational scaffolding for an SSR-first Astr
 - **Language**: TypeScript (strict mode) everywhere
 - **Content**: MDX via Astro Content Collections
 - **Code Highlighting**: Expressive Code (Shiki-based)
-- **Icons**: Custom SVG icons
+- **Icons**: Custom SVGs
 - **Fonts**: Innovator Grotesk from fonts.vancura.dev
 - **Package Manager**: pnpm
 - **Deployment**: Cloudflare Pages with edge functions
@@ -598,13 +598,18 @@ pnpm tsx src/scripts/validate-security-headers.ts
 - **Performance-Optimized**: Lazy loading, font preloading, image optimization
 - **Developer Experience**: Path aliases, consistent formatting
 
+## Why is this public?
+
+This is Ambilab's website. The code is public for reference and transparency, but we're not actively seeking
+contributions. If you spot a bug or typo, feel free to open an issue. Small fixes might be accepted, but significant
+changes probably won't be.
+
 ## License
 
 Copyright © 2024 Ambilab. All rights reserved.
 
 ## Links
 
-- **Main site**: <https://ambilab.com> (EN) / <https://ambilab.cz> (CS)
-- **Demos**: <https://blit-tech-demos.ambilab.com>
-- **Fonts**: <https://fonts.vancura.dev>
-- **GitHub**: <https://github.com/ambilab>
+- **Main site**: (WIP) <https://ambilab.com> (EN) / <https://ambilab.cz> (CS)
+- **Demos**: (WIP) <https://blit-tech-demos.ambilab.com>
+- **GitHub**: (WIP) <https://github.com/ambilab>
