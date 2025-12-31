@@ -292,24 +292,12 @@ All commits must follow the Conventional Commits format:
 - `ci` - CI/CD configuration
 - `docs` - Documentation
 
-### Signed-Off Commits
-
-All commits must include a sign-off line (DCO):
-
-```text
-Signed-off-by: Your Name <your.email@example.com>
-```
-
-Use `git commit -s` to automatically add the sign-off.
-
 ### AI-Assisted Commits
 
 When AI tools are used, include the AI trailer:
 
 ```text
 feat(blog): add reading time calculation
-
-Signed-off-by: Your Name <your.email@example.com>
 
 Co-Authored-By: Claude <noreply@anthropic.com>
 ```
