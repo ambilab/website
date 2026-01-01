@@ -1,0 +1,202 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Dev: Start development server",
+      "type": "shell",
+      "command": "pnpm dev",
+      "problemMatcher": [],
+      "isBackground": true,
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "focus": false
+      },
+      "group": "none"
+    },
+    {
+      "label": "Build: Production build",
+      "type": "shell",
+      "command": "pnpm build",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "Build: Preview production",
+      "type": "shell",
+      "command": "pnpm preview",
+      "problemMatcher": [],
+      "isBackground": true,
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      },
+      "group": "build"
+    },
+    {
+      "label": "Check: Astro check",
+      "type": "shell",
+      "command": "pnpm check",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "group": "test"
+    },
+    {
+      "label": "Lint: Check code",
+      "type": "shell",
+      "command": "pnpm lint",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "group": "test"
+    },
+    {
+      "label": "Lint: Fix issues",
+      "type": "shell",
+      "command": "pnpm lint:fix",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "group": "test"
+    },
+    {
+      "label": "Format: Check formatting",
+      "type": "shell",
+      "command": "pnpm format:check",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "group": "test"
+    },
+    {
+      "label": "Format: Fix all files",
+      "type": "shell",
+      "command": "pnpm format",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "group": "test"
+    },
+    {
+      "label": "TypeCheck: Run TypeScript checks",
+      "type": "shell",
+      "command": "pnpm typecheck",
+      "problemMatcher": ["$tsc"],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "group": "test"
+    },
+    {
+      "label": "Spell: Check spelling",
+      "type": "shell",
+      "command": "pnpm spellcheck",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "group": "test"
+    },
+    {
+      "label": "Knip: Check unused exports",
+      "type": "shell",
+      "command": "pnpm knip --reporter json > .knip-output.json 2>&1 || true",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "never",
+        "panel": "shared"
+      },
+      "group": "test"
+    },
+    {
+      "label": "Knip: Fix unused exports",
+      "type": "shell",
+      "command": "pnpm knip:fix",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "group": "test"
+    },
+    {
+      "label": "Preflight: Run all quality checks",
+      "type": "shell",
+      "command": "pnpm preflight",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "focus": true
+      },
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "Validate: Security headers",
+      "type": "shell",
+      "command": "pnpm validate:security",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "group": "test"
+    },
+    {
+      "label": "Security: Audit dependencies",
+      "type": "shell",
+      "command": "pnpm security:audit",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "group": "test"
+    },
+    {
+      "label": "Security: Audit and fix",
+      "type": "shell",
+      "command": "pnpm security:audit:fix",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "group": "test"
+    },
+    {
+      "label": "Utils: Sync AI rules",
+      "type": "shell",
+      "command": "pnpm sync-rules",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "group": "none"
+    }
+  ]
+}
