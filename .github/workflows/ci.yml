@@ -2,17 +2,21 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
+      - develop
   pull_request:
-    branches: [main]
+    branches:
+      - main
+      - develop
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  quality:
-    name: Code Quality
+  quality-checks:
+    name: Code Quality Checks
     runs-on: ubuntu-latest
 
     steps:
@@ -21,6 +25,8 @@ jobs:
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
+        with:
+          version: 10.26.2
 
       - name: Setup Node.js
         uses: actions/setup-node@v6
@@ -31,22 +37,25 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Check formatting
+      - name: Run format check
         run: pnpm format:check
 
-      - name: Lint code
+      - name: Run linters
         run: pnpm lint
 
-      - name: Type check
+      - name: Run type check
         run: pnpm typecheck
 
-      - name: Spell check
+      - name: Run spell check
         run: pnpm spellcheck
+
+      - name: Check for unused exports
+        run: pnpm knip
 
   build:
     name: Build
     runs-on: ubuntu-latest
-    needs: quality
+    needs: quality-checks
 
     steps:
       - name: Checkout code
@@ -54,6 +63,8 @@ jobs:
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
+        with:
+          version: 10.26.2
 
       - name: Setup Node.js
         uses: actions/setup-node@v6
@@ -64,8 +75,13 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build site
+      - name: Build project
         run: pnpm build
+        env:
+          NODE_ENV: production
+
+      - name: Validate security headers
+        run: pnpm validate:security
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v6
