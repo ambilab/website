@@ -6,497 +6,123 @@ alwaysApply: false
 
 # TypeScript Conventions
 
-This document covers TypeScript-specific patterns and style requirements for the Ambilab website.
-
 ## Compiler Configuration
 
-The project uses strict TypeScript. Key settings from `tsconfig.json`:
+Project uses strict TypeScript (`tsconfig.json`):
 
-```json
-{
-    "compilerOptions": {
-        "target": "ES2022",
-        "module": "ESNext",
-        "strict": true,
-        "noUnusedLocals": true,
-        "noUnusedParameters": true,
-        "noFallthroughCasesInSwitch": true,
-        "noUncheckedIndexedAccess": true,
-        "exactOptionalPropertyTypes": true,
-        "noImplicitReturns": true,
-        "noImplicitOverride": true,
-        "verbatimModuleSyntax": true
-    }
-}
-```
-
-All these checks are enabled - code must pass all of them.
+- `strict: true` with all sub-options
+- `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`
+- `noUnusedLocals`, `noUnusedParameters`, `noImplicitReturns`
+- `verbatimModuleSyntax` (enforces `import type`)
 
 ## Type Imports
 
-Always use type-only imports for types:
+Always use `import type` for types:
 
 ```typescript
-// Correct - type import
-import type { BlogPost, PageMeta } from '@type/content';
-import { formatDate, getReadingTime } from '@utils/date';
-
-// Wrong - importing types as values
-import { BlogPost } from '@type/content'; // If only used as type
+import type { BlogPost } from '@type/content';
+import { createLogger } from '@utils/logger';
 ```
-
-Use `import type` when:
-
-- Importing interfaces
-- Importing type aliases
-- Importing types only used in type positions
 
 ## Type Safety
 
-### Avoid `any`
-
-Never use `any` unless absolutely necessary:
+### Avoid `any` - Use `unknown` or generics:
 
 ```typescript
-// Bad
-function process(data: any): any {
-    return data.value;
-}
-
-// Good
 function process<T extends { value: unknown }>(data: T): T['value'] {
     return data.value;
 }
-
-// Also acceptable for truly unknown data
-function process(data: unknown): number {
-    if (typeof data === 'object' && data !== null && 'value' in data) {
-        return data.value as number;
-    }
-    throw new Error('Invalid data');
-}
 ```
 
-### Null Checks
-
-Use strict null checks. Handle null/undefined explicitly:
+### Handle null/undefined explicitly:
 
 ```typescript
-// Bad - might be undefined
-const value = array[index];
-console.log(value.property);
-
-// Good - check first (noUncheckedIndexedAccess)
 const value = array[index];
 if (value !== undefined) {
     console.log(value.property);
 }
-
-// Also good - use optional chaining
-console.log(array[index]?.property);
+// Or: array[index]?.property
 ```
 
-### Non-null Assertions
-
-Avoid `!` assertions. If you must use them, add a comment:
+### Avoid `!` assertions - prefer runtime checks:
 
 ```typescript
-// Bad - unexplained assertion
-const element = document.getElementById('game')!;
-
-// Better - with justification
-// Element guaranteed to exist in the layout
-const element = document.getElementById('game')!;
-
-// Best - runtime check
 const element = document.getElementById('game');
-if (!element) {
-    throw new Error('Game element not found');
-}
+if (!element) throw new Error('Game element not found');
 ```
 
 ## Naming Conventions
 
-### Types and Interfaces
+| Type | Convention | Examples |
+|------|------------|----------|
+| Interfaces/Types | PascalCase | `BlogPost`, `Locale` |
+| Variables/Functions | camelCase | `blogPosts`, `formatDate` |
+| Constants | UPPER_SNAKE | `DEFAULT_LOCALE` |
+| Unused params | `_prefix` | `_event` |
 
-- Interfaces: PascalCase - `BlogPost`, `SEOMetadata`, `LocaleConfig`
-- Type aliases: PascalCase - `Locale`, `TranslationKey`, `Route`
-- Enums: PascalCase with PascalCase members
+## Async Patterns
+
+Use async/await, load in parallel when possible:
 
 ```typescript
-// Interface for data shape
-interface BlogPost {
-    title: string;
-    slug: string;
-    locale: Locale;
-    pubDate: Date;
-}
+const [posts, pages] = await Promise.all([
+    getCollection('blog', ({ data }) => data.locale === locale),
+    getCollection('pages', ({ data }) => data.locale === locale),
+]);
+```
 
-// Type alias
-type Locale = 'en' | 'cs';
+## Error Handling
 
-// Enum (prefer union types when possible)
-enum Theme {
-    Light = 'light',
-    Dark = 'dark',
-    System = 'system',
+Use guard clauses with descriptive errors:
+
+```typescript
+function formatPost(post: BlogPost | null): string {
+    if (!post) return '';
+    if (!post.title) return 'Untitled';
+    return `${post.title} - ${formatDate(post.pubDate)}`;
 }
 ```
 
-### Variables and Functions
+## Import Order (ESLint simple-import-sort)
 
-- Variables: camelCase - `blogPosts`, `currentLocale`
-- Functions: camelCase - `formatDate`, `getTranslation`
-- Constants: UPPER_SNAKE_CASE - `DEFAULT_LOCALE`, `MAX_POSTS_PER_PAGE`
-- Private members: camelCase (no underscore prefix)
+1. External packages (`zod`, etc.)
+2. Astro imports (`astro:content`)
+3. Path aliases (`@type/*`, `@utils/*`)
+4. Relative imports (`./context`)
+
+## Export Patterns
+
+Use named exports (not default):
 
 ```typescript
-// Constants
-const DEFAULT_LOCALE: Locale = 'en';
-const MAX_POSTS_PER_PAGE = 10;
-
-// Functions
-function formatDate(date: Date, locale: Locale): string {
-    return new Intl.DateTimeFormat(locale).format(date);
-}
-
-// Class members
-class LocaleService {
-    private currentLocale: Locale;
-    private translations: Map<string, string>;
-}
+export function formatDate(date: Date): string { }
+export const DEFAULT_LOCALE = 'en';
+export interface BlogPost { }
 ```
 
-### Parameters
-
-- Use descriptive names, not abbreviations
-- Unused parameters: prefix with underscore
+## Utility Types
 
 ```typescript
-// Good - descriptive names
-function renderPost(post: BlogPost, locale: Locale): string;
+type PartialPost = Partial<BlogPost>;
+type PostPreview = Pick<BlogPost, 'title' | 'pubDate'>;
+type PostWithoutId = Omit<BlogPost, 'id'>;
 
-// Good - unused parameter marked
-function handleEvent(_event: Event, data: FormData): void {
-    console.log(data);
-}
-
-// Bad - unclear abbreviations
-function render(p: BlogPost, l: Locale): string;
+const LOCALES = ['en', 'cs'] as const;
+type Locale = typeof LOCALES[number];  // 'en' | 'cs'
 ```
 
 ## Zod Schemas
 
-Use Zod for runtime validation, especially in Content Collections:
-
 ```typescript
-import { z } from 'zod';
-
-// Define schema
 const blogPostSchema = z.object({
     title: z.string().min(1),
-    description: z.string().min(10).max(160),
-    slug: z.string().regex(/^[a-z0-9-]+$/),
+    description: z.string().max(160),
     locale: z.enum(['en', 'cs']),
-    translationSlug: z.string().optional(),
-    pubDate: z.date(),
-    updatedDate: z.date().optional(),
+    pubDate: z.coerce.date(),
     author: z.string().default('Ambilab'),
     tags: z.array(z.string()).default([]),
     draft: z.boolean().default(false),
 });
 
-// Infer type from schema
 type BlogPost = z.infer<typeof blogPostSchema>;
-```
-
-## Async Patterns
-
-### Async/Await
-
-Use async/await for all asynchronous code:
-
-```typescript
-// Good - async/await
-async function fetchPosts(locale: Locale): Promise<BlogPost[]> {
-    const response = await fetch(`/api/posts?locale=${locale}`);
-    const data = await response.json();
-    return data.posts;
-}
-
-// Bad - raw promises
-function fetchPosts(locale: Locale): Promise<BlogPost[]> {
-    return fetch(`/api/posts?locale=${locale}`)
-        .then((response) => response.json())
-        .then((data) => data.posts);
-}
-```
-
-### Parallel Loading
-
-Load independent data in parallel:
-
-```typescript
-// Good - parallel loading
-async function getPageData(locale: Locale) {
-    const [posts, pages, config] = await Promise.all([
-        getCollection('blog', ({ data }) => data.locale === locale),
-        getCollection('pages', ({ data }) => data.locale === locale),
-        getSiteConfig(),
-    ]);
-    return { posts, pages, config };
-}
-
-// Bad - sequential when parallel is possible
-async function getPageData(locale: Locale) {
-    const posts = await getCollection('blog');
-    const pages = await getCollection('pages');
-    const config = await getSiteConfig();
-    return { posts, pages, config };
-}
-```
-
-### Error Handling
-
-Handle async errors appropriately:
-
-```typescript
-// API route with error handling
-export const POST: APIRoute = async ({ request }) => {
-    try {
-        const data = await request.json();
-        const result = await processData(data);
-        return new Response(JSON.stringify(result), { status: 200 });
-    } catch (error) {
-        console.error('API error:', error);
-        return new Response(JSON.stringify({ error: 'Server error' }), {
-            status: 500,
-        });
-    }
-};
-```
-
-## Error Handling
-
-### Custom Errors
-
-Use descriptive error messages:
-
-```typescript
-// Good - descriptive error
-if (!locale || !['en', 'cs'].includes(locale)) {
-    throw new Error(
-        `Invalid locale "${locale}". Expected "en" or "cs".`
-    );
-}
-
-// Bad - vague error
-if (!locale) {
-    throw new Error('Invalid locale');
-}
-```
-
-### Guard Clauses
-
-Use early returns for validation:
-
-```typescript
-// Good - guard clauses
-function formatPost(post: BlogPost | null): string {
-    if (!post) {
-        console.warn('formatPost called with null post');
-        return '';
-    }
-
-    if (!post.title) {
-        return 'Untitled';
-    }
-
-    return `${post.title} - ${formatDate(post.pubDate)}`;
-}
-
-// Bad - deeply nested
-function formatPost(post: BlogPost | null): string {
-    if (post) {
-        if (post.title) {
-            return `${post.title} - ${formatDate(post.pubDate)}`;
-        }
-    }
-    return '';
-}
-```
-
-## Code Organization
-
-### File Structure
-
-Organize exports clearly:
-
-```typescript
-// src/types/content.ts
-
-// Type definitions
-export interface BlogPost {
-    title: string;
-    slug: string;
-    locale: Locale;
-}
-
-export interface PageMeta {
-    title: string;
-    description: string;
-}
-
-// Type aliases
-export type Locale = 'en' | 'cs';
-
-// Utility types
-export type LocalizedContent<T> = {
-    [K in Locale]: T;
-};
-```
-
-### Barrel Exports
-
-Use index.ts for clean imports:
-
-```typescript
-// src/types/index.ts
-export type { BlogPost, PageMeta, Locale } from './content';
-export type { SEOMetadata, OpenGraphData } from './seo';
-export type { TranslationKey, Translations } from './locale';
-```
-
-### Import Order
-
-Imports sorted by ESLint (simple-import-sort):
-
-```typescript
-// 1. External packages (node_modules)
-import { z } from 'zod';
-
-// 2. Astro imports
-import { getCollection } from 'astro:content';
-
-// 3. Internal absolute imports (path aliases)
-import type { BlogPost } from '@type/content';
-import { formatDate } from '@utils/date';
-
-// 4. Relative imports
-import { LocaleContext } from './context';
-```
-
-### Export Patterns
-
-Use named exports (not default):
-
-```typescript
-// Good - named exports
-export function formatDate(date: Date): string { }
-export const DEFAULT_LOCALE = 'en';
-export interface BlogPost { }
-
-// Bad - default exports
-export default function formatDate(date: Date): string { }
-```
-
-## Utility Types
-
-### Common Patterns
-
-```typescript
-// Make all properties optional
-type PartialPost = Partial<BlogPost>;
-
-// Make all properties required
-type RequiredPost = Required<BlogPost>;
-
-// Pick specific properties
-type PostPreview = Pick<BlogPost, 'title' | 'slug' | 'pubDate'>;
-
-// Omit specific properties
-type PostWithoutId = Omit<BlogPost, 'id'>;
-
-// Record type for maps
-type TranslationMap = Record<string, string>;
-
-// Extract union type from array
-const LOCALES = ['en', 'cs'] as const;
-type Locale = typeof LOCALES[number]; // 'en' | 'cs'
-```
-
-### Generic Functions
-
-```typescript
-// Generic function with constraints
-function getLocalizedValue<T>(
-    values: Record<Locale, T>,
-    locale: Locale,
-): T {
-    return values[locale];
-}
-
-// Usage
-const title = getLocalizedValue(
-    { en: 'Hello', cs: 'Ahoj' },
-    'en',
-);
-```
-
-## Performance Considerations
-
-### Avoid Object Creation in Loops
-
-```typescript
-// Bad - creates new objects every iteration
-for (const post of posts) {
-    const formatted = {
-        ...post,
-        formattedDate: formatDate(post.pubDate),
-    };
-    results.push(formatted);
-}
-
-// Good - use map
-const results = posts.map((post) => ({
-    ...post,
-    formattedDate: formatDate(post.pubDate),
-}));
-```
-
-### Memoization
-
-```typescript
-// Memoize expensive computations
-const memoizedFormat = (() => {
-    const cache = new Map<string, string>();
-
-    return (date: Date, locale: Locale): string => {
-        const key = `${date.toISOString()}-${locale}`;
-        if (cache.has(key)) {
-            return cache.get(key)!;
-        }
-        const result = new Intl.DateTimeFormat(locale).format(date);
-        cache.set(key, result);
-        return result;
-    };
-})();
-```
-
-### Const Assertions
-
-Use `as const` for literal types:
-
-```typescript
-// Good - const assertion
-const LOCALES = ['en', 'cs'] as const;
-type Locale = typeof LOCALES[number];
-
-const THEMES = {
-    light: 'light',
-    dark: 'dark',
-    system: 'system',
-} as const;
-
-type Theme = typeof THEMES[keyof typeof THEMES];
 ```

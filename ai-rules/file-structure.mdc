@@ -6,53 +6,41 @@ alwaysApply: false
 
 # File Structure and Region Organization
 
-This document defines the `// #region` patterns used throughout the codebase. All TypeScript files should follow these
-conventions for consistent code organization.
-
 ## Region Syntax
-
-Use JavaScript/TypeScript region comments for collapsible sections:
 
 ```typescript
 // #region Region Name
-
 // Code here...
-
 // #endregion
 ```
 
-**Rules:**
-
-- Region name follows `// #region` with a single space.
-- Use Title Case for region names.
-- End with `// #endregion` on its own line.
-- Add a blank line after `// #region` and before `// #endregion`.
-- Regions can be nested for large sections (use sparingly).
+**Rules:** Use Title Case, add blank lines after `// #region` and before `// #endregion`.
 
 ## Standard Region Order
 
-All files should follow this general order from top to bottom:
+1. **Imports** - No region needed
+2. **Type Definitions** - Interfaces, type aliases
+3. **Configuration** - Constants, settings
+4. **Helper Functions** - Pure utilities
+5. **Main Logic** - Primary functions/classes
+6. **Exports** - Public API
 
-1. **Imports** - No region needed (always at the top).
-2. **Configuration** - Constants, settings, environment checks.
-3. **Type Definitions** - Interfaces, type aliases, enums.
-4. **Module State** - Module-level variables and state.
-5. **Helper Functions** - Pure functions and utilities.
-6. **Main Logic** - Classes, primary functions.
-7. **Exports** - Public API exports.
+## Common Region Names
 
-## Region Patterns by File Type
+Use consistent names across similar files:
 
-### Utility/Helper Files
+- `// #region Type Definitions`
+- `// #region Configuration`
+- `// #region Helper Functions`
+- `// #region API Handler`
+- `// #region Validation`
 
-Pure functions and utilities:
+## Example: Utility File
 
 ```typescript
-import { formatDistance } from 'date-fns';
+import type { Locale } from '@type/locale';
 
 // #region Type Definitions
-
-export type Locale = 'en' | 'cs';
 
 export interface FormatOptions {
     locale: Locale;
@@ -76,410 +64,36 @@ export function formatDate(date: Date, locale: Locale): string {
     return new Intl.DateTimeFormat(locale, DATE_FORMATS[locale]).format(date);
 }
 
-export function formatRelativeDate(date: Date, locale: Locale): string {
-    return formatDistance(date, new Date(), { addSuffix: true });
-}
-
-// #endregion
-
-// #region Validation Functions
-
-export function isValidDate(value: unknown): value is Date {
-    return value instanceof Date && !isNaN(value.getTime());
-}
-
 // #endregion
 ```
 
-### Configuration Files
-
-Site configuration and settings:
+## Example: Store File (Nanostores)
 
 ```typescript
-// #region Type Definitions
-
-export interface SiteConfig {
-    name: string;
-    description: Record<Locale, string>;
-    url: string;
-    author: string;
-}
-
-// #endregion
-
-// #region Site Configuration
-
-export const SITE: SiteConfig = {
-    name: 'Ambilab',
-    description: {
-        en: 'A web-based pixel art game engine for kids',
-        cs: 'Webovy pixelartovy herni engine pro deti',
-    },
-    url: 'https://ambilab.com',
-    author: 'Ambilab Team',
-};
-
-// #endregion
-
-// #region Feature Flags
-
-export const FEATURES = {
-    newsletter: true,
-    comments: false,
-    analytics: import.meta.env.PROD,
-} as const;
-
-// #endregion
-
-// #region External URLs
-
-export const EXTERNAL_URLS = {
-    demos: 'https://blit-tech-demos.ambilab.com',
-    github: 'https://github.com/ambilab',
-    twitter: 'https://twitter.com/ambilab',
-} as const;
-
-// #endregion
-```
-
-### i18n/Translations Files
-
-Internationalization utilities:
-
-```typescript
+import { defaultLocale } from '@i18n/config';
 import type { Locale } from '@type/locale';
+import { atom } from 'nanostores';
 
-// #region Type Definitions
+export const $currentLocale = atom<Locale>(defaultLocale);
 
-export interface TranslationStrings {
-    nav: Record<string, string>;
-    buttons: Record<string, string>;
-    footer: Record<string, string>;
-    newsletter: Record<string, string>;
-}
-
-// #endregion
-
-// #region English Translations
-
-const en: TranslationStrings = {
-    nav: {
-        home: 'Home',
-        blog: 'Blog',
-        about: 'About',
-    },
-    buttons: {
-        readMore: 'Read more',
-        subscribe: 'Subscribe',
-    },
-    footer: {
-        copyright: 'All rights reserved',
-    },
-    newsletter: {
-        title: 'Subscribe to our newsletter',
-        placeholder: 'Enter your email',
-        submit: 'Subscribe',
-    },
+export const setLocale = (locale: Locale): void => {
+    $currentLocale.set(locale);
 };
-
-// #endregion
-
-// #region Czech Translations
-
-const cs: TranslationStrings = {
-    nav: {
-        home: 'Domu',
-        blog: 'Blog',
-        about: 'O nas',
-    },
-    buttons: {
-        readMore: 'Vice',
-        subscribe: 'Odebrat',
-    },
-    footer: {
-        copyright: 'Vsechna prava vyhrazena',
-    },
-    newsletter: {
-        title: 'Odeberte nas newsletter',
-        placeholder: 'Zadejte vas email',
-        submit: 'Odebrat',
-    },
-};
-
-// #endregion
-
-// #region Translation Access
-
-const translations: Record<Locale, TranslationStrings> = { en, cs };
-
-export function t(locale: Locale, key: string): string {
-    const [category, subKey] = key.split('.') as [keyof TranslationStrings, string];
-    return translations[locale]?.[category]?.[subKey] ?? key;
-}
-
-// #endregion
 ```
 
-### Store Files (Nanostores)
-
-State management with nanostores:
-
-```typescript
-import { atom, computed } from 'nanostores';
-import type { Locale } from '@type/locale';
-
-// #region Type Definitions
-
-export interface LocaleState {
-    current: Locale;
-    available: readonly Locale[];
-}
-
-// #endregion
-
-// #region Configuration
-
-const DEFAULT_LOCALE: Locale = 'en';
-const AVAILABLE_LOCALES: readonly Locale[] = ['en', 'cs'] as const;
-
-// #endregion
-
-// #region Atoms
-
-export const $locale = atom<Locale>(DEFAULT_LOCALE);
-
-// #endregion
-
-// #region Computed Values
-
-export const $isEnglish = computed($locale, (locale) => locale === 'en');
-export const $isCzech = computed($locale, (locale) => locale === 'cs');
-
-// #endregion
-
-// #region Actions
-
-export function setLocale(locale: Locale): void {
-    if (AVAILABLE_LOCALES.includes(locale)) {
-        $locale.set(locale);
-        document.cookie = `locale=${locale}; path=/; max-age=31536000`;
-    }
-}
-
-export function toggleLocale(): void {
-    const current = $locale.get();
-    setLocale(current === 'en' ? 'cs' : 'en');
-}
-
-// #endregion
-```
-
-### API Route Files
-
-Server-side API endpoints:
-
-```typescript
-import type { APIRoute } from 'astro';
-
-// #region Type Definitions
-
-interface NewsletterRequest {
-    email: string;
-}
-
-interface NewsletterResponse {
-    success: boolean;
-    message?: string;
-    error?: string;
-}
-
-// #endregion
-
-// #region Configuration
-
-const BUTTONDOWN_API_URL = 'https://api.buttondown.email/v1/subscribers';
-
-// #endregion
-
-// #region Validation
-
-function isValidEmail(email: string): boolean {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-}
-
-// #endregion
-
-// #region API Handler
-
-export const POST: APIRoute = async ({ request }) => {
-    try {
-        const data = (await request.json()) as NewsletterRequest;
-
-        if (!data.email || !isValidEmail(data.email)) {
-            return jsonResponse({ success: false, error: 'Invalid email' }, 400);
-        }
-
-        const response = await fetch(BUTTONDOWN_API_URL, {
-            method: 'POST',
-            headers: {
-                Authorization: `Token ${import.meta.env.BUTTONDOWN_API_KEY}`,
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email: data.email }),
-        });
-
-        if (!response.ok) {
-            return jsonResponse({ success: false, error: 'Subscription failed' }, 500);
-        }
-
-        return jsonResponse({ success: true, message: 'Subscribed!' }, 200);
-    } catch (error) {
-        console.error('Newsletter API error:', error);
-        return jsonResponse({ success: false, error: 'Server error' }, 500);
-    }
-};
-
-// #endregion
-
-// #region Helper Functions
-
-function jsonResponse(data: NewsletterResponse, status: number): Response {
-    return new Response(JSON.stringify(data), {
-        status,
-        headers: { 'Content-Type': 'application/json' },
-    });
-}
-
-// #endregion
-```
-
-### Content Collection Config
-
-Content schema definitions:
-
-```typescript
-import { defineCollection, z } from 'astro:content';
-
-// #region Shared Schemas
-
-const localeSchema = z.enum(['en', 'cs']);
-
-const seoSchema = z.object({
-    title: z.string().optional(),
-    description: z.string().optional(),
-    ogImage: z.string().optional(),
-});
-
-// #endregion
-
-// #region Blog Collection
-
-const blogCollection = defineCollection({
-    type: 'content',
-    schema: z.object({
-        title: z.string(),
-        description: z.string(),
-        slug: z.string(),
-        locale: localeSchema,
-        translationSlug: z.string().optional(),
-        pubDate: z.date(),
-        updatedDate: z.date().optional(),
-        author: z.string().default('Ambilab'),
-        tags: z.array(z.string()).default([]),
-        draft: z.boolean().default(false),
-        seo: seoSchema.optional(),
-    }),
-});
-
-// #endregion
-
-// #region Pages Collection
-
-const pagesCollection = defineCollection({
-    type: 'content',
-    schema: z.object({
-        title: z.string(),
-        description: z.string(),
-        slug: z.string(),
-        locale: localeSchema,
-        translationSlug: z.string().optional(),
-        seo: seoSchema.optional(),
-    }),
-});
-
-// #endregion
-
-// #region Collection Export
-
-export const collections = {
-    blog: blogCollection,
-    pages: pagesCollection,
-};
-
-// #endregion
-```
-
-## Region Naming Conventions
-
-### Hierarchical Naming
-
-Use `Category - Subcategory` format for related regions:
-
-```typescript
-// #region Module State - User Data
-// #region Module State - Cache
-// #region API - GET Handlers
-// #region API - POST Handlers
-// #region Validation - Email
-// #region Validation - Form Data
-```
-
-### Descriptive Names
-
-Region names should clearly indicate their purpose:
-
-```typescript
-// Good
-// #region Date Formatting
-// #region Locale Detection
-// #region Security Headers
-
-// Bad
-// #region Misc
-// #region Stuff
-// #region Section1
-```
-
-### Consistency
-
-Use the same region names across similar files:
-
-- All utility files use `// #region Helper Functions`
-- All config files use `// #region Configuration`
-- All API files use `// #region API Handler`
-- All files with exports use `// #region Exports`
-
-## When to Create New Regions
-
-Create a new region when:
-
-1. **Logical grouping**: Related functions/properties that serve a single purpose.
-2. **Size threshold**: Section exceeds ~30 lines.
-3. **Navigation benefit**: Would help developers find code quickly.
-
-Do not create regions for:
-
-1. **Single functions**: Unless they are very long (100+ lines).
-2. **Obvious groupings**: Import statements at the top of the file.
-3. **Temporary code**: Debug statements, TODO comments.
+## When to Create Regions
+
+Create when:
+- Logical grouping of related code
+- Section exceeds ~30 lines
+- Navigation benefit for developers
+
+Skip for:
+- Single functions (unless 100+ lines)
+- Import statements
+- Temporary/debug code
 
 ## Editor Support
 
-Regions are supported by:
-
-- **VS Code/Cursor**: Fold/unfold with `Ctrl+Shift+[` / `Ctrl+Shift+]`
-- **WebStorm/IntelliJ**: Fold/unfold with `Ctrl+.` or code folding menu
-- **Zed**: Native folding support
-
-The region pattern `// #region` / `// #endregion` is a de facto standard in JavaScript/TypeScript projects.
+- **VS Code/Cursor**: `Ctrl+Shift+[` / `Ctrl+Shift+]`
+- **WebStorm**: `Ctrl+.` or code folding menu

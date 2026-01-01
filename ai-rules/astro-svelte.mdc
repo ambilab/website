@@ -1,27 +1,22 @@
 ---
 description: Astro and Svelte conventions for the Ambilab website
-globs: ["**/*.astro", "**/*.svelte", "src/pages/**/*", "src/components/**/*"]
+globs: ['**/*.astro', '**/*.svelte', 'src/pages/**/*', 'src/components/**/*']
 alwaysApply: false
 ---
 
 # Astro and Svelte Conventions
 
-This document covers Astro and Svelte-specific patterns for the Ambilab website.
-
 ## Astro Components
 
 ### File Structure
-
-Astro components follow this structure:
 
 ```astro
 ---
 // 1. Imports
 import type { Props } from './types';
-import Layout from '@components/astro/Layout.astro';
 import Button from '@components/svelte/Button.svelte';
 
-// 2. Props interface (inline or imported)
+// 2. Props interface
 interface Props {
     title: string;
     description?: string;
@@ -32,21 +27,14 @@ const { title, description } = Astro.props;
 
 // 4. Data fetching / logic
 const posts = await getCollection('blog');
-
-// 5. Computed values
-const sortedPosts = posts.sort((a, b) => b.data.pubDate - a.data.pubDate);
 ---
 
-<!-- Template -->
 <Layout {title}>
     <h1>{title}</h1>
-    {description && <p>{description}</p>}
-
     <Button client:load>Click me</Button>
 </Layout>
 
 <style>
-    /* Scoped styles */
     h1 {
         color: var(--heading-color);
     }
@@ -60,6 +48,8 @@ Pages in `src/pages/` handle routing:
 ```astro
 ---
 // src/pages/[...slug].astro
+// This file uses a rest parameter [...slug] to capture nested paths
+// like: en/blog/hello-world
 import { getCollection } from 'astro:content';
 import BlogPostLayout from '@components/astro/BlogPostLayout.astro';
 
@@ -114,99 +104,71 @@ const { title, description } = Astro.props;
 </html>
 ```
 
-### Accessing Locals
+### Class Composition
 
-Use `Astro.locals` for middleware-injected data:
+Use `class:list` for composing classes instead of template literals. This handles empty/falsy values gracefully and is
+the recommended Astro pattern:
 
 ```astro
 ---
-// Locale from middleware
-const locale = Astro.locals.locale;
+interface Props {
+    class?: string;
+}
 
-// CSP nonce for inline scripts
-const nonce = Astro.locals.nonce;
+const { class: className = '' } = Astro.props;
 ---
 
-<script nonce={nonce}>
-    // Inline script with CSP nonce
-</script>
+<!-- Avoid: Template literals can produce extra whitespace -->
+<div class={`base-class ${className}`}>Content</div>
+
+<!-- Preferred: class:list filters falsy values and is more maintainable -->
+<div class:list={['base-class', className]}>Content</div>
+
+<!-- Also supports conditional classes and objects -->
+<div class:list={['base-class', { 'is-active': isActive }, someCondition && 'conditional-class', className]}>
+    Content
+</div>
+```
+
+### Accessing Locals
+
+```astro
+---
+const locale = Astro.locals.locale; // From middleware
+const nonce = Astro.locals.nonce; // CSP nonce
+---
 ```
 
 ## Svelte 5 Components
 
 ### Props with Runes
 
-Svelte 5 uses runes for reactivity:
-
 ```svelte
 <script lang="ts">
-    // Define props interface
     interface Props {
-        /** The button label */
         label: string;
-        /** Optional click handler */
         onclick?: () => void;
-        /** Visual variant */
-        variant?: 'primary' | 'secondary' | 'ghost';
-        /** Disabled state */
+        variant?: 'primary' | 'secondary';
         disabled?: boolean;
     }
 
-    // Destructure with defaults
-    let {
-        label,
-        onclick,
-        variant = 'primary',
-        disabled = false,
-    }: Props = $props();
-
-    // Derived state
+    let { label, onclick, variant = 'primary', disabled = false }: Props = $props();
     let buttonClass = $derived(`btn btn-${variant}`);
 </script>
 
-<button class={buttonClass} {disabled} {onclick}>
-    {label}
-</button>
+<button class={buttonClass} {disabled} {onclick}>{label}</button>
 ```
 
-### State with $state
+### State and Effects
 
 ```svelte
 <script lang="ts">
-    // Reactive state
     let count = $state(0);
     let items = $state<string[]>([]);
 
-    // Object state
-    let form = $state({
-        email: '',
-        message: '',
-    });
-
-    function increment() {
-        count += 1;
-    }
-
-    function addItem(item: string) {
-        items = [...items, item];
-    }
-</script>
-```
-
-### Effects with $effect
-
-```svelte
-<script lang="ts">
-    let query = $state('');
-    let results = $state<SearchResult[]>([]);
-
-    // Run effect when query changes
     $effect(() => {
-        if (query.length > 2) {
-            searchAPI(query).then((data) => {
-                results = data;
-            });
-        }
+        // Runs when dependencies change
+        console.log('Count changed:', count);
     });
 </script>
 ```
@@ -226,242 +188,107 @@ Svelte 5 uses runes for reactivity:
 </script>
 
 <div class="card">
-    {#if header}
-        <header>
-            {@render header()}
-        </header>
-    {/if}
-
-    <div class="content">
-        {@render children()}
-    </div>
+    {#if header}{@render header()}{/if}
+    {@render children()}
 </div>
-```
-
-### Event Handling
-
-```svelte
-<script lang="ts">
-    interface Props {
-        /** Called when the form is submitted */
-        onsubmit?: (data: FormData) => void;
-    }
-
-    let { onsubmit }: Props = $props();
-
-    function handleSubmit(event: SubmitEvent) {
-        event.preventDefault();
-        const formData = new FormData(event.currentTarget as HTMLFormElement);
-        onsubmit?.(formData);
-    }
-</script>
-
-<form onsubmit={handleSubmit}>
-    <slot />
-</form>
 ```
 
 ## Content Collections
 
-### Querying Collections
-
 ```typescript
 import { getCollection, getEntry } from 'astro:content';
 
-// Get all blog posts
-const allPosts = await getCollection('blog');
-
-// Filter by locale
+// Get all posts, filter by locale
 const enPosts = await getCollection('blog', ({ data }) => data.locale === 'en');
 
-// Get a single entry
+// Get single entry
 const post = await getEntry('blog', 'en/hello-world');
-```
-
-### Rendering MDX Content
-
-```astro
----
-import { getEntry } from 'astro:content';
-
-const post = await getEntry('blog', 'en/hello-world');
-const { Content, headings } = await post.render();
----
-
-<article>
-    <h1>{post.data.title}</h1>
-    <Content />
-</article>
+const { Content } = await post.render();
 ```
 
 ## API Routes
 
-### Endpoint Pattern
-
 ```typescript
-// src/pages/api/newsletter.ts
 import type { APIRoute } from 'astro';
 
 export const POST: APIRoute = async ({ request }) => {
     try {
-        const formData = await request.formData();
-        const email = formData.get('email')?.toString();
-
-        if (!email || !isValidEmail(email)) {
-            return new Response(JSON.stringify({ error: 'Invalid email' }), {
-                status: 400,
-                headers: { 'Content-Type': 'application/json' },
-            });
-        }
-
-        // Process subscription...
-
+        const data = await request.json();
+        // Validate and process...
         return new Response(JSON.stringify({ success: true }), {
             status: 200,
             headers: { 'Content-Type': 'application/json' },
         });
-    } catch (error) {
-        return new Response(JSON.stringify({ error: 'Server error' }), {
-            status: 500,
-            headers: { 'Content-Type': 'application/json' },
-        });
+    } catch {
+        return new Response(JSON.stringify({ error: 'Server error' }), { status: 500 });
     }
 };
 ```
 
-## Middleware
-
-### Locale Detection
-
-```typescript
-// src/middleware.ts
-import { defineMiddleware, sequence } from 'astro:middleware';
-import { detectLocale } from '@i18n/utils';
-
-const localeMiddleware = defineMiddleware(async (context, next) => {
-    const locale = detectLocale(context.request);
-    context.locals.locale = locale;
-    return next();
-});
-
-export const onRequest = sequence(localeMiddleware);
-```
-
 ## Hydration Strategies
 
-### When to Use Each Strategy
-
-| Strategy          | Use Case                       | Example                  |
-| ----------------- | ------------------------------ | ------------------------ |
-| `client:load`     | Interactive immediately needed | Navigation, theme toggle |
-| `client:idle`     | Interactive but not urgent     | Newsletter form          |
-| `client:visible`  | Below the fold                 | Comments section         |
-| `client:media`    | Based on media query           | Mobile menu              |
-| `client:only`     | Skip SSR entirely              | Browser-only features    |
-
-### Example Usage
+Hydration directives are only needed for Svelte components imported into Astro components. Astro components are
+server-rendered by default and do not require hydration directives. When importing Svelte components, add `client:*`
+directives to hydrate them:
 
 ```astro
-<!-- Immediate interactivity -->
-<ThemeToggle client:load />
+---
+import Button from '@components/svelte/Button.svelte';
+---
 
-<!-- Load when browser is idle -->
-<NewsletterForm client:idle />
-
-<!-- Load when scrolled into view -->
-<CommentSection client:visible />
-
-<!-- Only on mobile -->
-<MobileMenu client:media="(max-width: 768px)" />
-
-<!-- Skip SSR (e.g., uses browser APIs) -->
-<BrowserOnlyWidget client:only="svelte" />
+<!-- Svelte component needs client:* directive to be interactive -->
+<Button client:load>Click me</Button>
 ```
 
-## Accessibility Patterns
+| Strategy         | Use Case                | Example           |
+| ---------------- | ----------------------- | ----------------- |
+| `client:load`    | Immediate interactivity | Theme toggle, nav |
+| `client:idle`    | Not urgent              | Newsletter form   |
+| `client:visible` | Below fold              | Comments          |
+| `client:media`   | Media query             | Mobile menu       |
+| `client:only`    | Skip SSR                | Browser-only      |
 
-### Focus Management
-
-```svelte
-<script lang="ts">
-    let dialogElement: HTMLDialogElement;
-
-    function openDialog() {
-        dialogElement.showModal();
-    }
-
-    function closeDialog() {
-        dialogElement.close();
-    }
-</script>
-
-<button onclick={openDialog}>Open Dialog</button>
-
-<dialog bind:this={dialogElement}>
-    <h2>Dialog Title</h2>
-    <p>Dialog content</p>
-    <button onclick={closeDialog}>Close</button>
-</dialog>
-```
+## Accessibility
 
 ### Reduced Motion
 
-```svelte
-<script lang="ts">
-    import { prefersReducedMotion } from '@utils/dom';
+Use CSS for simple cases:
 
-    let shouldAnimate = $derived(!prefersReducedMotion());
-</script>
-
-{#if shouldAnimate}
-    <div class="animate-fade-in">Animated content</div>
-{:else}
-    <div>Static content</div>
-{/if}
+```css
+@media (prefers-reduced-motion: reduce) {
+    .animate-fade-in {
+        animation: none;
+    }
+}
 ```
 
-### ARIA Labels
+For JS checks, use `prefersReducedMotion()` from `@utils/dom` (SSR-safe, returns boolean).
+
+### ARIA
 
 ```svelte
-<button
-    aria-label="Close dialog"
-    aria-expanded={isOpen}
-    aria-controls="menu-content"
->
+<button aria-label="Close" aria-expanded={isOpen} aria-controls="menu">
     <span class="sr-only">Close</span>
-    <CloseIcon />
 </button>
 ```
 
-## Performance Patterns
-
-### Image Optimization
-
-Use Astro's built-in image optimization:
+## Image Optimization
 
 ```astro
 ---
 import { Image } from 'astro:assets';
-import heroImage from '@assets/images/hero.png';
+import heroImage from '@assets/hero.png';
 ---
 
-<Image
-    src={heroImage}
-    alt="Hero image description"
-    widths={[400, 800, 1200]}
-    sizes="(max-width: 800px) 100vw, 800px"
-    format="avif"
-    loading="lazy"
-/>
+<Image src={heroImage} alt="Description" widths={[400, 800, 1200]} format="avif" loading="lazy" />
 ```
 
-### Preloading
+Icons: Use SVGs in `src/assets/icons/` with the `Icon` component.
+
+## Preloading
 
 ```astro
-<!-- In BaseHead.astro -->
 <link rel="preconnect" href="https://fonts.vancura.dev" />
-<link rel="dns-prefetch" href="https://fonts.vancura.dev" />
-
 <link
     rel="preload"
     as="font"
@@ -469,17 +296,4 @@ import heroImage from '@assets/images/hero.png';
     href="https://fonts.vancura.dev/innovator-grotesk/InnovatorGrotesk-Medium.woff2"
     crossorigin
 />
-```
-
-### Code Splitting
-
-Astro automatically code-splits. For large components:
-
-```astro
----
-// Dynamic import for large components
-const HeavyComponent = (await import('@components/svelte/HeavyComponent.svelte')).default;
----
-
-<HeavyComponent client:visible />
 ```

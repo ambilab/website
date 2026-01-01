@@ -50,10 +50,11 @@ All code must pass strict TypeScript checks:
 
 ```text
 ambilab-website/
-  functions/              # Cloudflare edge functions
+  functions/              # Cloudflare Pages edge functions (advanced mode)
   public/                 # Static assets (favicons, OG images)
   src/
-    assets/              # Images (Git LFS) and icons
+    assets/
+      icons/             # SVG icons for Icon component
     components/
       astro/             # Astro-only components
       svelte/            # Interactive Svelte components
@@ -103,11 +104,7 @@ translationSlug: 'ahoj-svete'
 
 ### Astro Components
 
-Located in `src/components/astro/`:
-
-- Server-rendered by default
-- Use for layouts, SEO, static content
-- Import Svelte components with `client:*` directives
+Located in `src/components/astro/`. Server-rendered by default, import Svelte with `client:*` directives:
 
 ```astro
 ---
@@ -119,33 +116,24 @@ import Button from '@components/svelte/Button.svelte';
 
 ### Svelte Components
 
-Located in `src/components/svelte/`:
-
-- Interactive, hydratable components
-- Use TypeScript with strict typing
-- Props should be typed and documented
+Located in `src/components/svelte/`. Interactive, hydratable, typed with `$props()`:
 
 ```svelte
 <script lang="ts">
     interface Props {
-        /** Button variant style */
         variant?: 'primary' | 'secondary';
-        /** Disabled state */
         disabled?: boolean;
     }
-
     let { variant = 'primary', disabled = false }: Props = $props();
 </script>
 ```
 
 ### Component Hydration
 
-Use appropriate `client:*` directives:
-
-- `client:load` - Hydrate immediately (interactive elements)
-- `client:visible` - Hydrate when visible (below fold)
-- `client:idle` - Hydrate when browser is idle
-- `client:only="svelte"` - Skip SSR entirely
+- `client:load` - Immediate (interactive elements)
+- `client:visible` - When visible (below fold)
+- `client:idle` - When browser idle
+- `client:only="svelte"` - Skip SSR
 
 ## Content Collections
 
@@ -154,19 +142,23 @@ Use appropriate `client:*` directives:
 Schema defined in `src/content/config.ts`:
 
 ```typescript
-const blogSchema = z.object({
-    title: z.string(),
-    description: z.string(),
-    slug: z.string(),
-    locale: z.enum(['en', 'cs']),
-    translationSlug: z.string().optional(),
-    pubDate: z.date(),
-    updatedDate: z.date().optional(),
-    author: z.string().default('Ambilab'),
-    tags: z.array(z.string()).default([]),
-    draft: z.boolean().default(false),
+const blogCollection = defineCollection({
+    type: 'content',
+    schema: z.object({
+        title: z.string(),
+        description: z.string(),
+        locale: z.enum(['en', 'cs']),
+        translationSlug: z.string().optional(),
+        pubDate: z.coerce.date(),
+        updatedDate: z.coerce.date().optional(),
+        author: z.string().default('Ambilab'),
+        tags: z.array(z.string()).default([]),
+        draft: z.boolean().default(false),
+    }),
 });
 ```
+
+Note: `z.coerce.date()` automatically converts date strings from frontmatter to Date objects.
 
 ### Adding Content
 
@@ -188,11 +180,44 @@ Configured in `src/config/security.ts` and applied via `src/middleware.ts`:
 
 ### Demo Embeds
 
-Use the `DemoEmbed` component for sandboxed iframes:
+Use the `DemoEmbed` component for sandboxed iframes with strict URL allowlist. The component provides security validation and automatically applies safe iframe sandbox permissions.
 
-- Strict URL allowlist
-- Sandboxed with permissions model
-- Dev localhost support
+#### Basic Usage
+
+```astro
+---
+import DemoEmbed from '@components/svelte/DemoEmbed.svelte';
+---
+
+<DemoEmbed
+    src="https://blit-tech-demos.ambilab.com/demo/example"
+    title="Interactive Example Demo"
+    client:visible
+/>
+```
+
+#### Configuration Options
+
+```astro
+<DemoEmbed
+    src="https://blit-tech-demos.ambilab.com/demo/example"
+    title="Demo caption"
+    aspectRatio="4/3"
+    class="my-custom-class"
+    desktopOnly={false}
+    allowAutoplay={true}
+    allowMotionSensors={false}
+    allowTopNavigation={false}
+    client:visible
+/>
+```
+
+#### Security Notes
+
+- Only URLs from allowlisted hostnames are accepted (currently: `blit-tech-demos.ambilab.com`)
+- All URLs must use HTTPS protocol
+- To add new hostnames, update `ALLOWED_HOSTNAMES` in the component after security review
+- Invalid URLs will display a warning message instead of embedding
 
 ## Styling
 
@@ -225,17 +250,11 @@ Enforced by Biome (TS/JS/JSON/CSS) and Prettier (Astro/Svelte/Markdown):
 Use type imports for type-only imports:
 
 ```typescript
-// Correct
 import type { BlogPost } from '@type/content';
-import { formatDate } from '@utils/date';
-
-// Wrong
-import { BlogPost } from '@type/content'; // If only used as type
+import { createLogger } from '@utils/logger';
 ```
 
 ### Path Aliases
-
-Use configured path aliases:
 
 - `@/*` - src/\*
 - `@components/*` - src/components/\*
@@ -251,56 +270,17 @@ Use configured path aliases:
 
 ### Conventional Commits
 
-All commits must follow the Conventional Commits format:
+Format: `<type>(<scope>): <description>`
 
-```text
-<type>(<scope>): <description>
+**Rules:** Header max 100 chars, lowercase subject, no period at end, body wraps at 72 chars.
 
-[optional body]
+**Types:** `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`
 
-[optional footer(s)]
-```
-
-**Rules:**
-
-- Header (first line) max 100 characters
-- Subject must be lowercase
-- Subject must not end with period
-- Commit message body must wrap at 72 characters per line
-
-**Types:**
-
-- `feat` - New feature
-- `fix` - Bug fix
-- `docs` - Documentation only
-- `style` - Formatting, no code change
-- `refactor` - Code change that neither fixes a bug nor adds a feature
-- `perf` - Performance improvement
-- `test` - Adding or updating tests
-- `build` - Build system or dependencies
-- `ci` - CI configuration
-- `chore` - Other changes
-
-**Suggested Scopes:**
-
-- `blog` - Blog content or features
-- `i18n` - Internationalization
-- `components` - UI components
-- `seo` - SEO and meta tags
-- `security` - Security headers/CSP
-- `api` - API routes
-- `ci` - CI/CD configuration
-- `docs` - Documentation
+**Scopes:** `blog`, `i18n`, `components`, `seo`, `security`, `api`, `ci`, `docs`
 
 ### AI-Assisted Commits
 
-When AI tools are used, include the AI trailer:
-
-```text
-feat(blog): add reading time calculation
-
-Co-Authored-By: Claude <noreply@anthropic.com>
-```
+Include trailer: `Co-Authored-By: Claude <noreply@anthropic.com>`
 
 ## Development Commands
 
