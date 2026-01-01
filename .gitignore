@@ -51,6 +51,7 @@ test-results/
 # Cache
 .eslintcache
 .cache/
+.knip-output.json
 
 # Temporary folders
 tmp/

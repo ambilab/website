@@ -1,0 +1,14 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "entry": ["src/pages/**/*.{astro,ts}"],
+  "project": ["src/**/*.{ts,tsx,astro,svelte}"],
+  "ignore": ["dist/**", ".astro/**", "node_modules/**", ".wrangler/**", "ai-rules/**", "scripts/**"],
+  "ignoreExportsUsedInFile": true,
+  "astro": {
+    "config": ["astro.config.ts"],
+    "entry": ["src/pages/**/*.astro"]
+  },
+  "typescript": {
+    "config": ["tsconfig.json"]
+  }
+}
