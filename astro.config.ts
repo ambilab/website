@@ -25,15 +25,21 @@ export default defineConfig({
 
         // Expressive Code MUST come before mdx()
         expressiveCode({
-            themes: ['github-dark', 'github-light'],
-            themeCssSelector: (theme) => (theme.name === 'github-dark' ? '.dark' : ':root:not(.dark)'),
+            themes: ['github-dark-default', 'github-light-default'],
+            themeCssSelector: (theme) => (theme.name === 'github-dark-default' ? '.dark' : ':root:not(.dark)'),
             defaultProps: {
-                showLineNumbers: false,
                 wrap: true,
             },
             styleOverrides: {
-                borderRadius: '0.5rem',
-                codePaddingInline: '1rem',
+                borderRadius: '0',
+                borderWidth: '1px',
+                codePaddingInline: '22px',
+                codeFontFamily: 'var(--font-family-mono)',
+                codeFontSize: '15px',
+                codeLineHeight: '22px',
+                frames: {
+                    frameBoxShadowCssValue: 'none',
+                },
             },
         }),
 
