@@ -1,5 +1,5 @@
 ---
-// Auto-generates anchor links for headings in MDX content
+
 ---
 
 <script>
@@ -17,36 +17,38 @@
         }
 
         private generateId(text: string | null): string {
-            if (!text) {
-                return '';
+            let result = '';
+
+            if (text) {
+                const baseId = text
+                    .toLowerCase()
+                    .replace(/[^a-z0-9]+/g, '-')
+                    .replace(/^-|-$/g, '');
+
+                if (baseId) {
+                    if (this.usedIds.has(baseId)) {
+                        // Find the next available ID with a numeric suffix
+                        let counter = 2;
+                        let candidateId = `${baseId}-${counter}`;
+
+                        while (this.usedIds.has(candidateId)) {
+                            counter++;
+                            candidateId = `${baseId}-${counter}`;
+                        }
+
+                        this.usedIds.add(candidateId);
+
+                        result = candidateId;
+                    } else {
+                        // The base ID is available, use it
+                        this.usedIds.add(baseId);
+
+                        result = baseId;
+                    }
+                }
             }
 
-            const baseId = text
-                .toLowerCase()
-                .replace(/[^a-z0-9]+/g, '-')
-                .replace(/^-|-$/g, '');
-
-            if (!baseId) {
-                return '';
-            }
-
-            // If the base ID is available, use it
-            if (!this.usedIds.has(baseId)) {
-                this.usedIds.add(baseId);
-                return baseId;
-            }
-
-            // Otherwise, find the next available ID with a numeric suffix
-            let counter = 2;
-            let candidateId = `${baseId}-${counter}`;
-
-            while (this.usedIds.has(candidateId)) {
-                counter++;
-                candidateId = `${baseId}-${counter}`;
-            }
-
-            this.usedIds.add(candidateId);
-            return candidateId;
+            return result;
         }
 
         private createAnchor(id: string): HTMLAnchorElement {
@@ -63,6 +65,7 @@
                 smoothScrollTo({ targetId: id });
 
                 history.pushState(null, '', `#${id}`);
+
                 navigator.clipboard.writeText(window.location.href).catch(() => {});
             });
 
@@ -77,17 +80,17 @@
             );
 
             let processedCount = 0;
+
             headings.forEach((heading) => {
-                if (heading.querySelector('.anchor')) {
-                    return;
-                }
+                if (!heading.querySelector('.anchor')) {
+                    const id = this.generateId(heading.textContent);
 
-                const id = this.generateId(heading.textContent);
+                    if (id) {
+                        heading.id = id;
+                        heading.insertAdjacentElement('afterbegin', this.createAnchor(id));
 
-                if (id) {
-                    heading.id = id;
-                    heading.insertAdjacentElement('afterbegin', this.createAnchor(id));
-                    processedCount++;
+                        processedCount++;
+                    }
                 }
             });
 

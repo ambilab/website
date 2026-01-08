@@ -61,17 +61,17 @@ export const calculateReadingTime = (content: string): number => {
     cleaned = cleaned.replace(/`[^`]+`/g, '');
 
     // Remove markdown links but keep the text: [text](url) -> text
-    cleaned = cleaned.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1');
+    cleaned = cleaned.replace(/\[([^\]]+)]\([^)]+\)/g, '$1');
 
     // Remove markdown images: ![alt](url)
-    cleaned = cleaned.replace(/!\[([^\]]*)\]\([^)]+\)/g, '');
+    cleaned = cleaned.replace(/!\[([^\]]*)]\([^)]+\)/g, '');
 
     // Remove markdown headers (# ## ### etc.)
     cleaned = cleaned.replace(/^#{1,6}\s+/gm, '');
 
     // Remove markdown list markers (-, *, +, 1., etc.)
-    cleaned = cleaned.replace(/^[\s]*[-*+]\s+/gm, '');
-    cleaned = cleaned.replace(/^[\s]*\d+\.\s+/gm, '');
+    cleaned = cleaned.replace(/^\s*[-*+]\s+/gm, '');
+    cleaned = cleaned.replace(/^\s*\d+\.\s+/gm, '');
 
     // Remove extra whitespace and normalize
     cleaned = cleaned.replace(/\s+/g, ' ').trim();

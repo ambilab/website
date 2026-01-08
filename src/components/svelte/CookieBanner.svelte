@@ -46,7 +46,7 @@
             </p>
             <button
                 onclick={handleDismiss}
-                class="bg-button-primary text-button-primary-text hover:bg-button-primary-hover rounded-lg px-4 py-2 text-sm font-medium transition-colors"
+                class="bg-button-primary text-button-primary-text hover:bg-button-primary-hover dark:bg-button-primary-dark dark:text-button-primary-text-dark dark:hover:bg-button-primary-hover-dark rounded-lg px-4 py-2 text-sm font-medium transition-colors"
             >
                 {t.cookie.button}
             </button>

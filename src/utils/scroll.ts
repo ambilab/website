@@ -31,18 +31,26 @@ export const smoothScrollTo = async ({ targetId, offset = 0, onComplete }: Scrol
     // Wait for scroll completion with 'scrollend' event and fallback timeout
     return new Promise<ScrollResult>((resolve) => {
         let scrollEndResolved = false;
-        const FALLBACK_TIMEOUT = 2000; // 2 seconds fallback timeout
-        const POLL_INTERVAL = 50; // Check scroll position every 50ms
-        const STABILITY_THRESHOLD = 1; // Consider stable if within 1px
+
+        const fallbackTimeout = 2_000; // 2-second fallback timeout
+        const pollInt = 50; // Check scroll position every 50ms
+        const stabilityThreshold = 1; // Consider stable if within 1px
 
         const resolveOnce = (success: boolean) => {
-            if (scrollEndResolved) return;
-            scrollEndResolved = true;
-            clearTimeout(timeoutId);
-            clearInterval(pollInterval);
-            window.removeEventListener('scrollend', handleScrollEnd);
-            onComplete?.();
-            resolve({ success, element });
+            if (scrollEndResolved) {
+                return;
+            } else {
+                scrollEndResolved = true;
+
+                clearTimeout(timeoutId);
+                clearInterval(pollInterval);
+
+                window.removeEventListener('scrollend', handleScrollEnd);
+
+                onComplete?.();
+
+                resolve({ success, element });
+            }
         };
 
         // Listen for 'scrollend' event (modern browsers)
@@ -53,27 +61,27 @@ export const smoothScrollTo = async ({ targetId, offset = 0, onComplete }: Scrol
         // Fallback: poll scroll position for stability
         let lastScrollY = window.scrollY;
         let stableCount = 0;
-        const STABLE_COUNT_REQUIRED = 3; // Require 3 consecutive stable checks
+        const stableCountRequired = 3; // Require 3 consecutive stable checks
 
         const pollInterval = setInterval(() => {
             const currentScrollY = window.scrollY;
             const diff = Math.abs(currentScrollY - lastScrollY);
 
-            if (diff < STABILITY_THRESHOLD) {
+            if (diff < stabilityThreshold) {
                 stableCount++;
-                if (stableCount >= STABLE_COUNT_REQUIRED) {
+                if (stableCount >= stableCountRequired) {
                     resolveOnce(true);
                 }
             } else {
                 stableCount = 0;
                 lastScrollY = currentScrollY;
             }
-        }, POLL_INTERVAL);
+        }, pollInt);
 
         // Fallback timeout
         const timeoutId = setTimeout(() => {
             resolveOnce(true); // Resolve anyway after timeout
-        }, FALLBACK_TIMEOUT);
+        }, fallbackTimeout);
 
         // Check if 'scrollend' is supported
         if ('onscrollend' in window) {

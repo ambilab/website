@@ -15,12 +15,10 @@ export const localeConfigs: Record<Locale, LocaleConfig> = {
     en: {
         code: 'en',
         name: 'English',
-        flag: '🇺🇸',
     },
     cs: {
         code: 'cs',
         name: 'Čeština',
-        flag: '🇨🇿',
     },
 };
 

@@ -26,8 +26,10 @@
 
     // Initialize theme on mount using $effect
     $effect(() => {
-        // Run only in browser environment
-        if (typeof window === 'undefined') return;
+        // Run only in a browser environment
+        if (typeof window === 'undefined') {
+            return;
+        }
 
         // Immediately sync theme state from DOM
         updateTheme();
@@ -35,6 +37,7 @@
 
         // Listen for system theme changes
         const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
         const handleChange = () => {
             // Only update if user hasn't set a preference (no theme in localStorage)
             if (!localStorage.getItem('theme')) {
@@ -52,7 +55,7 @@
 
 <button
     onclick={handleThemeToggle}
-    class="border-border-default hover:bg-surface-hover dark:border-border-default-dark dark:hover:bg-surface-hover-dark flex cursor-pointer items-center gap-2 rounded-lg border px-3 py-2 transition-all duration-200 disabled:opacity-50"
+    class="hover:bg-surface-hover dark:hover:bg-surface-hover-dark flex cursor-pointer items-center gap-2 rounded-lg px-3 py-2 transition-all duration-200 disabled:opacity-50"
     class:opacity-0={!mounted}
     class:opacity-100={mounted}
     aria-label="Toggle theme"

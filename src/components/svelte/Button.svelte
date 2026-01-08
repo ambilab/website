@@ -28,7 +28,7 @@
 
     const variantClasses = {
         primary:
-            'bg-button-primary text-button-primary-text hover:bg-button-primary-hover focus:ring-link dark:focus:ring-link-dark',
+            'bg-button-primary text-button-primary-text hover:bg-button-primary-hover dark:bg-button-primary-dark dark:text-button-primary-text-dark dark:hover:bg-button-primary-hover-dark focus:ring-link dark:focus:ring-link-dark',
         secondary: 'bg-gray-600 text-white hover:bg-gray-700 focus:ring-link dark:focus:ring-link-dark',
         outline:
             'border-2 border-link text-link hover:bg-surface-hover focus:ring-link dark:text-link-dark dark:hover:bg-surface-hover-dark dark:focus:ring-link-dark',

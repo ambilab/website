@@ -4,7 +4,7 @@ import type { ISEOMetadata } from '@type/seo';
 import BaseHead from './BaseHead.astro';
 
 export interface Props extends ISEOMetadata {
-    locale?: 'en' | 'cs';
+    locale?: Locale;
 }
 
 const props = Astro.props;

@@ -1,5 +1,4 @@
-// biome-ignore lint/suspicious/noExplicitAny: Generic utility function requires any for flexibility
-export const debounce = <T extends (...args: any[]) => any>(
+export const debounce = <T extends (...args: unknown[]) => unknown>(
     func: T,
     wait: number,
 ): {
@@ -9,7 +8,10 @@ export const debounce = <T extends (...args: any[]) => any>(
     let timeout: ReturnType<typeof setTimeout> | null = null;
 
     const wrapped = (...args: Parameters<T>) => {
-        if (timeout) clearTimeout(timeout);
+        if (timeout) {
+            clearTimeout(timeout);
+        }
+
         timeout = setTimeout(() => {
             func(...args);
             timeout = null;
@@ -17,7 +19,10 @@ export const debounce = <T extends (...args: any[]) => any>(
     };
 
     wrapped.cancel = () => {
-        if (timeout) clearTimeout(timeout);
+        if (timeout) {
+            clearTimeout(timeout);
+        }
+
         timeout = null;
     };
 

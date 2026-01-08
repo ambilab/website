@@ -7,13 +7,9 @@ export interface Props {
 const { title, class: className = '' } = Astro.props;
 ---
 
-<div
-    class:list={[
-        'border-border-default bg-surface dark:border-border-default-dark dark:bg-surface-dark rounded-lg border p-6 shadow-sm transition-shadow hover:shadow-md',
-        className,
-    ]}
->
-    {title && <h3 class="mb-4 text-xl font-semibold">{title}</h3>}
+<div class:list={['border-border-default dark:border-border-default-dark border-2 p-6 transition-all', className]}>
+    {title && <h3 class="mt-0 text-xl">{title}</h3>}
+
     <div>
         <slot />
     </div>

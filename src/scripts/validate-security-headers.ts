@@ -66,28 +66,28 @@ function validateSecurityHeaders(): ValidationResult[] {
         const prodCSP = buildCSP({ nonce: testNonce, isDev: false });
 
         // Verify CSP contains the nonce
-        if (!prodCSP.includes(`'nonce-${testNonce}'`)) {
-            results.push({
-                success: false,
-                message: '[FAIL] Production CSP: Nonce not properly embedded',
-            });
-        } else {
+        if (prodCSP.includes(`'nonce-${testNonce}'`)) {
             results.push({
                 success: true,
                 message: '[PASS] Production CSP: Nonce properly embedded',
             });
+        } else {
+            results.push({
+                success: false,
+                message: '[FAIL] Production CSP: Nonce not properly embedded',
+            });
         }
 
         // Verify CSP contains upgrade-insecure-requests in production
-        if (!prodCSP.includes('upgrade-insecure-requests')) {
-            results.push({
-                success: false,
-                message: '[FAIL] Production CSP: Missing upgrade-insecure-requests',
-            });
-        } else {
+        if (prodCSP.includes('upgrade-insecure-requests')) {
             results.push({
                 success: true,
                 message: '[PASS] Production CSP: Contains upgrade-insecure-requests',
+            });
+        } else {
+            results.push({
+                success: false,
+                message: '[FAIL] Production CSP: Missing upgrade-insecure-requests',
             });
         }
 
@@ -115,15 +115,15 @@ function validateSecurityHeaders(): ValidationResult[] {
         const testNonce = 'test-nonce-123';
         const devCSP = buildCSP({ nonce: testNonce, isDev: true });
 
-        if (!devCSP.includes("'unsafe-inline'")) {
-            results.push({
-                success: false,
-                message: '[FAIL] Development CSP: Should contain unsafe-inline',
-            });
-        } else {
+        if (devCSP.includes("'unsafe-inline'")) {
             results.push({
                 success: true,
                 message: '[PASS] Development CSP: Contains unsafe-inline',
+            });
+        } else {
+            results.push({
+                success: false,
+                message: '[FAIL] Development CSP: Should contain unsafe-inline',
             });
         }
 
@@ -178,27 +178,27 @@ function validateSecurityHeaders(): ValidationResult[] {
         }
 
         // Validate specific header values
-        if (STATIC_SECURITY_HEADERS['X-Content-Type-Options'] !== 'nosniff') {
-            results.push({
-                success: false,
-                message: '[FAIL] X-Content-Type-Options: Should be "nosniff"',
-            });
-        } else {
+        if (STATIC_SECURITY_HEADERS['X-Content-Type-Options'] === 'nosniff') {
             results.push({
                 success: true,
                 message: '[PASS] X-Content-Type-Options: Correctly set to "nosniff"',
             });
-        }
-
-        if (STATIC_SECURITY_HEADERS['X-Frame-Options'] !== 'SAMEORIGIN') {
+        } else {
             results.push({
                 success: false,
-                message: '[FAIL] X-Frame-Options: Should be "SAMEORIGIN"',
+                message: '[FAIL] X-Content-Type-Options: Should be "nosniff"',
             });
-        } else {
+        }
+
+        if (STATIC_SECURITY_HEADERS['X-Frame-Options'] === 'SAMEORIGIN') {
             results.push({
                 success: true,
                 message: '[PASS] X-Frame-Options: Correctly set to "SAMEORIGIN"',
+            });
+        } else {
+            results.push({
+                success: false,
+                message: '[FAIL] X-Frame-Options: Should be "SAMEORIGIN"',
             });
         }
     } catch (error) {

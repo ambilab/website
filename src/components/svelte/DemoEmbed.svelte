@@ -41,14 +41,14 @@
      *
      * Do not add third-party domains without explicit approval.
      */
-    const ALLOWED_HOSTNAMES = ['blit-tech-demos.ambilab.com'] as const;
-    const SAFE_FALLBACK_URL = 'about:blank';
+    const allowedHostnames = ['blit-tech-demos.ambilab.com'] as const;
+    const safeFallbackURL = 'about:blank';
 
     /**
      * Type guard to check if a hostname is in the allowlist.
      */
-    function isAllowedHostname(hostname: string): hostname is (typeof ALLOWED_HOSTNAMES)[number] {
-        return ALLOWED_HOSTNAMES.includes(hostname as (typeof ALLOWED_HOSTNAMES)[number]);
+    function isAllowedHostname(hostname: string): hostname is (typeof allowedHostnames)[number] {
+        return allowedHostnames.includes(hostname as (typeof allowedHostnames)[number]);
     }
 
     /**
@@ -89,7 +89,7 @@
 
     // Validate and sanitize src URL
     const validationResult = $derived(validateSrcUrl(src));
-    const validatedSrc = $derived(validationResult ?? SAFE_FALLBACK_URL);
+    const validatedSrc = $derived(validationResult ?? safeFallbackURL);
     const isValidSrc = $derived(validationResult !== null);
 
     // In development, the demo site blocks localhost due to CSP frame-ancestors
@@ -152,7 +152,7 @@
                     href={validatedSrc}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="bg-button-primary text-button-primary-text hover:bg-button-primary-hover focus:ring-link focus:ring-offset-page-bg dark:focus:ring-link-dark dark:focus:ring-offset-page-bg-dark inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2"
+                    class="bg-button-primary text-button-primary-text hover:bg-button-primary-hover dark:bg-button-primary-dark dark:text-button-primary-text-dark dark:hover:bg-button-primary-hover-dark focus:ring-link focus:ring-offset-page-bg dark:focus:ring-link-dark dark:focus:ring-offset-page-bg-dark inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2"
                 >
                     Open Demo in New Tab
                     <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">

@@ -1,11 +1,11 @@
 ---
 import '@/styles/mdx-content.css';
 
-import { localeToIntl } from '@i18n/config';
 import { getTranslation } from '@i18n/translations';
 import { calculateReadingTime } from '@i18n/utils';
 import type { Locale } from '@type/locale';
 import type { ISEOMetadata } from '@type/seo';
+import { formatDate } from '@utils/formatDate';
 
 import HeadingLinks from './HeadingLinks.astro';
 import Icon from './Icon.astro';
@@ -22,20 +22,31 @@ export interface Props extends ISEOMetadata {
     translationPath?: string;
 }
 
-const { locale, title, pubDate, updatedDate, author, tags = [], content, translationPath, ...seoProps } = Astro.props;
+const {
+    locale,
+    title,
+    description,
+    permalink,
+    pubDate,
+    updatedDate,
+    author,
+    tags = [],
+    content,
+    translationPath,
+    ...seoProps
+} = Astro.props;
 const t = getTranslation(locale);
 const readingTime = calculateReadingTime(content);
-
-const formatDate = (date: Date) => {
-    return new Intl.DateTimeFormat(localeToIntl[locale], {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-    }).format(date);
-};
 ---
 
-<PageLayout locale={locale} title={title} {...translationPath ? { translationPath } : {}} {...seoProps}>
+<PageLayout
+    locale={locale}
+    title={title}
+    description={description}
+    permalink={permalink}
+    {...translationPath ? { translationPath } : {}}
+    {...seoProps}
+>
     <article class="container mx-auto px-4 py-12">
         <header class="mb-12">
             <h1 class="mb-4 text-4xl font-bold md:text-5xl">{title}</h1>
@@ -50,7 +61,7 @@ const formatDate = (date: Date) => {
                     <Icon name="calendar" class="h-4 w-4" />
                     <time datetime={pubDate.toISOString()}>
                         {t.blog.publishedOn}
-                        {formatDate(pubDate)}
+                        {formatDate(pubDate, locale)}
                     </time>
                 </div>
 
@@ -59,7 +70,7 @@ const formatDate = (date: Date) => {
                         <div class="flex items-center gap-2">
                             <Icon name="refresh" class="h-4 w-4" />
                             <time datetime={updatedDate.toISOString()}>
-                                {t.blog.updatedOn} {formatDate(updatedDate)}
+                                {t.blog.updatedOn} {formatDate(updatedDate, locale)}
                             </time>
                         </div>
                     )

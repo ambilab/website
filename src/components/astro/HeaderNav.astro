@@ -43,7 +43,10 @@ const navItems = [
         navItems.map((item) => (
             <a
                 href={item.href}
-                class:list={['transition-colors hover:text-blue-600', item.isActive && 'font-semibold text-blue-600']}
+                class:list={[
+                    item.isActive &&
+                        'text-link-active dark:text-link-active-dark underline-offset-10 font-semibold underline decoration-2',
+                ]}
             >
                 {item.label}
             </a>

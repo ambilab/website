@@ -46,10 +46,10 @@ const currentPath = Astro.url.pathname;
         <Head {...seoProps} locale={locale} />
     </head>
 
-    <body class="bg-page-bg text-text-primary dark:bg-page-bg-dark dark:text-text-primary-dark">
+    <body class="bg-page-bg text-text-primary dark:bg-page-bg-dark dark:text-text-primary-dark transition-colors">
         <Header locale={locale} currentPath={currentPath} {...translationPath ? { translationPath } : {}} />
 
-        <main class="min-h-screen">
+        <main class="bg-dots dark:bg-dots min-h-screen transition-all">
             <slot />
         </main>
 

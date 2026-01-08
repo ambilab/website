@@ -3,6 +3,7 @@ import BlogPostLayout from '@components/astro/BlogPostLayout.astro';
 import PageLayout from '@components/astro/PageLayout.astro';
 import { getTranslation } from '@i18n/translations';
 import type { Locale } from '@type/locale';
+import { formatDate } from '@utils/formatDate';
 import { createLogger } from '@utils/logger';
 import type { CollectionEntry } from 'astro:content';
 import { getCollection } from 'astro:content';
@@ -163,11 +164,6 @@ if (renderType === 'blog-index') {
                             {sortedBlogPosts.map((post) => {
                                 const postSlug = post.id.replace(/\.(mdx|md)$/, '').replace(/^[^/]+\//, '');
                                 const postUrl = `/blog/${postSlug}`;
-                                const formattedDate = new Intl.DateTimeFormat(locale, {
-                                    year: 'numeric',
-                                    month: 'long',
-                                    day: 'numeric',
-                                }).format(post.data.pubDate);
 
                                 return (
                                     <article class="border-border-default dark:border-border-default-dark border-b pb-8 last:border-b-0">
@@ -177,7 +173,9 @@ if (renderType === 'blog-index') {
                                             </h2>
                                         </a>
                                         <div class="text-text-muted dark:text-text-muted-dark mb-3 flex items-center gap-4 text-sm">
-                                            <time datetime={post.data.pubDate.toISOString()}>{formattedDate}</time>
+                                            <time datetime={post.data.pubDate.toISOString()}>
+                                                {formatDate(post.data.pubDate, locale)}
+                                            </time>
                                             {post.data.tags.length > 0 && (
                                                 <div class="flex flex-wrap gap-2">
                                                     {post.data.tags.map((tag: string) => (
