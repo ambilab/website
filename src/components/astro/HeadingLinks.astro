@@ -17,38 +17,35 @@
         }
 
         private generateId(text: string | null): string {
-            let result = '';
-
-            if (text) {
-                const baseId = text
-                    .toLowerCase()
-                    .replace(/[^a-z0-9]+/g, '-')
-                    .replace(/^-|-$/g, '');
-
-                if (baseId) {
-                    if (this.usedIds.has(baseId)) {
-                        // Find the next available ID with a numeric suffix
-                        let counter = 2;
-                        let candidateId = `${baseId}-${counter}`;
-
-                        while (this.usedIds.has(candidateId)) {
-                            counter++;
-                            candidateId = `${baseId}-${counter}`;
-                        }
-
-                        this.usedIds.add(candidateId);
-
-                        result = candidateId;
-                    } else {
-                        // The base ID is available, use it
-                        this.usedIds.add(baseId);
-
-                        result = baseId;
-                    }
-                }
+            if (!text) {
+                return '';
             }
 
-            return result;
+            const baseId = text
+                .toLowerCase()
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/^-|-$/g, '');
+
+            if (!baseId) {
+                return '';
+            }
+
+            if (!this.usedIds.has(baseId)) {
+                this.usedIds.add(baseId);
+                return baseId;
+            }
+
+            // Find the next available ID with a numeric suffix
+            let counter = 2;
+            let candidateId = `${baseId}-${counter}`;
+
+            while (this.usedIds.has(candidateId)) {
+                counter++;
+                candidateId = `${baseId}-${counter}`;
+            }
+
+            this.usedIds.add(candidateId);
+            return candidateId;
         }
 
         private createAnchor(id: string): HTMLAnchorElement {
