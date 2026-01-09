@@ -15,7 +15,7 @@ const { locale, currentPath, translationPath } = Astro.props as Props;
 ---
 
 <header
-    class="relative sticky top-0 z-10 select-none border-b border-border-default bg-page-bg dark:border-border-default-dark dark:bg-page-bg-dark"
+    class="sticky top-0 z-10 select-none border-b border-border-default bg-page-bg dark:border-border-default-dark dark:bg-page-bg-dark"
 >
     <div class="container mx-auto max-w-4xl px-4 py-4">
         <!-- Mobile & Tablet: justify-between layout -->
@@ -28,11 +28,7 @@ const { locale, currentPath, translationPath } = Astro.props as Props;
                 <HeaderNav locale={locale} currentPath={currentPath} />
                 <div class="flex items-center gap-2">
                     <ThemeSwitcher client:load />
-                    <LocaleSwitcher
-                        client:load
-                        currentLocale={locale}
-                        {...translationPath ? { translationPath } : {}}
-                    />
+                    <LocaleSwitcher client:load currentLocale={locale} translationPath={translationPath} />
                 </div>
             </div>
         </nav>
@@ -49,7 +45,7 @@ const { locale, currentPath, translationPath } = Astro.props as Props;
 
             <div class="absolute right-0 top-1/2 flex -translate-y-1/2 items-center gap-2 text-sm">
                 <ThemeSwitcher client:load />
-                <LocaleSwitcher client:load currentLocale={locale} {...translationPath ? { translationPath } : {}} />
+                <LocaleSwitcher client:load currentLocale={locale} translationPath={translationPath} />
             </div>
         </nav>
     </div>

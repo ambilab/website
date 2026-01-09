@@ -9,7 +9,7 @@
 
     interface Props {
         currentLocale: Locale;
-        translationPath?: string;
+        translationPath?: string | undefined;
     }
 
     let { currentLocale, translationPath }: Props = $props();
