@@ -47,6 +47,7 @@ pnpm-debug.log*
 coverage/
 test-results/
 .vitest/
+.lighthouseci/
 
 # Cache
 .eslintcache

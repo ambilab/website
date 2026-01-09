@@ -63,7 +63,8 @@
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
     "vite": "^6.4.1",
-    "wait-on": "^9.0.3"
+    "wait-on": "^9.0.3",
+    "wrangler": "^4.58.0"
   },
   "syncRules": {
     "source": "ai-rules",
@@ -77,7 +78,7 @@
   "scripts": {
     "dev": "astro dev --host",
     "build": "astro build",
-    "preview": "astro preview",
+    "preview": "wrangler pages dev dist --port=4321",
     "check": "astro check",
     "lint": "biome lint . && eslint .",
     "lint:fix": "biome lint --write . && eslint . --fix",
@@ -96,7 +97,7 @@
     "validate": "pnpm validate:security",
     "security:audit": "pnpm audit --audit-level=moderate",
     "security:audit:fix": "pnpm audit --fix",
-    "perf": "lhci autorun",
+    "perf": "node scripts/run-lighthouse.mjs",
     "perf:collect": "lhci collect",
     "perf:assert": "lhci assert",
     "perf:upload": "lhci upload"
