@@ -45,7 +45,7 @@
 <button
     onclick={handleLocaleSwitch}
     disabled={isAnimating}
-    class="hover:bg-surface-hover dark:hover:bg-surface-hover-dark flex cursor-pointer items-center gap-2 rounded-lg px-3 py-2 transition-colors disabled:opacity-50"
+    class="hover:bg-surface-hover dark:hover:bg-surface-hover-dark flex items-center gap-2 rounded-lg px-3 py-2 transition-colors disabled:opacity-50"
     aria-label="Switch language"
 >
     <span>&rarr; {otherConfig.name}</span>
