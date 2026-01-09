@@ -67,20 +67,6 @@ export function formatDate(date: Date, locale: Locale): string {
 // #endregion
 ```
 
-## Example: Store File (Nanostores)
-
-```typescript
-import { defaultLocale } from '@i18n/config';
-import type { Locale } from '@type/locale';
-import { atom } from 'nanostores';
-
-export const $currentLocale = atom<Locale>(defaultLocale);
-
-export const setLocale = (locale: Locale): void => {
-  $currentLocale.set(locale);
-};
-```
-
 ## When to Create Regions
 
 Create when:

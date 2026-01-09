@@ -59,7 +59,6 @@ All code must pass strict TypeScript checks:
 - **Styling**: Tailwind CSS 4 with a custom theme
 - **Language**: TypeScript (strict mode)
 - **Content**: MDX via Astro Content Collections
-- **State Management**: Nanostores
 - **Icons**: Custom SVGs
 - **Package Manager**: pnpm
 - **Deployment**: Cloudflare Pages
@@ -84,7 +83,6 @@ ambilab-website/
     lib/                 # Reusable libraries (images)
     pages/               # Astro pages and API routes
     scripts/             # Utility scripts
-    stores/              # Nanostores for state
     styles/              # Global and MDX styles
     types/               # TypeScript type definitions
     utils/               # Utility functions
@@ -278,7 +276,6 @@ import { createLogger } from '@utils/logger';
 - `@utils/*` - src/utils/\*
 - `@type/*` - src/types/\*
 - `@i18n/*` - src/i18n/\*
-- `@stores/*` - src/stores/\*
 - `@assets/*` - src/assets/\*
 
 ## Git Commits

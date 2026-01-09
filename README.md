@@ -168,8 +168,6 @@ ambilab-website/
 │   │       └── newsletter.ts   # Buttondown proxy endpoint
 │   ├── scripts/
 │   │   └── validate-security-headers.ts
-│   ├── stores/
-│   │   └── locale.ts           # Nanostores for locale state
 │   ├── styles/
 │   │   ├── global.css          # Tailwind + base styles + print styles
 │   │   └── mdx-content.css     # MDX content styling
