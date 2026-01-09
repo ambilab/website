@@ -45,16 +45,24 @@ jobs:
       - name: Run Lighthouse CI
         run: |
           # Start the preview server in the background
-          pnpm preview &
+          pnpm preview > preview.log 2>&1 &
+          PREVIEW_PID=$!
 
           # Wait for the server to be ready
           echo "Waiting for preview server to start..."
-          npx wait-on http://localhost:4321 --timeout 30000
+          if ! pnpm exec wait-on http://localhost:4321 --timeout 30000; then
+            echo "Preview server failed to start. Log output:"
+            cat preview.log
+            exit 1
+          fi
 
           # Run Lighthouse CI
           pnpm perf:collect --url=http://localhost:4321
           pnpm perf:assert
           pnpm perf:upload
+
+          # Clean up preview server
+          kill $PREVIEW_PID || true
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -88,7 +96,14 @@ jobs:
               return;
             }
 
+            // Parse and validate manifest structure
             const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+
+            if (!Array.isArray(manifest) || manifest.length === 0) {
+              console.log('Manifest is empty or invalid');
+              return;
+            }
+
             const results = manifest[0];
 
             if (!results || !results.summary) {
@@ -96,15 +111,23 @@ jobs:
               return;
             }
 
+            // Build score table with safe property access
+            const scores = {
+              performance: results.summary.performance ?? 0,
+              accessibility: results.summary.accessibility ?? 0,
+              'best-practices': results.summary['best-practices'] ?? 0,
+              seo: results.summary.seo ?? 0,
+            };
+
             // Format the comment
-            const comment = `## 🎯 Lighthouse Performance Report
+            const comment = `## Lighthouse Performance Report
 
             | Category | Score |
             |----------|-------|
-            | 🚀 Performance | ${Math.round(results.summary.performance * 100)}% |
-            | ♿ Accessibility | ${Math.round(results.summary.accessibility * 100)}% |
-            | ✅ Best Practices | ${Math.round(results.summary['best-practices'] * 100)}% |
-            | 🔍 SEO | ${Math.round(results.summary.seo * 100)}% |
+            | Performance | ${Math.round(scores.performance * 100)}% |
+            | Accessibility | ${Math.round(scores.accessibility * 100)}% |
+            | Best Practices | ${Math.round(scores['best-practices'] * 100)}% |
+            | SEO | ${Math.round(scores.seo * 100)}% |
 
             [View detailed report](${results.url})
 
