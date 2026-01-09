@@ -44,8 +44,9 @@ const navItems = [
         navItems.map((item) => (
             <a
                 href={item.href}
+                aria-current={item.isActive ? 'page' : undefined}
                 class:list={[
-                    'transition-colors hover:text-link focus:text-link focus:outline-none dark:hover:text-link-dark dark:focus:text-link-dark',
+                    'focus-visible:ring-link/40 transition-colors hover:text-link-hover focus-visible:outline-none focus-visible:ring-2 dark:hover:text-link-hover-dark',
                     item.isActive &&
                         'underline-offset-10 font-semibold text-link-active underline decoration-2 dark:text-link-active-dark',
                 ]}
