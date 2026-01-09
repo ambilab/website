@@ -2,8 +2,20 @@
   "$schema": "https://unpkg.com/knip@5.78.0/schema.json",
   "entry": ["src/pages/**/*.{astro,ts}"],
   "project": ["src/**/*.{ts,tsx,astro,svelte}"],
-  "ignore": ["dist/**", ".astro/**", "node_modules/**", ".wrangler/**", "ai-rules/**", "scripts/**"],
+  "ignore": [
+    "dist/**",
+    ".astro/**",
+    "node_modules/**",
+    ".wrangler/**",
+    "ai-rules/**",
+    "scripts/**",
+    "src/components/svelte/ResponsiveImage.svelte",
+    "src/lib/images.ts",
+    "src/types/content.ts",
+    "src/types/index.ts"
+  ],
   "ignoreExportsUsedInFile": true,
+  "ignoreDependencies": [],
   "astro": {
     "config": ["astro.config.ts"],
     "entry": ["src/pages/**/*.astro"]
