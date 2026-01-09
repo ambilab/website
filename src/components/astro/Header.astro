@@ -17,19 +17,40 @@ const { locale, currentPath, translationPath } = Astro.props as Props;
 <header
     class="relative sticky top-0 z-10 select-none border-b border-border-default bg-page-bg dark:border-border-default-dark dark:bg-page-bg-dark"
 >
-    <nav class="container mx-auto flex max-w-4xl items-center justify-center gap-12 px-4 py-4">
-        <a href={getRoute('home', locale)} class="flex items-center gap-2 text-xl font-bold">
-            <span>Ambilab</span>
-        </a>
+    <div class="container mx-auto max-w-4xl px-4 py-4">
+        <!-- Mobile & Tablet: justify-between layout -->
+        <nav class="flex items-center justify-between gap-4 md:hidden">
+            <a href={getRoute('home', locale)} class="flex items-center gap-2 text-xl font-bold">
+                <span>Ambilab</span>
+            </a>
 
-        <div class="flex items-center text-sm">
-            <HeaderNav locale={locale} currentPath={currentPath} />
-        </div>
-    </nav>
+            <div class="flex items-center gap-4 text-sm">
+                <HeaderNav locale={locale} currentPath={currentPath} />
+                <div class="flex items-center gap-2">
+                    <ThemeSwitcher client:load />
+                    <LocaleSwitcher
+                        client:load
+                        currentLocale={locale}
+                        {...translationPath ? { translationPath } : {}}
+                    />
+                </div>
+            </div>
+        </nav>
 
-    <div class="absolute right-4 top-1/2 flex -translate-y-1/2 items-center gap-2 text-sm">
-        <ThemeSwitcher client:load />
+        <!-- Desktop: centered layout with absolute-positioned controls -->
+        <nav class="relative hidden items-center justify-center gap-12 md:flex">
+            <a href={getRoute('home', locale)} class="flex items-center gap-2 text-xl font-bold">
+                <span>Ambilab</span>
+            </a>
 
-        <LocaleSwitcher client:load currentLocale={locale} {...translationPath ? { translationPath } : {}} />
+            <div class="flex items-center text-sm">
+                <HeaderNav locale={locale} currentPath={currentPath} />
+            </div>
+
+            <div class="absolute right-0 top-1/2 flex -translate-y-1/2 items-center gap-2 text-sm">
+                <ThemeSwitcher client:load />
+                <LocaleSwitcher client:load currentLocale={locale} {...translationPath ? { translationPath } : {}} />
+            </div>
+        </nav>
     </div>
 </header>
