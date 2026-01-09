@@ -18,6 +18,7 @@
     "blit",
     "buttondown",
     "carnitas",
+    "Čeština",
     "Chilaquiles",
     "Churros",
     "cloudflare",
@@ -39,6 +40,7 @@
     "ISEO",
     "jsonc",
     "leche",
+    "ledna",
     "masa",
     "Molletes",
     "nanostores",
@@ -79,13 +81,12 @@
     "tseslint",
     "tsparser",
     "typecheck",
+    "Václav",
     "vancura",
     "Vančura",
     "vaso",
-    "Václav",
     "WCAG",
-    "wrangler",
-    "Čeština"
+    "wrangler"
   ],
   "flagWords": ["hte", "teh", "dont", "cant", "wont"],
   "ignorePaths": [
