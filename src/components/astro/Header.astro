@@ -2,6 +2,7 @@
 import HeaderNav from '@components/astro/HeaderNav.astro';
 import LocaleSwitcher from '@components/svelte/LocaleSwitcher.svelte';
 import ThemeSwitcher from '@components/svelte/ThemeSwitcher.svelte';
+import { getRoute } from '@config/routes';
 import type { Locale } from '@type/locale';
 
 export interface Props {
@@ -17,7 +18,7 @@ const { locale, currentPath, translationPath } = Astro.props as Props;
     class="relative sticky top-0 z-10 select-none border-b border-border-default bg-page-bg dark:border-border-default-dark dark:bg-page-bg-dark"
 >
     <nav class="container mx-auto flex max-w-4xl items-center justify-center gap-12 px-4 py-4">
-        <a href="/" class="flex items-center gap-2 text-xl font-bold">
+        <a href={getRoute('home', locale)} class="flex items-center gap-2 text-xl font-bold">
             <span>Ambilab</span>
         </a>
 
