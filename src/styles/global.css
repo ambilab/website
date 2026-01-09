@@ -131,6 +131,25 @@ body {
     min-height: 100vh;
     text-rendering: optimizeLegibility;
     font-variant-ligatures: contextual common-ligatures;
+
+    /**
+     * OpenType font features for Innovator Grotesk.
+     *
+     * Enabled features (1):
+     * - kern: Kerning for improved letter spacing
+     * - liga: Standard ligatures (fi, fl, etc.)
+     * - clig: Contextual ligatures
+     * - dlig: Discretionary ligatures
+     * - zero: Slashed zero for clarity
+     * - tnum: Tabular numbers for alignment in tables
+     * - cv01, cv06, cv08, cv10, cv13: Character variants for improved readability
+     *
+     * Disabled features (0):
+     * - calt: Contextual alternates (disabled for consistency)
+     * - Other cv/ss features: Not used or not supported by the font
+     *
+     * Note: Unsupported features are silently ignored by browsers.
+     */
     font-feature-settings:
         'kern' 1,
         'liga' 1,
