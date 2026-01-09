@@ -21,18 +21,23 @@ export default {
                 'build', // Build system or dependencies
                 'ci', // CI/CD changes
                 'chore', // Other changes (maintenance, etc.)
-                'revert', // Revert previous commit
+                'revert', // Revert the previous commit
             ],
         ],
+
         // Subject case: lowercase
         'subject-case': [2, 'never', ['sentence-case', 'start-case', 'pascal-case', 'upper-case']],
-        // Subject must not end with period
+
+        // Subject must not end with the period
         'subject-empty': [2, 'never'],
         'subject-full-stop': [2, 'never', '.'],
+
         // Type must be lowercase
         'type-case': [2, 'always', 'lower-case'],
+
         // Type must not be empty
         'type-empty': [2, 'never'],
+
         // Header max length
         'header-max-length': [2, 'always', 100],
     },

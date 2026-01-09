@@ -1,21 +1,25 @@
 /**
- * Shared security configuration for both Astro and Cloudflare Pages middleware.
+ * Shared security configuration for both Astro
+ * and Cloudflare Pages middleware.
  *
  * IMPORTANT: This is the single source of truth for security headers.
+ *
  * Both src/middleware.ts and functions/_middleware.ts import and use these values.
  */
 
 /**
- * Generate a cryptographically secure nonce for CSP
+ * Generate cryptographically secure nonce for CSP.
  */
 export function generateNonce(): string {
     const array = new Uint8Array(16);
+
     crypto.getRandomValues(array);
+
     return btoa(Array.from(array, (byte) => String.fromCharCode(byte)).join(''));
 }
 
 /**
- * Static security headers that don't change between environments
+ * Static security headers that don't change between environments.
  */
 export const STATIC_SECURITY_HEADERS = {
     'X-Content-Type-Options': 'nosniff',
@@ -25,7 +29,7 @@ export const STATIC_SECURITY_HEADERS = {
 } as const;
 
 /**
- * CSP configuration options
+ * CSP configuration options.
  */
 export interface CSPConfig {
     nonce: string;
@@ -33,7 +37,7 @@ export interface CSPConfig {
 }
 
 /**
- * Build Content Security Policy header value
+ * Build Content Security Policy header value.
  *
  * @param config - CSP configuration with nonce and environment flag
  * @returns Complete CSP header value
@@ -84,7 +88,7 @@ export function buildCSP(config: CSPConfig): string {
 }
 
 /**
- * Apply all security headers to a Headers object
+ * Apply all security headers to a Headers object.
  *
  * @param headers - Headers object to modify
  * @param config - CSP configuration

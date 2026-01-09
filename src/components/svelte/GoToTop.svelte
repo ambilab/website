@@ -1,11 +1,45 @@
 <script lang="ts">
+    /**
+     * GoToTop Component
+     *
+     * Floating button that appears when the user scrolls down,
+     * allowing them to quickly return to the top of the page.
+     *
+     * Uses smooth scrolling and fade transitions for a polished user experience.
+     *
+     * Features:
+     * - Appears after scrolling past configured threshold
+     * - Smooth scroll-to-top animation
+     * - Fade in/out transition
+     * - Fixed positioning in bottom-right corner
+     * - Debounced scroll event handling for performance
+     * - Optional force visible mode for testing
+     * - Accessible with aria-label
+     * - Dark mode support
+     *
+     * @component
+     * @example
+     * ```svelte
+     * <GoToTop client:idle />
+     * ```
+     */
     import { COMPONENT_CONFIG } from '@config/components';
     import { debounce } from '@utils/debounce';
     import { scrollToTop } from '@utils/scroll';
     import { onMount } from 'svelte';
     import { fade } from 'svelte/transition';
 
+    /**
+     * Props for the GoToTop component.
+     */
     interface Props {
+        /**
+         * Force the button to be visible regardless of scroll position.
+         *
+         * Useful for testing or when you want the button always visible.
+         *
+         * @default false
+         */
         forceVisible?: boolean;
     }
 

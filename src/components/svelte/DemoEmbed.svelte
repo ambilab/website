@@ -1,32 +1,110 @@
 <script lang="ts">
     /**
-     * DemoEmbed component for embedding interactive demos.
+     * DemoEmbed Component
      *
-     * SECURITY: Only trusted, allowlisted sources are supported. The src URL is
-     * validated against an explicit allowlist of hostnames and must use HTTPS.
-     * Invalid URLs will fall back to a safe default or be rejected.
+     * Embeds interactive demos in a secure iframe with strict security controls.
      *
-     * The iframe sandbox includes by default:
+     * Only allowlisted hostnames are permitted, and all URLs must use HTTPS.
+     *
+     * Security Features:
+     * - URL validation against explicit allowlist
+     * - HTTPS requirement enforcement
+     * - Sandboxed iframe with minimal permissions
+     * - Safe fallback for invalid URLs
+     * - Development mode link fallback to avoid CSP violations
+     *
+     * Default Sandbox Permissions:
      * - allow-scripts: Execute JavaScript
      * - allow-same-origin: Access localStorage, cookies, and same-origin APIs
      * - allow-forms: Submit forms within the iframe
      *
-     * Optional permissions (must be explicitly enabled):
-     * - allow-top-navigation: Navigate the top-level browsing context (requires allowTopNavigation=true)
+     * Optional Permissions:
+     * - allow-top-navigation: Navigate top-level context (requires allowTopNavigation=true)
+     * - autoplay: Media autoplay (controlled via the allow attribute)
+     * - accelerometer/gyroscope: Motion sensors (controlled via the allow attribute)
      *
-     * These permissions are safe because all sources are explicitly allowlisted.
+     * Development Mode:
+     * - Shows a link instead of an iframe on localhost to avoid CSP frame-ancestors violations
+     * - The demo site blocks localhost due to CSP restrictions
+     *
+     * @component
+     * @example
+     * ```svelte
+     * <DemoEmbed
+     *   src="https://blit-tech-demos.ambilab.com/demo/example"
+     *   title="Interactive Demo"
+     *   aspectRatio="16/9"
+     *   client:visible
+     * />
+     * ```
      */
     interface Props {
+        /**
+         * URL of the demo to embed.
+         *
+         * Must be from an allowlisted hostname and use HTTPS protocol.
+         *
+         * Invalid URLs will display a warning message instead of embedding.
+         */
         src: string;
+
+        /**
+         * Caption text displayed below the iframe.
+         *
+         * If not provided, no caption is shown.
+         */
         title?: string;
+
+        /**
+         * Aspect ratio of the iframe in CSS format (e.g., "16/9", "4/3").
+         *
+         * @default '16/9'
+         */
         aspectRatio?: string;
+
+        /**
+         * Additional CSS classes to apply to the demo embed container.
+         */
         class?: string;
+
+        /**
+         * Whether the demo should only be displayed on desktop screens.
+         *
+         * On mobile, the embed is hidden.
+         *
+         * @default true
+         */
         desktopOnly?: boolean;
-        /** Enable top-level navigation. Only enable if the demo explicitly requires it. */
+
+        /**
+         * Enable top-level navigation permission.
+         *
+         * Only enable if the demo explicitly requires it.
+         *
+         * When enabled, adds 'allow-top-navigation'
+         * to the iframe sandbox attribute.
+         *
+         * @default false
+         */
         allowTopNavigation?: boolean;
-        /** Enable autoplay permission. Defaults to true for most demos. */
+
+        /**
+         * Enable autoplay permission for media playback.
+         *
+         * Controlled via the iframe allow attribute.
+         *
+         * @default true
+         */
         allowAutoplay?: boolean;
-        /** Enable motion sensors (accelerometer, gyroscope). Defaults to false for desktop demos. */
+
+        /**
+         * Enable motion sensors (accelerometer, gyroscope).
+         *
+         * Controlled via the iframe allow attribute.
+         *
+         * Defaults to false when desktopOnly is true,
+         * or true when desktopOnly is false.
+         */
         allowMotionSensors?: boolean;
     }
 
@@ -53,6 +131,7 @@
 
     /**
      * Validates that a URL is from an allowed hostname and uses HTTPS.
+     *
      * Returns the validated URL or null if validation fails.
      */
     function validateSrcUrl(url: string): string | null {

@@ -57,7 +57,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
         // Log the error but don't expose sensitive details
         logger.error('Middleware error', error);
 
-        // Prevent infinite redirect loop if already on error page
+        // Prevent infinite redirect loop if already on the error page
         const url = new URL(context.request.url);
         const pathname = url.pathname.replace(/\/$/, '') || '/';
 

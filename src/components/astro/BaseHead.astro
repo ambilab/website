@@ -1,15 +1,67 @@
 ---
 import { getRoute } from '@config/routes';
+/**
+ * BaseHead Component
+ *
+ * Provides the complete HTML head section with SEO metadata,
+ * OpenGraph tags, X Cards, structured data, and analytics.
+ *
+ * Handles font loading, favicons, and CSP nonce injection
+ * for inline scripts and styles.
+ *
+ * Features:
+ * - Comprehensive SEO meta tags (title, description, canonical URL)
+ * - OpenGraph and X Card metadata for social sharing
+ * - Structured data (JSON-LD) for search engines
+ * - Font preloading and optimization (production only)
+ * - Analytics integration (Plausible)
+ * - Dark mode favicon support
+ * - CSP-compliant inline scripts with nonce
+ *
+ * @component
+ * @example
+ * ```astro
+ * <BaseHead
+ *   title="Page Title"
+ *   description="Page description"
+ *   permalink="https://example.com/page"
+ *   locale="en"
+ * />
+ * ```
+ */
 import { SITE } from '@config/site';
 import type { Locale } from '@type/locale';
 import type { ISEOMetadata } from '@type/seo';
 import { ClientRouter } from 'astro:transitions';
 
+/**
+ * Props for the BaseHead component.
+ *
+ * Extends ISEOMetadata to include all SEO-related properties.
+ */
 export interface Props extends ISEOMetadata {
+    /** The page title displayed in the browser tab and used for SEO. */
     title: string;
+
+    /** The meta description used for SEO and social media previews. */
     description: string;
+
+    /**
+     * The canonical URL for the page.
+     * Used to prevent duplicate content issues.
+     */
     permalink: string;
+
+    /**
+     * Optional OpenGraph image URL for social media sharing.
+     * Falls back to the default OG image if not provided.
+     */
     ogImage?: string;
+
+    /**
+     * Optional locale for the page.
+     * Defaults to 'en' if not provided.
+     */
     locale?: Locale;
 }
 
@@ -23,8 +75,10 @@ const currentDomain = Astro.url.hostname;
 const nonce = Astro.locals.nonce;
 
 /*
-NOTE: All security headers (CSP, X-Content-Type-Options, Permissions-Policy, etc.)
-are set via HTTP headers in middleware for better security. HTTP headers are:
+NOTE: All security headers (CSP, X-Content-Type-Options, Permissions-Policy,
+etc.) are set via HTTP headers in middleware for better security.
+
+HTTP headers are:
   - Enforced before HTML parsing begins
   - Cannot be modified by injected content
   - More consistently honored across browsers
@@ -102,7 +156,7 @@ NOTE: Only load external font in production to avoid CORS issues in development
 <meta name="author" content={SITE.AUTHOR} />
 <meta name="language" content={locale === 'cs' ? 'cs-CZ' : 'en-US'} />
 
-<!-- Open Graph -->
+<!-- OpenGraph -->
 <meta property="og:type" content="website" />
 <meta property="og:url" content={permalink} />
 <meta property="og:title" content={title} />
@@ -113,7 +167,7 @@ NOTE: Only load external font in production to avoid CORS issues in development
 <meta property="og:image:height" content="630" />
 <meta property="og:locale" content={locale === 'cs' ? 'cs_CZ' : 'en_US'} />
 
-<!-- Twitter Card -->
+<!-- X Card -->
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:url" content={permalink} />
 <meta name="twitter:title" content={title} />

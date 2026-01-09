@@ -1,5 +1,28 @@
 ---
-
+/**
+ * HeadingLinks Component
+ *
+ * Auto-generates anchor links for headings (h1-h4) in MDX content.
+ *
+ * Adds clickable anchor links that appear on hover,
+ * allowing users to copy direct links to specific sections.
+ *
+ * Handles duplicate heading text by appending numeric suffixes to IDs.
+ *
+ * Features:
+ * - Automatically processes headings on page load and navigation
+ * - Generates URL-safe IDs from heading text
+ * - Handles duplicate headings with unique ID generation
+ * - Smooth scrolls to anchors and updates URL hash
+ * - Copies full URL to clipboard on anchor click
+ * - Respects Astro's client-side navigation events
+ *
+ * @component
+ * @example
+ * ```astro
+ * <HeadingLinks />
+ * ```
+ */
 ---
 
 <script>
@@ -9,13 +32,40 @@
 
     const logger = createLogger({ prefix: 'HeadingLinks' });
 
+    /**
+     * Manages the creation and maintenance of anchor links for MDX headings.
+     *
+     * Tracks used IDs to prevent duplicates and ensures each heading gets
+     * a unique anchor link. Refreshes on page load and Astro navigation events.
+     */
     class HeadingLinksManager {
+        /** Set of IDs that have already been assigned to headings */
         private usedIds: Set<string> = new Set();
 
+        /**
+         * Creates a new HeadingLinksManager instance.
+         *
+         * Binds the refresh method to ensure a correct `this` context
+         * when used as an event listener.
+         */
         constructor() {
             this.refresh = this.refresh.bind(this);
         }
 
+        /**
+         * Generates a URL-safe ID from heading text.
+         *
+         * Converts text to lowercase, replaces non-alphanumeric characters with
+         * hyphens, and ensures uniqueness by appending numeric suffixes when
+         * needed.
+         *
+         * @param text - The heading text content (may be null)
+         * @returns A URL-safe ID string, or empty string if text is invalid
+         *
+         * @example
+         * generateId("Hello World!") // Returns "hello-world"
+         * generateId("Hello World!") // Returns "hello-world-2" if first already used
+         */
         private generateId(text: string | null): string {
             if (!text) {
                 return '';
@@ -48,6 +98,17 @@
             return candidateId;
         }
 
+        /**
+         * Creates an anchor link element for a heading.
+         *
+         * Creates a clickable anchor link that:
+         * - Smooth scrolls to the heading
+         * - Updates the URL hash
+         * - Copies the full URL to clipboard
+         *
+         * @param id - The unique ID of the heading to link to
+         * @returns A configured HTML anchor element
+         */
         private createAnchor(id: string): HTMLAnchorElement {
             const anchor = document.createElement('a');
 
@@ -69,6 +130,17 @@
             return anchor;
         }
 
+        /**
+         * Refreshes anchor links for all headings in MDX content.
+         *
+         * Scans the page for h1-h4 headings within `.mdx-content`
+         * and adds anchor links to any that don't already have them.
+         *
+         * Resets the used IDs tracker before processing to handle
+         * dynamic content updates.
+         *
+         * Logs the number of headings processed for debugging purposes.
+         */
         public refresh(): void {
             this.usedIds.clear();
 

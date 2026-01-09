@@ -1,12 +1,53 @@
 <script lang="ts">
+    /**
+     * ThemeSwitcher Component
+     *
+     * Toggle the button for switching between light and dark themes.
+     *
+     * Syncs with system preferences when no user preference
+     * is set and persists user choices in localStorage.
+     *
+     * Uses the 'dark' class on the document element for theme application.
+     *
+     * Features:
+     * - Toggles between light and dark themes
+     * - Syncs with system preference when no user preference exists
+     * - Persists theme choice in localStorage
+     * - Listens for system theme changes
+     * - Smooth opacity transition on mount
+     * - Accessible with aria-label and title
+     * - Icon changes based on current theme
+     *
+     * Theme Application:
+     * - Light mode: No 'dark' class on <html>
+     * - Dark mode: 'dark' class on <html>
+     * - System preference: Used when localStorage has no 'theme' value
+     *
+     * @component
+     * @example
+     * ```svelte
+     * <ThemeSwitcher client:load />
+     * ```
+     */
     import { toggleDarkMode } from '@utils/dom';
     import { createLogger } from '@utils/logger';
 
     const logger = createLogger({ prefix: 'ThemeSwitcher' });
 
+    /** Current theme state ('light' or 'dark'). */
     let currentTheme = $state<'light' | 'dark'>('light');
+
+    /** Whether the component has mounted and synced with DOM. */
     let mounted = $state(false);
 
+    /**
+     * Updates the currentTheme state from the DOM.
+     *
+     * Checks if the 'dark' class is present on document.documentElement
+     * to determine the current theme.
+     *
+     * This ensures the component state matches the actual DOM state.
+     */
     const updateTheme = () => {
         // Check the actual class on the element, not system preference
         if (typeof document !== 'undefined' && document.documentElement) {
@@ -14,6 +55,14 @@
         }
     };
 
+    /**
+     * Handles theme toggle button click.
+     *
+     * Toggles the dark mode class on the document element,
+     * updates the component state, and logs the action.
+     *
+     * Handles errors gracefully.
+     */
     const handleThemeToggle = () => {
         try {
             toggleDarkMode();
@@ -24,7 +73,17 @@
         }
     };
 
-    // Initialize theme on mount using $effect
+    /**
+     * Effect to initialize theme and listen for system preference changes.
+     *
+     * Runs only in the browser environment.
+     *
+     * Syncs theme state from DOM on mount,
+     * then listens for system theme changes.
+     *
+     * Only updates from system preference
+     * if no user preference exists in localStorage.
+     */
     $effect(() => {
         // Run only in a browser environment
         if (typeof window === 'undefined') {

@@ -1,0 +1,349 @@
+---
+/**
+ * Standalone 404 Error Page (Vancura Style)
+ *
+ * An alternative 404 page with a distinctive design aesthetic
+ * converted from vancura.design.
+ *
+ * This is a self-contained page with no dependencies on the
+ * standard site layouts, providing a unique error experience.
+ *
+ * Features:
+ * - Fully standalone HTML structure
+ * - Custom header and footer (different from main site)
+ * - Mobile-responsive navigation menu
+ * - Styled with Tailwind CSS 4
+ * - Dark theme aesthetic
+ * - Smooth scroll behavior
+ *
+ * Note: This page is intentionally separate from PageLayout to maintain
+ * its unique design identity.
+ *
+ * @component
+ * @example
+ * Direct route: /404-vancura-style
+ */
+import '@/styles/global.css';
+---
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>404: Page not found | Václav Vančura</title>
+        <meta name="description" content="The page you're looking for doesn't exist." />
+        <style is:global>
+            /* Base styles for the page */
+            html {
+                scroll-behavior: smooth;
+            }
+
+            body {
+                margin: 0;
+                padding: 0;
+            }
+
+            /* Responsive navigation fix */
+            @media (min-width: 768px) {
+                #mobile-menu-button {
+                    display: none !important;
+                }
+                #desktop-nav {
+                    display: flex !important;
+                }
+                #mobile-menu {
+                    display: none !important;
+                }
+            }
+
+            @media (max-width: 767px) {
+                #desktop-nav {
+                    display: none !important;
+                }
+                #mobile-menu-button {
+                    display: block !important;
+                }
+            }
+        </style>
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const menuButton = document.getElementById('mobile-menu-button');
+                const mobileMenu = document.getElementById('mobile-menu');
+                const menuIcon = document.getElementById('menu-icon');
+                const closeIcon = document.getElementById('close-icon');
+
+                if (menuButton && mobileMenu) {
+                    menuButton.addEventListener('click', () => {
+                        const isOpen = mobileMenu.classList.contains('translate-y-0');
+
+                        if (isOpen) {
+                            // Close menu - slide up
+                            mobileMenu.classList.remove('translate-y-0', 'opacity-100');
+                            mobileMenu.classList.add('-translate-y-full', 'opacity-0');
+                            menuIcon?.classList.remove('hidden');
+                            closeIcon?.classList.add('hidden');
+                        } else {
+                            // Open menu - slide down
+                            mobileMenu.classList.remove('-translate-y-full', 'opacity-0');
+                            mobileMenu.classList.add('translate-y-0', 'opacity-100');
+                            menuIcon?.classList.add('hidden');
+                            closeIcon?.classList.remove('hidden');
+                        }
+                    });
+
+                    // Close menu when clicking a link
+                    const menuLinks = mobileMenu.querySelectorAll('a');
+                    menuLinks.forEach((link) => {
+                        link.addEventListener('click', () => {
+                            mobileMenu.classList.remove('translate-y-0', 'opacity-100');
+                            mobileMenu.classList.add('-translate-y-full', 'opacity-0');
+                            menuIcon?.classList.remove('hidden');
+                            closeIcon?.classList.add('hidden');
+                        });
+                    });
+                }
+            });
+        </script>
+    </head>
+    <body class="flex min-h-screen flex-col bg-neutral-900 text-neutral-300 antialiased">
+        <!-- Header -->
+        <header class="relative z-50 border-b border-neutral-800">
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div class="flex h-16 items-center justify-between sm:h-20">
+                    <!-- Logo/Name -->
+                    <div class="flex-shrink-0">
+                        <a
+                            href="/"
+                            class="text-sm font-medium uppercase tracking-wider text-white transition-colors hover:text-neutral-300 sm:text-base"
+                        >
+                            Václav Vančura
+                        </a>
+                    </div>
+
+                    <!-- Desktop Navigation (hidden on mobile) -->
+                    <nav id="desktop-nav" class="flex items-center gap-6 lg:gap-8">
+                        <a
+                            href="/design"
+                            class="text-sm uppercase tracking-wide text-neutral-400 transition-colors hover:text-white lg:text-base"
+                        >
+                            Design
+                        </a>
+                        <a
+                            href="/blog"
+                            class="text-sm uppercase tracking-wide text-neutral-400 transition-colors hover:text-white lg:text-base"
+                        >
+                            Blog
+                        </a>
+                        <button
+                            type="button"
+                            class="p-1 text-neutral-400 transition-colors hover:text-white"
+                            aria-label="Search"
+                        >
+                            <svg
+                                class="h-5 w-5"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <path d="m21 21-4.35-4.35"></path>
+                            </svg>
+                        </button>
+                    </nav>
+
+                    <!-- Mobile Menu Button (visible on mobile only) -->
+                    <button
+                        id="mobile-menu-button"
+                        type="button"
+                        class="p-2 text-neutral-400 transition-colors hover:text-white"
+                        aria-label="Toggle menu"
+                    >
+                        <svg
+                            id="menu-icon"
+                            class="h-6 w-6"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path d="M3 12h18M3 6h18M3 18h18"></path>
+                        </svg>
+                        <svg
+                            id="close-icon"
+                            class="hidden h-6 w-6"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <path d="M18 6L6 18M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Mobile Menu Dropdown -->
+        <div
+            id="mobile-menu"
+            class="fixed left-0 right-0 top-16 z-40 -translate-y-full transform border-t border-neutral-800 bg-neutral-900 opacity-0 transition-all duration-300 ease-in-out sm:top-20"
+        >
+            <nav class="mx-auto max-w-7xl px-4 py-8 sm:px-6">
+                <div class="flex flex-col gap-6">
+                    <a
+                        href="/design"
+                        class="text-xl uppercase tracking-wide text-neutral-400 transition-colors hover:text-white"
+                    >
+                        Design
+                    </a>
+                    <a
+                        href="/blog"
+                        class="text-xl uppercase tracking-wide text-neutral-400 transition-colors hover:text-white"
+                    >
+                        Blog
+                    </a>
+                    <button
+                        type="button"
+                        class="flex items-center gap-3 text-left text-xl uppercase tracking-wide text-neutral-400 transition-colors hover:text-white"
+                        aria-label="Search"
+                    >
+                        <svg
+                            class="h-5 w-5"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                        Search
+                    </button>
+                </div>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <main class="flex flex-1 items-center px-4 py-12 sm:px-6 sm:py-16 md:justify-center lg:px-8">
+            <div class="w-full max-w-2xl md:text-center">
+                <!-- 404 Heading -->
+                <h1
+                    class="mb-6 font-serif text-7xl font-light text-white sm:mb-8 sm:text-8xl md:text-9xl lg:text-[180px]"
+                >
+                    404
+                </h1>
+
+                <!-- Page not found -->
+                <h2 class="mb-6 text-2xl font-light text-white sm:mb-8 sm:text-3xl md:text-4xl lg:text-5xl">
+                    Page not found
+                </h2>
+
+                <!-- Description -->
+                <div class="mb-8 space-y-3 text-base text-neutral-400 sm:mb-10 sm:text-lg">
+                    <p>I apologize for the inconvenience.</p>
+                    <p>Please navigate to the home or use the menu to find the information you're seeking.</p>
+                </div>
+
+                <!-- Button -->
+                <a
+                    href="/"
+                    class="inline-block rounded-full border-2 border-white px-7 py-3 text-xs font-medium uppercase tracking-[0.15em] text-white transition-all duration-200 hover:bg-white hover:text-neutral-900 sm:px-8 sm:text-sm"
+                >
+                    Go Back Home
+                </a>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="border-t border-neutral-800">
+            <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
+                <!-- Footer Top: Branding -->
+                <div class="mb-8 sm:mb-12">
+                    <div class="mb-2 text-sm font-medium uppercase tracking-wider text-white sm:text-base">
+                        Václav Vančura
+                    </div>
+                    <div class="text-xs uppercase tracking-wide text-neutral-500 sm:text-sm">
+                        Accessible Product Design and Implementation
+                    </div>
+                </div>
+
+                <!-- Footer Navigation Grid -->
+                <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-12">
+                    <!-- Site Links -->
+                    <nav class="flex flex-col gap-3 sm:gap-4">
+                        <a
+                            href="/"
+                            class="text-sm uppercase tracking-wide text-neutral-400 transition-colors hover:text-white sm:text-base"
+                        >
+                            Home
+                        </a>
+                        <a
+                            href="/design"
+                            class="text-sm uppercase tracking-wide text-neutral-400 transition-colors hover:text-white sm:text-base"
+                        >
+                            Design
+                        </a>
+                        <a
+                            href="/blog"
+                            class="text-sm uppercase tracking-wide text-neutral-400 transition-colors hover:text-white sm:text-base"
+                        >
+                            Blog
+                        </a>
+                    </nav>
+
+                    <!-- Social Links -->
+                    <nav class="flex flex-col gap-3 sm:gap-4">
+                        <a
+                            href="https://linkedin.com"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="text-sm uppercase tracking-wide text-neutral-400 transition-colors hover:text-white sm:text-base"
+                        >
+                            LinkedIn
+                        </a>
+                        <a
+                            href="https://github.com"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="text-sm uppercase tracking-wide text-neutral-400 transition-colors hover:text-white sm:text-base"
+                        >
+                            GitHub
+                        </a>
+                        <a
+                            href="https://mastodon.social"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="text-sm uppercase tracking-wide text-neutral-400 transition-colors hover:text-white sm:text-base"
+                        >
+                            Mastodon
+                        </a>
+                    </nav>
+                </div>
+
+                <!-- Footer Icon -->
+                <div class="mt-12 flex justify-center opacity-30 sm:mt-16">
+                    <svg
+                        class="h-8 w-8 text-neutral-600"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="1.5"
+                            d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+                        ></path>
+                    </svg>
+                </div>
+            </div>
+        </footer>
+    </body>
+</html>

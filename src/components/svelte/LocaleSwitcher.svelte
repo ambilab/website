@@ -1,4 +1,31 @@
 <script lang="ts">
+    /**
+     * LocaleSwitcher Component
+     *
+     * Allows users to switch between English and Czech locales.
+     *
+     * Updates the locale cookie and navigates to the translated version
+     * of the current page using Astro's View Transitions for smooth navigation.
+     *
+     * Features:
+     * - Toggles between English and Czech
+     * - Sets locale cookie for persistence
+     * - Uses a translation path if available, otherwise stays on the current path
+     * - Smooth View Transitions navigation
+     * - Prevents multiple simultaneous switches
+     * - Displays target locale name
+     * - Accessible button with aria-label
+     *
+     * @component
+     * @example
+     * ```svelte
+     * <LocaleSwitcher
+     *   currentLocale="en"
+     *   translationPath="/cs/blog/post"
+     *   client:load
+     * />
+     * ```
+     */
     import { LOCALE_CONFIGS } from '@i18n/config';
     import { setLocaleCookie } from '@i18n/utils';
     import type { Locale } from '@type/locale';
@@ -7,8 +34,25 @@
 
     const logger = createLogger({ prefix: 'LocaleSwitcher' });
 
+    /**
+     * Props for the LocaleSwitcher component.
+     */
     interface Props {
+        /**
+         * Current locale of the page.
+         *
+         * Used to determine which locale to switch to (the opposite locale).
+         */
         currentLocale: Locale;
+
+        /**
+         * Path to the translated version of the current page.
+         *
+         * If provided, navigation will go to this path when switching locales.
+         *
+         * If not provided, the component will navigate to the same path
+         * in the target locale.
+         */
         translationPath?: string | undefined;
     }
 

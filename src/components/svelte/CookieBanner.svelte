@@ -1,9 +1,37 @@
 <script lang="ts">
+    /**
+     * CookieBanner Component
+     *
+     * Displays a cookie consent banner at the bottom of the page.
+     *
+     * The banner informs users about cookie usage and allows
+     * them to dismiss it.
+     *
+     * The dismissal state is persisted in localStorage to prevent
+     * showing the banner on subsequent visits.
+     *
+     * Features:
+     * - Fixed positioning at the bottom of the page
+     * - Locale-aware messaging
+     * - Persistent dismissal state via localStorage
+     * - Graceful fallback if localStorage is unavailable
+     * - Responsive layout (stacked on mobile, row on desktop)
+     * - Dark mode support
+     *
+     * @component
+     * @example
+     * ```svelte
+     * <CookieBanner locale="en" client:idle />
+     * ```
+     */
     import { COMPONENT_CONFIG } from '@config/components';
     import { getTranslation } from '@i18n/translations';
     import type { Locale } from '@type/locale';
     import { onMount } from 'svelte';
 
+    /**
+     * Props for the CookieBanner component.
+     */
     interface Props {
         locale?: Locale;
     }

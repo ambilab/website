@@ -1,4 +1,42 @@
 ---
+/**
+ * PageLayout Component
+ *
+ * Root layout component that wraps all page content.
+ * Provides the complete HTML structure with head, header,
+ * main content area, footer, and interactive components
+ * (cookie banner, go-to-top button).
+ *
+ * Features:
+ * - Complete HTML document structure
+ * - Dark mode initialization (prevents flash of unstyled content)
+ * - SEO head section via Head component
+ * - Sticky header with navigation
+ * - Main content area with background pattern
+ * - Footer with links and social media
+ * - Cookie consent banner
+ * - Scroll-to-top button
+ * - View transition support (Astro client-side navigation)
+ * - CSP nonce injection for inline scripts
+ *
+ * Dark Mode:
+ * - Applies theme immediately on page load to prevent FOUC
+ * - Persists theme across Astro view transitions
+ * - Respects system preferences when no stored preference exists
+ *
+ * @component
+ * @example
+ * ```astro
+ * <PageLayout
+ *   locale="en"
+ *   title="Page Title"
+ *   description="Page description"
+ *   permalink="https://example.com/page"
+ * >
+ *   <h1>Page Content</h1>
+ * </PageLayout>
+ * ```
+ */
 import '@/styles/global.css';
 
 import CookieBanner from '@components/svelte/CookieBanner.svelte';
@@ -10,8 +48,29 @@ import Footer from './Footer.astro';
 import Head from './Head.astro';
 import Header from './Header.astro';
 
+/**
+ * Props for the PageLayout component.
+ *
+ * Extends ISEOMetadata to include all SEO-related properties
+ * (title, description, permalink, ogImage, articlePublishedTime,
+ * articleModifiedTime) plus layout-specific properties like
+ * locale and translation path.
+ *
+ * @see ISEOMetadata For documentation of inherited SEO properties
+ */
 export interface Props extends ISEOMetadata {
+    /**
+     * Locale of the page content.
+     *
+     * Determines the language attribute of the HTML element and affects i18n.
+     */
     locale: Locale;
+
+    /**
+     * Path to the translated version of this page.
+     *
+     * Used to generate alternate language links in the header.
+     */
     translationPath?: string;
 }
 
@@ -22,7 +81,7 @@ const currentPath = Astro.url.pathname;
 <!doctype html>
 <html lang={locale}>
     <head>
-        <!-- Initialize dark mode immediately to prevent flash, and persist across view transitions -->
+        <!-- Initialize dark mode immediately to prevent flash and persist across view transitions -->
         <script is:inline nonce={Astro.locals.nonce}>
             function applyTheme() {
                 const theme = localStorage.getItem('theme');
@@ -39,7 +98,7 @@ const currentPath = Astro.url.pathname;
             // Apply theme immediately on page load
             applyTheme();
 
-            // Reapply theme after view transitions (client-side navigation)
+            // Reapply the theme after view transitions (client-side navigation)
             document.addEventListener('astro:after-swap', applyTheme);
         </script>
 

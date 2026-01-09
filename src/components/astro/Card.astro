@@ -1,6 +1,32 @@
 ---
+/**
+ * Card Component
+ *
+ * A reusable card container component with an optional title.
+ *
+ * Provides consistent styling for content sections with border,
+ * shadow, and hover effects.
+ *
+ * Features:
+ * - Optional title display
+ * - Customizable CSS classes
+ * - Dark mode support
+ * - Hover shadow effect
+ * - Responsive padding and spacing
+ *
+ * @component
+ * @example
+ * ```astro
+ * <Card title="Card Title" class="my-custom-class">
+ *   <p>Card content goes here</p>
+ * </Card>
+ * ```
+ */
 export interface Props {
+    /** Optional title displayed at the top of the card. */
     title?: string;
+
+    /** Optional additional CSS classes to apply to the card container. */
     class?: string;
 }
 

@@ -12,6 +12,7 @@ const logger = createLogger({ prefix: 'RSS' });
 
 /**
  * Converts a content collection post ID to a blog post URL.
+ *
  * Expected format: "locale/slug.mdx" or "locale/slug.md"
  * Example: "en/hello-world.mdx" -> "/blog/hello-world"
  */
@@ -25,6 +26,7 @@ export function getBlogPostLink(postId: string): string {
 
 /**
  * Generates an RSS feed for a given locale.
+ *
  * Shared helper to reduce duplication between locale-specific RSS handlers.
  */
 export async function generateRssFeed(
@@ -66,7 +68,7 @@ export async function generateRssFeed(
 
         const t = getTranslation(locale);
 
-        // Return a 500 error response with XML content type and localized error message
+        // Return the error 500 response with XML content type and localized error message
         return new Response(
             `<?xml version="1.0" encoding="utf-8"?>
 <error>

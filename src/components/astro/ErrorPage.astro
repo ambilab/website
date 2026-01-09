@@ -1,25 +1,55 @@
 ---
+/**
+ * ErrorPage Component
+ *
+ * Displays error pages (404, 500, 503, etc.) with
+ * a centered layout, error code, description, and a home button.
+ *
+ * Used for all error page routes.
+ *
+ * Features:
+ * - Large error code display
+ * - Customizable error message
+ * - Home navigation button
+ * - Full SEO support via PageLayout
+ * - Locale-aware content
+ *
+ * @component
+ * @example
+ * ```astro
+ * <ErrorPage
+ *   code={404}
+ *   title="Not Found"
+ *   description="The page you're looking for doesn't exist."
+ *   homeButtonText="Go Home"
+ *   locale="en"
+ * />
+ * ```
+ */
 import PageLayout from '@components/astro/PageLayout.astro';
 import { SITE } from '@config/site';
 import type { Locale } from '@type/locale';
 
+/**
+ * Props for the ErrorPage component.
+ */
 interface Props {
-    /** HTTP status code (e.g., 404, 500, 503) */
+    /** HTTP status code (e.g., 404, 500, 503). */
     code: number;
 
-    /** Error page title */
+    /** Error page title. */
     title: string;
 
-    /** Error description/message */
+    /** Error description/message. */
     description: string;
 
-    /** Text for the home button */
+    /** Text for the home button. */
     homeButtonText: string;
 
-    /** Link to navigate to (defaults to home) */
+    /** Link to navigate to (defaults to home). */
     homeLink?: string;
 
-    /** Current locale */
+    /** Current locale. */
     locale: Locale;
 }
 

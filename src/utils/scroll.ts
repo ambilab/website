@@ -1,16 +1,51 @@
+/**
+ * Scroll Utilities
+ *
+ * Provides smooth scrolling functionality with support for offset positioning,
+ * completion callbacks, and SSR safety.
+ *
+ * Handles scroll end detection using modern browser APIs with fallbacks for
+ * older browsers.
+ */
+
+/**
+ * Options for smooth scrolling to an element.
+ */
 export interface ScrollOptions {
     targetId: string;
     offset?: number;
     onComplete?: () => void;
 }
 
+/**
+ * Result of a scroll operation.
+ */
 export interface ScrollResult {
     success: boolean;
     element: HTMLElement | null;
 }
 
+/**
+ * Smoothly scrolls to an element by its ID.
+ *
+ * Uses the native scrollTo API with smooth behavior, then waits for scroll
+ * completion using the scrollend event (with polling fallback).
+ *
+ * Supports offset positioning and completion callbacks.
+ *
+ * Scroll end detection:
+ * - Uses scrollend event in modern browsers
+ * - Falls back to polling scroll position for stability
+ * - Has a 2-second timeout as final fallback
+ *
+ * @param options - Scroll configuration options
+ * @param options.targetId - The ID of the element to scroll to
+ * @param options.offset - Optional vertical offset in pixels (default: 0)
+ * @param options.onComplete - Optional callback invoked when scroll completes
+ * @returns Promise resolving to scroll result with success status and element
+ */
 export const smoothScrollTo = async ({ targetId, offset = 0, onComplete }: ScrollOptions): Promise<ScrollResult> => {
-    // SSR guard: return failure if window or document is undefined
+    // SSR guard: return failure if the window or document is undefined
     if (typeof window === 'undefined' || typeof document === 'undefined') {
         return { success: false, element: null };
     }
@@ -25,10 +60,10 @@ export const smoothScrollTo = async ({ targetId, offset = 0, onComplete }: Scrol
     const rect = element.getBoundingClientRect();
     const target = rect.top + window.scrollY + offset;
 
-    // Start smooth scroll
+    // Start the smooth scroll
     window.scrollTo({ top: target, behavior: 'smooth' });
 
-    // Wait for scroll completion with 'scrollend' event and fallback timeout
+    // Wait for scroll completion with the 'scrollend' event and fallback timeout
     return new Promise<ScrollResult>((resolve) => {
         let scrollEndResolved = false;
 
@@ -53,7 +88,7 @@ export const smoothScrollTo = async ({ targetId, offset = 0, onComplete }: Scrol
             }
         };
 
-        // Listen for 'scrollend' event (modern browsers)
+        // Listen for the 'scrollend' event (modern browsers)
         const handleScrollEnd = () => {
             resolveOnce(true);
         };
@@ -90,8 +125,13 @@ export const smoothScrollTo = async ({ targetId, offset = 0, onComplete }: Scrol
     });
 };
 
+/**
+ * Scrolls the window to the top of the page.
+ *
+ * @param smooth - Whether to use smooth scrolling (default: true)
+ */
 export const scrollToTop = (smooth = true): void => {
-    // SSR guard: return early if window is undefined
+    // SSR guard: return early if the window is undefined
     if (typeof window === 'undefined') {
         return;
     }

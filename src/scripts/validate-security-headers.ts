@@ -1,5 +1,6 @@
 /**
- * Validation script to ensure security headers are identical between middlewares
+ * Validation script to ensure security headers
+ * are identical between middlewares.
  *
  * This script validates that:
  * 1. Both src/middleware.ts and functions/_middleware.ts use the shared security config
@@ -17,7 +18,8 @@ interface ValidationResult {
 }
 
 /**
- * Validate that the shared security configuration produces consistent results
+ * Validate that the shared security
+ * configuration produces consistent results.
  */
 function validateSecurityHeaders(): ValidationResult[] {
     const results: ValidationResult[] = [];

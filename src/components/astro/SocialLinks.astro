@@ -1,12 +1,52 @@
 ---
+/**
+ * SocialLinks Component
+ *
+ * Displays social media links as a grid of icon buttons.
+ *
+ * Links open in new tabs with proper security attributes (noopener, noreferrer).
+ *
+ * Icons are rendered using the Icon component with proper accessibility labels.
+ *
+ * Features:
+ * - Icon-based social media links
+ * - Opens links in new tabs securely
+ * - Hover effects and transitions
+ * - Accessible labels for each link
+ * - Responsive flex layout
+ * - Dark mode support
+ *
+ * Social Platforms:
+ * - X
+ * - Threads
+ * - Instagram
+ * - LinkedIn
+ * - Mastodon
+ * - Bluesky
+ * - GitHub
+ *
+ * @component
+ * @example
+ * ```astro
+ * <SocialLinks />
+ * ```
+ */
 import type { IconName } from '@config/icons';
 import { SITE } from '@config/site';
 
 import Icon from './Icon.astro';
 
+/**
+ * Configuration for a single social media link.
+ */
 interface SocialLink {
+    /** Display the name of the social platform. */
     name: string;
+
+    /** URL to the social media profile. */
     url: string;
+
+    /** Icon name to display (must exist in ICON_MAP). */
     icon: IconName;
 }
 

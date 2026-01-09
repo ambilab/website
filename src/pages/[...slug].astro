@@ -1,4 +1,24 @@
 ---
+/**
+ * Dynamic Content Page Route
+ *
+ * Handles all content routes including blog posts, pages, and the blog index.
+ *
+ * Uses Astro's rest parameter syntax to match any path and dynamically render
+ * the appropriate content based on the URL structure.
+ *
+ * Route Patterns:
+ * - `/blog` - Blog index page listing all posts
+ * - `/blog/{slug}` - Individual blog post
+ * - `/{slug}` - Static page (e.g., `/about`, `/index`)
+ *
+ * Features:
+ * - Locale-aware content loading
+ * - Automatic draft filtering
+ * - Blog post sorting by publication date
+ * - Translation path generation for locale switcher
+ * - Error handling with redirects to error pages
+ */
 import BlogPostLayout from '@components/astro/BlogPostLayout.astro';
 import PageLayout from '@components/astro/PageLayout.astro';
 import { getTranslation } from '@i18n/translations';

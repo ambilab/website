@@ -1,3 +1,12 @@
+/**
+ * Site Configuration
+ *
+ * Centralized configuration for site-wide constants
+ * including site metadata, URLs, and social media links.
+ *
+ * This is the single source of truth for site information
+ * used across SEO, OpenGraph, and social sharing features.
+ */
 export const SITE = {
     NAME: 'Ambilab',
     DESCRIPTION: 'A web-based pixel art game engine and editor for kids to learn programming',

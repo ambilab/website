@@ -1,13 +1,49 @@
 ---
+/**
+ * Header Component
+ *
+ * Site header with logo, navigation menu, theme switcher, and locale switcher.
+ *
+ * Sticky header that remains visible while scrolling.
+ *
+ * Includes responsive layout and accessibility features.
+ *
+ * Features:
+ * - Sticky positioning at the top of the page
+ * - Logo/brand link
+ * - Navigation menu via HeaderNav component
+ * - Theme switcher (light/dark mode)
+ * - Locale switcher (English/Czech)
+ * - Active navigation highlighting
+ * - Translation path support for locale switching
+ *
+ * @component
+ * @example
+ * ```astro
+ * <Header
+ *   locale="en"
+ *   currentPath="/blog"
+ *   translationPath="/cs/blog"
+ * />
+ * ```
+ */
 import HeaderNav from '@components/astro/HeaderNav.astro';
 import LocaleSwitcher from '@components/svelte/LocaleSwitcher.svelte';
 import ThemeSwitcher from '@components/svelte/ThemeSwitcher.svelte';
 import { getRoute } from '@config/routes';
 import type { Locale } from '@type/locale';
 
+/**
+ * Props for the Header component.
+ */
 export interface Props {
+    /** The locale for the header navigation and translations. */
     locale: Locale;
+
+    /** The current page path used to highlight the active navigation item. */
     currentPath: string;
+
+    /** Optional path to the translated version of the current page. */
     translationPath?: string;
 }
 

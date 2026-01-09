@@ -1,10 +1,44 @@
 ---
 import { getRoute, isRouteActive } from '@config/routes';
+/**
+ * HeaderNav Component
+ *
+ * Renders the main navigation menu with active state highlighting.
+ *
+ * Supports locale-aware routes and determines the active
+ * state based on the current path.
+ *
+ * Features:
+ * - Active state highlighting for the current page
+ * - Locale-aware route generation
+ * - Exact matching for home and about pages
+ * - Prefix matching for blog (supports nested routes)
+ * - Responsive layout
+ *
+ * Navigation Matching Strategy:
+ * - Locale is domain-based (ambilab.com vs. ambilab.cz),
+     so the currentPath never contains /en/ or /cs/ prefixes
+ * - Astro does not add trailing slashes by default to canonical URLs
+ * - Blog uses startsWith() to match nested routes (e.g., /blog/post-slug)
+ * - Home and About use exact equality (===) as they have no nested routes
+ *
+ * @component
+ * @example
+ * ```astro
+ * <HeaderNav locale="en" currentPath="/blog" />
+ * ```
+ */
 import { getTranslation } from '@i18n/translations';
 import type { Locale } from '@type/locale';
 
+/**
+ * Props for the HeaderNav component.
+ */
 export interface Props {
+    /** The locale for the navigation labels and route determination. */
     locale: Locale;
+
+    /** The current page path used to determine which navigation item is active. */
     currentPath: string;
 }
 
@@ -15,7 +49,8 @@ const t = getTranslation(locale);
  * Navigation items with active state matching.
  *
  * Note on matching strategies:
- * - Locale is domain-based (ambilab.com vs ambilab.cz), so currentPath never contains /en/ or /cs/ prefixes
+ * - Locale is domain-based (ambilab.com vs. ambilab.cz),
+ *   so the currentPath never contains /en/ or /cs/ prefixes
  * - Astro does not add trailing slashes by default to canonical URLs
  * - Blog uses startsWith() to match nested routes (e.g., /blog/post-slug)
  * - Home and About use exact equality (===) as they have no nested routes

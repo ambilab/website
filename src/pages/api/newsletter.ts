@@ -1,8 +1,23 @@
+/**
+ * Newsletter API Route
+ *
+ * Handles newsletter subscription requests via Buttondown API.
+ *
+ * Validates email addresses and provides error handling
+ * with appropriate HTTP status codes.
+ */
 import { createLogger } from '@utils/logger';
 import type { APIRoute } from 'astro';
 
 const logger = createLogger({ prefix: 'Newsletter API' });
 
+/**
+ * Creates a JSON response with the specified data and status code.
+ *
+ * @param data - The response data object to serialize as JSON
+ * @param status - The HTTP status code for the response
+ * @returns A Response object with JSON content type and the specified status code
+ */
 const jsonResponse = (data: object, status: number) => {
     return new Response(JSON.stringify(data), {
         status,
@@ -10,6 +25,17 @@ const jsonResponse = (data: object, status: number) => {
     });
 };
 
+/**
+ * POST handler for newsletter subscriptions.
+ *
+ * Validates the email address and submits it to Buttondown API.
+ *
+ * Returns appropriate error responses for validation failures or API errors.
+ *
+ * @param context - Astro API context containing the request
+ * @param context.request - The incoming HTTP request object
+ * @returns JSON response with success/error status
+ */
 export const POST: APIRoute = async ({ request }) => {
     try {
         const body = await request.json();

@@ -1,10 +1,36 @@
 ---
+/**
+ * Footer Component
+ *
+ * Site footer with brand information, navigation links,
+ * social media links, and copyright notice.
+ *
+ * Displays in a responsive grid layout.
+ *
+ * Features:
+ * - Brand description
+ * - Navigation links (home, about, blog, RSS)
+ * - Social media links via SocialLinks component
+ * - Copyright notice with current year
+ * - Locale-aware content and routes
+ * - Responsive grid layout
+ *
+ * @component
+ * @example
+ * ```astro
+ * <Footer locale="en" />
+ * ```
+ */
 import SocialLinks from '@components/astro/SocialLinks.astro';
 import { getRoute } from '@config/routes';
 import { getTranslation } from '@i18n/translations';
 import type { Locale } from '@type/locale';
 
+/**
+ * Props for the Footer component.
+ */
 export interface Props {
+    /** The locale for the footer content and translations. */
     locale: Locale;
 }
 

@@ -1,20 +1,54 @@
 ---
+/**
+ * Icon Component
+ *
+ * Renders SVG icons from the icon map.
+ * Supports both decorative and semantic icons
+ * with proper accessibility attributes.
+ *
+ * Icons are loaded from the centralized icon configuration.
+ *
+ * Features:
+ * - Centralized icon management via ICON_MAP
+ * - Decorative icon support (aria-hidden)
+ * - Semantic icon support (aria-label, role="img")
+ * - Customizable CSS classes
+ * - Error handling for missing icons
+ *
+ * Accessibility:
+ * - Decorative icons: aria-hidden="true" (default)
+ * - Semantic icons: aria-label and role="img" when ariaLabel is provided
+ *
+ * @component
+ * @example
+ * ```astro
+ * <!-- Decorative icon -->
+ * <Icon name="github" class="h-5 w-5" />
+ *
+ * <!-- Semantic icon -->
+ * <Icon name="github" ariaLabel="GitHub profile" decorative={false} />
+ * ```
+ */
 import { ICON_MAP, type IconName } from '@config/icons';
 
 interface Props {
-    /** Icon name (filename without .svg extension) */
+    /** Icon name (filename without .svg extension). */
     name: IconName;
-    /** CSS classes to apply to the SVG */
+
+    /** CSS classes to apply to the SVG. */
     class?: string;
-    /** Whether the icon is decorative (adds aria-hidden="true") */
+
+    /** Whether the icon is decorative (adds aria-hidden="true"). */
     decorative?: boolean;
-    /** Accessible label for the icon (makes it semantic) */
+
+    /** Accessible label for the icon (makes it semantic). */
     ariaLabel?: string;
 }
 
 const { name, class: className = '', decorative = true, ariaLabel } = Astro.props as Props;
 
 const svgContent = ICON_MAP[name];
+
 if (!svgContent) {
     throw new Error(`Icon "${name}" not found. Available icons: ${Object.keys(ICON_MAP).join(', ')}`);
 }

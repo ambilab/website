@@ -1,11 +1,44 @@
 <script lang="ts">
+    /**
+     * NewsletterForm Component
+     *
+     * Form a component for newsletter subscriptions via the Buttondown API.
+     *
+     * Handles form submission, validation, loading states,
+     * and success/error messaging.
+     *
+     * Features:
+     * - Email validation
+     * - Loading state with spinner
+     * - Success and error messaging
+     * - Locale-aware labels and messages
+     * - Form reset on successful submission
+     * - Accessible form controls
+     * - Dark mode support
+     *
+     * @component
+     * @example
+     * ```svelte
+     * <NewsletterForm locale="en" client:idle />
+     * ```
+     */
     import { getTranslation } from '@i18n/translations';
     import type { Locale } from '@type/locale';
     import { createLogger } from '@utils/logger';
 
     const logger = createLogger({ prefix: 'NewsletterForm' });
 
+    /**
+     * Props for the NewsletterForm component.
+     */
     interface Props {
+        /**
+         * Locale for the form labels and messages.
+         *
+         * Determines which translation strings are used.
+         *
+         * @default 'en'
+         */
         locale?: Locale;
     }
 

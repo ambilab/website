@@ -1,14 +1,95 @@
 <script lang="ts">
+    /**
+     * Button Component
+     *
+     * A versatile button component that can render as
+     * either a button or anchor element.
+     *
+     * Supports multiple variants, sizes, and accessibility
+     * features, including keyboard navigation and focus management.
+     *
+     * Features:
+     * - Multiple variants (primary, secondary, outline)
+     * - Three size options (sm, md, lg)
+     * - Can render as button or anchor link
+     * - Keyboard accessibility (spacebar activation for links)
+     * - Focus ring styling
+     * - Disabled state support
+     * - Dark mode support
+     *
+     * @component
+     * @example
+     * ```svelte
+     * <Button variant="primary" size="md" onclick={handleClick}>
+     *   Click me
+     * </Button>
+     *
+     * <Button variant="outline" href="/about">About</Button>
+     * ```
+     */
     import type { Snippet } from 'svelte';
 
+    /**
+     * Props for the Button component.
+     */
     interface Props {
+        /**
+         * Visual variant of the button.
+         *
+         * @default 'primary'
+         */
         variant?: 'primary' | 'secondary' | 'outline';
+
+        /**
+         * Size of the button.
+         *
+         * @default 'md'
+         */
         size?: 'sm' | 'md' | 'lg';
+
+        /**
+         * URL to navigate to when clicked.
+         *
+         * If provided, renders as an anchor element instead of a button.
+         */
         href?: string;
+
+        /**
+         * Button type attribute.
+         *
+         * Only applies when rendered as a button element
+         * (when href is not provided).
+         *
+         * @default 'button'
+         */
         type?: 'button' | 'submit' | 'reset';
+
+        /**
+         * Whether the button is disabled.
+         *
+         * Only applies when rendered as a button element.
+         *
+         * @default false
+         */
         disabled?: boolean;
+
+        /**
+         * Additional CSS classes to apply to the button element.
+         */
         class?: string;
+
+        /**
+         * Click the event handler function.
+         *
+         * Called when the button is clicked.
+         *
+         * @param ev - The mouse event object
+         */
         onclick?: (ev: MouseEvent) => void;
+
+        /**
+         * Button content rendered as a Svelte snippet.
+         */
         children?: Snippet;
     }
 
