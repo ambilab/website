@@ -18,6 +18,10 @@ const svgContent = ICON_MAP[name];
 if (!svgContent) {
     throw new Error(`Icon "${name}" not found. Available icons: ${Object.keys(ICON_MAP).join(', ')}`);
 }
+
+if (!decorative && !ariaLabel) {
+    throw new Error(`Icon "${name}" must have ariaLabel when decorative={false}`);
+}
 ---
 
 <span
