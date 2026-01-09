@@ -1,5 +1,6 @@
 ---
 import SocialLinks from '@components/astro/SocialLinks.astro';
+import { getRoute } from '@config/routes';
 import { getTranslation } from '@i18n/translations';
 import type { Locale } from '@type/locale';
 
@@ -33,7 +34,7 @@ const currentYear = new Date().getFullYear();
                 <ul class="space-y-2 text-sm">
                     <li>
                         <a
-                            href="/"
+                            href={getRoute('home', locale)}
                             class="text-text-muted hover:text-link-hover dark:text-text-muted-dark transition-colors"
                         >
                             {t.nav.home}
@@ -41,7 +42,7 @@ const currentYear = new Date().getFullYear();
                     </li>
                     <li>
                         <a
-                            href={locale === 'en' ? '/about' : '/o-projektu'}
+                            href={getRoute('about', locale)}
                             class="text-text-muted hover:text-link-hover dark:text-text-muted-dark transition-colors"
                         >
                             {t.nav.about}
@@ -49,7 +50,7 @@ const currentYear = new Date().getFullYear();
                     </li>
                     <li>
                         <a
-                            href="/blog"
+                            href={getRoute('blog', locale)}
                             class="text-text-muted hover:text-link-hover dark:text-text-muted-dark transition-colors"
                         >
                             {t.nav.blog}
