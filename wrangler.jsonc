@@ -1,7 +1,10 @@
 {
   // Cloudflare Pages configuration
-  // Note: Actual deployment is handled by GitHub Actions using cloudflare/pages-action
-  // This file is primarily for documentation and local wrangler CLI usage
+  // Note: Actual deployment is handled by GitHub Actions using cloudflare/wrangler-action
+  // The wrangler package is NOT included by default - install only if needed for local testing:
+  //   pnpm add -D wrangler
+  //   pnpm exec wrangler pages dev dist         # Test edge functions locally
+  //   pnpm exec wrangler pages deploy dist      # Manual deployment
 
   "name": "ambilab-website",
   "compatibility_date": "2025-12-20",
