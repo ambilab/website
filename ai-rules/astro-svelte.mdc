@@ -274,6 +274,8 @@ For JS checks, use `prefersReducedMotion()` from `@utils/dom` (SSR-safe, returns
 
 ## Image Optimization
 
+### Astro Image Component
+
 ```astro
 ---
 import { Image } from 'astro:assets';
@@ -283,17 +285,65 @@ import heroImage from '@assets/hero.png';
 <Image src={heroImage} alt="Description" widths={[400, 800, 1200]} format="avif" loading="lazy" />
 ```
 
-Icons: Use SVGs in `src/assets/icons/` with the `Icon` component.
+### ResponsiveImage Component
 
-## Preloading
+For images requiring srcset and responsive sizes:
 
-```astro
-<link rel="preconnect" href="https://fonts.vancura.dev" />
-<link
-  rel="preload"
-  as="font"
-  type="font/woff2"
-  href="https://fonts.vancura.dev/innovator-grotesk/InnovatorGrotesk-Medium.woff2"
-  crossorigin
+```svelte
+<ResponsiveImage
+  src="/images/screenshot.png"
+  alt="Screenshot description"
+  width={800}
+  height={600}
+  client:visible
 />
 ```
+
+### Icons
+
+Use SVGs in `src/assets/icons/` with the `Icon` component:
+
+```astro
+---
+import Icon from '@components/astro/Icon.astro';
+---
+
+<!-- Decorative icon (default) -->
+<Icon name="github" class="h-5 w-5" />
+
+<!-- Semantic icon with accessible label -->
+<Icon name="github" ariaLabel="GitHub profile" decorative={false} />
+```
+
+Available icons: `bluesky`, `calendar`, `clock`, `github`, `instagram`, `linkedin`, `mastodon`, `pixel-heart`, `refresh`, `tag`, `threads`, `user`, `x`.
+
+## Demo Embeds
+
+Use `DemoEmbed` for sandboxed iframes with security validation:
+
+```svelte
+<DemoEmbed
+  src="https://blit-tech-demos.ambilab.com/demo-name"
+  title="Demo Title"
+  aspectRatio="16/9"
+  desktopOnly={false}
+  client:visible
+/>
+```
+
+**Security**: Only URLs from `blit-tech-demos.ambilab.com` (HTTPS) are allowed. Invalid URLs display a warning.
+
+## Code Blocks in MDX
+
+Code blocks use Expressive Code (Shiki-based) with syntax highlighting:
+
+````mdx
+```typescript title="example.ts" {2-3}
+const config = {
+  name: 'Ambilab', // Highlighted line
+  version: '1.0', // Highlighted line
+};
+```
+````
+
+Supported languages: `typescript`, `javascript`, `jsx`, `tsx`, `html`, `css`, `scss`, `json`, `yaml`, `markdown`, `bash`, `shell`, `python`, `rust`, `go`.

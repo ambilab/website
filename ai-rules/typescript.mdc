@@ -10,9 +10,10 @@ alwaysApply: false
 
 Project uses strict TypeScript (`tsconfig.json`):
 
-- `strict: true` with all sub-options
+- `strict: true` with all sub-options (extends `astro/tsconfigs/strict`)
 - `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`
 - `noUnusedLocals`, `noUnusedParameters`, `noImplicitReturns`
+- `noImplicitOverride`, `noFallthroughCasesInSwitch`
 - `verbatimModuleSyntax` (enforces `import type`)
 
 ## Type Imports
@@ -83,6 +84,21 @@ function formatPost(post: BlogPost | null): string {
 }
 ```
 
+## Path Aliases
+
+Configure in `tsconfig.json`, use throughout the codebase:
+
+| Alias           | Path               |
+| --------------- | ------------------ |
+| `@/*`           | `./src/*`          |
+| `@components/*` | `./src/components/*` |
+| `@config/*`     | `./src/config/*`   |
+| `@lib/*`        | `./src/lib/*`      |
+| `@utils/*`      | `./src/utils/*`    |
+| `@type/*`       | `./src/types/*`    |
+| `@i18n/*`       | `./src/i18n/*`     |
+| `@assets/*`     | `./src/assets/*`   |
+
 ## Import Order (ESLint simple-import-sort)
 
 1. External packages (`zod`, etc.)
@@ -125,4 +141,32 @@ const blogPostSchema = z.object({
 });
 
 type BlogPost = z.infer<typeof blogPostSchema>;
+```
+
+## Logger Pattern
+
+Use `createLogger` for scoped logging:
+
+```typescript
+import { createLogger } from '@utils/logger';
+
+const logger = createLogger({ prefix: 'MyComponent' });
+
+logger.info('Initialized');  // [MyComponent] Initialized
+logger.warn('Warning');      // [MyComponent] Warning
+logger.error('Failed', err); // [MyComponent] Failed
+```
+
+## Safe Execution Pattern
+
+Use `safeExecute` for operations that may fail:
+
+```typescript
+import { safeExecute } from '@utils/safe-execute';
+
+const result = safeExecute(
+  () => riskyOperation(),
+  'fallback value',
+  'Operation failed'
+);
 ```

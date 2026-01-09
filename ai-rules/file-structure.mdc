@@ -1,33 +1,100 @@
 ---
-description: File structure and region organization patterns
+description: File structure and documentation patterns
 globs: ['**/*.ts', '**/*.tsx', '**/*.js']
 alwaysApply: false
 ---
 
-# File Structure and Region Organization
+# File Structure and Documentation
 
-## Region Syntax
+## File-Level Documentation
+
+Every file should have a JSDoc comment at the top describing its purpose:
 
 ```typescript
-// #region Region Name
-// Code here...
+/**
+ * Route Configuration
+ *
+ * Centralized route definitions for localized paths.
+ *
+ * This is the single source of truth for routes that differ between locales,
+ * preventing maintenance issues and ensuring consistency across components.
+ */
+import type { Locale } from '@type/locale';
+```
+
+## Standard File Structure
+
+1. **File-level JSDoc** - Describes the file's purpose
+2. **Imports** - Grouped by type (external, internal, relative)
+3. **Type Definitions** - Interfaces, type aliases
+4. **Constants/Configuration** - Static values
+5. **Helper Functions** - Internal utilities
+6. **Main Exports** - Public API
+
+## Function Documentation
+
+Use JSDoc comments for all exported functions:
+
+```typescript
+/**
+ * Formats a date object into a human-readable
+ * string based on the specified locale.
+ *
+ * @param date - The date object to format
+ * @param locale - The locale code ('en' or 'cs')
+ * @returns A formatted date string (e.g., "January 15, 2024")
+ * @throws Error if the date is invalid
+ */
+export function formatDate(date: Date, locale: Locale): string {
+    // implementation
+}
+```
+
+## Interface Documentation
+
+Document interfaces with JSDoc comments for the interface and each property:
+
+```typescript
+/**
+ * Props for the Header component.
+ */
+export interface Props {
+    /** The locale for the header navigation and translations. */
+    locale: Locale;
+
+    /** The current page path used to highlight the active navigation item. */
+    currentPath: string;
+
+    /** Optional path to the translated version of the current page. */
+    translationPath?: string;
+}
+```
+
+## Region Syntax (Optional)
+
+For large files (100+ lines), consider using regions for navigation:
+
+```typescript
+// #region Type Definitions
+
+export interface FormatOptions {
+    locale: Locale;
+}
+
+// #endregion
+
+// #region Helper Functions
+
+function normalizeInput(input: string): string {
+    return input.trim().toLowerCase();
+}
+
 // #endregion
 ```
 
 **Rules:** Use Title Case, add blank lines after `// #region` and before `// #endregion`.
 
-## Standard Region Order
-
-1. **Imports** – No region needed
-2. **Type Definitions** – Interfaces, type aliases
-3. **Configuration** – Constants, settings
-4. **Helper Functions** – Pure utilities
-5. **Main Logic** – Primary functions/classes
-6. **Exports** – Public API
-
 ## Common Region Names
-
-Use consistent names across similar files:
 
 - `// #region Type Definitions`
 - `// #region Configuration`
@@ -35,53 +102,16 @@ Use consistent names across similar files:
 - `// #region API Handler`
 - `// #region Validation`
 
-## Example: Utility File
-
-```typescript
-import type { Locale } from '@type/locale';
-
-// #region Type Definitions
-
-export interface FormatOptions {
-  locale: Locale;
-  relative?: boolean;
-}
-
-// #endregion
-
-// #region Configuration
-
-const DATE_FORMATS: Record<Locale, Intl.DateTimeFormatOptions> = {
-  en: { year: 'numeric', month: 'long', day: 'numeric' },
-  cs: { year: 'numeric', month: 'long', day: 'numeric' },
-};
-
-// #endregion
-
-// #region Formatting Functions
-
-export function formatDate(date: Date, locale: Locale): string {
-  return new Intl.DateTimeFormat(locale, DATE_FORMATS[locale]).format(date);
-}
-
-// #endregion
-```
-
 ## When to Create Regions
 
 Create when:
 
-- Logical grouping of related code
-- Section exceeds ~30 lines
+- File exceeds ~100 lines
+- Clear logical grouping of related code
 - Navigation benefit for developers
 
 Skip for:
 
-- Single functions (unless 100+ lines)
+- Small files under 100 lines
+- Single-purpose utility files
 - Import statements
-- Temporary/debug code
-
-## Editor Support
-
-- **VS Code/Cursor**: `Ctrl+Shift+[` / `Ctrl+Shift+]`
-- **WebStorm**: `Ctrl+.` or code folding menu

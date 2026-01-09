@@ -59,9 +59,11 @@ All code must pass strict TypeScript checks:
 - **Styling**: Tailwind CSS 4 with a custom theme
 - **Language**: TypeScript (strict mode)
 - **Content**: MDX via Astro Content Collections
+- **Code Highlighting**: Expressive Code (Shiki-based)
 - **Icons**: Custom SVGs
 - **Package Manager**: pnpm
 - **Deployment**: Cloudflare Pages
+- **Linting**: Biome + ESLint + Prettier
 
 ### Project Structure
 
@@ -240,6 +242,26 @@ import DemoEmbed from '@components/svelte/DemoEmbed.svelte';
 - Custom theme in `tailwind.config.ts`
 - Typography plugin for prose content
 
+### Semantic Design Tokens
+
+The project uses semantic design tokens for consistent theming:
+
+- **CSS Custom Properties**: Defined in `src/styles/global.css` using `@theme`
+- **Tailwind Utilities**: Mapped in `tailwind.config.ts` theme.extend.colors
+- **Usage**: Use semantic classes like `text-text-muted`, `bg-surface`, `border-border-default`
+
+**Available token categories:**
+
+- `page-bg-*` - Page backgrounds
+- `surface-*` - Component surfaces
+- `border-*` - Border colors
+- `text-*` - Text colors (primary, secondary, muted)
+- `link-*` - Link colors and states
+- `button-*` - Button colors
+- `tag-*` / `table-*` / `anchor-*` - Specific component colors
+
+All tokens support dark mode with `-dark` suffix: `text-text-primary` / `dark:text-text-primary-dark`
+
 ### CSS Organization
 
 - Global styles in `src/styles/global.css`
@@ -319,5 +341,6 @@ pnpm sync-rules       # Sync AI rules to editor configs
 4. **Skipping frontmatter fields** – Required fields must be present
 5. **Using `any` type** – Use proper types or `unknown`
 6. **Hardcoding strings** – Use `src/i18n/translations.ts`
-7. **Missing alt text** – All images need alt attributes
-8. **Ignoring reduced motion** – Animations must respect `prefers-reduced-motion`
+7. **Hardcoding colors** – Use semantic design tokens instead of `gray-900`, `blue-600`, etc.
+8. **Missing alt text** – All images need alt attributes
+9. **Ignoring reduced motion** – Animations must respect `prefers-reduced-motion`
