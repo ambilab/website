@@ -1,4 +1,5 @@
 ---
+import { getRoute } from '@config/routes';
 import { SITE } from '@config/site';
 import type { Locale } from '@type/locale';
 import type { ISEOMetadata } from '@type/seo';
@@ -89,7 +90,7 @@ NOTE: Only load external font in production to avoid CORS issues in development
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="canonical" href={canonical} />
 <link rel="sitemap" href="/sitemap-index.xml" />
-<link rel="alternate" type="application/rss+xml" href={`/${locale}/rss.xml`} title={`${SITE.NAME} RSS`} />
+<link rel="alternate" type="application/rss+xml" href={getRoute('rss', locale)} title={`${SITE.NAME} RSS`} />
 
 <title>{title}</title>
 

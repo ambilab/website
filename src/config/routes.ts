@@ -24,6 +24,10 @@ export const ROUTES = {
         en: '/blog',
         cs: '/blog',
     },
+    rss: {
+        en: '/en/rss.xml',
+        cs: '/cs/rss.xml',
+    },
 } as const;
 
 /**

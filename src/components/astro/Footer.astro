@@ -58,7 +58,7 @@ const currentYear = new Date().getFullYear();
                     </li>
                     <li>
                         <a
-                            href={`/${locale}/rss.xml`}
+                            href={getRoute('rss', locale)}
                             class="text-text-muted transition-colors hover:text-link-hover dark:text-text-muted-dark dark:hover:text-link-hover-dark"
                         >
                             RSS Feed
