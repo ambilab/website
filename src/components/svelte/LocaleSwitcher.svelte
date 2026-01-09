@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { localeConfigs } from '@i18n/config';
+    import { LOCALE_CONFIGS } from '@i18n/config';
     import { setLocaleCookie } from '@i18n/utils';
     import type { Locale } from '@type/locale';
     import { createLogger } from '@utils/logger';
@@ -17,7 +17,7 @@
     let isAnimating = $state(false);
 
     const otherLocale = $derived<Locale>(currentLocale === 'en' ? 'cs' : 'en');
-    const otherConfig = $derived(localeConfigs[otherLocale]);
+    const otherConfig = $derived(LOCALE_CONFIGS[otherLocale]);
 
     const handleLocaleSwitch = async () => {
         if (isAnimating) {

@@ -1,5 +1,5 @@
 ---
-import { iconMap, type IconName } from '@config/icons';
+import { ICON_MAP, type IconName } from '@config/icons';
 
 export interface Props {
     /** Icon name (filename without .svg extension) */
@@ -14,9 +14,9 @@ export interface Props {
 
 const { name, class: className = '', decorative = true, ariaLabel } = Astro.props;
 
-const svgContent = iconMap[name];
+const svgContent = ICON_MAP[name];
 if (!svgContent) {
-    throw new Error(`Icon "${name}" not found. Available icons: ${Object.keys(iconMap).join(', ')}`);
+    throw new Error(`Icon "${name}" not found. Available icons: ${Object.keys(ICON_MAP).join(', ')}`);
 }
 ---
 

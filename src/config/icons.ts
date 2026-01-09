@@ -12,7 +12,7 @@ import threadsIcon from '@assets/icons/threads.svg?raw';
 import userIcon from '@assets/icons/user.svg?raw';
 import xIcon from '@assets/icons/x.svg?raw';
 
-export const iconMap = {
+export const ICON_MAP = {
     user: userIcon,
     calendar: calendarIcon,
     refresh: refreshIcon,
@@ -28,4 +28,4 @@ export const iconMap = {
     github: githubIcon,
 } as const;
 
-export type IconName = keyof typeof iconMap;
+export type IconName = keyof typeof ICON_MAP;

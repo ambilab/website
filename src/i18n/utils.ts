@@ -1,10 +1,10 @@
 import type { Locale } from '@type/locale';
 
-import { defaultLocale, domainLocaleMap, isValidLocale } from './config';
+import { DEFAULT_LOCALE, DOMAIN_LOCALE_MAP, isValidLocale } from './config';
 
 export const detectLocaleFromHostname = (hostname: string): Locale => {
-    const locale = domainLocaleMap[hostname];
-    return locale || defaultLocale;
+    const locale = DOMAIN_LOCALE_MAP[hostname];
+    return locale || DEFAULT_LOCALE;
 };
 
 export const getLocaleFromCookie = (cookieString: string): Locale | null => {

@@ -1,5 +1,5 @@
 import { applySecurityHeaders, generateNonce } from '@config/security';
-import { defaultLocale } from '@i18n/config';
+import { DEFAULT_LOCALE } from '@i18n/config';
 import { detectLocaleFromHostname, getLocaleFromCookie } from '@i18n/utils';
 import { createLogger } from '@utils/logger';
 import { defineMiddleware } from 'astro:middleware';
@@ -36,9 +36,9 @@ export const onRequest = defineMiddleware(async (context, next) => {
             locale = detectLocaleFromHostname(hostname);
         }
 
-        // Ensure locale is always defined (fallback to defaultLocale)
+        // Ensure locale is always defined (fallback to DEFAULT_LOCALE)
         // This guarantees Locals.locale is always Locale, never undefined
-        context.locals.locale = locale || defaultLocale;
+        context.locals.locale = locale || DEFAULT_LOCALE;
 
         const response = await next();
 

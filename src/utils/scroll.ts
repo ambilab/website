@@ -32,9 +32,9 @@ export const smoothScrollTo = async ({ targetId, offset = 0, onComplete }: Scrol
     return new Promise<ScrollResult>((resolve) => {
         let scrollEndResolved = false;
 
-        const fallbackTimeout = 2_000; // 2-second fallback timeout
-        const pollInt = 50; // Check scroll position every 50ms
-        const stabilityThreshold = 1; // Consider stable if within 1px
+        const FALLBACK_TIMEOUT = 2_000; // 2-second fallback timeout
+        const POLL_INTERVAL = 50; // Check scroll position every 50ms
+        const STABILITY_THRESHOLD = 1; // Consider stable if within 1px
 
         const resolveOnce = (success: boolean) => {
             if (scrollEndResolved) {
@@ -61,27 +61,27 @@ export const smoothScrollTo = async ({ targetId, offset = 0, onComplete }: Scrol
         // Fallback: poll scroll position for stability
         let lastScrollY = window.scrollY;
         let stableCount = 0;
-        const stableCountRequired = 3; // Require 3 consecutive stable checks
+        const STABLE_COUNT_REQUIRED = 3; // Require 3 consecutive stable checks
 
         const pollInterval = setInterval(() => {
             const currentScrollY = window.scrollY;
             const diff = Math.abs(currentScrollY - lastScrollY);
 
-            if (diff < stabilityThreshold) {
+            if (diff < STABILITY_THRESHOLD) {
                 stableCount++;
-                if (stableCount >= stableCountRequired) {
+                if (stableCount >= STABLE_COUNT_REQUIRED) {
                     resolveOnce(true);
                 }
             } else {
                 stableCount = 0;
                 lastScrollY = currentScrollY;
             }
-        }, pollInt);
+        }, POLL_INTERVAL);
 
         // Fallback timeout
         const timeoutId = setTimeout(() => {
             resolveOnce(true); // Resolve anyway after timeout
-        }, fallbackTimeout);
+        }, FALLBACK_TIMEOUT);
 
         // Check if 'scrollend' is supported
         if ('onscrollend' in window) {
