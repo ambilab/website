@@ -155,7 +155,7 @@ if (renderType === 'blog-index') {
             <div class="container mx-auto px-4 py-12">
                 <div class="mx-auto max-w-4xl">
                     <h1 class="mb-4 text-4xl font-bold">{t.blog.title}</h1>
-                    <p class="text-text-muted dark:text-text-muted-dark mb-12 text-xl">{t.blog.description}</p>
+                    <p class="mb-12 text-xl text-text-muted dark:text-text-muted-dark">{t.blog.description}</p>
 
                     {sortedBlogPosts.length === 0 ? (
                         <p class="text-text-muted dark:text-text-muted-dark">{t.blog.noPosts}</p>
@@ -166,32 +166,32 @@ if (renderType === 'blog-index') {
                                 const postUrl = `/blog/${postSlug}`;
 
                                 return (
-                                    <article class="border-border-default dark:border-border-default-dark border-b pb-8 last:border-b-0">
+                                    <article class="border-b border-border-default pb-8 last:border-b-0 dark:border-border-default-dark">
                                         <a href={postUrl} class="group">
-                                            <h2 class="group-hover:text-link-hover dark:group-hover:text-link-hover-dark mb-2 text-2xl font-bold transition-colors">
+                                            <h2 class="mb-2 text-2xl font-bold transition-colors group-hover:text-link-hover dark:group-hover:text-link-hover-dark">
                                                 {post.data.title}
                                             </h2>
                                         </a>
-                                        <div class="text-text-muted dark:text-text-muted-dark mb-3 flex items-center gap-4 text-sm">
+                                        <div class="mb-3 flex items-center gap-4 text-sm text-text-muted dark:text-text-muted-dark">
                                             <time datetime={post.data.pubDate.toISOString()}>
                                                 {formatDate(post.data.pubDate, locale)}
                                             </time>
                                             {post.data.tags.length > 0 && (
                                                 <div class="flex flex-wrap gap-2">
                                                     {post.data.tags.map((tag: string) => (
-                                                        <span class="bg-tag-bg text-tag-text dark:bg-tag-bg-dark dark:text-tag-text-dark rounded-full px-3 py-1 text-xs">
+                                                        <span class="rounded-full bg-tag-bg px-3 py-1 text-xs text-tag-text dark:bg-tag-bg-dark dark:text-tag-text-dark">
                                                             {tag}
                                                         </span>
                                                     ))}
                                                 </div>
                                             )}
                                         </div>
-                                        <p class="text-text-secondary dark:text-text-secondary-dark mb-4">
+                                        <p class="mb-4 text-text-secondary dark:text-text-secondary-dark">
                                             {post.data.description}
                                         </p>
                                         <a
                                             href={postUrl}
-                                            class="text-link hover:text-link-hover dark:text-link-dark dark:hover:text-link-hover-dark inline-flex items-center font-medium transition-colors"
+                                            class="inline-flex items-center font-medium text-link transition-colors hover:text-link-hover dark:text-link-dark dark:hover:text-link-hover-dark"
                                         >
                                             {t.buttons.readMore} →
                                         </a>

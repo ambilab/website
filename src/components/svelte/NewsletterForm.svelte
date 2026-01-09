@@ -54,9 +54,9 @@
     };
 </script>
 
-<div class="bg-info-bg dark:bg-info-bg-dark rounded-lg p-6">
+<div class="rounded-lg bg-info-bg p-6 dark:bg-info-bg-dark">
     <h3 class="mb-2 text-xl font-semibold">{t.newsletter.title}</h3>
-    <p class="text-text-muted dark:text-text-muted-dark mb-4 text-sm">
+    <p class="mb-4 text-sm text-text-muted dark:text-text-muted-dark">
         {t.newsletter.description}
     </p>
 
@@ -67,12 +67,12 @@
             placeholder={t.newsletter.emailPlaceholder}
             required
             disabled={status === 'loading'}
-            class="border-border-medium dark:border-border-medium-dark dark:bg-surface-dark focus:border-link focus:ring-link dark:focus:border-link-dark dark:focus:ring-link-dark flex-1 rounded-lg border px-4 py-2 focus:outline-none focus:ring-2 disabled:opacity-50"
+            class="flex-1 rounded-lg border border-border-medium px-4 py-2 focus:border-link focus:outline-none focus:ring-2 focus:ring-link disabled:opacity-50 dark:border-border-medium-dark dark:bg-surface-dark dark:focus:border-link-dark dark:focus:ring-link-dark"
         />
         <button
             type="submit"
             disabled={status === 'loading'}
-            class="bg-button-primary text-button-primary-text hover:bg-button-primary-hover dark:bg-button-primary-dark dark:text-button-primary-text-dark dark:hover:bg-button-primary-hover-dark inline-flex items-center gap-2 rounded-lg px-4 py-2 font-medium transition-colors disabled:opacity-50"
+            class="inline-flex items-center gap-2 rounded-lg bg-button-primary px-4 py-2 font-medium text-button-primary-text transition-colors hover:bg-button-primary-hover disabled:opacity-50 dark:bg-button-primary-dark dark:text-button-primary-text-dark dark:hover:bg-button-primary-hover-dark"
         >
             {#if status === 'loading'}
                 <svg class="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">

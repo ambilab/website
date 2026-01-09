@@ -14,14 +14,14 @@ const currentYear = new Date().getFullYear();
 ---
 
 <footer
-    class="border-border-default bg-page-bg-muted dark:border-border-default-dark dark:bg-page-bg-muted-dark border-t"
+    class="border-t border-border-default bg-page-bg-muted dark:border-border-default-dark dark:bg-page-bg-muted-dark"
 >
     <div class="container mx-auto px-4 py-12">
         <div class="grid gap-8 md:grid-cols-3">
             <!-- Brand -->
             <div>
                 <h3 class="mb-4 text-lg font-bold">Ambilab</h3>
-                <p class="text-text-muted dark:text-text-muted-dark text-sm">
+                <p class="text-sm text-text-muted dark:text-text-muted-dark">
                     {t.footer.description}
                 </p>
             </div>
@@ -35,7 +35,7 @@ const currentYear = new Date().getFullYear();
                     <li>
                         <a
                             href={getRoute('home', locale)}
-                            class="text-text-muted hover:text-link-hover dark:text-text-muted-dark transition-colors"
+                            class="text-text-muted transition-colors hover:text-link-hover dark:text-text-muted-dark"
                         >
                             {t.nav.home}
                         </a>
@@ -43,7 +43,7 @@ const currentYear = new Date().getFullYear();
                     <li>
                         <a
                             href={getRoute('about', locale)}
-                            class="text-text-muted hover:text-link-hover dark:text-text-muted-dark transition-colors"
+                            class="text-text-muted transition-colors hover:text-link-hover dark:text-text-muted-dark"
                         >
                             {t.nav.about}
                         </a>
@@ -51,7 +51,7 @@ const currentYear = new Date().getFullYear();
                     <li>
                         <a
                             href={getRoute('blog', locale)}
-                            class="text-text-muted hover:text-link-hover dark:text-text-muted-dark transition-colors"
+                            class="text-text-muted transition-colors hover:text-link-hover dark:text-text-muted-dark"
                         >
                             {t.nav.blog}
                         </a>
@@ -59,7 +59,7 @@ const currentYear = new Date().getFullYear();
                     <li>
                         <a
                             href={`/${locale}/rss.xml`}
-                            class="text-text-muted hover:text-link-hover dark:text-text-muted-dark transition-colors"
+                            class="text-text-muted transition-colors hover:text-link-hover dark:text-text-muted-dark"
                         >
                             RSS Feed
                         </a>
@@ -76,7 +76,7 @@ const currentYear = new Date().getFullYear();
         </div>
 
         <div
-            class="border-border-default text-text-muted dark:border-border-default-dark dark:text-text-muted-dark mt-8 border-t pt-8 text-center text-sm"
+            class="mt-8 border-t border-border-default pt-8 text-center text-sm text-text-muted dark:border-border-default-dark dark:text-text-muted-dark"
         >
             {t.footer.copyright} © {currentYear} Ambilab. {t.footer.allRightsReserved}.
         </div>

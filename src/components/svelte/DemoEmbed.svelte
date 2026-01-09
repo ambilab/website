@@ -141,10 +141,10 @@
     {#if shouldShowLink}
         <!-- Show link in development/localhost to avoid CSP frame-ancestors violation -->
         <div
-            class="border-border-default bg-page-bg-muted dark:border-border-default-dark dark:bg-page-bg-muted-dark flex min-h-[200px] flex-col items-center justify-center rounded-lg border p-8 text-center"
+            class="flex min-h-[200px] flex-col items-center justify-center rounded-lg border border-border-default bg-page-bg-muted p-8 text-center dark:border-border-default-dark dark:bg-page-bg-muted-dark"
             style={aspectRatioStyle}
         >
-            <p class="text-text-muted dark:text-text-muted-dark mb-4 text-sm">
+            <p class="mb-4 text-sm text-text-muted dark:text-text-muted-dark">
                 Demo preview is not available in development due to CSP restrictions.
             </p>
             {#if isValidSrc}
@@ -152,7 +152,7 @@
                     href={validatedSrc}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="bg-button-primary text-button-primary-text hover:bg-button-primary-hover dark:bg-button-primary-dark dark:text-button-primary-text-dark dark:hover:bg-button-primary-hover-dark focus:ring-link focus:ring-offset-page-bg dark:focus:ring-link-dark dark:focus:ring-offset-page-bg-dark inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2"
+                    class="inline-flex items-center gap-2 rounded-lg bg-button-primary px-4 py-2 text-sm font-medium text-button-primary-text transition-colors hover:bg-button-primary-hover focus:outline-none focus:ring-2 focus:ring-link focus:ring-offset-2 focus:ring-offset-page-bg dark:bg-button-primary-dark dark:text-button-primary-text-dark dark:hover:bg-button-primary-hover-dark dark:focus:ring-link-dark dark:focus:ring-offset-page-bg-dark"
                 >
                     Open Demo in New Tab
                     <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -165,19 +165,19 @@
                     </svg>
                 </a>
             {:else}
-                <p class="text-error-text dark:text-error-text-dark text-sm">Invalid demo source URL</p>
+                <p class="text-sm text-error-text dark:text-error-text-dark">Invalid demo source URL</p>
             {/if}
         </div>
     {:else if !isValidSrc}
         <!-- Show warning if src URL is invalid/not allowlisted -->
         <div
-            class="border-warning-border bg-warning-bg dark:border-warning-border-dark dark:bg-warning-bg-dark flex min-h-[200px] flex-col items-center justify-center rounded-lg border p-8 text-center"
+            class="flex min-h-[200px] flex-col items-center justify-center rounded-lg border border-warning-border bg-warning-bg p-8 text-center dark:border-warning-border-dark dark:bg-warning-bg-dark"
             style={aspectRatioStyle}
         >
-            <p class="text-warning-heading dark:text-warning-heading-dark mb-2 text-sm font-medium">
+            <p class="mb-2 text-sm font-medium text-warning-heading dark:text-warning-heading-dark">
                 Invalid or untrusted demo source
             </p>
-            <p class="text-warning-text dark:text-warning-text-dark text-xs">
+            <p class="text-xs text-warning-text dark:text-warning-text-dark">
                 Only allowlisted sources are allowed for security reasons.
             </p>
         </div>
@@ -190,11 +190,11 @@
             allow={allowPermissions}
             allowfullscreen
             sandbox={sandboxPermissions}
-            class="border-border-default dark:border-border-default-dark rounded-lg border"
+            class="rounded-lg border border-border-default dark:border-border-default-dark"
         ></iframe>
     {/if}
     {#if title}
-        <figcaption class="text-text-muted dark:text-text-muted-dark mt-2 text-center text-sm">
+        <figcaption class="mt-2 text-center text-sm text-text-muted dark:text-text-muted-dark">
             {title}
         </figcaption>
     {/if}

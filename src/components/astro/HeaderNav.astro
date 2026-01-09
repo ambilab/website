@@ -45,9 +45,9 @@ const navItems = [
             <a
                 href={item.href}
                 class:list={[
-                    'hover:text-link dark:hover:text-link-dark focus:text-link dark:focus:text-link-dark transition-colors focus:outline-none',
+                    'transition-colors hover:text-link focus:text-link focus:outline-none dark:hover:text-link-dark dark:focus:text-link-dark',
                     item.isActive &&
-                        'text-link-active dark:text-link-active-dark underline-offset-10 font-semibold underline decoration-2',
+                        'underline-offset-10 font-semibold text-link-active underline decoration-2 dark:text-link-active-dark',
                 ]}
             >
                 {item.label}
