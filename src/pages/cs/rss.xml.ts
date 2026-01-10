@@ -17,5 +17,5 @@ import type { APIContext } from 'astro';
  * @returns RSS XML response with Czech blog posts
  */
 export async function GET(context: APIContext) {
-    return generateRssFeed(context, 'cs', 'Čeština', 'cs-cz');
+    return generateRssFeed(context, 'cs', 'Čeština', 'cs-CZ');
 }
