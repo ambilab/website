@@ -35,6 +35,7 @@
     "@biomejs/biome": "^2.3.11",
     "@commitlint/cli": "^20.3.1",
     "@commitlint/config-conventional": "^20.3.1",
+    "@lhci/cli": "^0.15.1",
     "@tailwindcss/typography": "^0.5.19",
     "@tailwindcss/vite": "^4.1.18",
     "@typescript-eslint/eslint-plugin": "^8.51.0",
@@ -61,7 +62,9 @@
     "tailwindcss": "^4.1.18",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
-    "vite": "^6.4.1"
+    "vite": "^6.4.1",
+    "wait-on": "^9.0.3",
+    "wrangler": "^4.58.0"
   },
   "syncRules": {
     "source": "ai-rules",
@@ -75,7 +78,7 @@
   "scripts": {
     "dev": "astro dev --host",
     "build": "astro build",
-    "preview": "astro preview",
+    "preview": "wrangler pages dev dist --port=4321",
     "check": "astro check",
     "lint": "biome lint . && eslint .",
     "lint:fix": "biome lint --write . && eslint . --fix",
@@ -93,6 +96,10 @@
     "validate:security": "tsx src/scripts/validate-security-headers.ts",
     "validate": "pnpm validate:security",
     "security:audit": "pnpm audit --audit-level=moderate",
-    "security:audit:fix": "pnpm audit --fix"
+    "security:audit:fix": "pnpm audit --fix",
+    "perf": "node scripts/run-lighthouse.mjs",
+    "perf:collect": "lhci collect",
+    "perf:assert": "lhci assert",
+    "perf:upload": "lhci upload"
   }
 }
