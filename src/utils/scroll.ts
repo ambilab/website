@@ -15,6 +15,8 @@ export interface ScrollOptions {
     targetId: string;
     offset?: number;
     onComplete?: () => void;
+    stabilityThreshold?: number;
+    nearTargetThreshold?: number;
 }
 
 /**
@@ -44,7 +46,13 @@ export interface ScrollResult {
  * @param options.onComplete - Optional callback invoked when scroll completes
  * @returns Promise resolving to scroll result with success status and element
  */
-export const smoothScrollTo = async ({ targetId, offset = 0, onComplete }: ScrollOptions): Promise<ScrollResult> => {
+export const smoothScrollTo = async ({
+    targetId,
+    offset = 0,
+    onComplete,
+    stabilityThreshold,
+    nearTargetThreshold,
+}: ScrollOptions): Promise<ScrollResult> => {
     // SSR guard: return failure if the window or document is undefined
     if (typeof window === 'undefined' || typeof document === 'undefined') {
         return { success: false, element: null };
@@ -69,7 +77,7 @@ export const smoothScrollTo = async ({ targetId, offset = 0, onComplete }: Scrol
 
         const FALLBACK_TIMEOUT = 2_000; // 2-second fallback timeout
         const POLL_INTERVAL = 50; // Check scroll position every 50ms
-        const STABILITY_THRESHOLD = 1; // Consider stable if within 1px
+        const STABILITY_THRESHOLD = stabilityThreshold ?? 1; // Consider stable if within 1px
 
         // Declare timeout/interval IDs upfront to avoid TDZ issues in resolveOnce
         let timeoutId: ReturnType<typeof setTimeout> | undefined;
@@ -116,7 +124,7 @@ export const smoothScrollTo = async ({ targetId, offset = 0, onComplete }: Scrol
 
         // Fallback timeout: check if we're near the target before resolving
         timeoutId = setTimeout(() => {
-            const nearTarget = Math.abs(window.scrollY - target) < 5;
+            const nearTarget = Math.abs(window.scrollY - target) < (nearTargetThreshold ?? 5);
             resolveOnce(nearTarget);
         }, FALLBACK_TIMEOUT);
 
