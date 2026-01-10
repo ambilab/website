@@ -130,7 +130,7 @@
 </script>
 
 {#if href}
-    <a {href} class={classes} role="button" onkeydown={handleKeydown}>
+    <a {href} class={classes} role="button" onkeydown={handleKeydown} {onclick}>
         {@render children?.()}
     </a>
 {:else}
