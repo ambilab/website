@@ -35,7 +35,7 @@ export const toggleDarkMode = (): void => {
     const isBrowser =
         typeof window === 'object' &&
         typeof document === 'object' &&
-        typeof window?.localStorage !== 'undefined' &&
+        typeof window.localStorage !== 'undefined' &&
         document.documentElement !== null;
 
     if (isBrowser) {

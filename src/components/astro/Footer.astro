@@ -23,6 +23,7 @@
  */
 import SocialLinks from '@components/astro/SocialLinks.astro';
 import { getRoute } from '@config/routes';
+import { DEFAULT_LOCALE } from '@i18n/config.ts';
 import { getTranslation } from '@i18n/translations';
 import type { Locale } from '@type/locale';
 
@@ -35,7 +36,7 @@ export interface Props {
 }
 
 const { locale: localeProp } = Astro.props as Partial<Props>;
-const locale: Locale = localeProp ?? 'en';
+const locale: Locale = localeProp ?? DEFAULT_LOCALE;
 const t = getTranslation(locale);
 const currentYear = new Date().getFullYear();
 ---
