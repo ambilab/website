@@ -346,4 +346,4 @@ const config = {
 ```
 ````
 
-Supported languages: `typescript`, `javascript`, `jsx`, `tsx`, `html`, `css`, `scss`, `json`, `yaml`, `markdown`, `bash`, `shell`, `python`, `rust`, `go`.
+Supported languages: `typescript`, `javascript`, `jsx`, `tsx`, `html`, `css`, `scss`, `json`, `yaml`, `markdown`, `shellscript`, `python`, `rust`, `go`.
