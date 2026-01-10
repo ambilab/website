@@ -80,8 +80,6 @@
 
         /**
          * Click event handler function. Called when the button is clicked.
-         *
-         * @param ev - The mouse event object
          */
         onclick?: (ev: MouseEvent) => void;
 
@@ -130,7 +128,7 @@
 </script>
 
 {#if href}
-    <a {href} class={classes} role="button" onkeydown={handleKeydown}>
+    <a {href} class={classes} role="button" onkeydown={handleKeydown} {onclick}>
         {@render children?.()}
     </a>
 {:else}
