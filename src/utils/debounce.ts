@@ -31,8 +31,11 @@ export const debounce = <T extends (...args: unknown[]) => unknown>(
         }
 
         timeout = setTimeout(() => {
-            func(...args);
-            timeout = null;
+            try {
+                func(...args);
+            } finally {
+                timeout = null;
+            }
         }, wait);
     };
 
