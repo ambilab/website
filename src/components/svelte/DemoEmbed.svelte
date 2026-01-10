@@ -19,7 +19,7 @@
      * - allow-forms: Submit forms within the iframe
      *
      * Optional Permissions:
-     * - allow-top-navigation: Navigate top-level context (requires allowTopNavigation=true)
+     * - allow-top-navigation-by-user-activation: Navigate top-level context on user activation (requires allowTopNavigation=true)
      * - autoplay: Media autoplay (controlled via the allow attribute)
      * - accelerometer/gyroscope: Motion sensors (controlled via the allow attribute)
      *
@@ -77,12 +77,13 @@
         desktopOnly?: boolean;
 
         /**
-         * Enable top-level navigation permission.
+         * Enable top-level navigation permission on user activation.
          *
          * Only enable if the demo explicitly requires it.
          *
-         * When enabled, adds 'allow-top-navigation'
-         * to the iframe sandbox attribute.
+         * When enabled, adds 'allow-top-navigation-by-user-activation'
+         * to the iframe sandbox attribute. This requires a transient user
+         * activation (e.g., click) and mitigates clickjacking risks.
          *
          * @default false
          */
@@ -207,9 +208,9 @@
         return permissions.join('; ');
     });
 
-    // Build sandbox permissions: start with safe defaults, add top-navigation only if explicitly requested
+    // Build sandbox permissions: start with safe defaults, add top-navigation-by-user-activation only if explicitly requested
     const sandboxPermissions = $derived(
-        `allow-scripts allow-same-origin allow-forms${allowTopNavigation ? ' allow-top-navigation' : ''}`,
+        `allow-scripts allow-same-origin allow-forms${allowTopNavigation ? ' allow-top-navigation-by-user-activation' : ''}`,
     );
 
     // Extract aspect-ratio style to avoid repetition
