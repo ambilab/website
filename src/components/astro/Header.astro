@@ -44,7 +44,7 @@ export interface Props {
     currentPath: string;
 
     /** Optional path to the translated version of the current page. */
-    translationPath: string | undefined;
+    translationPath?: string | undefined;
 }
 
 const { locale, currentPath, translationPath } = Astro.props as Props;
