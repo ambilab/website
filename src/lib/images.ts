@@ -13,6 +13,17 @@ const IMAGE_BREAKPOINTS = {
 } as const;
 
 /**
+ * Default responsive sizes string for images.
+ *
+ * Optimized for common viewport widths, scaling from full width
+ * on mobile to a maximum of 1200px on large screens.
+ *
+ * Note: Only uses sm, md, and lg breakpoints. The xl and 2xl
+ * breakpoints are available in IMAGE_BREAKPOINTS for custom use.
+ */
+const DEFAULT_RESPONSIVE_SIZES = `(max-width: ${IMAGE_BREAKPOINTS.sm}px) 100vw, (max-width: ${IMAGE_BREAKPOINTS.md}px) 90vw, (max-width: ${IMAGE_BREAKPOINTS.lg}px) 80vw, 1200px`;
+
+/**
  * Generates a responsive sizes attribute for images.
  *
  * Returns a default sizes string optimized for common
@@ -25,8 +36,6 @@ const IMAGE_BREAKPOINTS = {
  * @returns The sizes attribute value for responsive images
  */
 export const getResponsiveSizes = (sizes?: string): string => {
-    return (
-        sizes ||
-        `(max-width: ${IMAGE_BREAKPOINTS.sm}px) 100vw, (max-width: ${IMAGE_BREAKPOINTS.md}px) 90vw, (max-width: ${IMAGE_BREAKPOINTS.lg}px) 80vw, 1200px`
-    );
+    const normalized = sizes?.trim();
+    return normalized ? normalized : DEFAULT_RESPONSIVE_SIZES;
 };
