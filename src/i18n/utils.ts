@@ -14,11 +14,14 @@ import { DEFAULT_LOCALE, DOMAIN_LOCALE_MAP, isValidLocale } from './config';
  * Uses DOMAIN_LOCALE_MAP to determine the locale from the domain.
  * Falls back to DEFAULT_LOCALE if the hostname is not in the map.
  *
+ * Normalizes hostname by converting to lowercase and removing common www. prefix.
+ *
  * @param hostname - The hostname to detect locale from (e.g., 'ambilab.com')
  * @returns The detected locale code
  */
 export const detectLocaleFromHostname = (hostname: string): Locale => {
-    const locale = DOMAIN_LOCALE_MAP[hostname];
+    const key = hostname.toLowerCase().replace(/^www\./, '');
+    const locale = DOMAIN_LOCALE_MAP[key];
     return locale || DEFAULT_LOCALE;
 };
 
