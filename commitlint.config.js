@@ -24,15 +24,22 @@ export default {
                 'revert', // Revert previous commit
             ],
         ],
+
         // Subject case: lowercase
         'subject-case': [2, 'never', ['sentence-case', 'start-case', 'pascal-case', 'upper-case']],
-        // Subject must not end with period
+
+        // Subject must not end with a period
         'subject-empty': [2, 'never'],
+
+        // Subject must not end with a full stop
         'subject-full-stop': [2, 'never', '.'],
+
         // Type must be lowercase
         'type-case': [2, 'always', 'lower-case'],
+
         // Type must not be empty
         'type-empty': [2, 'never'],
+
         // Header max length
         'header-max-length': [2, 'always', 100],
     },

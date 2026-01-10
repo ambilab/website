@@ -8,6 +8,11 @@
         type?: 'button' | 'submit' | 'reset';
         disabled?: boolean;
         class?: string;
+
+        /**
+         * Click event handler function. Called when the button is clicked.
+         * @param onclick - Click event handler function
+         */
         onclick?: (ev: MouseEvent) => void;
         children?: Snippet;
     }

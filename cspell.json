@@ -21,6 +21,7 @@
     "Čeština",
     "Chilaquiles",
     "Churros",
+    "clanek",
     "cloudflare",
     "commitlint",
     "cotija",
@@ -32,6 +33,7 @@
     "Entomatadas",
     "Esquites",
     "Flautas",
+    "FOUC",
     "FOUT",
     "guajillo",
     "horchata",
@@ -45,6 +47,7 @@
     "Molletes",
     "noreply",
     "nosniff",
+    "oznameni",
     "Pambazo",
     "Peneques",
     "pico",
@@ -56,6 +59,7 @@
     "prettierignore",
     "prispevek",
     "projektu",
+    "prvni",
     "pubdate",
     "queso",
     "roja",
@@ -85,7 +89,8 @@
     "Vančura",
     "vaso",
     "WCAG",
-    "wrangler"
+    "wrangler",
+    "zacatek"
   ],
   "flagWords": ["hte", "teh", "dont", "cant", "wont"],
   "ignorePaths": [
