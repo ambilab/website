@@ -34,7 +34,8 @@ export interface Props {
     locale: Locale;
 }
 
-const { locale } = Astro.props as Props;
+const { locale: localeProp } = Astro.props as Partial<Props>;
+const locale: Locale = localeProp ?? 'en';
 const t = getTranslation(locale);
 const currentYear = new Date().getFullYear();
 ---
