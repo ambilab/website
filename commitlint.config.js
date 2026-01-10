@@ -28,7 +28,7 @@ export default {
         // Subject case: lowercase
         'subject-case': [2, 'never', ['sentence-case', 'start-case', 'pascal-case', 'upper-case']],
 
-        // Subject must not end with a period
+        // Subject must not be empty
         'subject-empty': [2, 'never'],
 
         // Subject must not end with a full stop
