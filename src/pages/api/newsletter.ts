@@ -14,16 +14,15 @@ const logger = createLogger({ prefix: 'Newsletter API' });
 /**
  * Creates a JSON response with the specified data and status code.
  *
- * @param data - The response data object to serialize as JSON
+ * @param data - The response data to serialize as JSON
  * @param status - The HTTP status code for the response
  * @returns A Response object with JSON content type and the specified status code
  */
-const jsonResponse = (data: object, status: number) => {
-    return new Response(JSON.stringify(data), {
+const jsonResponse = (data: unknown, status: number) =>
+    Response.json(data, {
         status,
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Cache-Control': 'no-store' },
     });
-};
 
 /**
  * POST handler for newsletter subscriptions.
