@@ -20,12 +20,8 @@ export const COMPONENT_CONFIG = {
 
         /**
          * Animation duration for the fade transition in milliseconds.
-         *
-         * Reserved for future use: make fade transition duration configurable.
-         *
-         * Currently, GoToTop.svelte uses hardcoded duration: 200ms.
          */
-        animationDuration: 300, // ms
+        animationDuration: 200, // ms
     },
 
     /**

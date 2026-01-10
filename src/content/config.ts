@@ -6,6 +6,7 @@
  * These schemas validate frontmatter and provide type safety
  * for content entries throughout the application.
  */
+import { LOCALES } from '@i18n/config';
 import { defineCollection, z } from 'astro:content';
 
 /**
@@ -33,7 +34,7 @@ const blogCollection = defineCollection({
         /**
          * Locale of the blog post content.
          */
-        locale: z.enum(['en', 'cs']),
+        locale: z.enum(LOCALES),
 
         /**
          * Slug of the translated version of this post.
@@ -101,7 +102,7 @@ const pagesCollection = defineCollection({
         /**
          * Locale of the page content.
          */
-        locale: z.enum(['en', 'cs']),
+        locale: z.enum(LOCALES),
 
         /**
          * Slug of the translated version of this page.
