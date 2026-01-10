@@ -31,7 +31,7 @@ import BaseHead from './BaseHead.astro';
  * Extends ISEOMetadata to include all SEO-related properties.
  */
 export interface Props extends ISEOMetadata {
-    /** Optional locale for the page. Defaults to 'en' if not provided. */
+    /** Optional locale for the page. See BaseHead for default behavior. */
     locale?: Locale;
 }
 

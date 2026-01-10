@@ -4,9 +4,8 @@
  * Configuration for locale detection, mapping, and formatting.
  *
  * Supports domain-based locale detection
- * (ambilab.com for English, ambilab.cz for Czech).
- *
- * and provides utilities for locale validation and Intl API integration.
+ * (ambilab.com for English, ambilab.cz for Czech) and provides utilities
+ * for locale validation and Intl API integration.
  */
 import type { Locale, LocaleConfig } from '@type/locale';
 
@@ -68,7 +67,7 @@ export const LOCALE_CONFIGS: Record<Locale, LocaleConfig> = {
         code: 'en',
 
         /**
-         * Display the name of the locale.
+         * Display name of the locale.
          */
         name: 'English',
     },
@@ -83,7 +82,7 @@ export const LOCALE_CONFIGS: Record<Locale, LocaleConfig> = {
         code: 'cs',
 
         /**
-         * Display the name of the locale.
+         * Display name of the locale.
          */
         name: 'Čeština',
     },

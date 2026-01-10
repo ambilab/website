@@ -9,12 +9,6 @@ export interface ILogger {
     /**
      * Logs an informational message.
      *
-     * This function is used to display informative messages that provide
-     * context or status updates within the application.
-     *
-     * It accepts a single string parameter representing the informational
-     * message to be logged.
-     *
      * @param {string} message - The informational message to be logged.
      */
     info: (message: string) => void;
@@ -22,25 +16,12 @@ export interface ILogger {
     /**
      * Logs a warning message.
      *
-     * This function is used to display warning messages that notify the
-     * user of potential issues or non-critical errors within the application.
-     *
-     * It accepts a single string parameter representing
-     * the warning message to be logged.
-     *
      * @param {string} message - The warning message to log.
      */
     warn: (message: string) => void;
 
     /**
-     * Logs an error message with an optional
-     * error object for additional details.
-     *
-     * This function is used to display error messages that
-     * indicate critical issues or failures within the application.
-     *
-     * It accepts a string parameter for the error message
-     * and an optional error object for additional details.
+     * Logs an error message with an optional error object.
      *
      * @param {string} message - A descriptive error message.
      * @param {unknown} [error] - An optional error object containing additional information about the error.
@@ -53,10 +34,7 @@ export interface ILogger {
  */
 export interface LoggerOptions {
     /**
-     * An optional string used as a prefix.
-     *
-     * This can be used to prepend a specific set of characters or a word to
-     * another value, typically for identification or formatting purposes.
+     * Optional string prefix for all log messages.
      */
     prefix?: string;
 
@@ -97,11 +75,9 @@ class Logger implements ILogger {
     }
 
     /**
-     * Logs an informational message to the console
-     * if the logging level is set to "info".
+     * Logs an informational message.
      *
      * @param {string} message - The message to be logged.
-     * @return {void} This method does not return any value.
      */
     public info(message: string): void {
         if (this.shouldLog('info')) {
@@ -110,11 +86,9 @@ class Logger implements ILogger {
     }
 
     /**
-     * Logs a warning message to the console
-     * if the logging level is set to "warning".
+     * Logs a warning message.
      *
      * @param {string} message - The message to be logged.
-     * @return {void} This method does not return any value.
      */
     public warn(message: string): void {
         if (this.shouldLog('warning')) {
@@ -123,12 +97,10 @@ class Logger implements ILogger {
     }
 
     /**
-     * Logs an error message to the console
-     * if the logging level is set to "error".
+     * Logs an error message with an optional error object.
      *
      * @param {string} message - The message to be logged.
      * @param {unknown} [error] - The error object to be logged along with the message.
-     * @return {void} This method does not return any value.
      */
     public error(message: string, error?: unknown): void {
         console.error(this.prefix ? `${this.prefix} ${message}` : message, error || '');
@@ -138,8 +110,7 @@ class Logger implements ILogger {
 /**
  * Creates a new logger instance with the specified configuration options.
  *
- * @param {LoggerOptions} [options={}] - Configuration options for the logger. This includes properties such as log
- *                                       level, log format, and other settings for customizing the logger behavior.
+ * @param {LoggerOptions} [options={}] - Configuration options for the logger.
  * @returns {ILogger} A logger instance configured according to the provided options.
  */
 export const createLogger = (options: LoggerOptions = {}): ILogger => new Logger(options);

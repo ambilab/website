@@ -9,6 +9,8 @@
 
 /**
  * Generate cryptographically secure nonce for CSP.
+ *
+ * @returns Base64-encoded random string (16 bytes)
  */
 export function generateNonce(): string {
     const array = new Uint8Array(16);
