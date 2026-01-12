@@ -10,6 +10,13 @@
  * - Accessible with proper ARIA attributes
  * - Accepts menu content as children
  *
+ * Icons:
+ * This component uses inline SVG markup for the hamburger menu and close icons.
+ * Unlike Astro components which use the centralized icon system (Icon.astro),
+ * Svelte components in this project inline their SVG markup directly with
+ * Tailwind classes applied to the <svg> element. This pattern allows proper
+ * sizing and theming through currentColor, and keeps the component self-contained.
+ *
  * @component
  * @example
  * ```astro
@@ -76,25 +83,29 @@
             <!-- Close Icon -->
             <svg
                 class="h-6 w-6"
+                viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
                 stroke-width="2"
-                viewBox="0 0 24 24"
+                stroke-linecap="round"
+                stroke-linejoin="round"
                 xmlns="http://www.w3.org/2000/svg"
             >
-                <path d="M18 6L6 18M6 6l12 12"></path>
+                <path d="M18 6L6 18M6 6l12 12" />
             </svg>
         {:else}
-            <!-- Hamburger Icon -->
+            <!-- Hamburger Menu Icon -->
             <svg
                 class="h-6 w-6"
+                viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
                 stroke-width="2"
-                viewBox="0 0 24 24"
+                stroke-linecap="round"
+                stroke-linejoin="round"
                 xmlns="http://www.w3.org/2000/svg"
             >
-                <path d="M3 12h18M3 6h18M3 18h18"></path>
+                <path d="M3 12h18M3 6h18M3 18h18" />
             </svg>
         {/if}
     </button>
