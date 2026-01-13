@@ -6,6 +6,15 @@
     --font-family-sans: 'Innovator Grotesk', system-ui, sans-serif;
     --font-family-mono: ui-monospace, 'SF Mono', Menlo, Monaco, Consolas, monospace;
 
+    /* Semantic Colors - Helpers */
+    --color-debug-red: theme('colors.red.500');
+    --color-debug-green: theme('colors.green.500');
+    --color-debug-blue: theme('colors.blue.500');
+    --color-debug-yellow: theme('colors.yellow.500');
+    --color-debug-purple: theme('colors.purple.500');
+    --color-debug-orange: theme('colors.orange.500');
+    --color-debug-pink: theme('colors.pink.500');
+
     /* Semantic Colors - Page & Surface Backgrounds */
     --color-page-bg: theme('colors.gray.200');
     --color-page-bg-dark: theme('colors.zinc.900');
