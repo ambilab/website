@@ -29,6 +29,7 @@
  *   - The menu button uses `aria-label` to describe its purpose contextually ("Open menu" or "Close menu").
  *   - The menu button uses `aria-expanded` to indicate menu state to assistive tech.
  *   - The menu button uses `aria-controls` to reference the controlled menu panel by ID.
+ * - Focus management: when the menu opens, focus moves to the first focusable element; when closed, focus returns to the button.
  * - Menu content is structured for keyboard navigation and focus is retained when toggled.
  * - Menu automatically closes when any contained navigation link is clicked, avoiding focus loss for users.
  * - Escape key closes the menu, following standard overlay/modal interaction patterns.
@@ -61,6 +62,9 @@
 
     let isOpen = $state(false);
 
+    let menuButtonElement: HTMLButtonElement | undefined = $state();
+    let menuPanelElement: HTMLDivElement | undefined = $state();
+
     /**
      * Toggles the mobile menu open/closed state.
      */
@@ -92,11 +96,11 @@
      */
     $effect(() => {
         if (isOpen) {
-            // Store original overflow value to restore later.
+            // Store the original overflow value to restore later.
             const originalOverflow = document.body.style.overflow;
             document.body.style.overflow = 'hidden';
 
-            // Cleanup: restore original overflow when menu closes or component unmounts.
+            // Cleanup: restore original overflow when the menu closes or component unmounts.
             return () => {
                 document.body.style.overflow = originalOverflow;
             };
@@ -129,11 +133,33 @@
         // Return no-op cleanup when menu is closed.
         return () => {};
     });
+
+    /**
+     * Effect to manage focus when the menu opens and closes.
+     * When opening: moves focus to the first focusable element in the menu.
+     * When closing: returns focus to the menu button.
+     */
+    $effect(() => {
+        if (isOpen && menuPanelElement) {
+            // Find the first focusable element in the menu
+            const focusableElements = menuPanelElement.querySelectorAll<HTMLElement>(
+                'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])',
+            );
+
+            if (focusableElements.length > 0) {
+                focusableElements[0].focus();
+            }
+        } else if (!isOpen && menuButtonElement && document.activeElement !== menuButtonElement) {
+            // Return focus to the menu button when closing, but only if focus isn't already there
+            menuButtonElement.focus();
+        }
+    });
 </script>
 
 <div>
     <!-- Mobile Menu Button -->
     <button
+        bind:this={menuButtonElement}
         type="button"
         class="p-2 text-text-secondary transition-colors hover:text-text-primary md:hidden dark:text-text-secondary-dark dark:hover:text-text-primary-dark"
         aria-label={isOpen ? 'Close menu' : 'Open menu'}
@@ -174,6 +200,7 @@
 
     <!-- Mobile Menu Dropdown -->
     <div
+        bind:this={menuPanelElement}
         id="mobile-menu"
         class="fixed left-0 right-0 top-16 z-40 border-t border-border-default bg-page-bg transition-all duration-300 ease-in-out sm:top-20 md:hidden dark:border-border-default-dark dark:bg-page-bg-dark"
         class:translate-y-0={isOpen}
