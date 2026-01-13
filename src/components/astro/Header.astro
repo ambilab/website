@@ -62,9 +62,9 @@ const { locale, currentPath, translationPath } = Astro.props as Props;
                 <div class="shrink-0">
                     <a
                         href={getRoute('home', locale)}
-                        class="text-sm font-bold uppercase tracking-wider text-text-primary transition-colors hover:text-text-secondary sm:text-base dark:text-text-primary-dark dark:hover:text-text-secondary-dark"
+                        class="logo-link block h-[32px] w-[104px] bg-contain bg-left bg-no-repeat transition-all"
+                        aria-label="Ambilab Home"
                     >
-                        Ambilab
                     </a>
                 </div>
 
@@ -97,3 +97,13 @@ const { locale, currentPath, translationPath } = Astro.props as Props;
         </div>
     </div>
 </header>
+
+<style>
+    .logo-link {
+        background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAANAAAABAAQMAAABRDGt0AAAABlBMVEUYGBvk5Oc3/QyrAAAAUUlEQVR4Ae3JgQUEAQxE0XSQ/rucDt4xnK0gWHbEF958e91YMmRjZoXc0JYMSgQ3JLY3zbZXNEqklL5H5E9KBMc0D80VjRKNtNeUh3JD3160HzGR9HSxWI1mAAAAAElFTkSuQmCC');
+    }
+
+    html.dark .logo-link {
+        background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAANAAAABAAQMAAABRDGt0AAAABlBMVEXk5OcYGBukBVu4AAAAUUlEQVR4Ae3JgQUEAQxE0XSQ/rucDt4xnK0gWHbEF958e91YMmRjZoXc0JYMSgQ3JLY3zbZXNEqklL5H5E9KBMc0D80VjRKNtNeUh3JD3160HzGR9HSxWI1mAAAAAElFTkSuQmCC');
+    }
+</style>
