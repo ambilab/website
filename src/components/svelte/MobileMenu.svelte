@@ -30,6 +30,7 @@
  *   - The menu button uses `aria-expanded` to indicate menu state to assistive tech.
  *   - The menu button uses `aria-controls` to reference the controlled menu panel by ID.
  * - Focus management: when the menu opens, focus moves to the first focusable element; when closed, focus returns to the button.
+ * - Focus trap: keyboard navigation (Tab/Shift+Tab) is trapped within the menu when open, cycling through focusable elements.
  * - Menu content is structured for keyboard navigation and focus is retained when toggled.
  * - Menu automatically closes when any contained navigation link is clicked, avoiding focus loss for users.
  * - Escape key closes the menu, following standard overlay/modal interaction patterns.
@@ -153,6 +154,62 @@
             // Return focus to the menu button when closing, but only if focus isn't already there
             menuButtonElement.focus();
         }
+    });
+
+    /**
+     * Effect to implement a focus trap within the menu.
+     * Prevents focus from escaping the menu when tabbing through elements.
+     * Handles both Tab (forward) and Shift+Tab (backward) navigation.
+     */
+    $effect(() => {
+        if (isOpen && menuPanelElement) {
+            const handleFocusTrap = (event: KeyboardEvent): void => {
+                // Only trap the Tab key
+                if (event.key !== 'Tab') {
+                    return;
+                }
+
+                // Get all focusable elements within the menu and the button.
+                const focusableElements = [
+                    menuButtonElement,
+                    ...Array.from(
+                        menuPanelElement.querySelectorAll<HTMLElement>(
+                            'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])',
+                        ),
+                    ),
+                ].filter((el): el is HTMLElement => el !== undefined);
+
+                if (focusableElements.length === 0) {
+                    return;
+                }
+
+                const firstElement = focusableElements[0];
+                const lastElement = focusableElements[focusableElements.length - 1];
+                const activeElement = document.activeElement as HTMLElement;
+
+                // Shift+Tab: if on the first element, move to the last.
+                if (event.shiftKey && activeElement === firstElement) {
+                    event.preventDefault();
+                    lastElement.focus();
+                }
+
+                // Tab: if on the last element, move to the first.
+                else if (!event.shiftKey && activeElement === lastElement) {
+                    event.preventDefault();
+                    firstElement.focus();
+                }
+            };
+
+            document.addEventListener('keydown', handleFocusTrap);
+
+            // Cleanup: remove event listener when menu closes or component unmounts.
+            return () => {
+                document.removeEventListener('keydown', handleFocusTrap);
+            };
+        }
+
+        // Return no-op cleanup when menu is closed.
+        return () => {};
     });
 </script>
 
