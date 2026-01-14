@@ -86,7 +86,7 @@
     function handleMenuClick(event: MouseEvent): void {
         const target = event.target as HTMLElement;
 
-        if (target.tagName === 'A') {
+        if (target.closest('a')) {
             closeMenu();
         }
     }
