@@ -106,7 +106,10 @@ const currentPath = Astro.url.pathname;
     </head>
 
     <body
-        class="debug-screens bg-page-bg text-text-primary transition-colors dark:bg-page-bg-dark dark:text-text-primary-dark"
+        class:list={[
+            import.meta.env.DEV && 'debug-screens',
+            'bg-page-bg text-text-primary transition-colors dark:bg-page-bg-dark dark:text-text-primary-dark',
+        ]}
     >
         <Header locale={locale} currentPath={currentPath} translationPath={translationPath} />
 
