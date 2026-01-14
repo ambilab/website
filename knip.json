@@ -15,7 +15,7 @@
     "src/types/index.ts"
   ],
   "ignoreExportsUsedInFile": true,
-  "ignoreDependencies": [],
+  "ignoreDependencies": ["tailwindcss-debug-screens"],
   "astro": {
     "config": ["astro.config.ts"],
     "entry": ["src/pages/**/*.astro"]

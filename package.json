@@ -60,6 +60,7 @@
     "remark-smartypants": "^3.0.2",
     "svelte": "^5.46.1",
     "tailwindcss": "^4.1.18",
+    "tailwindcss-debug-screens": "^3.0.1",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
     "vite": "^6.4.1",
