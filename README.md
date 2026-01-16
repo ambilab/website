@@ -27,6 +27,19 @@ decisions include:
 - **Deployment**: Cloudflare Pages
 - **Linting**: Biome + ESLint + Prettier
 
+## Fonts
+
+This project uses the following fonts:
+
+- **[Innovator Grotesk](https://www.yeptype.com/fonts/innovator-grotesk)** (served from CDN) – Primary sans-serif
+  typeface for body text and headings
+- **[Departure Mono](https://github.com/rektdeckard/departure-mono)** (self-hosted) – Monospace typeface for code and UI
+  elements
+
+Departure Mono is licensed under the [SIL Open Font License, Version 1.1](public/fonts/DepartureMono-LICENSE.txt)
+(Copyright 2022–2024 Helena Zhang). The font files are located in `public/fonts/` and can be freely used, modified, and
+redistributed under the terms of the OFL.
+
 ## Features
 
 ### Core
