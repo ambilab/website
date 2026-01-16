@@ -105,7 +105,7 @@
         <button
             type="submit"
             disabled={status === 'loading'}
-            class="inline-flex items-center gap-2 rounded-lg bg-button-primary px-4 py-2 font-medium text-button-primary-text transition-colors hover:bg-button-primary-hover disabled:opacity-50 dark:bg-button-primary-dark dark:text-button-primary-text-dark dark:hover:bg-button-primary-hover-dark"
+            class="inline-flex items-center gap-2 rounded-lg bg-button-primary px-4 py-2 font-medium text-button-primary-text hover:bg-button-primary-hover disabled:opacity-50 dark:bg-button-primary-dark dark:text-button-primary-text-dark dark:hover:bg-button-primary-hover-dark"
         >
             {#if status === 'loading'}
                 <svg class="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
