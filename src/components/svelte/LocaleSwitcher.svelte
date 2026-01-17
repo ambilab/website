@@ -120,7 +120,7 @@
 <button
     onclick={handleLocaleSwitch}
     disabled={isAnimating}
-    class="[&:hover,&:focus]:text-text-primary dark:[&:hover,&:focus]:text-text-primary-dark flex cursor-pointer items-center px-2 py-1 uppercase text-text-secondary disabled:opacity-50 dark:text-text-secondary-dark"
+    class="[&:hover,&:focus]:text-text-primary dark:[&:hover,&:focus]:text-text-primary-dark flex cursor-pointer items-center px-2 py-[2.5px] uppercase text-text-secondary disabled:opacity-50 dark:text-text-secondary-dark"
     aria-label="Switch language"
 >
     <span>&rarr; {otherConfig.name}</span>
