@@ -102,7 +102,7 @@ export default {
                 'header-bar': '100',
                 'cookie-banner': '110',
                 'go-to-top': '120',
-                'skip-navigation': '200',
+                'skip-navigation-link': '200',
             },
         },
     },
