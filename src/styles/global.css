@@ -101,6 +101,14 @@
 
     /* Dot pattern background */
     --bg-dots-image: radial-gradient(circle, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+
+    /* Z-index values */
+    --z-header: 50;
+    --z-mobile-menu: 60;
+    --z-header-bar: 100;
+    --z-cookie-banner: 110;
+    --z-go-to-top: 120;
+    --z-skip-navigation-link: 200;
 }
 
 /* Dot Background Utilities */
