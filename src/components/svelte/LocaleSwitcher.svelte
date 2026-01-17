@@ -88,7 +88,8 @@
      * then navigates to the translated page using Astro's View Transitions.
      *
      * Prevents multiple simultaneous switches with an isAnimating flag.
-     * If navigation fails, resets the animating state to allow retry.
+     * Always resets isAnimating in finally block to ensure proper state
+     * regardless of navigation success, failure, or same-path resolution.
      */
     const handleLocaleSwitch = async (): Promise<void> => {
         // Prevent multiple simultaneous switches
