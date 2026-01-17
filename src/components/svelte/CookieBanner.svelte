@@ -66,7 +66,7 @@
 
 {#if isVisible}
     <div
-        class="fixed bottom-0 left-0 right-0 z-50 border-t border-border-default bg-surface p-4 shadow-lg dark:border-border-default-dark dark:bg-surface-dark"
+        class="fixed bottom-0 left-0 right-0 z-cookie-banner border-t border-border-default bg-surface p-4 shadow-lg dark:border-border-default-dark dark:bg-surface-dark"
     >
         <div class="container mx-auto flex flex-col items-center justify-between gap-4 sm:flex-row">
             <p class="text-sm text-text-secondary dark:text-text-secondary-dark">

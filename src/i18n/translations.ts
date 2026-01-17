@@ -18,6 +18,10 @@ import type { Locale } from '@type/locale';
  * type safety and consistent translation coverage across locales.
  */
 export interface Translations {
+    a11y: {
+        skipNavigationLink: string;
+    };
+
     nav: {
         home: string;
         about: string;
@@ -97,6 +101,10 @@ export interface Translations {
  */
 export const translations: Record<Locale, Translations> = {
     en: {
+        a11y: {
+            skipNavigationLink: 'Skip to the main content',
+        },
+
         nav: {
             home: 'Home',
             about: 'About',
@@ -167,6 +175,10 @@ export const translations: Record<Locale, Translations> = {
         },
     },
     cs: {
+        a11y: {
+            skipNavigationLink: 'Přeskočit na hlavní obsah',
+        },
+
         nav: {
             home: 'Domů',
             about: 'O projektu',

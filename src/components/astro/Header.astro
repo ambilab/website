@@ -2,87 +2,215 @@
 /**
  * Header Component
  *
- * Site header with logo, navigation menu, theme switcher, and locale switcher.
+ * Responsive site header with navigation, branding, and control buttons.
  *
- * Sticky header that remains visible while scrolling.
- *
- * Includes responsive layout and accessibility features.
+ * Provides a sticky header that remains visible while scrolling, with
+ * different layouts for mobile and desktop viewports. Includes comprehensive
+ * accessibility features and responsive design patterns.
  *
  * Features:
- * - Sticky positioning at the top of the page
- * - Logo/brand link
- * - Navigation menu via HeaderNav component
- * - Theme switcher (light/dark mode)
- * - Locale switcher (English/Czech)
- * - Active navigation highlighting
- * - Translation path support for locale switching
+ * - Sticky positioning at the top of the page (z-header)
+ * - Skip navigation link for keyboard users
+ * - Pixel art logo/brand link with accessible label
+ * - Mobile hamburger menu with slide-down panel (MobileMenu component)
+ * - Desktop horizontal navigation with ARIA landmark
+ * - Theme switcher for light/dark mode (ThemeSwitcher component)
+ * - Locale switcher for English/Czech (LocaleSwitcher component)
+ * - Active navigation highlighting via HeaderNav
+ * - Translation path support for seamless locale switching
+ *
+ * Layout Structure:
+ * - Mobile (< md breakpoint):
+ *   - Logo on the left
+ *   - Hamburger menu button on the right
+ *   - Slide-down panel contains: navigation, LocaleSwitcher, ThemeSwitcher
+ * - Desktop (>= md breakpoint):
+ *   - Logo on the left
+ *   - Navigation links in the center
+ *   - LocaleSwitcher and ThemeSwitcher on the right
+ *
+ * Accessibility Features:
+ * - Skip navigation link (sr-only until focused, locale-aware text)
+ * - Proper ARIA labels for navigation landmarks
+ * - Logo link with descriptive aria-label (no redundant text)
+ * - Keyboard-friendly focus management
+ * - Focus trap in mobile menu when open
+ * - All interactive elements are keyboard accessible
+ *
+ * Responsive Behavior:
+ * - Height: 48px (h-12) on mobile, 80px (h-20) on desktop
+ * - Max widths: 608px (sm), 736px (md), 896px (lg)
+ * - Mobile menu auto-closes on resize
+ * - All text uses 11px monospace uppercase for brand consistency
+ *
+ * Styling:
+ * - Uses semantic color tokens for consistent theming
+ * - Border bottom for visual separation from content
+ * - Background color matches page background
+ * - Uppercase monospace typography (Departure Mono)
+ * - Optical padding (pb-px) for pixel-perfect alignment
  *
  * @component
  * @example
  * ```astro
+ * <!-- Basic usage with current path -->
+ * <Header locale="en" currentPath="/blog" />
+ *
+ * <!-- With translation path for locale switching -->
  * <Header
  *   locale="en"
- *   currentPath="/blog"
- *   translationPath="/cs/blog"
+ *   currentPath="/blog/hello-world"
+ *   translationPath="/blog/ahoj-svete"
  * />
  * ```
  */
 import HeaderNav from '@components/astro/HeaderNav.astro';
 import LocaleSwitcher from '@components/svelte/LocaleSwitcher.svelte';
+import MobileMenu from '@components/svelte/MobileMenu.svelte';
 import ThemeSwitcher from '@components/svelte/ThemeSwitcher.svelte';
 import { getRoute } from '@config/routes';
+import { getTranslation } from '@i18n/translations';
 import type { Locale } from '@type/locale';
 
 /**
  * Props for the Header component.
  */
 export interface Props {
-    /** The locale for the header navigation and translations. */
+    /**
+     * The locale for the header navigation and translations.
+     *
+     * Used to:
+     * - Generate locale-aware routes for logo and navigation
+     * - Fetch translated navigation labels
+     * - Determine current locale for LocaleSwitcher
+     *
+     * Locale detection is domain-based (ambilab.com vs ambilab.cz).
+     */
     locale: Locale;
 
-    /** The current page path used to highlight the active navigation item. */
+    /**
+     * The current page path used to highlight the active navigation item.
+     *
+     * Should be the pathname without locale prefix (e.g., '/blog', not '/en/blog').
+     * This is passed to HeaderNav to determine which navigation item should be
+     * marked as active with aria-current="page".
+     *
+     * Example: For URL `https://ambilab.com/blog/post`, use `/blog/post`
+     */
     currentPath: string;
 
-    /** Optional path to the translated version of the current page. */
+    /**
+     * Optional path to the translated version of the current page.
+     *
+     * Used by LocaleSwitcher to navigate to the corresponding page in the
+     * other locale. If not provided, LocaleSwitcher will navigate to the
+     * same path in the target locale.
+     *
+     * Example: When on `/blog/hello-world` (en), provide `/blog/ahoj-svete`
+     * to navigate to the Czech translation when the locale is switched.
+     */
     translationPath?: string | undefined;
 }
 
 const { locale, currentPath, translationPath } = Astro.props as Props;
+
+/** Get translations for the current locale. */
+const t = getTranslation(locale);
 ---
 
-<header
-    class="sticky top-0 z-10 select-none border-b border-border-default bg-page-bg dark:border-border-default-dark dark:bg-page-bg-dark"
->
-    <div class="container mx-auto max-w-4xl px-4 py-4">
-        <!-- Mobile & Tablet: justify-between layout -->
-        <nav class="flex items-center justify-between gap-4 md:hidden">
-            <a href={getRoute('home', locale)} class="flex items-center gap-2 text-xl font-bold">
-                <span>Ambilab</span>
-            </a>
+<header class="sticky top-0 z-header">
+    <!--
+        Skip navigation link for keyboard users.
+        Hidden by default (sr-only), becomes visible on focus.
+        Links to #main-content for quick access to page content.
+    -->
+    <a
+        href="#main-content"
+        class="sr-only font-mono text-[11px] uppercase focus:not-sr-only focus:absolute focus:left-2 focus:top-2 focus:z-skip-navigation-link focus:bg-page-bg focus:px-2 focus:py-1 focus:text-text-primary focus:outline-none focus:ring-4 focus:ring-blue-600 dark:focus:bg-page-bg-dark dark:focus:text-text-primary-dark dark:focus:ring-blue-400"
+    >
+        {t.a11y.skipNavigationLink}
+    </a>
 
-            <div class="flex items-center gap-4 text-sm">
-                <HeaderNav locale={locale} currentPath={currentPath} />
-                <div class="flex items-center gap-2">
-                    <ThemeSwitcher client:load />
-                    <LocaleSwitcher client:load currentLocale={locale} translationPath={translationPath} />
+    <!--
+        Main header container with border and background.
+        Sets the visual container for all header content.
+    -->
+    <div
+        class="relative z-header-bar mx-auto border-b border-border-default bg-page-bg px-4 dark:border-border-default-dark dark:bg-page-bg-dark"
+    >
+        <!--
+            Inner flex container with responsive max-widths and height.
+            - Mobile: h-12 (48px)
+            - Desktop: h-20 (80px)
+            - Max widths scale with breakpoints: 608px (sm), 736px (md), 896px (lg)
+        -->
+        <div
+            class="mx-auto flex h-12 items-center justify-between pb-px font-mono text-[11px] uppercase sm:max-w-[608px] md:h-20 md:max-w-[736px] lg:max-w-[896px]"
+        >
+            <!-- Left side: Logo + Desktop Navigation -->
+            <div class="flex items-center gap-8">
+                <!--
+                    Logo with pixel art "AMBILAB" text.
+                    Links to homepage with accessible aria-label.
+                    shrink-0 prevents logo from being compressed in flexbox.
+                -->
+                <div class="shrink-0">
+                    <a href={getRoute('home', locale)} class="block" aria-label="Ambilab Home">
+                        <svg width="78" height="24" viewBox="0 0 52 16" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Background rectangle -->
+                            <path
+                                d="M52,0 L52,16 L0,16 L0,0 L52,0 Z"
+                                class="fill-text-primary dark:fill-text-primary-dark"></path>
+                            <!-- "AMBILAB" pixel art text -->
+                            <path
+                                d="M17,4 L11,4 L11,12 L13,12 L13,6.00120245 L14,6.00120245 L14,12 L16,12 L16,6 L17,6 L17,12 L18.5827497,12.0009516 C18.6315999,12.000981 18.6776006,12.0010086 18.7199376,12.0010341 L19.0000126,12.0012024 L19.0000126,6 L18,6 L18,5 L17,5 L17,4 Z M10,4 L6,4 L6,5 L5,5 L5,6 L4,6 L4,12 L6,12 L6,10 L8,10.0012024 L8,12 L10,12 L10,4 Z M25,4 L20,4 L20,12 L25,12 L25,11 L26,11 L26,8 L25,8 L25,7 L26,7 L26,5 L25,5 L25,4 Z M29,4 L27,4 L27,12 L29,12 L29,4 Z M32,4 L30,4 L30,12 L37,12 L37,10 L39,10 L39,12 L41,12 L41,4 L37,4 L37,5 L36,5 L36,6 L35,6 L35,10 L32,10 L32,4 Z M47,4 L42,4 L42,12 L47,12 L47,11 L48,11 L48,8 L47,8 L47,7 L48,7 L48,5 L47,5 L47,4 Z M24,9 L24,10 L22,10 L22,9 L24,9 Z M46,9 L46,10 L44,10 L44,9 L46,9 Z M8,6 L8,8 L6,8 L6,7 L7,7 L7,6 L8,6 Z M39,6 L39,8 L37,8 L37,7 L38,7 L38,6 L39,6 Z M24,6 L24,7 L22,7 L22,6 L24,6 Z M46,6 L46,7 L44,7 L44,6 L46,6 Z"
+                                fill-rule="evenodd"
+                                class="fill-page-bg dark:fill-page-bg-dark"></path>
+                        </svg>
+                    </a>
                 </div>
-            </div>
-        </nav>
 
-        <!-- Desktop: centered layout with absolute-positioned controls -->
-        <nav class="relative hidden items-center justify-center gap-12 md:flex">
-            <a href={getRoute('home', locale)} class="flex items-center gap-2 text-xl font-bold">
-                <span>Ambilab</span>
-            </a>
-
-            <div class="flex items-center text-sm">
-                <HeaderNav locale={locale} currentPath={currentPath} />
+                <!--
+                    Desktop navigation (hidden on mobile).
+                    Contains HeaderNav with horizontal layout (mobile={false}).
+                    Uses semantic nav element with aria-label for accessibility.
+                -->
+                <nav aria-label="Main navigation" class="hidden items-center gap-6 md:flex lg:gap-8">
+                    <HeaderNav locale={locale} currentPath={currentPath} mobile={false} />
+                </nav>
             </div>
 
-            <div class="absolute right-0 top-1/2 flex -translate-y-1/2 items-center gap-2 text-sm">
-                <ThemeSwitcher client:load />
+            <!--
+                Right side: Desktop controls (LocaleSwitcher + ThemeSwitcher).
+                Hidden on mobile, shown from md breakpoint.
+                client:load ensures immediate interactivity.
+            -->
+            <div class="hidden items-center gap-2 md:flex">
                 <LocaleSwitcher client:load currentLocale={locale} translationPath={translationPath} />
+                <ThemeSwitcher client:load />
             </div>
-        </nav>
+
+            <!--
+                Mobile menu (hamburger button + slide-down panel).
+                Hidden from md breakpoint, shown on mobile.
+                Contains navigation and controls in vertical layout.
+            -->
+            <div class="md:hidden">
+                <MobileMenu client:load>
+                    <div class="flex flex-col px-4">
+                        <!-- Mobile navigation with vertical layout -->
+                        <div class="py-4">
+                            <HeaderNav locale={locale} currentPath={currentPath} mobile={true} />
+                        </div>
+
+                        <!-- Mobile controls aligned to the right -->
+                        <div class="flex items-center justify-end gap-2 pb-4 pr-2">
+                            <LocaleSwitcher client:load currentLocale={locale} translationPath={translationPath} />
+                            <ThemeSwitcher client:load />
+                        </div>
+                    </div>
+                </MobileMenu>
+            </div>
+        </div>
     </div>
 </header>

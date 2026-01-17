@@ -2,30 +2,40 @@
     /**
      * ThemeSwitcher Component
      *
-     * Toggle the button for switching between light and dark themes.
+     * Toggle button for switching between light and dark themes.
      *
-     * Syncs with system preferences when no user preference
-     * is set and persists user choices in localStorage.
-     *
-     * Uses the 'dark' class on the document element for theme application.
+     * Syncs with system preferences when no user preference is set
+     * and persists user choices in localStorage.
      *
      * Features:
-     * - Toggles between light and dark themes
+     * - Toggles between light and dark themes with pixel art icons
      * - Syncs with system preference when no user preference exists
      * - Persists theme choice in localStorage
-     * - Listens for system theme changes
-     * - Smooth opacity transition on mount
-     * - Accessible with aria-label and title
-     * - Icon changes based on current theme
+     * - Listens for system theme changes and updates accordingly
+     * - Smooth opacity transition on mount to prevent flash
+     * - Accessible with ARIA labels and dynamic title
+     * - Icon changes based on current theme (sun for light, moon for dark)
+     * - Consistent styling with other header controls (uppercase, hover states)
+     *
+     * Icons:
+     * - This component uses inline SVG markup for theme icons in pixel art style.
+     * - Unlike Astro components which use the centralized icon system (Icon.astro),
+     *   Svelte components in this project inline their SVG markup directly.
+     * - Icons are rendered with currentColor for automatic theme color support.
      *
      * Theme Application:
      * - Light mode: No 'dark' class on <html>
-     * - Dark mode: 'dark' class on <html>
+     * - Dark mode: 'dark' class added to <html>
      * - System preference: Used when localStorage has no 'theme' value
+     *
+     * Styling:
+     * - Uses semantic color tokens (text-secondary, text-primary)
+     * - Includes hover and focus states for accessibility
+     * - Has negative right margin (-mr-[6px]) for optical alignment
      *
      * @component
      * @example
-     * ```svelte
+     * ```astro
      * <ThemeSwitcher client:load />
      * ```
      */
@@ -33,6 +43,17 @@
     import { createLogger } from '@utils/logger';
 
     const logger = createLogger({ prefix: 'ThemeSwitcher' });
+
+    /**
+     * Common SVG attributes for both theme icons.
+     * Extracted to reduce duplication and ensure consistency.
+     */
+    const svgProps = {
+        width: 24,
+        height: 24,
+        viewBox: '0 0 24 24',
+        xmlns: 'http://www.w3.org/2000/svg',
+    } as const;
 
     /** Current theme state ('light' or 'dark'). */
     let currentTheme = $state<'light' | 'dark'>('light');
@@ -97,12 +118,26 @@
         // Listen for system theme changes
         const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
+        /**
+         * Handles system theme preference changes.
+         *
+         * Only updates if user hasn't set a manual preference (no theme in localStorage).
+         * When system preference changes, directly updates the DOM and component state
+         * to reflect the new theme without requiring a page reload.
+         */
         const handleChange = () => {
             // Only update if user hasn't set a preference (no theme in localStorage)
             if (!localStorage.getItem('theme')) {
-                updateTheme();
+                const prefersDark = mediaQuery.matches;
+
+                if (document?.documentElement) {
+                    document.documentElement.classList.toggle('dark', prefersDark);
+                }
+
+                currentTheme = prefersDark ? 'dark' : 'light';
             }
         };
+
         mediaQuery.addEventListener('change', handleChange);
 
         // Cleanup listener on unmount
@@ -114,52 +149,27 @@
 
 <button
     onclick={handleThemeToggle}
-    class="flex cursor-pointer items-center gap-2 rounded-lg px-3 py-2 hover:bg-surface-hover disabled:opacity-50 dark:hover:bg-surface-hover-dark"
+    class="[&:hover,&:focus]:text-text-primary dark:[&:hover,&:focus]:text-text-primary-dark -mr-[6px] flex cursor-pointer items-center text-text-secondary dark:text-text-secondary-dark"
     class:opacity-0={!mounted}
     class:opacity-100={mounted}
     aria-label="Toggle theme"
     title={currentTheme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
 >
     {#if currentTheme === 'dark'}
-        <!-- Moon icon for dark mode -->
-        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Moon icon for dark mode (pixel art style) -->
+        <svg {...svgProps}>
             <path
-                d="M21.0672 11.8568L20.4253 11.469L21.0672 11.8568ZM12.1432 2.93276L11.7553 2.29085V2.29085L12.1432 2.93276ZM21.25 12C21.25 17.1086 17.1086 21.25 12 21.25V22.75C17.9371 22.75 22.75 17.9371 22.75 12H21.25ZM12 21.25C6.89137 21.25 2.75 17.1086 2.75 12H1.25C1.25 17.9371 6.06294 22.75 12 22.75V21.25ZM2.75 12C2.75 6.89137 6.89137 2.75 12 2.75V1.25C6.06294 1.25 1.25 6.06294 1.25 12H2.75ZM15.5 14.25C12.3244 14.25 9.75 11.6756 9.75 8.5H8.25C8.25 12.5041 11.4959 15.75 15.5 15.75V14.25ZM20.4253 11.469C19.4172 13.1373 17.5882 14.25 15.5 14.25V15.75C18.1349 15.75 20.4407 14.3439 21.7092 12.2447L20.4253 11.469ZM9.75 8.5C9.75 6.41182 10.8627 4.5828 12.531 3.57467L11.7553 2.29085C9.65609 3.5593 8.25 5.86509 8.25 8.5H9.75ZM12 2.75C11.9115 2.75 11.8077 2.71008 11.7324 2.63168C11.6686 2.56527 11.6538 2.50244 11.6503 2.47703C11.6461 2.44587 11.6482 2.35557 11.7553 2.29085L12.531 3.57467C13.0342 3.27065 13.196 2.71398 13.1368 2.27627C13.0754 1.82126 12.7166 1.25 12 1.25V2.75ZM21.7092 12.2447C21.6444 12.3518 21.5541 12.3539 21.523 12.3497C21.4976 12.3462 21.4347 12.3314 21.3683 12.2676C21.2899 12.1923 21.25 12.0885 21.25 12H22.75C22.75 11.2834 22.1787 10.9246 21.7237 10.8632C21.286 10.804 20.7293 10.9658 20.4253 11.469L21.7092 12.2447Z"
+                d="M13.5,9 L13.5,10.5 L15,10.5 L15,13.5 L13.5,13.5 L13.5,15 L10.5,15 L10.5,13.5 L9,13.5 L9,10.5 L10.5,10.5 L10.5,9 L13.5,9 Z M6,6 L8,6 L8,8 L6,8 Z M11,4 L13,4 L13,6 L11,6 Z M11,18 L13,18 L13,20 L11,20 Z M4,11 L6,11 L6,13 L4,13 Z M18,11 L20,11 L20,13 L18,13 Z M16,6 L18,6 L18,8 L16,8 Z M16,16 L18,16 L18,18 L16,18 Z M6,16 L8,16 L8,18 L6,18 Z"
                 fill="currentColor"
-            />
+            ></path>
         </svg>
     {:else}
-        <!-- Sun icon for light mode -->
-        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="1.5" />
-            <path d="M12 2V4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-            <path d="M12 20V22" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-            <path d="M4 12H2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-            <path d="M22 12H20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-            <path
-                d="M19.7778 4.22266L17.5558 6.25424"
-                stroke="currentColor"
-                stroke-width="1.5"
-                stroke-linecap="round"
-            />
-            <path
-                d="M4.22217 4.22266L6.44418 6.25424"
-                stroke="currentColor"
-                stroke-width="1.5"
-                stroke-linecap="round"
-            />
-            <path
-                d="M6.44434 17.5557L4.22211 19.7779"
-                stroke="currentColor"
-                stroke-width="1.5"
-                stroke-linecap="round"
-            />
-            <path
-                d="M19.7778 19.7773L17.5558 17.5551"
-                stroke="currentColor"
-                stroke-width="1.5"
-                stroke-linecap="round"
-            />
+        <!-- Sun icon for light mode (pixel art style) -->
+        <svg {...svgProps}>
+            <polygon
+                points="17 11 17 13 16 13 16 15 15 15 15 16 13 16 13 17 11 17 11 16 9 16 9 15 8 15 8 13 7 13 7 11 8 11 8 9 9 9 9 8 11 8 11 7 13 7 13 8 12 8 12 10 13 10 13 11 14 11 14 12 16 12 16 11"
+                fill="currentColor"
+            ></polygon>
         </svg>
     {/if}
 </button>
