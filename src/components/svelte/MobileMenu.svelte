@@ -99,6 +99,13 @@
         xmlns: 'http://www.w3.org/2000/svg',
     } as const;
 
+    /**
+     * CSS selector for focusable elements.
+     * Extracted to reduce duplication and ensure consistency across focus management effects.
+     */
+    const focusableSelector =
+        'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
     /** Whether the mobile menu is currently open. */
     let isOpen = $state(false);
 
@@ -238,9 +245,7 @@
     $effect(() => {
         if (isOpen && menuPanelElement) {
             // Find the first focusable element in the menu
-            const focusableElements = menuPanelElement.querySelectorAll<HTMLElement>(
-                'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])',
-            );
+            const focusableElements = menuPanelElement.querySelectorAll<HTMLElement>(focusableSelector);
 
             if (focusableElements && focusableElements.length > 0 && focusableElements[0]) {
                 focusableElements[0].focus();
@@ -287,11 +292,7 @@
                 const focusableElements = [
                     ...(menuButtonElement ? [menuButtonElement] : []),
                     ...(menuPanelElement
-                        ? Array.from(
-                              menuPanelElement.querySelectorAll<HTMLElement>(
-                                  'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])',
-                              ),
-                          )
+                        ? Array.from(menuPanelElement.querySelectorAll<HTMLElement>(focusableSelector))
                         : []),
                 ].filter((el): el is HTMLElement => el !== undefined);
 
