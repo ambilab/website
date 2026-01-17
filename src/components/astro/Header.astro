@@ -118,7 +118,7 @@ const { locale, currentPath, translationPath } = Astro.props as Props;
 const t = getTranslation(locale);
 ---
 
-<header class="sticky top-0 z-header">
+<header class="sticky top-0 z-[var(--z-header)]">
     <!--
         Skip navigation link for keyboard users.
         Hidden by default (sr-only), becomes visible on focus.
@@ -126,7 +126,7 @@ const t = getTranslation(locale);
     -->
     <a
         href="#main-content"
-        class="sr-only font-mono text-[11px] uppercase focus:not-sr-only focus:absolute focus:left-2 focus:top-2 focus:z-skip-navigation-link focus:bg-page-bg focus:px-2 focus:py-1 focus:text-text-primary focus:outline-none focus:ring-4 focus:ring-blue-600 dark:focus:bg-page-bg-dark dark:focus:text-text-primary-dark dark:focus:ring-blue-400"
+        class="sr-only font-mono text-[11px] uppercase focus:not-sr-only focus:absolute focus:left-2 focus:top-2 focus:z-[var(--z-skip-navigation-link)] focus:bg-page-bg focus:px-2 focus:py-1 focus:text-text-primary focus:outline-none focus:ring-4 focus:ring-blue-600 dark:focus:bg-page-bg-dark dark:focus:text-text-primary-dark dark:focus:ring-blue-400"
     >
         {t.a11y.skipNavigationLink}
     </a>
@@ -136,7 +136,7 @@ const t = getTranslation(locale);
         Sets the visual container for all header content.
     -->
     <div
-        class="relative z-header-bar mx-auto border-b border-border-default bg-page-bg px-4 dark:border-border-default-dark dark:bg-page-bg-dark"
+        class="relative z-[var(--z-header-bar)] mx-auto border-b border-border-default bg-page-bg px-4 dark:border-border-default-dark dark:bg-page-bg-dark"
     >
         <!--
             Inner flex container with responsive max-widths and height.
