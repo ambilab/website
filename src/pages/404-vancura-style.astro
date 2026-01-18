@@ -1,28 +1,4 @@
 ---
-/**
- * Standalone 404 Error Page (Vancura Style)
- *
- * An alternative 404 page with a distinctive design aesthetic
- * converted from vancura.design.
- *
- * This is a self-contained page with no dependencies on the
- * standard site layouts, providing a unique error experience.
- *
- * Features:
- * - Fully standalone HTML structure
- * - Custom header and footer (different from main site)
- * - Mobile-responsive navigation menu
- * - Styled with Tailwind CSS 4
- * - Dark theme aesthetic
- * - Smooth scroll behavior
- *
- * Note: This page is intentionally separate from PageLayout to maintain
- * its unique design identity.
- *
- * @component
- * @example
- * Direct route: /404-vancura-style
- */
 import '@/styles/global.css';
 ---
 
@@ -34,7 +10,6 @@ import '@/styles/global.css';
         <title>404: Page not found | Václav Vančura</title>
         <meta name="description" content="The page you're looking for doesn't exist." />
         <style is:global>
-            /* Base styles for the page */
             html {
                 scroll-behavior: smooth;
             }
@@ -56,13 +31,11 @@ import '@/styles/global.css';
                         const isOpen = mobileMenu.classList.contains('translate-y-0');
 
                         if (isOpen) {
-                            // Close menu - slide up
                             mobileMenu.classList.remove('translate-y-0', 'opacity-100');
                             mobileMenu.classList.add('-translate-y-full', 'opacity-0');
                             menuIcon?.classList.remove('hidden');
                             closeIcon?.classList.add('hidden');
                         } else {
-                            // Open menu - slide down
                             mobileMenu.classList.remove('-translate-y-full', 'opacity-0');
                             mobileMenu.classList.add('translate-y-0', 'opacity-100');
                             menuIcon?.classList.add('hidden');
@@ -70,7 +43,6 @@ import '@/styles/global.css';
                         }
                     });
 
-                    // Close menu when clicking a link
                     const menuLinks = mobileMenu.querySelectorAll('a');
                     menuLinks.forEach((link) => {
                         link.addEventListener('click', () => {
@@ -85,11 +57,9 @@ import '@/styles/global.css';
         </script>
     </head>
     <body class="flex min-h-screen flex-col bg-neutral-900 text-neutral-300 antialiased">
-        <!-- Header -->
         <header class="relative z-50 border-b border-neutral-800">
             <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div class="flex h-16 items-center justify-between sm:h-20">
-                    <!-- Logo/Name -->
                     <div class="flex-shrink-0">
                         <a
                             href="/"
@@ -99,7 +69,6 @@ import '@/styles/global.css';
                         </a>
                     </div>
 
-                    <!-- Desktop Navigation (hidden on mobile) -->
                     <nav id="desktop-nav" class="hidden items-center gap-6 md:flex lg:gap-8">
                         <a
                             href="/design"
@@ -115,7 +84,6 @@ import '@/styles/global.css';
                         </a>
                     </nav>
 
-                    <!-- Mobile Menu Button (visible on mobile only) -->
                     <button
                         id="mobile-menu-button"
                         type="button"
@@ -149,7 +117,6 @@ import '@/styles/global.css';
             </div>
         </header>
 
-        <!-- Mobile Menu Dropdown -->
         <div
             id="mobile-menu"
             class="fixed left-0 right-0 top-16 z-40 -translate-y-full transform border-t border-neutral-800 bg-neutral-900 opacity-0 ease-in-out sm:top-20 md:hidden"
@@ -164,28 +131,23 @@ import '@/styles/global.css';
             </nav>
         </div>
 
-        <!-- Main Content -->
         <main class="flex flex-1 items-center px-4 py-12 sm:px-6 sm:py-16 md:justify-center lg:px-8">
             <div class="w-full max-w-2xl md:text-center">
-                <!-- 404 Heading -->
                 <h1
                     class="mb-6 font-serif text-7xl font-light text-white sm:mb-8 sm:text-8xl md:text-9xl lg:text-[180px]"
                 >
                     404
                 </h1>
 
-                <!-- Page not found -->
                 <h2 class="mb-6 text-2xl font-light text-white sm:mb-8 sm:text-3xl md:text-4xl lg:text-5xl">
                     Page not found
                 </h2>
 
-                <!-- Description -->
                 <div class="mb-8 space-y-3 text-base text-neutral-400 sm:mb-10 sm:text-lg">
                     <p>I apologize for the inconvenience.</p>
                     <p>Please navigate to the home or use the menu to find the information you're seeking.</p>
                 </div>
 
-                <!-- Button -->
                 <a
                     href="/"
                     class="inline-block rounded-full border-2 border-white px-7 py-3 text-xs font-medium uppercase tracking-[0.15em] text-white hover:bg-white hover:text-neutral-900 sm:px-8 sm:text-sm"
@@ -195,10 +157,8 @@ import '@/styles/global.css';
             </div>
         </main>
 
-        <!-- Footer -->
         <footer class="border-t border-neutral-800">
             <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
-                <!-- Footer Top: Branding -->
                 <div class="mb-8 sm:mb-12">
                     <div class="mb-2 text-sm font-medium uppercase tracking-wider text-white sm:text-base">
                         Václav Vančura
@@ -208,9 +168,7 @@ import '@/styles/global.css';
                     </div>
                 </div>
 
-                <!-- Footer Navigation Grid -->
                 <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 sm:gap-12">
-                    <!-- Site Links -->
                     <nav class="flex flex-col gap-3 sm:gap-4">
                         <a
                             href="/"
@@ -232,7 +190,6 @@ import '@/styles/global.css';
                         </a>
                     </nav>
 
-                    <!-- Social Links -->
                     <nav class="flex flex-col gap-3 sm:gap-4">
                         <a
                             href="https://linkedin.com"
@@ -261,7 +218,6 @@ import '@/styles/global.css';
                     </nav>
                 </div>
 
-                <!-- Footer Icon -->
                 <div class="mt-12 flex justify-center opacity-30 sm:mt-16">
                     <svg
                         class="h-8 w-8 text-neutral-600"

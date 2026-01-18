@@ -1,37 +1,11 @@
 ---
-/**
- * Footer Component
- *
- * Site footer with brand information, navigation links,
- * social media links, and copyright notice.
- *
- * Displays in a responsive grid layout.
- *
- * Features:
- * - Brand description
- * - Navigation links (home, about, blog, RSS)
- * - Social media links via SocialLinks component
- * - Copyright notice with current year
- * - Locale-aware content and routes
- * - Responsive grid layout
- *
- * @component
- * @example
- * ```astro
- * <Footer locale="en" />
- * ```
- */
 import SocialLinks from '@components/astro/SocialLinks.astro';
 import { getRoute } from '@config/routes';
 import { DEFAULT_LOCALE } from '@i18n/config.ts';
 import { getTranslation } from '@i18n/translations';
 import type { Locale } from '@type/locale';
 
-/**
- * Props for the Footer component.
- */
 export interface Props {
-    /** The locale for the footer content and translations. */
     locale: Locale;
 }
 
@@ -46,19 +20,19 @@ const currentYear = new Date().getFullYear();
 >
     <div class="container mx-auto px-4 py-12">
         <div class="grid gap-8 md:grid-cols-3">
-            <!-- Brand -->
             <div>
                 <h3 class="mb-4 text-lg font-bold">Ambilab</h3>
+
                 <p class="text-sm text-text-muted dark:text-text-muted-dark">
                     {t.footer.description}
                 </p>
             </div>
 
-            <!-- Links -->
             <div>
                 <h4 class="mb-4 text-sm font-semibold uppercase tracking-wider">
                     {t.footer.navigation}
                 </h4>
+
                 <ul class="space-y-2 text-sm">
                     <li>
                         <a
@@ -68,6 +42,7 @@ const currentYear = new Date().getFullYear();
                             {t.nav.home}
                         </a>
                     </li>
+
                     <li>
                         <a
                             href={getRoute('about', locale)}
@@ -76,6 +51,7 @@ const currentYear = new Date().getFullYear();
                             {t.nav.about}
                         </a>
                     </li>
+
                     <li>
                         <a
                             href={getRoute('blog', locale)}
@@ -84,6 +60,7 @@ const currentYear = new Date().getFullYear();
                             {t.nav.blog}
                         </a>
                     </li>
+
                     <li>
                         <a
                             href={getRoute('rss', locale)}
@@ -95,7 +72,6 @@ const currentYear = new Date().getFullYear();
                 </ul>
             </div>
 
-            <!-- Social -->
             <div>
                 <h4 class="mb-4 text-sm font-semibold uppercase tracking-wider">Follow Ambilab</h4>
 

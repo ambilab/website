@@ -1,39 +1,4 @@
 ---
-/**
- * BlogPostLayout Component
- *
- * Layout component specifically designed for blog post pages.
- *
- * Provides a structured article layout with post metadata
- * (author, date, reading time, tags) and MDX content rendering
- * with automatic heading anchor links.
- *
- * Features:
- * - Post header with author, publication date, and reading time
- * - Optional updated date display
- * - Tag display with styled badges
- * - MDX content rendering with prose styling
- * - Automatic heading anchor links via HeadingLinks component
- * - Full SEO support via PageLayout
- * - Translation support for metadata labels
- *
- * @component
- * @example
- * ```astro
- * <BlogPostLayout
- *   locale="en"
- *   title="My Blog Post"
- *   description="Post description"
- *   permalink="https://example.com/blog/post"
- *   pubDate={new Date()}
- *   author="John Doe"
- *   tags={["tech", "web"]}
- *   content={postContent}
- * >
- *   <Content />
- * </BlogPostLayout>
- * ```
- */
 import '@/styles/mdx-content.css';
 
 import { getTranslation } from '@i18n/translations';
@@ -46,35 +11,14 @@ import HeadingLinks from './HeadingLinks.astro';
 import Icon from './Icon.astro';
 import PageLayout from './PageLayout.astro';
 
-/**
- * Props for the BlogPostLayout component.
- *
- * Extends ISEOMetadata to include all SEO-related properties plus
- * blog-specific metadata like publication date, author, tags, and content.
- */
 export interface Props extends ISEOMetadata {
-    /** The locale for the blog post content and formatting. */
     locale: Locale;
-
-    /** The blog post title, also used for SEO meta tags. */
     title: string;
-
-    /** The publication date of the blog post. */
     pubDate: Date;
-
-    /** Optional date when the blog post was last updated. */
     updatedDate?: Date;
-
-    /** The author name displayed in the post header. */
     author: string;
-
-    /** Optional array of tags associated with the blog post. */
     tags?: string[];
-
-    /** The blog post content used for calculating reading time. */
     content: string;
-
-    /** Optional path to the translated version of this blog post. */
     translationPath?: string;
 }
 
@@ -115,6 +59,7 @@ const readingTime = calculateReadingTime(content);
 
                 <div class="flex items-center gap-2">
                     <Icon name="calendar" class="h-4 w-4" />
+
                     <time datetime={pubDate.toISOString()}>
                         {t.blog.publishedOn}
                         {formatDate(pubDate, locale)}
@@ -125,6 +70,7 @@ const readingTime = calculateReadingTime(content);
                     updatedDate && (
                         <div class="flex items-center gap-2">
                             <Icon name="refresh" class="h-4 w-4" />
+
                             <time datetime={updatedDate.toISOString()}>
                                 {t.blog.updatedOn} {formatDate(updatedDate, locale)}
                             </time>
@@ -134,6 +80,7 @@ const readingTime = calculateReadingTime(content);
 
                 <div class="flex items-center gap-2">
                     <Icon name="clock" class="h-4 w-4" />
+
                     <span>
                         {readingTime}
                         {t.blog.minutesShort}
@@ -145,6 +92,7 @@ const readingTime = calculateReadingTime(content);
                 tags.length > 0 && (
                     <div class="mt-4 flex flex-wrap items-center gap-2">
                         <Icon name="tag" class="h-4 w-4 text-text-muted dark:text-text-muted-dark" />
+
                         {tags.map((tag) => (
                             <span class="rounded-full bg-tag-bg px-3 py-1 text-xs font-medium text-tag-text dark:bg-tag-bg-dark dark:text-tag-text-dark">
                                 {tag}

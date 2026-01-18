@@ -1,44 +1,11 @@
 <script lang="ts">
-    /**
-     * NewsletterForm Component
-     *
-     * Form a component for newsletter subscriptions via the Buttondown API.
-     *
-     * Handles form submission, validation, loading states,
-     * and success/error messaging.
-     *
-     * Features:
-     * - Email validation
-     * - Loading state with spinner
-     * - Success and error messaging
-     * - Locale-aware labels and messages
-     * - Form reset on successful submission
-     * - Accessible form controls
-     * - Dark mode support
-     *
-     * @component
-     * @example
-     * ```svelte
-     * <NewsletterForm locale="en" client:idle />
-     * ```
-     */
     import { getTranslation } from '@i18n/translations';
     import type { Locale } from '@type/locale';
     import { createLogger } from '@utils/logger';
 
     const logger = createLogger({ prefix: 'NewsletterForm' });
 
-    /**
-     * Props for the NewsletterForm component.
-     */
     interface Props {
-        /**
-         * Locale for the form labels and messages.
-         *
-         * Determines which translation strings are used.
-         *
-         * @default 'en'
-         */
         locale?: Locale;
     }
 
@@ -77,11 +44,13 @@
                 const data = await response.json();
                 status = 'error';
                 message = data.error || t.newsletter.error;
+
                 logger.warn(`Newsletter subscription failed: ${data.error || 'Unknown error'}`);
             }
         } catch (error) {
             status = 'error';
             message = t.newsletter.error;
+
             logger.error('Failed to submit newsletter form', error);
         }
     };
@@ -89,6 +58,7 @@
 
 <div class="rounded-lg bg-info-bg p-6 dark:bg-info-bg-dark">
     <h3 class="mb-2 text-xl font-semibold">{t.newsletter.title}</h3>
+
     <p class="mb-4 text-sm text-text-muted dark:text-text-muted-dark">
         {t.newsletter.description}
     </p>
@@ -102,6 +72,7 @@
             disabled={status === 'loading'}
             class="flex-1 rounded-lg border border-border-medium px-4 py-2 focus:border-link focus:outline-none focus:ring-2 focus:ring-link disabled:opacity-50 dark:border-border-medium-dark dark:bg-surface-dark dark:focus:border-link-dark dark:focus:ring-link-dark"
         />
+
         <button
             type="submit"
             disabled={status === 'loading'}

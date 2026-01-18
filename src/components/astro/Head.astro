@@ -1,37 +1,10 @@
 ---
-/**
- * Head Component
- *
- * Wrapper component that renders the HTML head element with BaseHead inside.
- *
- * Provides a clean interface for pages that need a complete head section.
- *
- * This component is a thin wrapper around BaseHead, allowing for consistent
- * head rendering across the application.
- *
- * @component
- * @example
- * ```astro
- * <Head
- *   title="Page Title"
- *   description="Page description"
- *   permalink="https://example.com/page"
- *   locale="en"
- * />
- * ```
- */
 import type { Locale } from '@type/locale';
 import type { ISEOMetadata } from '@type/seo';
 
 import BaseHead from './BaseHead.astro';
 
-/**
- * Props for the Head component.
- *
- * Extends ISEOMetadata to include all SEO-related properties.
- */
 export interface Props extends ISEOMetadata {
-    /** Optional locale for the page. See BaseHead for default behavior. */
     locale?: Locale;
 }
 

@@ -1,24 +1,4 @@
 ---
-/**
- * Dynamic Content Page Route
- *
- * Handles all content routes including blog posts, pages, and the blog index.
- *
- * Uses Astro's rest parameter syntax to match any path and dynamically render
- * the appropriate content based on the URL structure.
- *
- * Route Patterns:
- * - `/blog` - Blog index page listing all posts
- * - `/blog/{slug}` - Individual blog post
- * - `/{slug}` - Static page (e.g., `/about`, `/index`)
- *
- * Features:
- * - Locale-aware content loading
- * - Automatic draft filtering
- * - Blog post sorting by publication date
- * - Translation path generation for locale switcher
- * - Error handling with redirects to error pages
- */
 import BlogPostLayout from '@components/astro/BlogPostLayout.astro';
 import PageLayout from '@components/astro/PageLayout.astro';
 import { DEFAULT_LOCALE } from '@i18n/config';
@@ -30,25 +10,13 @@ import type { CollectionEntry } from 'astro:content';
 import { getCollection } from 'astro:content';
 
 const logger = createLogger({ prefix: 'ContentPage' });
-
-// Get the detected locale from middleware (via context.locals)
-// Use DEFAULT_LOCALE as fallback if middleware didn't set it
 const detectedLocale = Astro.locals.locale ?? DEFAULT_LOCALE;
-
-// Get the slug from URL
 const { slug } = Astro.params;
 const requestPath = slug || 'index';
-
-// Check if this is the blog listing page
 const isBlogIndex = requestPath === 'blog';
-
-// Determine if it's a blog post or page
 const isBlogPost = requestPath.startsWith('blog/');
-
-// Extract the actual slug (remove blog/ prefix if present)
 const actualSlug = isBlogPost ? requestPath.replace('blog/', '') : requestPath;
 
-// Variables for rendering
 let renderType: 'blog-index' | 'blog-post' | 'page' | 'not-found' | 'error';
 let entry: CollectionEntry<'blog'> | CollectionEntry<'pages'> | undefined;
 let sortedBlogPosts: CollectionEntry<'blog'>[] = [];
@@ -58,14 +26,12 @@ let siteUrl = Astro.url.origin;
 let permalink = '';
 
 try {
-    // Handle blog index page
     if (isBlogIndex) {
         const blogPosts = await getCollection(
             'blog',
             (entry: CollectionEntry<'blog'>) => !entry.data.draft && entry.data.locale === detectedLocale,
         );
 
-        // Sort by publication date (newest first)
         sortedBlogPosts = blogPosts.sort(
             (a: CollectionEntry<'blog'>, b: CollectionEntry<'blog'>) =>
                 b.data.pubDate.getTime() - a.data.pubDate.getTime(),
@@ -74,7 +40,6 @@ try {
         permalink = `${siteUrl}/blog`;
         renderType = 'blog-index';
     } else if (isBlogPost) {
-        // Handle individual blog post
         const blogPosts = await getCollection(
             'blog',
             (entry: CollectionEntry<'blog'>) => !entry.data.draft && entry.data.locale === detectedLocale,
@@ -100,7 +65,6 @@ try {
             renderType = 'not-found';
         }
     } else {
-        // Handle regular page
         const pages = await getCollection(
             'pages',
             (entry: CollectionEntry<'pages'>) => entry.data.locale === detectedLocale,
@@ -127,13 +91,11 @@ try {
         }
     }
 } catch (error) {
-    // Log the error
     logger.error(`Failed to load content for path: ${requestPath}`, error);
 
     renderType = 'error';
 }
 
-// Handle errors and not found
 if (renderType === 'error') {
     return Astro.redirect('/500');
 }
@@ -144,22 +106,17 @@ if (renderType === 'not-found') {
 
 const t = getTranslation(detectedLocale);
 
-// Calculate translation path for locale switcher
 let translationPath: string | undefined;
 
 if (renderType === 'blog-index') {
-    // Blog index always stays at /blog
     translationPath = '/blog';
 } else if (renderType === 'page' && entry) {
     if (actualSlug === 'index') {
-        // Home page always stays at /
         translationPath = '/';
     } else if (entry.data.translationSlug) {
-        // Use translation slug for the page
         translationPath = `/${entry.data.translationSlug}`;
     }
 } else if (renderType === 'blog-post' && entry && entry.data.translationSlug) {
-    // Use translation slug for blog posts
     translationPath = `/blog/${entry.data.translationSlug}`;
 }
 ---
@@ -193,6 +150,7 @@ if (renderType === 'blog-index') {
                                                 {post.data.title}
                                             </h2>
                                         </a>
+
                                         <div class="mb-3 flex items-center gap-4 text-sm text-text-muted dark:text-text-muted-dark">
                                             <time datetime={post.data.pubDate.toISOString()}>
                                                 {formatDate(post.data.pubDate, locale)}
@@ -207,9 +165,11 @@ if (renderType === 'blog-index') {
                                                 </div>
                                             )}
                                         </div>
+
                                         <p class="mb-4 text-text-secondary dark:text-text-secondary-dark">
                                             {post.data.description}
                                         </p>
+
                                         <a
                                             href={postUrl}
                                             class="inline-flex items-center font-medium text-link hover:text-link-hover dark:text-link-dark dark:hover:text-link-hover-dark"
