@@ -58,7 +58,7 @@
     "prettier-plugin-tailwindcss": "^0.7.2",
     "remark-gfm": "^4.0.1",
     "remark-smartypants": "^3.0.2",
-    "svelte": "^5.46.4",
+    "svelte": "^5.47.0",
     "tailwindcss": "^4.1.18",
     "tailwindcss-debug-screens": "^3.0.1",
     "tsx": "^4.21.0",
