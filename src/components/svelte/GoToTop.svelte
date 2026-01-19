@@ -26,15 +26,21 @@
     onMount(() => {
         if (forceVisible) {
             isVisible = true;
-        } else {
-            window.addEventListener('scroll', handleScroll, { passive: true });
 
             return () => {
-                window.removeEventListener('scroll', handleScroll, { passive: true });
-
-                handleScroll.cancel();
+                // No cleanup needed when forceVisible is true.
             };
         }
+
+        const scrollHandler = handleScroll as EventListener;
+        const options = { passive: true } as AddEventListenerOptions;
+
+        window.addEventListener('scroll', scrollHandler, options);
+
+        return () => {
+            window.removeEventListener('scroll', scrollHandler, options);
+            handleScroll.cancel();
+        };
     });
 </script>
 
