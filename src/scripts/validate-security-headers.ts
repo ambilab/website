@@ -5,184 +5,186 @@ interface ValidationResult {
     message: string;
 }
 
-function validateSecurityHeaders(): ValidationResult[] {
+function createResult(success: boolean, message: string): ValidationResult {
+    return { success, message };
+}
+
+function validateNonceGeneration(): ValidationResult[] {
     const results: ValidationResult[] = [];
 
     try {
         const nonce1 = generateNonce();
         const nonce2 = generateNonce();
 
-        if (nonce1 === nonce2) {
-            results.push({
-                success: false,
-                message: '[FAIL] Nonce generation: Multiple calls returned the same nonce',
-            });
-        } else {
-            results.push({
-                success: true,
-                message: '[PASS] Nonce generation: Produces unique nonces',
-            });
-        }
+        const isUnique = nonce1 !== nonce2;
+
+        results.push(
+            createResult(
+                isUnique,
+                isUnique
+                    ? '[PASS] Nonce generation: Produces unique nonces'
+                    : '[FAIL] Nonce generation: Multiple calls returned the same nonce',
+            ),
+        );
 
         try {
             atob(nonce1);
-            results.push({
-                success: true,
-                message: '[PASS] Nonce format: Valid base64 encoding',
-            });
+            results.push(createResult(true, '[PASS] Nonce format: Valid base64 encoding'));
         } catch {
-            results.push({
-                success: false,
-                message: '[FAIL] Nonce format: Invalid base64 encoding',
-            });
+            results.push(createResult(false, '[FAIL] Nonce format: Invalid base64 encoding'));
         }
     } catch (error) {
-        results.push({
-            success: false,
-            message: `[FAIL] Nonce generation: ${error}`,
-        });
+        results.push(createResult(false, `[FAIL] Nonce generation: ${error}`));
     }
+
+    return results;
+}
+
+function validateProductionCSP(): ValidationResult[] {
+    const results: ValidationResult[] = [];
 
     try {
         const testNonce = 'test-nonce-123';
         const prodCSP = buildCSP({ nonce: testNonce, isDev: false });
 
-        if (prodCSP.includes(`'nonce-${testNonce}'`)) {
-            results.push({
-                success: true,
-                message: '[PASS] Production CSP: Nonce properly embedded',
-            });
-        } else {
-            results.push({
-                success: false,
-                message: '[FAIL] Production CSP: Nonce not properly embedded',
-            });
-        }
+        const hasNonce = prodCSP.includes(`'nonce-${testNonce}'`);
 
-        if (prodCSP.includes('upgrade-insecure-requests')) {
-            results.push({
-                success: true,
-                message: '[PASS] Production CSP: Contains upgrade-insecure-requests',
-            });
-        } else {
-            results.push({
-                success: false,
-                message: '[FAIL] Production CSP: Missing upgrade-insecure-requests',
-            });
-        }
+        results.push(
+            createResult(
+                hasNonce,
+                hasNonce
+                    ? '[PASS] Production CSP: Nonce properly embedded'
+                    : '[FAIL] Production CSP: Nonce not properly embedded',
+            ),
+        );
 
-        if (prodCSP.includes("'unsafe-inline'")) {
-            results.push({
-                success: false,
-                message: '[FAIL] Production CSP: Should not contain unsafe-inline',
-            });
-        } else {
-            results.push({
-                success: true,
-                message: "[PASS] Production CSP: Doesn't contain unsafe-inline",
-            });
-        }
+        const hasUpgrade = prodCSP.includes('upgrade-insecure-requests');
+
+        results.push(
+            createResult(
+                hasUpgrade,
+                hasUpgrade
+                    ? '[PASS] Production CSP: Contains upgrade-insecure-requests'
+                    : '[FAIL] Production CSP: Missing upgrade-insecure-requests',
+            ),
+        );
+
+        const hasUnsafeInline = prodCSP.includes("'unsafe-inline'");
+
+        results.push(
+            createResult(
+                !hasUnsafeInline,
+                hasUnsafeInline
+                    ? "[FAIL] Production CSP: Shouldn't contain unsafe-inline"
+                    : "[PASS] Production CSP: Doesn't contain unsafe-inline",
+            ),
+        );
     } catch (error) {
-        results.push({
-            success: false,
-            message: `[FAIL] Production CSP validation: ${error}`,
-        });
+        results.push(createResult(false, `[FAIL] Production CSP validation: ${error}`));
     }
+
+    return results;
+}
+
+function validateDevelopmentCSP(): ValidationResult[] {
+    const results: ValidationResult[] = [];
 
     try {
         const testNonce = 'test-nonce-123';
         const devCSP = buildCSP({ nonce: testNonce, isDev: true });
 
-        if (devCSP.includes("'unsafe-inline'")) {
-            results.push({
-                success: true,
-                message: '[PASS] Development CSP: Contains unsafe-inline',
-            });
-        } else {
-            results.push({
-                success: false,
-                message: '[FAIL] Development CSP: Should contain unsafe-inline',
-            });
-        }
+        const hasUnsafeInline = devCSP.includes("'unsafe-inline'");
 
-        if (devCSP.includes('upgrade-insecure-requests')) {
-            results.push({
-                success: false,
-                message: '[FAIL] Development CSP: Should not contain upgrade-insecure-requests',
-            });
-        } else {
-            results.push({
-                success: true,
-                message: "[PASS] Development CSP: Doesn't contain upgrade-insecure-requests",
-            });
-        }
+        results.push(
+            createResult(
+                hasUnsafeInline,
+                hasUnsafeInline
+                    ? '[PASS] Development CSP: Contains unsafe-inline'
+                    : '[FAIL] Development CSP: Should contain unsafe-inline',
+            ),
+        );
 
-        if (!devCSP.includes('ws://localhost:*') || !devCSP.includes('ws://127.0.0.1:*')) {
-            results.push({
-                success: false,
-                message: '[FAIL] Development CSP: Missing WebSocket endpoints for HMR',
-            });
-        } else {
-            results.push({
-                success: true,
-                message: '[PASS] Development CSP: Contains WebSocket endpoints for HMR',
-            });
-        }
+        const hasUpgrade = devCSP.includes('upgrade-insecure-requests');
+
+        results.push(
+            createResult(
+                !hasUpgrade,
+                hasUpgrade
+                    ? '[FAIL] Development CSP: Should not contain upgrade-insecure-requests'
+                    : "[PASS] Development CSP: Doesn't contain upgrade-insecure-requests",
+            ),
+        );
+
+        const hasWebSocketEndpoints = devCSP.includes('ws://localhost:*') && devCSP.includes('ws://127.0.0.1:*');
+
+        results.push(
+            createResult(
+                hasWebSocketEndpoints,
+                hasWebSocketEndpoints
+                    ? '[PASS] Development CSP: Contains WebSocket endpoints for HMR'
+                    : '[FAIL] Development CSP: Missing WebSocket endpoints for HMR',
+            ),
+        );
     } catch (error) {
-        results.push({
-            success: false,
-            message: `[FAIL] Development CSP validation: ${error}`,
-        });
-    }
-
-    try {
-        const expectedHeaders = ['X-Content-Type-Options', 'X-Frame-Options', 'Referrer-Policy', 'Permissions-Policy'];
-
-        const missingHeaders = expectedHeaders.filter((header) => !(header in STATIC_SECURITY_HEADERS));
-
-        if (missingHeaders.length > 0) {
-            results.push({
-                success: false,
-                message: `[FAIL] Static headers: Missing ${missingHeaders.join(', ')}`,
-            });
-        } else {
-            results.push({
-                success: true,
-                message: '[PASS] Static headers: All required headers present',
-            });
-        }
-
-        if (STATIC_SECURITY_HEADERS['X-Content-Type-Options'] === 'nosniff') {
-            results.push({
-                success: true,
-                message: '[PASS] X-Content-Type-Options: Correctly set to "nosniff"',
-            });
-        } else {
-            results.push({
-                success: false,
-                message: '[FAIL] X-Content-Type-Options: Should be "nosniff"',
-            });
-        }
-
-        if (STATIC_SECURITY_HEADERS['X-Frame-Options'] === 'SAMEORIGIN') {
-            results.push({
-                success: true,
-                message: '[PASS] X-Frame-Options: Correctly set to "SAMEORIGIN"',
-            });
-        } else {
-            results.push({
-                success: false,
-                message: '[FAIL] X-Frame-Options: Should be "SAMEORIGIN"',
-            });
-        }
-    } catch (error) {
-        results.push({
-            success: false,
-            message: `[FAIL] Static headers validation: ${error}`,
-        });
+        results.push(createResult(false, `[FAIL] Development CSP validation: ${error}`));
     }
 
     return results;
+}
+
+function validateStaticHeaders(): ValidationResult[] {
+    const results: ValidationResult[] = [];
+
+    try {
+        const expectedHeaders = ['X-Content-Type-Options', 'X-Frame-Options', 'Referrer-Policy', 'Permissions-Policy'];
+        const missingHeaders = expectedHeaders.filter((header) => !(header in STATIC_SECURITY_HEADERS));
+
+        const hasAllHeaders = missingHeaders.length === 0;
+
+        results.push(
+            createResult(
+                hasAllHeaders,
+                hasAllHeaders
+                    ? '[PASS] Static headers: All required headers present'
+                    : `[FAIL] Static headers: Missing ${missingHeaders.join(', ')}`,
+            ),
+        );
+
+        const contentTypeCorrect = STATIC_SECURITY_HEADERS['X-Content-Type-Options'] === 'nosniff';
+
+        results.push(
+            createResult(
+                contentTypeCorrect,
+                contentTypeCorrect
+                    ? '[PASS] X-Content-Type-Options: Correctly set to “nosniff”'
+                    : '[FAIL] X-Content-Type-Options: Should be “nosniff”',
+            ),
+        );
+
+        const frameOptionsCorrect = STATIC_SECURITY_HEADERS['X-Frame-Options'] === 'SAMEORIGIN';
+
+        results.push(
+            createResult(
+                frameOptionsCorrect,
+                frameOptionsCorrect
+                    ? '[PASS] X-Frame-Options: Correctly set to “SAMEORIGIN”'
+                    : '[FAIL] X-Frame-Options: Should be “SAMEORIGIN”',
+            ),
+        );
+    } catch (error) {
+        results.push(createResult(false, `[FAIL] Static headers validation: ${error}`));
+    }
+
+    return results;
+}
+
+function validateSecurityHeaders(): ValidationResult[] {
+    return [
+        ...validateNonceGeneration(),
+        ...validateProductionCSP(),
+        ...validateDevelopmentCSP(),
+        ...validateStaticHeaders(),
+    ];
 }
 
 console.log('Validating Security Headers Configuration\n');
@@ -198,9 +200,11 @@ results.forEach((result) => {
 console.log('='.repeat(60));
 
 if (failures.length === 0) {
-    console.log('\n[SUCCESS] All security header validations passed!');
+    console.log('\n[SUCCESS] All security header validations passed');
+
     process.exit(0);
 } else {
     console.log(`\n[ERROR] ${failures.length} validation(s) failed`);
+
     process.exit(1);
 }
