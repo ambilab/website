@@ -1,15 +1,3 @@
-/**
- * Validation script to ensure security headers
- * are identical between middlewares.
- *
- * This script validates that:
- * 1. Both src/middleware.ts and functions/_middleware.ts use the shared security config
- * 2. The security headers generated in production mode are identical
- * 3. The nonce generation is consistent
- *
- * Run with: npx tsx src/scripts/validate-security-headers.ts
- */
-
 import { buildCSP, generateNonce, STATIC_SECURITY_HEADERS } from '../config/security';
 
 interface ValidationResult {
@@ -17,19 +5,13 @@ interface ValidationResult {
     message: string;
 }
 
-/**
- * Validate that the shared security
- * configuration produces consistent results.
- */
 function validateSecurityHeaders(): ValidationResult[] {
     const results: ValidationResult[] = [];
 
-    // Test 1: Validate nonce generation produces valid base64
     try {
         const nonce1 = generateNonce();
         const nonce2 = generateNonce();
 
-        // Nonces should be different each time
         if (nonce1 === nonce2) {
             results.push({
                 success: false,
@@ -42,7 +24,6 @@ function validateSecurityHeaders(): ValidationResult[] {
             });
         }
 
-        // Nonces should be valid base64 (no error when decoding)
         try {
             atob(nonce1);
             results.push({
@@ -62,12 +43,10 @@ function validateSecurityHeaders(): ValidationResult[] {
         });
     }
 
-    // Test 2: Validate production CSP is identical for both middlewares
     try {
         const testNonce = 'test-nonce-123';
         const prodCSP = buildCSP({ nonce: testNonce, isDev: false });
 
-        // Verify CSP contains the nonce
         if (prodCSP.includes(`'nonce-${testNonce}'`)) {
             results.push({
                 success: true,
@@ -80,7 +59,6 @@ function validateSecurityHeaders(): ValidationResult[] {
             });
         }
 
-        // Verify CSP contains upgrade-insecure-requests in production
         if (prodCSP.includes('upgrade-insecure-requests')) {
             results.push({
                 success: true,
@@ -93,7 +71,6 @@ function validateSecurityHeaders(): ValidationResult[] {
             });
         }
 
-        // Verify CSP doesn't contain unsafe-inline in production
         if (prodCSP.includes("'unsafe-inline'")) {
             results.push({
                 success: false,
@@ -112,7 +89,6 @@ function validateSecurityHeaders(): ValidationResult[] {
         });
     }
 
-    // Test 3: Validate development CSP contains unsafe-inline
     try {
         const testNonce = 'test-nonce-123';
         const devCSP = buildCSP({ nonce: testNonce, isDev: true });
@@ -129,7 +105,6 @@ function validateSecurityHeaders(): ValidationResult[] {
             });
         }
 
-        // Verify dev CSP doesn't contain upgrade-insecure-requests
         if (devCSP.includes('upgrade-insecure-requests')) {
             results.push({
                 success: false,
@@ -142,7 +117,6 @@ function validateSecurityHeaders(): ValidationResult[] {
             });
         }
 
-        // Verify dev CSP contains WebSocket endpoints for HMR
         if (!devCSP.includes('ws://localhost:*') || !devCSP.includes('ws://127.0.0.1:*')) {
             results.push({
                 success: false,
@@ -161,7 +135,6 @@ function validateSecurityHeaders(): ValidationResult[] {
         });
     }
 
-    // Test 4: Validate static security headers
     try {
         const expectedHeaders = ['X-Content-Type-Options', 'X-Frame-Options', 'Referrer-Policy', 'Permissions-Policy'];
 
@@ -179,7 +152,6 @@ function validateSecurityHeaders(): ValidationResult[] {
             });
         }
 
-        // Validate specific header values
         if (STATIC_SECURITY_HEADERS['X-Content-Type-Options'] === 'nosniff') {
             results.push({
                 success: true,
@@ -213,7 +185,6 @@ function validateSecurityHeaders(): ValidationResult[] {
     return results;
 }
 
-// Run validation
 console.log('Validating Security Headers Configuration\n');
 console.log('='.repeat(60));
 

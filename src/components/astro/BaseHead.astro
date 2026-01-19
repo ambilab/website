@@ -1,67 +1,15 @@
 ---
 import { getRoute } from '@config/routes';
-/**
- * BaseHead Component
- *
- * Provides the complete HTML head section with SEO metadata,
- * OpenGraph tags, X Cards, structured data, and analytics.
- *
- * Handles font loading, favicons, and CSP nonce injection
- * for inline scripts and styles.
- *
- * Features:
- * - Comprehensive SEO meta tags (title, description, canonical URL)
- * - OpenGraph and X Card metadata for social sharing
- * - Structured data (JSON-LD) for search engines
- * - Font preloading and optimization (production only)
- * - Analytics integration (Plausible)
- * - Dark mode favicon support
- * - CSP-compliant inline scripts with nonce
- *
- * @component
- * @example
- * ```astro
- * <BaseHead
- *   title="Page Title"
- *   description="Page description"
- *   permalink="https://example.com/page"
- *   locale="en"
- * />
- * ```
- */
 import { SITE } from '@config/site';
 import type { Locale } from '@type/locale';
 import type { ISEOMetadata } from '@type/seo';
 import { ClientRouter } from 'astro:transitions';
 
-/**
- * Props for the BaseHead component.
- *
- * Extends ISEOMetadata to include all SEO-related properties.
- */
 export interface Props extends ISEOMetadata {
-    /** The page title displayed in the browser tab and used for SEO. */
     title: string;
-
-    /** The meta description used for SEO and social media previews. */
     description: string;
-
-    /**
-     * The canonical URL for the page.
-     * Used to prevent duplicate content issues.
-     */
     permalink: string;
-
-    /**
-     * Optional OpenGraph image URL for social media sharing.
-     * Falls back to the default OG image if not provided.
-     */
     ogImage?: string;
-
-    /**
-     * Optional locale for the page.
-     * Defaults to 'en' if not provided.
-     */
     locale?: Locale;
 }
 
@@ -71,33 +19,12 @@ const canonical = permalink.endsWith('/') ? permalink.slice(0, -1) : permalink;
 const siteDomain = Astro.url.origin;
 const currentDomain = Astro.url.hostname;
 
-// Get the nonce from context for inline scripts/styles (CSP requirement)
-// Falls back to undefined if middleware didn't set it (e.g., error paths)
-// In that case, CSP headers should allow inline content via 'unsafe-inline'
+// CSP nonce from middleware for inline scripts/styles.
 const nonce = Astro.locals.nonce;
-
-/*
-NOTE: All security headers (CSP, X-Content-Type-Options, Permissions-Policy,
-etc.) are set via HTTP headers in middleware for better security.
-
-HTTP headers are:
-  - Enforced before HTML parsing begins
-  - Cannot be modified by injected content
-  - More consistently honored across browsers
-
-See: src/middleware.ts and functions/_middleware.ts
-
-NOTE: Font loading strategy:
-  - Innovator Grotesk: Loaded from CDN in production only (6 weights: Light, Regular,
-    Medium, SemiBold, Bold, Black). In development, falls back to system font stack.
-  - Departure Mono: Loaded from local files in both dev and production.
-*/
 ---
 
 <ClientRouter />
 
-<!-- Innovator Grotesk preloading (production only) -->
-<!-- Preload the 4 most commonly used weights for optimal performance -->
 {
     import.meta.env.PROD && (
         <>
@@ -111,6 +38,7 @@ NOTE: Font loading strategy:
                 type="font/woff2"
                 crossorigin
             />
+
             <link
                 rel="preload"
                 href="https://fonts.vancura.dev/InnovatorGrotesk-Medium.woff2"
@@ -118,6 +46,7 @@ NOTE: Font loading strategy:
                 type="font/woff2"
                 crossorigin
             />
+
             <link
                 rel="preload"
                 href="https://fonts.vancura.dev/InnovatorGrotesk-SemiBold.woff2"
@@ -125,6 +54,7 @@ NOTE: Font loading strategy:
                 type="font/woff2"
                 crossorigin
             />
+
             <link
                 rel="preload"
                 href="https://fonts.vancura.dev/InnovatorGrotesk-Bold.woff2"
@@ -136,11 +66,8 @@ NOTE: Font loading strategy:
     )
 }
 
-<!-- Preload Departure Mono (local font, available in both dev and prod) -->
 <link rel="preload" href="/fonts/DepartureMono-Regular.woff2" as="font" type="font/woff2" crossorigin />
 
-<!-- Innovator Grotesk font declarations (production only) -->
-<!-- In development, the font stack in global.css falls back to system fonts -->
 {
     import.meta.env.PROD && (
         <style
@@ -154,6 +81,7 @@ NOTE: Font loading strategy:
                     font-style: normal;
                     font-display: swap;
                 }
+
                 @font-face {
                     font-family: 'Innovator Grotesk';
                     src: url('https://fonts.vancura.dev/InnovatorGrotesk-Regular.woff2') format('woff2');
@@ -161,6 +89,7 @@ NOTE: Font loading strategy:
                     font-style: normal;
                     font-display: swap;
                 }
+
                 @font-face {
                     font-family: 'Innovator Grotesk';
                     src: url('https://fonts.vancura.dev/InnovatorGrotesk-Medium.woff2') format('woff2');
@@ -168,6 +97,7 @@ NOTE: Font loading strategy:
                     font-style: normal;
                     font-display: swap;
                 }
+
                 @font-face {
                     font-family: 'Innovator Grotesk';
                     src: url('https://fonts.vancura.dev/InnovatorGrotesk-SemiBold.woff2') format('woff2');
@@ -175,6 +105,7 @@ NOTE: Font loading strategy:
                     font-style: normal;
                     font-display: swap;
                 }
+
                 @font-face {
                     font-family: 'Innovator Grotesk';
                     src: url('https://fonts.vancura.dev/InnovatorGrotesk-Bold.woff2') format('woff2');
@@ -182,6 +113,7 @@ NOTE: Font loading strategy:
                     font-style: normal;
                     font-display: swap;
                 }
+
                 @font-face {
                     font-family: 'Innovator Grotesk';
                     src: url('https://fonts.vancura.dev/InnovatorGrotesk-Black.woff2') format('woff2');
@@ -194,7 +126,6 @@ NOTE: Font loading strategy:
     )
 }
 
-<!-- Departure Mono font (local, available in dev and prod) -->
 <style
     is:inline
     nonce={nonce}
@@ -209,11 +140,9 @@ NOTE: Font loading strategy:
     `}
 ></style>
 
-<!-- Analytics preconnect -->
 <link rel="preconnect" href="https://plausible.io" />
 <link rel="dns-prefetch" href="https://plausible.io" />
 
-<!-- Core meta -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="canonical" href={canonical} />
@@ -222,7 +151,6 @@ NOTE: Font loading strategy:
 
 <title>{title}</title>
 
-<!-- SEO meta -->
 <meta name="title" content={title} />
 <meta name="description" content={description} />
 <meta name="generator" content={Astro.generator} />
@@ -230,7 +158,6 @@ NOTE: Font loading strategy:
 <meta name="author" content={SITE.AUTHOR} />
 <meta name="language" content={locale === 'cs' ? 'cs-CZ' : 'en-US'} />
 
-<!-- OpenGraph -->
 <meta property="og:type" content="website" />
 <meta property="og:url" content={permalink} />
 <meta property="og:title" content={title} />
@@ -241,20 +168,17 @@ NOTE: Font loading strategy:
 <meta property="og:image:height" content="630" />
 <meta property="og:locale" content={locale === 'cs' ? 'cs_CZ' : 'en_US'} />
 
-<!-- X Card -->
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:url" content={permalink} />
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={ogImage || SITE.DEFAULT_OG_IMAGE} />
 
-<!-- Favicons with dark mode support -->
 <link href="/favicon.png" rel="icon" media="(prefers-color-scheme: light)" />
 <link href="/favicon-dark.png" rel="icon" media="(prefers-color-scheme: dark)" />
 <meta name="mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-title" content={SITE.NAME} />
 
-<!-- Structured Data -->
 <script
     is:inline
     type="application/ld+json"
@@ -281,5 +205,4 @@ NOTE: Font loading strategy:
     })}
 />
 
-<!-- Plausible Analytics -->
 {import.meta.env.PROD && <script defer data-domain={currentDomain} src="https://plausible.io/js/script.js" />}

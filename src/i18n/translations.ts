@@ -1,22 +1,6 @@
-/**
- * Translations Module
- *
- * Provides translation strings for all user-facing text in the application.
- *
- * Supports English and Czech locales with a type-safe translation interface.
- *
- * Translation keys are organized by feature area (nav, buttons, footer, etc.)
- * for better maintainability and discoverability.
- */
 /* cSpell:disable */
 import type { Locale } from '@type/locale';
 
-/**
- * Interface defining the structure of translation objects.
- *
- * All translation objects must conform to this structure to ensure
- * type safety and consistent translation coverage across locales.
- */
 export interface Translations {
     a11y: {
         skipNavigationLink: string;
@@ -26,6 +10,7 @@ export interface Translations {
         home: string;
         about: string;
         blog: string;
+        rss: string;
     };
 
     buttons: {
@@ -40,6 +25,7 @@ export interface Translations {
         allRightsReserved: string;
         description: string;
         navigation: string;
+        followAmbilab: string;
     };
 
     newsletter: {
@@ -92,13 +78,6 @@ export interface Translations {
     };
 }
 
-/**
- * Translation strings for all supported locales.
- *
- * Contains complete translations for English and Czech.
- *
- * Each locale must provide all keys defined in the Translations interface.
- */
 export const translations: Record<Locale, Translations> = {
     en: {
         a11y: {
@@ -109,6 +88,7 @@ export const translations: Record<Locale, Translations> = {
             home: 'Home',
             about: 'About',
             blog: 'Blog',
+            rss: 'RSS Feed',
         },
 
         buttons: {
@@ -123,6 +103,7 @@ export const translations: Record<Locale, Translations> = {
             allRightsReserved: 'All rights reserved',
             description: 'A web-based pixel art game engine and editor for kids to learn programming.',
             navigation: 'Navigation',
+            followAmbilab: 'Follow Ambilab',
         },
 
         newsletter: {
@@ -183,6 +164,7 @@ export const translations: Record<Locale, Translations> = {
             home: 'Domů',
             about: 'O projektu',
             blog: 'Blog',
+            rss: 'RSS kanál',
         },
 
         buttons: {
@@ -197,6 +179,7 @@ export const translations: Record<Locale, Translations> = {
             allRightsReserved: 'Všechna práva vyhrazena',
             description: 'Webová pixel art herní engine a editor pro děti, aby se učily programovat.',
             navigation: 'Navigace',
+            followAmbilab: 'Sledujte Ambilab',
         },
 
         newsletter: {
@@ -250,15 +233,6 @@ export const translations: Record<Locale, Translations> = {
     },
 };
 
-/**
- * Retrieves translation strings for a given locale.
- *
- * Returns the translations for the specified locale,
- * falling back to English if the locale is not found or invalid.
- *
- * @param locale - The locale code to retrieve translations for
- * @returns The translation object for the specified locale
- */
 export const getTranslation = (locale: Locale): Translations => {
     return translations[locale] || translations.en;
 };

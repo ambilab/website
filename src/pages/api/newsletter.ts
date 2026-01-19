@@ -1,40 +1,14 @@
-/**
- * Newsletter API Route
- *
- * Handles newsletter subscription requests via Buttondown API.
- *
- * Validates email addresses and provides error handling
- * with appropriate HTTP status codes.
- */
 import { createLogger } from '@utils/logger';
 import type { APIRoute } from 'astro';
 
 const logger = createLogger({ prefix: 'Newsletter API' });
 
-/**
- * Creates a JSON response with the specified data and status code.
- *
- * @param data - The response data to serialize as JSON
- * @param status - The HTTP status code for the response
- * @returns A Response object with JSON content type and the specified status code
- */
 const jsonResponse = (data: unknown, status: number) =>
     Response.json(data, {
         status,
         headers: { 'Cache-Control': 'no-store' },
     });
 
-/**
- * POST handler for newsletter subscriptions.
- *
- * Validates the email address and submits it to Buttondown API.
- *
- * Returns appropriate error responses for validation failures or API errors.
- *
- * @param context - Astro API context containing the request
- * @param context.request - The incoming HTTP request object
- * @returns JSON response with success/error status
- */
 export const POST: APIRoute = async ({ request }) => {
     try {
         const body = await request.json();
@@ -44,8 +18,8 @@ export const POST: APIRoute = async ({ request }) => {
             return jsonResponse({ error: 'Email is required' }, 400);
         }
 
-        // Email validation
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
         if (!emailRegex.test(email)) {
             return jsonResponse({ error: 'Invalid email format' }, 400);
         }
@@ -57,7 +31,6 @@ export const POST: APIRoute = async ({ request }) => {
             return jsonResponse({ error: 'Newsletter service is not configured' }, 500);
         }
 
-        // Subscribe to Buttondown
         const response = await fetch('https://api.buttondown.email/v1/subscribers', {
             method: 'POST',
             headers: {
@@ -73,7 +46,6 @@ export const POST: APIRoute = async ({ request }) => {
             // Log only the status code to avoid exposing sensitive information
             logger.error(`Buttondown API error: Status ${response.status}`);
 
-            // Optionally extract a safe error message if available
             try {
                 const errorText = await response.text();
                 try {

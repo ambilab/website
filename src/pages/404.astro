@@ -1,18 +1,9 @@
 ---
-/**
- * 404 Not Found Error Page
- *
- * Displays a user-friendly 404 error page when content is not found.
- *
- * Uses locale-aware translations and provides a link back to the home page.
- */
 import ErrorPage from '@components/astro/ErrorPage.astro';
 import { DEFAULT_LOCALE } from '@i18n/config';
 import { getTranslation } from '@i18n/translations';
 import { getLocalizedPath } from '@i18n/utils';
 
-// Get the detected locale from middleware (via context.locals)
-// Use DEFAULT_LOCALE as fallback if middleware didn't set it or Astro.locals is undefined
 const detectedLocale = Astro?.locals?.locale ?? DEFAULT_LOCALE;
 const t = getTranslation(detectedLocale);
 

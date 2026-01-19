@@ -1,41 +1,15 @@
-/**
- * Responsive image breakpoints in pixels.
- *
- * Internal constant used by getResponsiveSizes to generate responsive sizes strings.
- * Matches the Tailwind CSS breakpoint system.
- */
 const IMAGE_BREAKPOINTS = {
-    sm: 640, // Mobile
-    md: 768, // Tablet
-    lg: 1024, // Small desktop
-    xl: 1280, // Desktop
-    '2xl': 1536, // Large desktop
+    sm: 640,
+    md: 768,
+    lg: 1024,
+    xl: 1280,
+    '2xl': 1536,
 } as const;
 
-/**
- * Default responsive sizes string for images.
- *
- * Optimized for common viewport widths, scaling from full width
- * on mobile to a maximum of 1200px on large screens.
- *
- * Note: Only uses sm, md, and lg breakpoints. The xl and 2xl
- * breakpoints are available in IMAGE_BREAKPOINTS for custom use.
- */
 const DEFAULT_RESPONSIVE_SIZES = `(max-width: ${IMAGE_BREAKPOINTS.sm}px) 100vw, (max-width: ${IMAGE_BREAKPOINTS.md}px) 90vw, (max-width: ${IMAGE_BREAKPOINTS.lg}px) 80vw, 1200px`;
 
-/**
- * Generates a responsive sizes attribute for images.
- *
- * Returns a default sizes string optimized for common
- * viewport widths if no custom sizes are provided.
- *
- * The default assumes images scale from full width
- * on mobile to a maximum of 1200px on large screens.
- *
- * @param sizes - Optional custom sizes attribute string
- * @returns The sizes attribute value for responsive images
- */
 export const getResponsiveSizes = (sizes?: string): string => {
     const normalized = sizes?.trim();
+
     return normalized ? normalized : DEFAULT_RESPONSIVE_SIZES;
 };

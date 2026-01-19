@@ -1,18 +1,9 @@
 ---
-/**
- * 500 Internal Server Error Page
- *
- * Displays a user-friendly 500 error page when a server error occurs.
- *
- * Uses locale-aware translations and provides a link back to the home page.
- */
 import ErrorPage from '@components/astro/ErrorPage.astro';
 import { DEFAULT_LOCALE } from '@i18n/config';
 import { getTranslation } from '@i18n/translations';
 import { getLocalizedPath } from '@i18n/utils';
 
-// Get the detected locale from middleware (via context.locals)
-// Use DEFAULT_LOCALE as fallback if middleware didn't set it
 const detectedLocale = Astro.locals.locale ?? DEFAULT_LOCALE;
 const t = getTranslation(detectedLocale);
 
