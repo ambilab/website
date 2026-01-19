@@ -88,7 +88,7 @@
         `allow-scripts allow-same-origin allow-forms${allowTopNavigation ? ' allow-top-navigation-by-user-activation' : ''}`,
     );
 
-    // Validate aspect ratio to avoid CSS injection.
+    // Validate the aspect ratio to avoid CSS injection.
     const safeAspectRatio = $derived.by(() => {
         const normalized = aspectRatio?.trim() ?? '16/9';
         const isValid = /^\d+(\.\d+)?\/\d+(\.\d+)?$/.test(normalized);

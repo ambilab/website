@@ -7,13 +7,14 @@ export default {
     theme: {
         extend: {
             colors: {
-                // Page backgrounds
                 'page-bg': 'var(--color-page-bg)',
                 'page-bg-dark': 'var(--color-page-bg-dark)',
                 'page-bg-muted': 'var(--color-page-bg-muted)',
                 'page-bg-muted-dark': 'var(--color-page-bg-muted-dark)',
 
-                // Surface colors
+                'menu-dimmer-bg': 'var(--color-menu-dimmer-bg)',
+                'menu-dimmer-bg-dark': 'var(--color-menu-dimmer-bg-dark)',
+
                 surface: 'var(--color-surface)',
                 'surface-dark': 'var(--color-surface-dark)',
                 'surface-hover': 'var(--color-surface-hover)',
@@ -21,7 +22,6 @@ export default {
                 'surface-code': 'var(--color-surface-code)',
                 'surface-code-dark': 'var(--color-surface-code-dark)',
 
-                // Border colors
                 'border-default': 'var(--color-border-default)',
                 'border-default-dark': 'var(--color-border-default-dark)',
                 'border-medium': 'var(--color-border-medium)',
@@ -29,7 +29,6 @@ export default {
                 'border-subtle': 'var(--color-border-subtle)',
                 'border-subtle-dark': 'var(--color-border-subtle-dark)',
 
-                // Text colors
                 'text-primary': 'var(--color-text-primary)',
                 'text-primary-dark': 'var(--color-text-primary-dark)',
                 'text-secondary': 'var(--color-text-secondary)',
@@ -37,7 +36,6 @@ export default {
                 'text-muted': 'var(--color-text-muted)',
                 'text-muted-dark': 'var(--color-text-muted-dark)',
 
-                // Link colors
                 link: 'var(--color-link)',
                 'link-hover': 'var(--color-link-hover)',
                 'link-dark': 'var(--color-link-dark)',
@@ -45,7 +43,6 @@ export default {
                 'link-active': 'var(--color-link-active)',
                 'link-active-dark': 'var(--color-link-active-dark)',
 
-                // Button colors
                 'button-primary': 'var(--color-button-primary)',
                 'button-primary-hover': 'var(--color-button-primary-hover)',
                 'button-primary-text': 'var(--color-button-primary-text)',
@@ -53,7 +50,6 @@ export default {
                 'button-primary-hover-dark': 'var(--color-button-primary-hover-dark)',
                 'button-primary-text-dark': 'var(--color-button-primary-text-dark)',
 
-                // Accent colors
                 'info-bg': 'var(--color-info-bg)',
                 'info-bg-dark': 'var(--color-info-bg-dark)',
                 'info-border': 'var(--color-info-border)',
@@ -72,13 +68,11 @@ export default {
                 'error-text': 'var(--color-error-text)',
                 'error-text-dark': 'var(--color-error-text-dark)',
 
-                // Tag/Badge colors
                 'tag-bg': 'var(--color-tag-bg)',
                 'tag-bg-dark': 'var(--color-tag-bg-dark)',
                 'tag-text': 'var(--color-tag-text)',
                 'tag-text-dark': 'var(--color-tag-text-dark)',
 
-                // Table colors
                 'table-header-bg': 'var(--color-table-header-bg)',
                 'table-header-bg-dark': 'var(--color-table-header-bg-dark)',
                 'table-header-border': 'var(--color-table-header-border)',
@@ -86,11 +80,9 @@ export default {
                 'table-border': 'var(--color-table-border)',
                 'table-border-dark': 'var(--color-table-border-dark)',
 
-                // Miscellaneous colors
                 anchor: 'var(--color-anchor)',
                 'anchor-dark': 'var(--color-anchor-dark)',
 
-                // Selection colors
                 'selection-bg': 'var(--color-selection-bg)',
                 'selection-text': 'var(--color-selection-text)',
                 'selection-bg-dark': 'var(--color-selection-bg-dark)',

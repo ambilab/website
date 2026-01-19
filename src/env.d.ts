@@ -19,7 +19,7 @@ interface ImportMeta {
 declare global {
     namespace App {
         interface Locals {
-            // Set by middleware; may be missing for prerendered routes.
+            // Set by middleware; may be missing for pre-rendered routes.
             locale: Locale;
 
             // CSP nonce from middleware.

@@ -39,7 +39,7 @@ function showHelp() {
 Usage: pnpm sync-rules [--help]
 
 Syncs AI assistant rules from ai-rules/*.mdc to tool-specific locations.
-Configuration is read from package.json "syncRules" field.
+Configuration is read from the package.json "syncRules" field.
 
 Targets:
 ${targetList}

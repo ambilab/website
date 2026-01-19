@@ -1,22 +1,20 @@
 {
-  // Markdownlint-cli2 configuration
-  // Disables JSON output to prevent permission errors in CI environments
+  // Disables JSON output to prevent permission errors in CI environments.
   "outputFormatters": [],
   "config": {
-    // Extend default rules
     "default": true,
 
-    // Allow HTML in markdown files (needed for MDX)
+    // Allow HTML in markdown files (needed for MDX).
     "MD033": false,
-
-    // Allow inline HTML
     "no-inline-html": false,
 
-    // Allow long lines (for links and code)
+    // Allow long lines (for links and code).
     "MD013": false,
 
     "line-length": false
   },
+
   "globs": ["**/*.md", "**/*.mdx"],
+
   "ignores": ["**/node_modules/**", "**/dist/**", "**/.astro/**", "**/pnpm-lock.yaml"]
 }

@@ -1,6 +1,6 @@
 {
-  // Cloudflare Pages configuration
-  // Note: Actual deployment is handled by GitHub Actions using cloudflare/wrangler-action
+  // Cloudflare Pages configuration.
+  // Note: Actual deployment is handled by GitHub Actions using cloudflare/wrangler-action.
   // The wrangler package is NOT included by default - install only if needed for local testing:
   //   pnpm add -D wrangler
   //   pnpm exec wrangler pages dev dist         # Test edge functions locally

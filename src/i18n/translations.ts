@@ -101,7 +101,7 @@ export const translations: Record<Locale, Translations> = {
         footer: {
             copyright: 'Copyright',
             allRightsReserved: 'All rights reserved',
-            description: 'A web-based pixel art game engine and editor for kids to learn programming.',
+            description: 'A bilingual (English/Czech) marketing website and blog for Ambilab.',
             navigation: 'Navigation',
             followAmbilab: 'Follow Ambilab',
         },
@@ -177,7 +177,7 @@ export const translations: Record<Locale, Translations> = {
         footer: {
             copyright: 'Copyright',
             allRightsReserved: 'Všechna práva vyhrazena',
-            description: 'Webová pixel art herní engine a editor pro děti, aby se učily programovat.',
+            description: 'Webová pixel-art herní engine.',
             navigation: 'Navigace',
             followAmbilab: 'Sledujte Ambilab',
         },

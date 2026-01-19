@@ -1,19 +1,15 @@
-# Dependencies and build
 node_modules/
 dist/
 .astro/
 .wrangler/
 
-# Lock files
 pnpm-lock.yaml
 package-lock.json
 
-# Generated files
 CLAUDE.md
 .rules
 CHANGELOG.md
 
-# Minified files
 *.min.js
 *.min.css
 

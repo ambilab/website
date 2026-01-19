@@ -10,6 +10,8 @@ export const toggleDarkMode = (): void => {
 
         try {
             localStorage.setItem('theme', isDarkNow ? 'dark' : 'light');
-        } catch {}
+        } catch {
+            // Silent fail: localStorage is not available.
+        }
     }
 };

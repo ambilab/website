@@ -8,7 +8,6 @@ import expressiveCode from 'astro-expressive-code';
 import remarkGfm from 'remark-gfm';
 import remarkSmartypants from 'remark-smartypants';
 
-// https://astro.build/config
 export default defineConfig({
     site: 'https://ambilab.com',
     output: 'server',
@@ -23,7 +22,7 @@ export default defineConfig({
     integrations: [
         svelte(),
 
-        // Expressive Code MUST come before mdx()
+        // Expressive Code MUST come before mdx().
         expressiveCode({
             themes: ['github-dark-default', 'github-light-default'],
             themeCssSelector: (theme) => (theme.name === 'github-dark-default' ? '.dark' : ':root:not(.dark)'),
