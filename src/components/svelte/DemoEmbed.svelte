@@ -91,7 +91,31 @@
     // Validate aspect ratio to avoid CSS injection.
     const safeAspectRatio = $derived.by(() => {
         const normalized = aspectRatio?.trim() ?? '16/9';
-        const isValid = /^\d+(\.\d+)?\/\d+(\.\d+)?$/.test(normalized);
+        const parts = normalized.split('/');
+
+        // Must have exactly two parts separated by '/'.
+        if (parts.length !== 2) {
+            return '16/9';
+        }
+
+        // Each part must be a valid positive number (integer or decimal).
+        const isValid = parts.every((part) => {
+            if (part.length === 0) {
+                return false;
+            }
+
+            const num = Number(part);
+
+            if (Number.isNaN(num) || num <= 0) {
+                return false;
+            }
+
+            // Ensure only digits and at most one decimal point.
+            const hasValidChars = [...part].every((char) => (char >= '0' && char <= '9') || char === '.');
+            const decimalCount = part.split('.').length - 1;
+
+            return hasValidChars && decimalCount <= 1;
+        });
 
         return isValid ? normalized : '16/9';
     });
