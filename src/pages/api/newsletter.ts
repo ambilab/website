@@ -3,65 +3,108 @@ import type { APIRoute } from 'astro';
 
 const logger = createLogger({ prefix: 'Newsletter API' });
 
+interface ValidationResult {
+    valid: boolean;
+    error?: string;
+}
+
+interface SubscriptionResult {
+    success: boolean;
+    error?: string;
+    status: number;
+}
+
 const jsonResponse = (data: unknown, status: number) =>
     Response.json(data, {
         status,
         headers: { 'Cache-Control': 'no-store' },
     });
 
+function validateEmail(email: unknown): ValidationResult {
+    if (!email || typeof email !== 'string') {
+        return { valid: false, error: 'Email is required' };
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(email)) {
+        return { valid: false, error: 'Invalid email format' };
+    }
+
+    return { valid: true };
+}
+
+function validateApiKey(apiKey: string | undefined): ValidationResult {
+    if (!apiKey) {
+        logger.error("BUTTONDOWN_API_KEY isn't set");
+
+        return { valid: false, error: "Newsletter service isn't configured" };
+    }
+
+    return { valid: true };
+}
+
+async function logButtondownError(response: Response): Promise<void> {
+    logger.error(`Buttondown API error: Status ${response.status}`);
+
+    try {
+        const errorText = await response.text();
+        const errorData = JSON.parse(errorText) as { message?: string; error?: string };
+        const errorMessage = errorData.message || errorData.error;
+
+        if (errorMessage) {
+            logger.error(`Buttondown API error message: ${errorMessage}`);
+        }
+    } catch {
+        // Failed to parse error response, status code already logged.
+    }
+}
+
+async function subscribeToButtondown(email: string, apiKey: string): Promise<SubscriptionResult> {
+    const response = await fetch('https://api.buttondown.email/v1/subscribers', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Token ${apiKey}`,
+        },
+        body: JSON.stringify({ email }),
+    });
+
+    if (!response.ok) {
+        await logButtondownError(response);
+
+        return {
+            success: false,
+            error: 'Failed to subscribe. Please try again later.',
+            status: response.status,
+        };
+    }
+
+    return { success: true, status: 200 };
+}
+
 export const POST: APIRoute = async ({ request }) => {
     try {
         const body = await request.json();
         const { email } = body;
 
-        if (!email || typeof email !== 'string') {
-            return jsonResponse({ error: 'Email is required' }, 400);
-        }
+        const emailValidation = validateEmail(email);
 
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-        if (!emailRegex.test(email)) {
-            return jsonResponse({ error: 'Invalid email format' }, 400);
+        if (!emailValidation.valid) {
+            return jsonResponse({ error: emailValidation.error }, 400);
         }
 
         const buttondownApiKey = import.meta.env.BUTTONDOWN_API_KEY;
+        const apiKeyValidation = validateApiKey(buttondownApiKey);
 
-        if (!buttondownApiKey) {
-            logger.error('BUTTONDOWN_API_KEY is not set');
-            return jsonResponse({ error: 'Newsletter service is not configured' }, 500);
+        if (!apiKeyValidation.valid) {
+            return jsonResponse({ error: apiKeyValidation.error }, 500);
         }
 
-        const response = await fetch('https://api.buttondown.email/v1/subscribers', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Token ${buttondownApiKey}`,
-            },
-            body: JSON.stringify({
-                email,
-            }),
-        });
+        const result = await subscribeToButtondown(email, buttondownApiKey);
 
-        if (!response.ok) {
-            // Log only the status code to avoid exposing sensitive information
-            logger.error(`Buttondown API error: Status ${response.status}`);
-
-            try {
-                const errorText = await response.text();
-                try {
-                    const errorData = JSON.parse(errorText) as { message?: string; error?: string };
-                    // Only log sanitized error identifiers, not the full response
-                    if (errorData.message || errorData.error) {
-                        logger.error(`Buttondown API error message: ${errorData.message || errorData.error}`);
-                    }
-                } catch {
-                    // JSON parsing failed, don't log raw text to avoid exposing sensitive data
-                }
-            } catch {
-                // Failed to read response body, status code already logged above
-            }
-
-            return jsonResponse({ error: 'Failed to subscribe. Please try again later.' }, response.status);
+        if (!result.success) {
+            return jsonResponse({ error: result.error }, result.status);
         }
 
         return jsonResponse({ success: true, message: 'Successfully subscribed!' }, 200);
