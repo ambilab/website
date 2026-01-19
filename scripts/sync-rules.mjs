@@ -94,7 +94,10 @@ function loadConfig() {
 
 function readSourceRules(sourceDir) {
     const rulesDir = join(ROOT_DIR, sourceDir);
+
+    // eslint-disable-next-line security/detect-non-literal-fs-filename
     const files = readdirSync(rulesDir);
+
     const mdcFiles = files.filter((file) => file.endsWith('.mdc'));
 
     if (mdcFiles.length === 0) {
@@ -102,7 +105,9 @@ function readSourceRules(sourceDir) {
     }
 
     return mdcFiles.map((file) => {
+        // eslint-disable-next-line security/detect-non-literal-fs-filename
         const content = readFileSync(join(rulesDir, file), 'utf-8');
+
         const name = file.replace('.mdc', '');
 
         const contentClean = content.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n?/, '');
@@ -112,7 +117,9 @@ function readSourceRules(sourceDir) {
 }
 
 function writeRuleFile(filePath, content, displayPath) {
+    // eslint-disable-next-line security/detect-non-literal-fs-filename
     writeFileSync(filePath, content, 'utf-8');
+
     console.log(`   - ${displayPath}`);
 }
 
