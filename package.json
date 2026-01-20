@@ -2,7 +2,7 @@
   "name": "ambilab-website",
   "version": "1.0.0",
   "type": "module",
-  "description": "Marketing website and blog for Ambilab - a web-based pixel art game engine for kids",
+  "description": "A bilingual (English/Czech) marketing website and blog for Ambilab.",
   "author": "Václav Vančura",
   "repository": {
     "type": "git",
@@ -23,14 +23,14 @@
     }
   },
   "dependencies": {
-    "astro": "^5.16.9"
+    "astro": "^5.16.11"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.6",
     "@astrojs/cloudflare": "^12.6.12",
     "@astrojs/mdx": "^4.3.13",
-    "@astrojs/rss": "^4.0.14",
-    "@astrojs/sitemap": "^3.6.1",
+    "@astrojs/rss": "^4.0.15",
+    "@astrojs/sitemap": "^3.7.0",
     "@astrojs/svelte": "^7.2.5",
     "@biomejs/biome": "^2.3.11",
     "@commitlint/cli": "^20.3.1",
@@ -38,10 +38,10 @@
     "@lhci/cli": "^0.15.1",
     "@tailwindcss/typography": "^0.5.19",
     "@tailwindcss/vite": "^4.1.18",
-    "@typescript-eslint/eslint-plugin": "^8.52.0",
-    "@typescript-eslint/parser": "^8.52.0",
-    "astro-expressive-code": "^0.41.5",
-    "cspell": "^9.4.0",
+    "@typescript-eslint/eslint-plugin": "^8.53.1",
+    "@typescript-eslint/parser": "^8.53.1",
+    "astro-expressive-code": "^0.41.6",
+    "cspell": "^9.6.0",
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-astro": "^1.5.0",
@@ -50,22 +50,22 @@
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "eslint-plugin-svelte": "^3.14.0",
     "husky": "^9.1.7",
-    "knip": "^5.80.2",
+    "knip": "^5.82.1",
     "lint-staged": "^16.2.7",
-    "prettier": "^3.7.4",
+    "prettier": "^3.8.0",
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-svelte": "^3.4.1",
     "prettier-plugin-tailwindcss": "^0.7.2",
     "remark-gfm": "^4.0.1",
     "remark-smartypants": "^3.0.2",
-    "svelte": "^5.46.4",
+    "svelte": "^5.47.0",
     "tailwindcss": "^4.1.18",
     "tailwindcss-debug-screens": "^3.0.1",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
     "vite": "^6.4.1",
     "wait-on": "^9.0.3",
-    "wrangler": "^4.58.0"
+    "wrangler": "^4.59.2"
   },
   "syncRules": {
     "source": "ai-rules",

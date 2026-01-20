@@ -7,13 +7,11 @@ import security from 'eslint-plugin-security';
 import simpleImportSort from 'eslint-plugin-simple-import-sort';
 import eslintPluginSvelte from 'eslint-plugin-svelte';
 
-// Shared rule overrides for security and promise plugins
+// Shared rule overrides for security and promise plugins.
 const sharedSecurityPromiseRules = {
-    // Security rule overrides
     'security/detect-object-injection': 'off',
     'security/detect-non-literal-regexp': 'warn',
 
-    // Promise rule overrides
     'promise/always-return': 'warn',
     'promise/no-return-wrap': 'error',
     'promise/param-names': 'error',
@@ -22,7 +20,7 @@ const sharedSecurityPromiseRules = {
 };
 
 export default [
-    // Ignore patterns (placed first for clarity)
+    // Ignore patterns (placed first for clarity).
     {
         ignores: [
             'dist/',
@@ -38,7 +36,6 @@ export default [
         ],
     },
 
-    // TypeScript files
     {
         files: ['**/*.ts', '**/*.tsx'],
         languageOptions: {
@@ -63,13 +60,11 @@ export default [
             '@typescript-eslint/no-explicit-any': 'warn',
             '@typescript-eslint/consistent-type-imports': ['error', { prefer: 'type-imports' }],
 
-            // Import sorting
             'simple-import-sort/imports': 'error',
             'simple-import-sort/exports': 'error',
         },
     },
 
-    // JavaScript files
     {
         files: ['**/*.js', '**/*.mjs', '**/*.cjs'],
         plugins: {
@@ -87,7 +82,6 @@ export default [
         },
     },
 
-    // Astro files
     ...eslintPluginAstro.configs.recommended,
     {
         files: ['**/*.astro'],
@@ -105,7 +99,6 @@ export default [
         },
     },
 
-    // Svelte files
     ...eslintPluginSvelte.configs['flat/recommended'],
     {
         files: ['**/*.svelte'],
@@ -132,6 +125,6 @@ export default [
         },
     },
 
-    // Prettier config (must be last)
+    // Prettier config (must be last).
     eslintConfigPrettier,
 ];

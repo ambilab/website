@@ -26,7 +26,7 @@ export function buildCSP(config: CSPConfig): string {
         ? `'self' https://plausible.io 'unsafe-inline'`
         : `'self' https://plausible.io 'nonce-${nonce}'`;
 
-    // unsafe-hashes allows inline style attributes.
+    // unsafe-hashes allow inline style attributes.
     const styleSrc = isDev
         ? `'self' https://fonts.vancura.dev 'unsafe-inline' 'unsafe-hashes'`
         : `'self' https://fonts.vancura.dev 'nonce-${nonce}' 'unsafe-hashes'`;

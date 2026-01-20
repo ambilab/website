@@ -36,7 +36,9 @@ async function waitForServer(url, timeout) {
                 console.log(`Server is ready at ${url}`);
                 return true;
             }
-        } catch {}
+        } catch {
+            // Silent fail: the server is not ready.
+        }
 
         await new Promise((resolve) => setTimeout(resolve, checkInterval));
     }
