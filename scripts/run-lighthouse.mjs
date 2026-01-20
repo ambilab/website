@@ -103,10 +103,9 @@ async function main() {
         await runCommand('pnpm', ['perf:upload']);
 
         console.log('Lighthouse CI completed successfully.');
-        process.exit(0);
     } catch (error) {
         console.error('Lighthouse CI failed:', error.message);
-        process.exit(1);
+        process.exitCode = 1;
     } finally {
         if (serverProcess) {
             console.log('Stopping preview server...');
