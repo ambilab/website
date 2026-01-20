@@ -12,7 +12,6 @@ export interface ScrollResult {
 }
 
 interface ScrollMonitor {
-    cleanup: () => void;
     pollInterval: ReturnType<typeof setInterval>;
     timeoutId: ReturnType<typeof setTimeout>;
 }
