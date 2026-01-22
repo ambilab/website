@@ -127,7 +127,7 @@ export const smoothScrollTo = async ({
             resolveOnce(isNearTarget(target, NEAR_TARGET_THRESHOLD));
         }, FALLBACK_TIMEOUT);
 
-        const monitor: ScrollMonitor = { cleanup: () => {}, pollInterval, timeoutId };
+        const monitor: ScrollMonitor = { pollInterval, timeoutId };
 
         if ('onscrollend' in window) {
             window.addEventListener('scrollend', handleScrollEnd, { once: true });
