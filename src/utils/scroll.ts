@@ -112,10 +112,10 @@ export const smoothScrollTo = async ({
             }
         };
 
-        const handleScrollEnd = () => resolveOnce(true);
+        const handleScrollEnd = () => resolveOnce(isNearTarget(target, NEAR_TARGET_THRESHOLD));
 
         const { monitor: pollInterval } = createScrollMonitor(
-            () => resolveOnce(true),
+            () => resolveOnce(isNearTarget(target, NEAR_TARGET_THRESHOLD)),
             STABILITY_THRESHOLD,
             POLL_INTERVAL,
         );
