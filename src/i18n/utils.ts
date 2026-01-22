@@ -53,8 +53,8 @@ export const calculateReadingTime = (content: string): number => {
     cleaned = cleaned.replace(/<[^>]+>/g, '');
     cleaned = cleaned.replace(/^---\s*[\s\S]*?---\s*/m, '');
     cleaned = cleaned.replace(/`[^`]+`/g, '');
-    cleaned = cleaned.replace(/\[([^\]]+)]\([^)]+\)/g, '$1');
-    cleaned = cleaned.replace(/!\[([^\]]*)]\([^)]+\)/g, '');
+    cleaned = cleaned.replace(/\[(?<text>[^\]]+)]\([^)]+\)/g, '$<text>');
+    cleaned = cleaned.replace(/!\[[^\]]*]\([^)]+\)/g, '');
     cleaned = cleaned.replace(/^#{1,6}\s+/gm, '');
     cleaned = cleaned.replace(/^\s*[-*+]\s+/gm, '');
     cleaned = cleaned.replace(/^\s*\d+\.\s+/gm, '');

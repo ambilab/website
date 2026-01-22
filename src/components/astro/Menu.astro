@@ -18,16 +18,16 @@ const { locale, currentPath, translationPath } = Astro.props as Props;
 const t = getTranslation(locale);
 ---
 
-<header class="sticky top-0 z-[var(--z-header)]">
+<header class="z-(--z-header) sticky top-0">
     <a
         href="#main-content"
-        class="sr-only font-sans text-[12.5px] font-medium uppercase tracking-wider subpixel-antialiased focus:not-sr-only focus:absolute focus:left-2 focus:top-2 focus:z-[var(--z-skip-navigation-link)] focus:bg-page-bg focus:px-2 focus:py-1 focus:text-text-primary focus:outline-none focus:ring-4 focus:ring-blue-600 dark:focus:bg-page-bg-dark dark:focus:text-text-primary-dark dark:focus:ring-blue-400"
+        class="focus:z-(--z-skip-navigation-link) sr-only font-sans text-[12.5px] font-medium uppercase tracking-wider subpixel-antialiased focus:not-sr-only focus:absolute focus:left-2 focus:top-2 focus:bg-page-bg focus:px-2 focus:py-1 focus:text-text-primary focus:outline-none focus:ring-4 focus:ring-blue-600 dark:focus:bg-page-bg-dark dark:focus:text-text-primary-dark dark:focus:ring-blue-400"
     >
         {t.a11y.skipNavigationLink}
     </a>
 
     <div
-        class="relative z-[var(--z-header-bar)] mx-auto border-b border-border-default bg-page-bg px-4 dark:border-border-default-dark dark:bg-page-bg-dark"
+        class="z-(--z-header-bar) relative mx-auto border-b border-border-default bg-page-bg px-4 dark:border-border-default-dark dark:bg-page-bg-dark"
     >
         <div
             class="mx-auto flex h-12 items-center justify-between pb-px font-sans text-[12.5px] uppercase tracking-wider subpixel-antialiased sm:max-w-[608px] md:h-20 md:max-w-[736px] lg:max-w-[896px]"

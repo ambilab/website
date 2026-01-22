@@ -190,7 +190,7 @@
     </button>
 
     <div
-        class="bg-menu-dimmer-bg dark:bg-menu-dimmer-bg-dark motion-safe:duration-333 fixed inset-x-0 bottom-0 top-12 opacity-0 motion-safe:transition-opacity md:hidden"
+        class="motion-safe:duration-333 fixed inset-x-0 bottom-0 top-12 bg-menu-dimmer-bg opacity-0 motion-safe:transition-opacity md:hidden dark:bg-menu-dimmer-bg-dark"
         class:opacity-100={isOpen}
         class:motion-safe:ease-out={isOpen}
         class:motion-safe:ease-in={!isOpen}

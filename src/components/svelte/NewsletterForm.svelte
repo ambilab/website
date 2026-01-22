@@ -51,7 +51,7 @@
             status = 'error';
             message = t.newsletter.error;
 
-            logger.error('Failed to submit newsletter form', error);
+            logger.error('Failed to submit the newsletter form', error);
         }
     };
 </script>

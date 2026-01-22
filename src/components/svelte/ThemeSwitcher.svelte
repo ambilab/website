@@ -33,7 +33,7 @@
 
     $effect(() => {
         if (typeof window === 'undefined') {
-            return;
+            return undefined;
         }
 
         updateTheme();
