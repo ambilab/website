@@ -67,6 +67,7 @@ export function validateEnv(env?: Record<string, unknown>): ValidatedEnv {
         const sourceEnv = env ?? (typeof import.meta !== 'undefined' ? import.meta.env : {});
 
         // Convert Astro's import.meta.env to a plain object for validation
+        // Note: DEV/PROD are booleans in Astro but stored as strings here for schema consistency
         const envObject: Record<string, unknown> = {
             BUTTONDOWN_API_KEY: sourceEnv.BUTTONDOWN_API_KEY,
             NODE_ENV: sourceEnv.NODE_ENV,
@@ -108,17 +109,4 @@ export function getEnv(): ValidatedEnv {
     }
 
     return validatedEnv;
-}
-
-/**
- * Checks if a required environment variable is set.
- *
- * @param key - Environment variable key
- * @returns True if the variable is set and not empty
- */
-export function hasEnv(key: keyof ValidatedEnv): boolean {
-    const env = getEnv();
-    const value = env[key];
-
-    return value !== undefined && value !== null && value !== '';
 }

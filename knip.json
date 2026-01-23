@@ -15,7 +15,8 @@
     "src/components/svelte/ResponsiveImage.svelte",
     "src/lib/images.ts",
     "src/types/content.ts",
-    "src/types/index.ts"
+    "src/types/index.ts",
+    "src/env.d.ts"
   ],
   "ignoreExportsUsedInFile": true,
   "ignoreDependencies": ["tailwindcss-debug-screens"],
