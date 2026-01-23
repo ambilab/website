@@ -4,7 +4,16 @@
  *   pnpm sync-rules --help
  */
 
-import { chmodSync, copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
+import {
+    chmodSync,
+    copyFileSync,
+    existsSync,
+    lstatSync,
+    mkdirSync,
+    readdirSync,
+    readFileSync,
+    writeFileSync,
+} from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -213,6 +222,13 @@ function syncCursorConfig() {
 
         for (const skillDir of skillDirs) {
             const srcSkillPath = join(skillsSrcDir, skillDir);
+
+            // Skip non-directory entries (files directly in skills/).
+            // eslint-disable-next-line security/detect-non-literal-fs-filename
+            if (!lstatSync(srcSkillPath).isDirectory()) {
+                continue;
+            }
+
             const destSkillPath = join(skillsDestDir, skillDir);
 
             // Create skill directory.

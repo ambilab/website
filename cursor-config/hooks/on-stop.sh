@@ -22,7 +22,7 @@ LOOP_COUNT=$(echo "$INPUT" | jq -r '.loop_count // 0')
 MAX_ITERATIONS=3
 
 # Exit early if the agent was aborted or errored, or if we've exceeded max iterations
-if [ "$STATUS" != "completed" ] || [ "$LOOP_COUNT" -ge "$MAX_ITERATIONS" ]; then
+if [ "$STATUS" != "completed" ] || [ "$LOOP_COUNT" -gt "$MAX_ITERATIONS" ]; then
     echo '{}'
     exit 0
 fi
