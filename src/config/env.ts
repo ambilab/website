@@ -96,17 +96,3 @@ export function validateEnv(env?: Record<string, unknown>): ValidatedEnv {
         throw error;
     }
 }
-
-/**
- * Gets validated environment variables.
- * Validates on first access if not already validated.
- *
- * @returns Validated environment variables
- */
-export function getEnv(): ValidatedEnv {
-    if (!validatedEnv) {
-        return validateEnv();
-    }
-
-    return validatedEnv;
-}
