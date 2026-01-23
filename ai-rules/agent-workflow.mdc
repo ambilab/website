@@ -65,7 +65,48 @@ Review current changes against project rules:
 /review
 ```
 
-Checks code against all project conventions and quality standards.
+Checks code against all project conventions and quality standards. Fast feedback during development.
+
+### /deep-review
+
+Comprehensive pre-push review (replaces CodeRabbit):
+
+```cursor
+/deep-review
+```
+
+Runs full preflight, security audit, launches `code-reviewer` subagent for AI analysis, and generates
+a PR-ready summary. Use before pushing to remote.
+
+## Local Code Review Workflow
+
+This project uses local code review instead of cloud-based tools like CodeRabbit. All reviews happen
+before pushing, using Cursor skills and git hooks.
+
+### Recommended Pre-Push Flow
+
+1. **During development**: Use `/review` for quick feedback on conventions
+2. **Before pushing**: Run `/deep-review` for comprehensive analysis
+3. **Push**: The pre-push hook validates everything automatically
+4. **Create PR**: Copy the summary from `/deep-review` to your PR description
+
+### What Replaced CodeRabbit
+
+| CodeRabbit Feature | Local Replacement                        |
+| ------------------ | ---------------------------------------- |
+| Auto PR review     | `/review` or `/deep-review` before push  |
+| Security scanning  | `pnpm audit` + `eslint-plugin-security`  |
+| Code quality       | Biome + ESLint + TypeScript strict       |
+| Best practices     | Project rules + `code-reviewer` subagent |
+| Change summary     | `/deep-review` generates PR summary      |
+
+### Benefits of Local Review
+
+- No rate limits or waiting for cloud services
+- Faster feedback loop (review before push, not after)
+- Works offline
+- No additional cost (uses existing Cursor/Claude subscription)
+- Ready for Codeberg migration (no GitHub Actions dependency)
 
 ## Common Workflows
 
@@ -100,16 +141,34 @@ When the stop hook reports type errors:
 
 ## Quality Commands Reference
 
-| Command           | Purpose                          | When to Use            |
-| ----------------- | -------------------------------- | ---------------------- |
-| `pnpm format`     | Format code (Biome + Prettier)   | Auto-run by hook       |
-| `pnpm typecheck`  | TypeScript + Astro type checking | Auto-run by hook       |
-| `pnpm lint`       | Linting (Biome + ESLint)         | Before committing      |
-| `pnpm lint:fix`   | Auto-fix lint issues             | To fix lint errors     |
-| `pnpm spellcheck` | Check spelling                   | Before committing      |
-| `pnpm preflight`  | ALL checks (comprehensive)       | Before pushing         |
-| `pnpm dev`        | Start dev server                 | During development     |
-| `pnpm build`      | Build for production             | Test production builds |
+| Command              | Purpose                             | When to Use            |
+| -------------------- | ----------------------------------- | ---------------------- |
+| `pnpm format`        | Format code (Biome + Prettier)      | Auto-run by hook       |
+| `pnpm typecheck`     | TypeScript + Astro type checking    | Auto-run by hook       |
+| `pnpm lint`          | Linting (Biome + ESLint)            | Before committing      |
+| `pnpm lint:fix`      | Auto-fix lint issues                | To fix lint errors     |
+| `pnpm spellcheck`    | Check spelling                      | Before committing      |
+| `pnpm preflight`     | ALL checks (comprehensive)          | Before pushing         |
+| `pnpm review:full`   | Preflight + build + security audit  | Manual pre-push check  |
+| `pnpm security:audit`| Check dependency vulnerabilities    | Security review        |
+| `pnpm dev`           | Start dev server                    | During development     |
+| `pnpm build`         | Build for production                | Test production builds |
+
+## Pre-Push Hook
+
+The pre-push hook runs automatically when you `git push` and validates:
+
+1. Format check (`pnpm format:check`)
+2. Lint check (`pnpm lint`)
+3. Spell check (`pnpm spellcheck`)
+4. Type check (`pnpm typecheck`)
+5. Unused exports (`pnpm knip`)
+6. Production build (`pnpm build`)
+7. Security audit (`pnpm audit --audit-level=high`)
+
+If any check fails, the push is blocked. Fix the issues and try again.
+
+To run these checks manually before pushing: `pnpm review:full`
 
 ## Pre-Completion Checklist
 

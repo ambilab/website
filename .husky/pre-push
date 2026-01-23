@@ -3,26 +3,57 @@
 . "$(dirname "$0")/ensure-pnpm.sh"
 
 echo "Running pre-push checks..."
+echo ""
 
-echo "Checking formatting..."
+# Fast checks first
+echo "[1/7] Checking formatting..."
 pnpm format:check || {
     echo ""
-    echo "Formatting issues found. Run 'pnpm format' to fix them."
+    echo "[FAIL] Formatting issues found. Run 'pnpm format' to fix them."
     exit 1
 }
 
-echo "Linting..."
+echo "[2/7] Linting..."
 pnpm lint || {
     echo ""
-    echo "Lint issues found. Run 'pnpm lint:fix' to fix them."
+    echo "[FAIL] Lint issues found. Run 'pnpm lint:fix' to fix them."
     exit 1
 }
 
-echo "Spell checking..."
+echo "[3/7] Spell checking..."
 pnpm spellcheck || {
     echo ""
-    echo "Spelling issues found. Please fix them."
+    echo "[FAIL] Spelling issues found. Please fix them."
     exit 1
 }
 
-echo "Pre-push checks passed!"
+echo "[4/7] Type checking..."
+pnpm typecheck || {
+    echo ""
+    echo "[FAIL] Type errors found. Please fix them before pushing."
+    exit 1
+}
+
+echo "[5/7] Checking for unused exports..."
+pnpm knip || {
+    echo ""
+    echo "[FAIL] Unused exports found. Run 'pnpm knip:fix' or remove unused code."
+    exit 1
+}
+
+echo "[6/7] Building project..."
+pnpm build || {
+    echo ""
+    echo "[FAIL] Build failed. Please fix build errors before pushing."
+    exit 1
+}
+
+echo "[7/7] Security audit..."
+pnpm audit --audit-level=high || {
+    echo ""
+    echo "[FAIL] High/critical security vulnerabilities found. Run 'pnpm audit' to review."
+    exit 1
+}
+
+echo ""
+echo "Pre-push checks passed! Ready to push."

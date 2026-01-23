@@ -19,7 +19,8 @@
   "pnpm": {
     "overrides": {
       "vite-node": "^5.2.0",
-      "esbuild": "^0.25.0"
+      "esbuild": "^0.25.0",
+      "wrangler": "^4.59.2"
     }
   },
   "dependencies": {
@@ -106,6 +107,7 @@
     "clean:all": "node scripts/clean.mjs --all",
     "fix:all": "pnpm format && pnpm lint:fix && pnpm knip:fix",
     "check:quick": "pnpm format:check && pnpm lint",
-    "validate:all": "pnpm preflight && pnpm validate && pnpm security:audit"
+    "validate:all": "pnpm preflight && pnpm validate && pnpm security:audit",
+    "review:full": "pnpm preflight && pnpm build && pnpm security:audit"
   }
 }
