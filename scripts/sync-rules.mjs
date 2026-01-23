@@ -247,6 +247,13 @@ function syncCursorConfig() {
             const skillFiles = readdirSync(srcSkillPath);
             for (const file of skillFiles) {
                 const srcFilePath = join(srcSkillPath, file);
+
+                // Skip directories, only copy files.
+                // eslint-disable-next-line security/detect-non-literal-fs-filename
+                if (!lstatSync(srcFilePath).isFile()) {
+                    continue;
+                }
+
                 const destFilePath = join(destSkillPath, file);
 
                 copyFileSync(srcFilePath, destFilePath);
