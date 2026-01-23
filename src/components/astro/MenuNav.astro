@@ -35,8 +35,8 @@ const navItems = [
 
 const getNavItemClasses = (isActive: boolean): string => {
     return isActive
-        ? 'font-medium bg-text-primary text-white dark:bg-text-primary-dark dark:text-black'
-        : 'font-medium text-text-secondary [&:hover,&:focus]:text-text-primary dark:text-text-secondary-dark dark:[&:hover,&:focus]:text-text-primary-dark';
+        ? 'bg-text-primary text-white dark:bg-text-primary-dark dark:text-black'
+        : 'text-text-secondary [&:hover,&:focus]:text-text-primary dark:text-text-secondary-dark dark:[&:hover,&:focus]:text-text-primary-dark [&:hover,&:focus]:bg-surface-hover dark:[&:hover,&:focus]:bg-surface-hover-dark';
 };
 ---
 
@@ -59,7 +59,7 @@ const getNavItemClasses = (isActive: boolean): string => {
                 <a
                     href={item.href}
                     aria-current={item.isActive ? 'page' : undefined}
-                    class:list={['px-2 py-[2.5px]', getNavItemClasses(item.isActive)]}
+                    class:list={['px-2 pb-[4px] pt-[3.5px]', getNavItemClasses(item.isActive)]}
                 >
                     {item.label}
                 </a>
