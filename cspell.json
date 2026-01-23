@@ -17,7 +17,6 @@
     "blit",
     "buttondown",
     "carnitas",
-    "Čeština",
     "Chilaquiles",
     "Churros",
     "cloudflare",
@@ -30,7 +29,6 @@
     "Enfrijoladas",
     "Entomatadas",
     "Esquites",
-    "flac",
     "Flautas",
     "guajillo",
     "horchata",
@@ -76,13 +74,14 @@
     "tseslint",
     "tsparser",
     "typecheck",
-    "Václav",
     "vancura",
     "Vančura",
     "vaso",
+    "Václav",
     "WCAG",
     "wrangler",
-    "Zhang"
+    "Zhang",
+    "Čeština"
   ],
   "flagWords": ["hte", "teh", "dont", "cant", "wont"],
   "ignorePaths": [
