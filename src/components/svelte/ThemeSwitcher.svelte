@@ -64,7 +64,7 @@
 
 <button
     onclick={handleThemeToggle}
-    class="[&:hover,&:focus]:text-text-primary dark:[&:hover,&:focus]:text-text-primary-dark -mr-[6px] flex cursor-pointer items-center text-text-secondary dark:text-text-secondary-dark"
+    class="[&:hover,&:focus]:text-text-primary dark:[&:hover,&:focus]:text-text-primary-dark [&:hover,&:focus]:bg-surface-hover dark:[&:hover,&:focus]:bg-surface-hover-dark -mr-[6px] flex cursor-pointer items-center text-text-secondary dark:text-text-secondary-dark"
     class:opacity-0={!mounted}
     class:opacity-100={mounted}
     aria-label="Toggle theme"

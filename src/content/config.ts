@@ -20,6 +20,7 @@ const pagesCollection = defineCollection({
     type: 'content',
     schema: z.object({
         title: z.string(),
+        menuTitle: z.string().optional(),
         description: z.string(),
         locale: z.enum(LOCALES),
         translationSlug: z.string().optional(),

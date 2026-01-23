@@ -2,6 +2,8 @@
 import { getRoute, isRouteActive } from '@config/routes';
 import { getTranslation } from '@i18n/translations';
 import type { Locale } from '@type/locale';
+import type { CollectionEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
 
 export interface Props {
     locale: Locale;
@@ -13,30 +15,42 @@ const { locale, currentPath, mobile } = Astro.props as Props;
 
 const t = getTranslation(locale);
 
+const pages = await getCollection('pages', (entry: CollectionEntry<'pages'>) => entry.data.locale === locale);
+
+const getPageTitle = (slug: string): string | undefined => {
+    const page = pages.find((p: CollectionEntry<'pages'>) => {
+        const entrySlug = p.id.replace(/\.(mdx|md)$/, '').replace(/^[^/]+\//, '');
+
+        return entrySlug === slug;
+    });
+
+    return page?.data.menuTitle ?? page?.data.title;
+};
+
 const navItems = [
     {
         href: getRoute('home', locale),
-        label: t.nav.home,
+        label: getPageTitle('index') ?? t.nav.home,
         isActive: isRouteActive(currentPath, 'home'),
     },
 
     {
         href: getRoute('about', locale),
-        label: t.nav.about,
+        label: getPageTitle(locale === 'en' ? 'about' : 'o-projektu') ?? t.nav.about,
         isActive: isRouteActive(currentPath, 'about'),
     },
 
     {
         href: getRoute('blog', locale),
-        label: t.nav.blog,
+        label: t.blog.title,
         isActive: isRouteActive(currentPath, 'blog'),
     },
 ];
 
 const getNavItemClasses = (isActive: boolean): string => {
     return isActive
-        ? 'font-medium bg-text-primary text-white dark:bg-text-primary-dark dark:text-black'
-        : 'font-medium text-text-secondary [&:hover,&:focus]:text-text-primary dark:text-text-secondary-dark dark:[&:hover,&:focus]:text-text-primary-dark';
+        ? 'bg-text-primary text-white dark:bg-text-primary-dark dark:text-black'
+        : 'text-text-secondary [&:hover,&:focus]:text-text-primary dark:text-text-secondary-dark dark:[&:hover,&:focus]:text-text-primary-dark [&:hover,&:focus]:bg-surface-hover dark:[&:hover,&:focus]:bg-surface-hover-dark';
 };
 ---
 
@@ -54,12 +68,12 @@ const getNavItemClasses = (isActive: boolean): string => {
             ))}
         </div>
     ) : (
-        <div class="flex items-center gap-2">
+        <div class="flex items-center">
             {navItems.map((item) => (
                 <a
                     href={item.href}
                     aria-current={item.isActive ? 'page' : undefined}
-                    class:list={['px-2 py-[2.5px]', getNavItemClasses(item.isActive)]}
+                    class:list={['px-2 pb-[4px] pt-[3.5px]', getNavItemClasses(item.isActive)]}
                 >
                     {item.label}
                 </a>
