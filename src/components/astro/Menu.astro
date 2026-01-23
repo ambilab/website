@@ -61,12 +61,12 @@ const t = getTranslation(locale);
 
             <div class="md:hidden">
                 <MobileMenu client:load>
-                    <div class="flex flex-col px-4">
-                        <div class="py-4">
+                    <div class="flex flex-col items-center justify-start px-4">
+                        <div class="w-full py-4 text-left sm:max-w-[608px]">
                             <MenuNav locale={locale} currentPath={currentPath} mobile={true} />
                         </div>
 
-                        <div class="flex items-center justify-end pb-4 pr-2">
+                        <div class="flex w-full items-end justify-end pb-4 pr-2 sm:max-w-[608px]">
                             <LocaleSwitcher client:load currentLocale={locale} translationPath={translationPath} />
 
                             <ThemeSwitcher client:load />
