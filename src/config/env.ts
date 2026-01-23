@@ -56,26 +56,32 @@ let validatedEnv: ValidatedEnv | null = null;
  * @returns Validated environment variables
  * @throws Error if validation fails
  */
-export function validateEnv(env: Record<string, unknown> = import.meta.env as Record<string, unknown>): ValidatedEnv {
+export function validateEnv(env?: Record<string, unknown>): ValidatedEnv {
     if (validatedEnv) {
         return validatedEnv;
     }
 
     try {
+        // Use provided env or import.meta.env
+
+        const sourceEnv = env ?? (typeof import.meta !== 'undefined' ? import.meta.env : {});
+
         // Convert Astro's import.meta.env to a plain object for validation
         const envObject: Record<string, unknown> = {
-            BUTTONDOWN_API_KEY: env.BUTTONDOWN_API_KEY,
-            NODE_ENV: env.NODE_ENV,
-            DEV: env.DEV ? 'true' : undefined,
-            PROD: env.PROD ? 'true' : undefined,
+            BUTTONDOWN_API_KEY: sourceEnv.BUTTONDOWN_API_KEY,
+            NODE_ENV: sourceEnv.NODE_ENV,
+            DEV: sourceEnv.DEV ? 'true' : undefined,
+            PROD: sourceEnv.PROD ? 'true' : undefined,
         };
 
         validatedEnv = envSchema.parse(envObject);
         logger.info('Environment variables validated successfully');
         return validatedEnv;
-    } catch (error) {
+    } catch (error: unknown) {
         if (error instanceof z.ZodError) {
-            const missingVars = error.errors.map((err) => `${err.path.join('.')}: ${err.message}`).join('\n');
+            const missingVars = error.errors
+                .map((err: z.ZodIssue) => `${err.path.join('.')}: ${err.message}`)
+                .join('\n');
 
             logger.error('Environment variable validation failed', {
                 errors: error.errors,

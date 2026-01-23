@@ -15,6 +15,9 @@ importers:
       astro:
         specifier: ^5.16.11
         version: 5.16.11(@types/node@25.0.9)(jiti@2.6.1)(lightningcss@1.30.2)(rollup@4.54.0)(tsx@4.21.0)(typescript@5.9.3)(yaml@2.8.2)
+      zod:
+        specifier: ^3.24.1
+        version: 3.25.76
     devDependencies:
       '@astrojs/check':
         specifier: ^0.9.6
@@ -136,9 +139,6 @@ importers:
       wrangler:
         specifier: ^4.59.2
         version: 4.59.3(@cloudflare/workers-types@4.20260101.0)
-      zod:
-        specifier: ^3.24.1
-        version: 3.25.76
 
 packages:
 

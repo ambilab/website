@@ -23,7 +23,8 @@
     }
   },
   "dependencies": {
-    "astro": "^5.16.11"
+    "astro": "^5.16.11",
+    "zod": "^3.24.1"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.6",
@@ -65,8 +66,7 @@
     "typescript": "^5.9.3",
     "vite": "^6.4.1",
     "wait-on": "^9.0.3",
-    "wrangler": "^4.59.2",
-    "zod": "^3.24.1"
+    "wrangler": "^4.59.2"
   },
   "syncRules": {
     "source": "ai-rules",
@@ -91,7 +91,7 @@
     "format:check": "biome format . && prettier --check \"**/*.{astro,svelte,svg,md,mdx,yaml,yml}\"",
     "format:biome": "biome format --write .",
     "format:prettier": "prettier --write \"**/*.{astro,svelte,svg,md,mdx,yaml,yml}\"",
-    "typecheck": "tsc --noEmit && astro check",
+    "typecheck": "astro check",
     "spellcheck": "cspell \"**/*.{ts,tsx,js,md,mdx,astro,svelte}\" --no-progress",
     "knip": "knip",
     "knip:fix": "knip --fix",

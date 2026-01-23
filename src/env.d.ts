@@ -1,6 +1,6 @@
 /// <reference types="astro/client" />
 
-import type { Locale } from '@type/locale';
+import '@type/astro';
 
 declare module '*?raw' {
     const content: string;
@@ -14,16 +14,4 @@ interface ImportMetaEnv {
 // biome-ignore lint/correctness/noUnusedVariables: Required by Astro for type augmentation
 interface ImportMeta {
     readonly env: ImportMetaEnv;
-}
-
-declare global {
-    namespace App {
-        interface Locals {
-            // Set by middleware; always present for server-rendered routes.
-            locale: Locale;
-
-            // CSP nonce from middleware; always present for security headers.
-            nonce: string;
-        }
-    }
 }

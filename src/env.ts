@@ -62,9 +62,9 @@ export function getEnv(): Env {
  * Useful for optional features.
  */
 export function hasEnvVar(key: keyof Env): boolean {
-    const env = getEnv();
+    const val = getEnv()[key];
 
-    return env[key] !== undefined && env[key] !== '';
+    return !(val === undefined || val === '' || val === false);
 }
 
 /**
