@@ -1,10 +1,20 @@
 {
-  "*.{ts,tsx}": ["biome check --write", "eslint --fix", "cspell --no-progress"],
-  "*.{js,cjs,mjs}": ["biome check --write", "eslint --fix"],
-  "*.{json,jsonc}": ["biome format --write"],
-  "*.css": ["prettier --write"],
-  "*.astro": ["prettier --write", "eslint --fix"],
-  "*.svelte": ["eslint --fix"],
-  "*.{md,mdx}": ["prettier --write", "cspell --no-progress"],
-  "*.{yaml,yml}": ["prettier --write"]
+  "*.{ts,tsx}": [
+    "biome check --write --no-errors-on-unmatched",
+    "biome format --write --no-errors-on-unmatched",
+    "eslint --fix --max-warnings 0",
+    "cspell --no-progress --no-must-find-files"
+  ],
+  "*.{js,cjs,mjs}": [
+    "biome check --write --no-errors-on-unmatched",
+    "biome format --write --no-errors-on-unmatched",
+    "eslint --fix --max-warnings 0"
+  ],
+  "*.{json,jsonc}": ["biome format --write --no-errors-on-unmatched"],
+  "*.css": ["biome format --write --no-errors-on-unmatched"],
+  "*.astro": ["prettier --write", "eslint --fix --max-warnings 0"],
+  "*.svelte": ["prettier --write", "eslint --fix --max-warnings 0"],
+  "*.{md,mdx,mdc}": ["prettier --write", "cspell --no-progress --no-must-find-files"],
+  "*.{yaml,yml}": ["prettier --write"],
+  "*.svg": ["prettier --write"]
 }

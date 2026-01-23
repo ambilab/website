@@ -65,7 +65,8 @@
     "typescript": "^5.9.3",
     "vite": "^6.4.1",
     "wait-on": "^9.0.3",
-    "wrangler": "^4.59.2"
+    "wrangler": "^4.59.2",
+    "zod": "^3.24.1"
   },
   "syncRules": {
     "source": "ai-rules",
@@ -81,6 +82,9 @@
     "build": "astro build",
     "preview": "wrangler pages dev dist --port=4321",
     "check": "astro check",
+    "d": "pnpm dev",
+    "b": "pnpm build",
+    "t": "pnpm typecheck",
     "lint": "biome lint . && eslint .",
     "lint:fix": "biome lint --write . && eslint . --fix",
     "format": "biome format --write . && eslint . --fix && prettier --write \"**/*.{astro,svelte,svg,md,mdx,yaml,yml}\"",
@@ -95,7 +99,9 @@
     "sync-rules": "node scripts/sync-rules.mjs",
     "prepare": "husky",
     "validate:security": "tsx src/scripts/validate-security-headers.ts",
-    "validate": "pnpm validate:security",
+    "validate:env": "tsx src/scripts/validate-env.ts",
+    "validate:content": "node scripts/validate-content.mjs",
+    "validate": "pnpm validate:security && pnpm validate:env && pnpm validate:content",
     "security:audit": "pnpm audit --audit-level=moderate",
     "security:audit:fix": "pnpm audit --fix",
     "perf": "node scripts/run-lighthouse.mjs",

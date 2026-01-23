@@ -19,11 +19,11 @@ interface ImportMeta {
 declare global {
     namespace App {
         interface Locals {
-            // Set by middleware; may be missing for pre-rendered routes.
+            // Set by middleware; always present for server-rendered routes.
             locale: Locale;
 
-            // CSP nonce from middleware.
-            nonce?: string;
+            // CSP nonce from middleware; always present for security headers.
+            nonce: string;
         }
     }
 }
