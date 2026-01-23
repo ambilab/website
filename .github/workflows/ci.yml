@@ -15,9 +15,38 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  changes:
+    name: Detect Changes
+    runs-on: ubuntu-latest
+    outputs:
+      code: ${{ steps.filter.outputs.code }}
+      docs: ${{ steps.filter.outputs.docs }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Check for file changes
+        uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            code:
+              - 'src/**'
+              - 'public/**'
+              - 'package.json'
+              - 'pnpm-lock.yaml'
+              - 'tsconfig.json'
+              - '*.config.{ts,js,cjs,mjs}'
+              - '.github/workflows/**'
+            docs:
+              - '**/*.md'
+              - 'docs/**'
+
   quality-checks:
     name: Code Quality Checks
     runs-on: ubuntu-latest
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
 
     steps:
       - name: Checkout code
@@ -34,8 +63,32 @@ jobs:
           node-version: '20'
           cache: 'pnpm'
 
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: Cache TypeScript and Astro
+        uses: actions/cache@v4
+        with:
+          path: |
+            .astro
+            node_modules/.cache
+          key: ${{ runner.os }}-astro-${{ hashFiles('src/**/*.{ts,tsx,astro,svelte}') }}
+          restore-keys: |
+            ${{ runner.os }}-astro-
 
       - name: Run format check
         run: pnpm format:check
@@ -46,6 +99,18 @@ jobs:
       - name: Run type check
         run: pnpm typecheck
 
+      - name: Run tests
+        run: pnpm test:run
+
+      - name: Upload coverage reports
+        uses: codecov/codecov-action@v4
+        if: always()
+        with:
+          files: ./coverage/coverage-final.json
+          flags: unittests
+          name: codecov-umbrella
+        continue-on-error: true
+
       - name: Run spell check
         run: pnpm spellcheck
 
@@ -55,7 +120,8 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
-    needs: quality-checks
+    needs: [changes, quality-checks]
+    if: needs.changes.outputs.code == 'true'
 
     steps:
       - name: Checkout code
@@ -71,6 +137,20 @@ jobs:
         with:
           node-version: '20'
           cache: 'pnpm'
+
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -89,3 +169,4 @@ jobs:
           name: dist
           path: dist/
           retention-days: 7
+          compression-level: 9
