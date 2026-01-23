@@ -198,6 +198,7 @@
         class:pointer-events-none={!isOpen}
         onclick={closeMenu}
         aria-hidden={!isOpen}
+        inert={!isOpen}
     ></div>
 
     <div
@@ -206,6 +207,7 @@
         class={menuPanelClass}
         onclick={handleMenuClick}
         aria-hidden={!isOpen}
+        inert={!isOpen}
     >
         <nav class="">
             {#if children}
