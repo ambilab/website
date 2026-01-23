@@ -4,7 +4,7 @@
  *   pnpm sync-rules --help
  */
 
-import { mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { chmodSync, copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -39,10 +39,16 @@ function showHelp() {
 Usage: pnpm sync-rules [--help]
 
 Syncs AI assistant rules from ai-rules/*.mdc to tool-specific locations.
+Syncs Cursor hooks and skills from cursor-config/ to .cursor/.
 Configuration is read from the package.json "syncRules" field.
 
-Targets:
+Rule Targets:
 ${targetList}
+
+Cursor Config (always synced when cursor target is enabled):
+  - cursor-config/hooks.json -> .cursor/hooks.json
+  - cursor-config/hooks/*    -> .cursor/hooks/
+  - cursor-config/skills/*   -> .cursor/skills/
 
 Configuration example in package.json:
   "syncRules": {
@@ -141,6 +147,90 @@ function generateCursor(rules) {
 
     for (const rule of rules) {
         writeRuleFile(join(dir, rule.filename), rule.content, `.cursor/rules/${rule.filename}`);
+    }
+
+    // Also sync cursor-config (hooks and skills).
+    syncCursorConfig();
+}
+
+/**
+ * Syncs cursor-config/ to .cursor/ (hooks.json, hooks/, skills/).
+ */
+function syncCursorConfig() {
+    const cursorConfigDir = join(ROOT_DIR, 'cursor-config');
+    const cursorDir = join(ROOT_DIR, '.cursor');
+
+    // Check if cursor-config directory exists.
+    if (!existsSync(cursorConfigDir)) {
+        console.log('   (No cursor-config/ directory found, skipping hooks/skills sync)');
+        return;
+    }
+
+    console.log('   Syncing cursor-config/...');
+
+    // Sync hooks.json.
+    const hooksJsonSrc = join(cursorConfigDir, 'hooks.json');
+    if (existsSync(hooksJsonSrc)) {
+        const hooksJsonDest = join(cursorDir, 'hooks.json');
+
+        copyFileSync(hooksJsonSrc, hooksJsonDest);
+        console.log('   - .cursor/hooks.json');
+    }
+
+    // Sync hooks/ directory.
+    const hooksSrcDir = join(cursorConfigDir, 'hooks');
+    if (existsSync(hooksSrcDir)) {
+        const hooksDestDir = join(cursorDir, 'hooks');
+
+        mkdirSync(hooksDestDir, { recursive: true });
+
+        const hookFiles = readdirSync(hooksSrcDir);
+        for (const file of hookFiles) {
+            const srcPath = join(hooksSrcDir, file);
+            const destPath = join(hooksDestDir, file);
+
+            copyFileSync(srcPath, destPath);
+
+            // Make shell scripts executable.
+            if (file.endsWith('.sh')) {
+                // eslint-disable-next-line security/detect-non-literal-fs-filename
+                chmodSync(destPath, 0o755);
+            }
+
+            console.log(`   - .cursor/hooks/${file}`);
+        }
+    }
+
+    // Sync skills/ directory (recursively - each skill has its own directory).
+    const skillsSrcDir = join(cursorConfigDir, 'skills');
+
+    if (existsSync(skillsSrcDir)) {
+        const skillsDestDir = join(cursorDir, 'skills');
+
+        mkdirSync(skillsDestDir, { recursive: true });
+
+        const skillDirs = readdirSync(skillsSrcDir);
+
+        for (const skillDir of skillDirs) {
+            const srcSkillPath = join(skillsSrcDir, skillDir);
+            const destSkillPath = join(skillsDestDir, skillDir);
+
+            // Create skill directory.
+            // eslint-disable-next-line security/detect-non-literal-fs-filename
+            mkdirSync(destSkillPath, { recursive: true });
+
+            // Copy all files in the skill directory.
+            // eslint-disable-next-line security/detect-non-literal-fs-filename
+            const skillFiles = readdirSync(srcSkillPath);
+            for (const file of skillFiles) {
+                const srcFilePath = join(srcSkillPath, file);
+                const destFilePath = join(destSkillPath, file);
+
+                copyFileSync(srcFilePath, destFilePath);
+
+                console.log(`   - .cursor/skills/${skillDir}/${file}`);
+            }
+        }
     }
 }
 

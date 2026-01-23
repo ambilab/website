@@ -332,6 +332,34 @@ pnpm preflight        # Run all quality checks
 pnpm sync-rules       # Sync AI rules to editor configs
 ```
 
+## Agent Automation
+
+This project uses Cursor agent hooks and skills for automated quality assurance.
+
+### Automatic Stop Hook
+
+When agents complete tasks, a stop hook automatically:
+
+- Formats code with `pnpm format`
+- Runs `pnpm typecheck` to catch type errors
+- Reports issues and requests fixes (max 3 iterations)
+- Ensures code quality without manual intervention
+
+### Available Skills
+
+- `/format` - Format code and verify
+- `/preflight` - Run all quality checks (format, lint, typecheck, spellcheck, knip)
+- `/pr <description>` - Create PR with automatic commit and quality checks
+- `/review` - Review changes against project rules
+
+See `ai-rules/agent-workflow.mdc` for detailed workflow guidance.
+
+### Configuration
+
+- Hooks: `cursor-config/hooks.json` and `cursor-config/hooks/`
+- Skills: `cursor-config/skills/*/SKILL.md`
+- Sync: Run `pnpm sync-rules` to copy from `cursor-config/` to `.cursor/`
+
 ## Common Mistakes to Avoid
 
 1. **Using emoji** – Never allowed anywhere

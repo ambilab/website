@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "hooks": {
+    "afterFileEdit": [
+      {
+        "command": "pnpm biome format --write ${file}",
+        "description": "Auto-format TypeScript/JavaScript files with Biome",
+        "patterns": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.mjs", "**/*.cjs"]
+      },
+      {
+        "command": "pnpm biome format --write ${file}",
+        "description": "Auto-format JSON files with Biome",
+        "patterns": ["**/*.json", "**/*.jsonc"]
+      },
+      {
+        "command": "pnpm prettier --write ${file}",
+        "description": "Auto-format Astro/Svelte/Markdown files with Prettier",
+        "patterns": ["**/*.astro", "**/*.svelte", "**/*.md", "**/*.mdx"]
+      }
+    ],
+    "stop": [
+      {
+        "command": "./cursor-config/hooks/on-stop.sh",
+        "description": "Run quality checks after agent completion"
+      }
+    ]
+  }
+}

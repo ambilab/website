@@ -29,6 +29,7 @@ CLAUDE.md
 *.iml
 .zed/
 .cursor/
+!cursor-config/
 *.swp
 *.swo
 *~

@@ -1,0 +1,179 @@
+---
+description: Agent workflow and automation guidance
+globs: ['**/*']
+alwaysApply: true
+---
+
+# Agent Workflow and Automation
+
+Practical guidance for AI agents working on the Ambilab website.
+
+## Automatic Quality Checks
+
+A **stop hook** runs automatically after you complete tasks:
+
+1. Runs `pnpm format` to auto-format all code
+2. Runs `pnpm typecheck` to catch type errors
+3. If issues are found, you receive a follow-up message to fix them
+4. Maximum 3 iterations to prevent infinite loops
+5. When checks pass, the conversation ends cleanly
+
+**What this means:**
+
+- Focus on implementing features correctly
+- Don't manually run `pnpm format` after every change (the hook does it)
+- Pay attention to type safety while coding
+- Fix issues promptly when the hook reports them
+
+## Available Skills
+
+### /format
+
+Quick format and verification:
+
+```cursor
+/format
+```
+
+Formats all code and verifies formatting passes. Use during development for quick checks.
+
+### /preflight
+
+Comprehensive pre-commit checks:
+
+```cursor
+/preflight
+```
+
+Runs ALL quality checks: format, lint, typecheck, spellcheck, knip. Use before creating commits or PRs.
+
+### /pr
+
+Create a pull request with automatic workflow:
+
+```cursor
+/pr Add newsletter feature
+```
+
+Runs preflight, creates conventional commit, pushes, and creates PR with `gh` CLI.
+
+### /review
+
+Review current changes against project rules:
+
+```cursor
+/review
+```
+
+Checks code against all project conventions and quality standards.
+
+## Common Workflows
+
+### Making Component Changes
+
+1. Edit component file(s)
+2. Update types if needed
+3. Stop hook auto-formats and type-checks
+4. Fix any reported issues
+5. Use `/pr` to create a pull request
+
+### Adding Blog Posts
+
+1. Create MDX files: `src/content/blog/en/slug.mdx` and `cs/slug.mdx`
+2. Add required frontmatter (title, description, locale, pubDate, translationSlug)
+3. Link translations via `translationSlug` field
+4. Write content
+5. Stop hook handles formatting
+6. Use `/pr` to create a pull request
+
+### Fixing Type Errors
+
+When the stop hook reports type errors:
+
+1. Read the error message (file and line number)
+2. Common fixes:
+   - Add missing type imports: `import type { TypeName } from '@type/path'`
+   - Replace `any` with proper types or `unknown`
+   - Add optional chaining: `object?.property`
+   - Ensure frontmatter fields are complete
+3. The hook will verify your fix
+
+## Quality Commands Reference
+
+| Command           | Purpose                          | When to Use            |
+| ----------------- | -------------------------------- | ---------------------- |
+| `pnpm format`     | Format code (Biome + Prettier)   | Auto-run by hook       |
+| `pnpm typecheck`  | TypeScript + Astro type checking | Auto-run by hook       |
+| `pnpm lint`       | Linting (Biome + ESLint)         | Before committing      |
+| `pnpm lint:fix`   | Auto-fix lint issues             | To fix lint errors     |
+| `pnpm spellcheck` | Check spelling                   | Before committing      |
+| `pnpm preflight`  | ALL checks (comprehensive)       | Before pushing         |
+| `pnpm dev`        | Start dev server                 | During development     |
+| `pnpm build`      | Build for production             | Test production builds |
+
+## Pre-Completion Checklist
+
+Before considering a task complete:
+
+- [ ] Code passes type checking (verified by stop hook)
+- [ ] Code is properly formatted (done by stop hook)
+- [ ] No emoji used anywhere (RULE #1)
+- [ ] Translations added for both en/cs (if applicable)
+- [ ] Semantic design tokens used for colors (not `gray-900`, use `text-text-muted`)
+- [ ] Svelte components have `client:*` directives when imported in Astro
+- [ ] Images have alt text
+- [ ] Animations respect `prefers-reduced-motion`
+
+## Working with the Stop Hook
+
+### Normal Flow
+
+1. You make changes to implement a feature
+2. You signal completion
+3. Stop hook runs automatically (format + typecheck)
+4. If checks pass: Done
+5. If checks fail: You receive follow-up with issues
+6. You fix the issues
+7. Repeat until checks pass (max 3 iterations)
+
+### Hook Limitations
+
+The stop hook only runs:
+
+- `pnpm format` (formatting)
+- `pnpm typecheck` (type checking)
+
+It does NOT run linting, spellcheck, or knip. For comprehensive checks, use `/preflight` skill.
+
+## Best Practices
+
+1. **Trust the automation** - Let the stop hook handle formatting
+2. **Write type-safe code** - Avoid `any`, use proper types
+3. **Never use emoji** - This is RULE #1 with zero exceptions
+4. **Use semantic tokens** - For colors, use `text-text-primary` not `text-blue-600`
+5. **Test locally** - Run `pnpm dev` to verify changes work
+6. **Follow conventions** - Use path aliases, type imports, conventional commits
+7. **Document changes** - Add JSDoc comments for exported functions
+8. **Consider accessibility** - Alt text, reduced motion, semantic HTML
+
+## Troubleshooting
+
+### Hook keeps failing
+
+- Review error messages carefully
+- Fix one issue at a time
+- Use `/format` skill to test fixes
+- If stuck after 3 iterations, report to user
+
+### Type errors persist
+
+- Check imports use `import type` for types
+- Verify Content Collection schemas match frontmatter
+- Look for missing null checks or optional chaining
+- Ensure strict TypeScript settings are followed
+
+## Configuration
+
+- Stop hook: `.cursor/hooks.json` and `.cursor/hooks/on-stop.sh`
+- Skills: `.cursor/skills/*/SKILL.md`
+- Rules sync: `pnpm sync-rules` (from `cursor-config/` to `.cursor/`)
