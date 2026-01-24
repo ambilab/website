@@ -38,16 +38,19 @@
 
 {#if isVisible}
     <div
-        class="z-(--z-cookie-banner) fixed bottom-0 left-0 right-0 border-t border-border-default bg-surface p-4 shadow-lg dark:border-border-default-dark dark:bg-surface-dark"
+        class="z-(--z-cookie-banner) bg-cookie-banner-bg text-cookie-banner-text dark:bg-cookie-banner-bg-dark dark:text-cookie-banner-text-dark fixed bottom-0 left-0 right-0 px-4 pb-3 pt-2 sm:pt-3 md:py-7"
     >
-        <div class="container mx-auto flex flex-col items-center justify-between gap-4 sm:flex-row">
-            <p class="text-sm text-text-secondary dark:text-text-secondary-dark">
+        <div
+            class="container mx-auto flex flex-col items-start justify-between gap-1 sm:max-w-[608px] sm:flex-row sm:items-center md:max-w-[736px] lg:max-w-[896px]"
+        >
+            <p class="text-balance font-mono text-[11px] uppercase leading-4">
                 {t.cookie.message}
             </p>
 
             <button
                 onclick={handleDismiss}
-                class="rounded-lg bg-button-primary px-4 py-2 text-sm font-medium text-button-primary-text hover:bg-button-primary-hover dark:bg-button-primary-dark dark:text-button-primary-text-dark dark:hover:bg-button-primary-hover-dark"
+                class="bg-cookie-banner-button-bg text-cookie-banner-button-text dark:bg-cookie-banner-button-bg-dark dark:text-cookie-banner-button-text-dark flex cursor-pointer items-center px-2 pb-[4px] pt-[3.5px] font-mono text-[11px] uppercase disabled:opacity-50"
+                aria-label="Dismiss the cookie banner"
             >
                 {t.cookie.button}
             </button>
