@@ -22,7 +22,7 @@
     let isOpen = $state(false);
 
     // Keyboard mode is enabled when the menu is open and the user is using the keyboard.
-    let isKeyboardMode = $derived(isOpen && document.activeElement === menuButtonElement);
+    let isKeyboardMode = $state(false);
 
     const baseMenuPanelClasses = [
         'z-(--z-mobile-menu) fixed left-1/2 top-0 w-screen -translate-x-1/2 md:hidden pt-12',
@@ -80,6 +80,14 @@
             }
         }
     }
+
+    $effect(() => {
+        // Updates keyboard mode state when menu opens/closes or menu button element changes.
+        // Keyboard mode is active when the menu is open and the menu button has focus.
+        if (typeof document !== 'undefined' && menuButtonElement) {
+            isKeyboardMode = isOpen && document.activeElement === menuButtonElement;
+        }
+    });
 
     $effect(() => {
         if (isOpen) {
