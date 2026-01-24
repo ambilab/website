@@ -137,13 +137,13 @@ export const translations: Record<Locale, Translations> = {
 
         notFound: {
             title: '404',
-            description: "Oops! The page you're looking for doesn't exist.",
+            description: "The page you're looking for could not be found.",
             goHome: 'Go Home',
         },
 
         serverError: {
             title: '500',
-            description: 'Something went wrong on our end. Please try again later.',
+            description: 'An internal server error occurred. Please try again later.',
             goHome: 'Go Home',
         },
 
@@ -214,20 +214,20 @@ export const translations: Record<Locale, Translations> = {
 
         notFound: {
             title: '404',
-            description: 'Ups! Stránka, kterou hledáte, neexistuje.',
-            goHome: 'Domů',
+            description: 'Stránka, kterou hledáte, nebyla nalezena.',
+            goHome: 'Zpět domů',
         },
 
         serverError: {
             title: '500',
-            description: 'Na naší straně se něco pokazilo. Zkuste to prosím později.',
-            goHome: 'Domů',
+            description: 'Došlo k interní chybě serveru. Zkuste to prosím později.',
+            goHome: 'Zpět domů',
         },
 
         serviceUnavailable: {
             title: '503',
             description: 'Služba je dočasně nedostupná. Zkuste to prosím za chvíli.',
-            goHome: 'Domů',
+            goHome: 'Zpět domů',
         },
 
         rss: {
