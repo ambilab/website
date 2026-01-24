@@ -16,7 +16,7 @@ const currentYear = new Date().getFullYear();
 ---
 
 <footer
-    class="border-t border-border-default bg-page-bg-muted dark:border-border-default-dark dark:bg-page-bg-muted-dark"
+    class="footer-with-banner-spacing border-t border-border-default bg-page-bg-muted dark:border-border-default-dark dark:bg-page-bg-muted-dark"
 >
     <div class="container mx-auto px-4 py-12">
         <div class="grid gap-8 md:grid-cols-3">
@@ -88,3 +88,9 @@ const currentYear = new Date().getFullYear();
         </div>
     </div>
 </footer>
+
+<style>
+    .footer-with-banner-spacing {
+        padding-bottom: var(--cookie-banner-height, 0px);
+    }
+</style>

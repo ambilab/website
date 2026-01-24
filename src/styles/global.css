@@ -53,6 +53,10 @@
     --color-button-primary-hover-dark: theme('colors.lime.400');
     --color-button-primary-text-dark: theme('colors.white');
 
+    /* Semantic Colors - Focus States */
+    --color-focus-ring: #556f29;
+    --color-focus-ring-dark: #668e20;
+
     /* Semantic Colors - Accents */
     --color-info-bg: theme('colors.lime.50');
     --color-info-bg-dark: theme('colors.lime.950');
@@ -168,7 +172,7 @@ body {
 
 /* Focus styles for accessibility */
 *:focus-visible {
-    @apply outline-4 outline-offset-2 outline-link dark:outline-link-dark;
+    @apply outline-focus-ring dark:outline-focus-ring-dark outline-4 outline-offset-2;
 }
 
 /* Smooth scroll behavior (respects prefers-reduced-motion) */
