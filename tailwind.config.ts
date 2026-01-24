@@ -57,6 +57,11 @@ export default {
                 'success-text-dark': 'var(--color-success-text-dark)',
                 'error-text': 'var(--color-error-text)',
                 'error-text-dark': 'var(--color-error-text-dark)',
+
+                'tag-bg': 'var(--color-tag-bg)',
+                'tag-bg-dark': 'var(--color-tag-bg-dark)',
+                'tag-text': 'var(--color-tag-text)',
+                'tag-text-dark': 'var(--color-tag-text-dark)',
             },
         },
     },
