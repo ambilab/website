@@ -17,6 +17,15 @@
     --color-menu-dimmer-bg: color-mix(in srgb, theme('colors.zinc.400') 80%, transparent);
     --color-menu-dimmer-bg-dark: color-mix(in srgb, theme('colors.zinc.700') 80%, transparent);
 
+    --color-cookie-banner-bg: theme('colors.blue.600');
+    --color-cookie-banner-bg-dark: theme('colors.blue.600');
+    --color-cookie-banner-text: theme('colors.white');
+    --color-cookie-banner-text-dark: theme('colors.white');
+    --color-cookie-banner-button-bg: theme('colors.white');
+    --color-cookie-banner-button-bg-dark: theme('colors.white');
+    --color-cookie-banner-button-text: theme('colors.blue.900');
+    --color-cookie-banner-button-text-dark: theme('colors.blue.900');
+
     --color-surface: theme('colors.white');
     --color-surface-dark: theme('colors.zinc.600');
     --color-surface-hover: theme('colors.gray.100');
