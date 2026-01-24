@@ -70,7 +70,7 @@
             placeholder={t.newsletter.emailPlaceholder}
             required
             disabled={status === 'loading'}
-            class="flex-1 rounded-lg border border-border-medium px-4 py-2 focus:border-link focus:outline-none focus:ring-2 focus:ring-link disabled:opacity-50 dark:border-border-medium-dark dark:bg-surface-dark dark:focus:border-link-dark dark:focus:ring-link-dark"
+            class="flex-1 rounded-lg border border-border-medium px-4 py-2 focus:border-focus-ring focus:outline-none focus:ring-2 focus:ring-focus-ring disabled:opacity-50 dark:border-border-medium-dark dark:bg-surface-dark dark:focus:border-focus-ring-dark dark:focus:ring-focus-ring-dark"
         />
 
         <button
