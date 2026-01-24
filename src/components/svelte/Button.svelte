@@ -30,16 +30,6 @@
         'focus:ring-offset-page-bg dark:focus:ring-offset-page-bg-dark ' +
         'focus:ring-focus-ring dark:focus:ring-focus-ring-dark';
 
-    // Helper to build variant classes with consistent pattern
-    function buildVariantClasses(name: string): string {
-        return [
-            `bg-button-${name}-bg dark:bg-button-${name}-bg-dark`,
-            `[&:hover,&:focus]:bg-button-${name}-bg-hover dark:[&:hover,&:focus]:bg-button-${name}-bg-hover-dark`,
-            `text-button-${name}-text dark:text-button-${name}-text-dark`,
-            `[&:hover,&:focus]:text-button-${name}-text-hover dark:[&:hover,&:focus]:text-button-${name}-text-hover-dark`,
-        ].join(' ');
-    }
-
     // Outline border thickness: 1px for sm, 2px for md
     const outlineBorder = $derived(
         size === 'sm'
@@ -58,9 +48,37 @@
     );
 
     const variantClasses = $derived({
-        primary: buildVariantClasses('primary'),
-        secondary: buildVariantClasses('secondary'),
-        outline: `${buildVariantClasses('outline')} ${outlineBorder}`,
+        primary: [
+            'bg-[var(--color-button-primary-bg)]',
+            'dark:bg-[var(--color-button-primary-bg-dark)]',
+            '[&:hover,&:focus]:bg-[var(--color-button-primary-bg-hover)]',
+            'dark:[&:hover,&:focus]:bg-[var(--color-button-primary-bg-hover-dark)]',
+            'text-[var(--color-button-primary-text)]',
+            'dark:text-[var(--color-button-primary-text-dark)]',
+            '[&:hover,&:focus]:text-[var(--color-button-primary-text-hover)]',
+            'dark:[&:hover,&:focus]:text-[var(--color-button-primary-text-hover-dark)]',
+        ].join(' '),
+        secondary: [
+            'bg-[var(--color-button-secondary-bg)]',
+            'dark:bg-[var(--color-button-secondary-bg-dark)]',
+            '[&:hover,&:focus]:bg-[var(--color-button-secondary-bg-hover)]',
+            'dark:[&:hover,&:focus]:bg-[var(--color-button-secondary-bg-hover-dark)]',
+            'text-[var(--color-button-secondary-text)]',
+            'dark:text-[var(--color-button-secondary-text-dark)]',
+            '[&:hover,&:focus]:text-[var(--color-button-secondary-text-hover)]',
+            'dark:[&:hover,&:focus]:text-[var(--color-button-secondary-text-hover-dark)]',
+        ].join(' '),
+        outline: [
+            'bg-[var(--color-button-outline-bg)]',
+            'dark:bg-[var(--color-button-outline-bg-dark)]',
+            '[&:hover,&:focus]:bg-[var(--color-button-outline-bg-hover)]',
+            'dark:[&:hover,&:focus]:bg-[var(--color-button-outline-bg-hover-dark)]',
+            'text-[var(--color-button-outline-text)]',
+            'dark:text-[var(--color-button-outline-text-dark)]',
+            '[&:hover,&:focus]:text-[var(--color-button-outline-text-hover)]',
+            'dark:[&:hover,&:focus]:text-[var(--color-button-outline-text-hover-dark)]',
+            outlineBorder,
+        ].join(' '),
     });
 
     const sizeClasses = {
