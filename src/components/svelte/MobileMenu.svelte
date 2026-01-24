@@ -21,6 +21,9 @@
 
     let isOpen = $state(false);
 
+    // Keyboard mode is enabled when the menu is open and the user is using the keyboard.
+    let isKeyboardMode = $state(false);
+
     const baseMenuPanelClasses = [
         'z-(--z-mobile-menu) fixed left-1/2 top-0 w-screen -translate-x-1/2 md:hidden pt-12',
         'bg-page-bg dark:bg-page-bg-dark',
@@ -36,6 +39,15 @@
 
     let menuButtonElement: HTMLButtonElement | undefined = $state();
     let menuPanelElement: HTMLDivElement | undefined = $state();
+    let menuContainerElement: HTMLDivElement | undefined = $state();
+
+    function getFocusableElements(): HTMLElement[] {
+        if (!menuPanelElement || !menuButtonElement) {
+            return [];
+        }
+
+        return [menuButtonElement, ...Array.from(menuPanelElement.querySelectorAll<HTMLElement>(focusableSelector))];
+    }
 
     function toggleMenu(): void {
         isOpen = !isOpen;
@@ -53,8 +65,34 @@
         }
     }
 
+    function disableKeyboardMode(): void {
+        // Disables keyboard focus mode when mouse interaction is detected.
+        isKeyboardMode = false;
+    }
+
+    function blurActiveIfInside(container: HTMLElement | undefined): void {
+        if (container) {
+            const activeElement = document.activeElement as HTMLElement;
+
+            if (container.contains(activeElement)) {
+                // Blurs the active element if it's within the specified container.
+                activeElement.blur();
+            }
+        }
+    }
+
+    $effect(() => {
+        // Updates keyboard mode state when menu opens/closes or menu button element changes.
+        // Keyboard mode is active when the menu is open and the menu button has focus.
+        if (typeof document !== 'undefined' && menuButtonElement) {
+            isKeyboardMode = isOpen && document.activeElement === menuButtonElement;
+        }
+    });
+
     $effect(() => {
         if (isOpen) {
+            // Prevents body scrolling when menu is open.
+            // Restores original overflow value on cleanup.
             const originalOverflow = document.body.style.overflow;
 
             document.body.style.overflow = 'hidden';
@@ -63,12 +101,11 @@
                 document.body.style.overflow = originalOverflow;
             };
         }
-
-        return () => {};
     });
 
     $effect(() => {
         if (isOpen) {
+            // Closes menu when Escape key is pressed.
             const handleEscape = (event: KeyboardEvent): void => {
                 if (event.key === 'Escape') {
                     closeMenu();
@@ -81,42 +118,24 @@
                 document.removeEventListener('keydown', handleEscape);
             };
         }
-
-        return () => {};
     });
 
     $effect(() => {
         if (isOpen && menuPanelElement) {
-            const focusableElements = menuPanelElement.querySelectorAll<HTMLElement>(focusableSelector);
-
-            if (focusableElements && focusableElements.length > 0 && focusableElements[0]) {
-                focusableElements[0].focus();
-            }
-        } else if (
-            !isOpen &&
-            menuButtonElement &&
-            typeof menuButtonElement.focus === 'function' &&
-            document.activeElement !== menuButtonElement
-        ) {
-            menuButtonElement.focus();
-        }
-    });
-
-    $effect(() => {
-        if (isOpen && menuPanelElement) {
+            // Implements focus trap within the mobile menu.
+            // When Tab is pressed, cycles focus between menu button and panel items.
             const handleFocusTrap = (event: KeyboardEvent): void => {
                 if (event.key !== 'Tab') {
+                    // If the key pressed is not Tab, do nothing.
                     return;
                 }
 
-                const focusableElements = [
-                    ...(menuButtonElement ? [menuButtonElement] : []),
-                    ...(menuPanelElement
-                        ? Array.from(menuPanelElement.querySelectorAll<HTMLElement>(focusableSelector))
-                        : []),
-                ].filter((el): el is HTMLElement => el !== undefined);
+                isKeyboardMode = true;
+
+                const focusableElements = getFocusableElements();
 
                 if (focusableElements.length === 0) {
+                    // If there are no focusable elements, do nothing.
                     return;
                 }
 
@@ -125,13 +144,15 @@
                 const activeElement = document.activeElement as HTMLElement;
 
                 if (event.shiftKey && activeElement === firstElement) {
+                    // If the key pressed is Shift + Tab and the active element is the first element,
+                    // prevent default behavior and focus the last element.
                     event.preventDefault();
-
-                    lastElement?.focus();
+                    lastElement.focus();
                 } else if (!event.shiftKey && activeElement === lastElement) {
+                    // If the key pressed is Tab and the active element is the last element,
+                    // prevent default behavior and focus the first element.
                     event.preventDefault();
-
-                    firstElement?.focus();
+                    firstElement.focus();
                 }
             };
 
@@ -141,11 +162,108 @@
                 document.removeEventListener('keydown', handleFocusTrap);
             };
         }
-
-        return () => {};
     });
 
     $effect(() => {
+        if (isOpen && menuPanelElement) {
+            // Manages focus behavior for mouse interactions with menu panel items.
+            // - On mouseenter: focuses the element (unless in keyboard mode)
+            // - On mousemove: disables keyboard mode to allow hover styles
+            const focusableElements = Array.from(menuPanelElement.querySelectorAll<HTMLElement>(focusableSelector));
+
+            const handleMouseEnter = (element: HTMLElement) => (): void => {
+                if (!isKeyboardMode) {
+                    element.focus();
+                }
+            };
+
+            const handlers = focusableElements.map((element) => {
+                const enterHandler = handleMouseEnter(element);
+
+                element.addEventListener('mouseenter', enterHandler);
+                element.addEventListener('mousemove', disableKeyboardMode);
+
+                return { element, enterHandler };
+            });
+
+            return () => {
+                handlers.forEach(({ element, enterHandler }) => {
+                    element.removeEventListener('mouseenter', enterHandler);
+                    element.removeEventListener('mousemove', disableKeyboardMode);
+                });
+            };
+        }
+    });
+
+    $effect(() => {
+        if (isOpen && menuButtonElement && menuPanelElement) {
+            // Manages focus behavior when hovering over the menu button while menu is open.
+            // - On mouseenter: blurs any focused element inside the panel
+            // - On mouseleave: blurs the button itself if focused
+            const handleButtonEnter = (): void => {
+                disableKeyboardMode();
+                blurActiveIfInside(menuPanelElement);
+            };
+
+            const handleButtonLeave = (): void => {
+                disableKeyboardMode();
+
+                if (document.activeElement === menuButtonElement) {
+                    menuButtonElement.blur();
+                }
+            };
+
+            menuButtonElement.addEventListener('mouseenter', handleButtonEnter);
+            menuButtonElement.addEventListener('mouseleave', handleButtonLeave);
+
+            return () => {
+                menuButtonElement.removeEventListener('mouseenter', handleButtonEnter);
+                menuButtonElement.removeEventListener('mouseleave', handleButtonLeave);
+            };
+        }
+    });
+
+    $effect(() => {
+        if (isOpen && menuPanelElement) {
+            // Blurs focused elements when mouse leaves the menu panel area.
+            const handleMenuLeave = (): void => {
+                disableKeyboardMode();
+
+                const activeElement = document.activeElement as HTMLElement;
+
+                if (menuPanelElement.contains(activeElement) || activeElement === menuButtonElement) {
+                    activeElement.blur();
+                }
+            };
+
+            menuPanelElement.addEventListener('mouseleave', handleMenuLeave);
+
+            return () => {
+                menuPanelElement.removeEventListener('mouseleave', handleMenuLeave);
+            };
+        }
+    });
+
+    $effect(() => {
+        if (!isOpen && menuContainerElement && menuButtonElement) {
+            // Blurs the menu button when mouse leaves the container while menu is closed.
+            const handleContainerLeave = (): void => {
+                if (document.activeElement === menuButtonElement) {
+                    menuButtonElement.blur();
+                }
+            };
+
+            menuContainerElement.addEventListener('mouseleave', handleContainerLeave);
+
+            return () => {
+                menuContainerElement.removeEventListener('mouseleave', handleContainerLeave);
+            };
+        }
+    });
+
+    $effect(() => {
+        // Closes menu when window is resized.
+        // Debounced to avoid excessive calls during resize operations.
         const handleResize = debounce(() => {
             if (isOpen) {
                 closeMenu();
@@ -156,13 +274,12 @@
 
         return () => {
             window.removeEventListener('resize', handleResize);
-
             handleResize.cancel();
         };
     });
 </script>
 
-<div class="-mx-[6px] h-6 w-6">
+<div bind:this={menuContainerElement} class="-mx-[6px] h-6 w-6">
     <button
         bind:this={menuButtonElement}
         type="button"
@@ -205,6 +322,7 @@
         bind:this={menuPanelElement}
         id="mobile-menu"
         class={menuPanelClass}
+        class:keyboard-mode={isKeyboardMode}
         onclick={handleMenuClick}
         aria-hidden={!isOpen}
         inert={!isOpen}
@@ -225,5 +343,17 @@
 
     :global(.dark) .menu-dimmer {
         --color-menu-dimmer-bg: color-mix(in srgb, #3f3f46 80%, transparent); /* zinc.700 */
+    }
+
+    .keyboard-mode :global(a:hover),
+    .keyboard-mode :global(button:hover) {
+        background-color: transparent !important;
+        color: inherit !important;
+    }
+
+    :global(.dark) .keyboard-mode :global(a:hover),
+    :global(.dark) .keyboard-mode :global(button:hover) {
+        background-color: transparent !important;
+        color: inherit !important;
     }
 </style>
