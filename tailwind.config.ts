@@ -40,6 +40,13 @@ export default {
                 'link-active': 'var(--color-link-active)',
                 'link-active-dark': 'var(--color-link-active-dark)',
 
+                'button-primary': 'var(--color-button-primary)',
+                'button-primary-hover': 'var(--color-button-primary-hover)',
+                'button-primary-text': 'var(--color-button-primary-text)',
+                'button-primary-dark': 'var(--color-button-primary-dark)',
+                'button-primary-hover-dark': 'var(--color-button-primary-hover-dark)',
+                'button-primary-text-dark': 'var(--color-button-primary-text-dark)',
+
                 'info-bg': 'var(--color-info-bg)',
                 'info-bg-dark': 'var(--color-info-bg-dark)',
                 'info-border': 'var(--color-info-border)',

@@ -45,6 +45,14 @@
     --color-link-active: theme('colors.black');
     --color-link-active-dark: theme('colors.white');
 
+    /* Semantic Colors - Buttons */
+    --color-button-primary: theme('colors.lime.600');
+    --color-button-primary-dark: theme('colors.lime.500');
+    --color-button-primary-hover: theme('colors.lime.700');
+    --color-button-primary-text: theme('colors.white');
+    --color-button-primary-hover-dark: theme('colors.lime.400');
+    --color-button-primary-text-dark: theme('colors.white');
+
     /* Semantic Colors - Accents */
     --color-info-bg: theme('colors.lime.50');
     --color-info-bg-dark: theme('colors.lime.950');

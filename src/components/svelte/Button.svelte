@@ -63,17 +63,3 @@
         {@render children?.()}
     </button>
 {/if}
-
-<style>
-    :global(:root) {
-        --color-button-primary: #84cc16; /* lime.600 */
-        --color-button-primary-hover: #65a30d; /* lime.700 */
-        --color-button-primary-text: #ffffff; /* white */
-    }
-
-    :global(.dark) {
-        --color-button-primary-dark: #a3e635; /* lime.500 */
-        --color-button-primary-hover-dark: #bef264; /* lime.400 */
-        --color-button-primary-text-dark: #ffffff; /* white */
-    }
-</style>
