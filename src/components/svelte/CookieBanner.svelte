@@ -50,18 +50,18 @@
 
 {#if isVisible}
     <div
-        class="cookie-banner z-(--z-cookie-banner) fixed bottom-0 left-0 right-0 select-none px-4 pb-3 pt-2 antialiased sm:pt-3 md:py-7"
+        class="cookie-banner z-(--z-cookie-banner) fixed bottom-0 left-0 right-0 select-none px-4 pb-3 pt-2 sm:pt-3 md:py-7"
     >
         <div
             class="container mx-auto flex flex-col items-start justify-between gap-1 sm:max-w-[608px] sm:flex-row sm:items-center md:max-w-[736px] lg:max-w-[896px]"
         >
-            <p class="text-balance font-mono text-[11px] uppercase leading-4">
+            <p class="text-balance font-sans text-xs uppercase leading-4 tracking-wide">
                 {t.cookie.message}
             </p>
 
             <button
                 onclick={handleDismiss}
-                class="cookie-banner-button flex cursor-pointer items-center px-2 pb-[4px] pt-[3.5px] font-mono text-[11px] uppercase disabled:opacity-50"
+                class="cookie-banner-button flex cursor-pointer items-center px-2 pb-[4px] pt-[3.5px] font-sans text-xs uppercase tracking-wide disabled:opacity-50"
                 aria-label={t.cookie.dismissLabel}
             >
                 {t.cookie.button}

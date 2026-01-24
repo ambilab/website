@@ -18,10 +18,10 @@ const { locale, currentPath, translationPath } = Astro.props as Props;
 const t = getTranslation(locale);
 ---
 
-<header class="z-(--z-header) sticky top-0 select-none antialiased">
+<header class="z-(--z-header) sticky top-0 select-none">
     <a
         href="#main-content"
-        class="md:focus:z-(--z-skip-navigation-link) sr-only font-mono text-[11px] uppercase md:focus:not-sr-only md:focus:absolute md:focus:left-2 md:focus:top-2 md:focus:bg-page-bg md:focus:px-2 md:focus:py-1 md:focus:text-text-primary md:focus:outline-none md:focus:ring-4 md:focus:ring-focus-ring dark:focus:bg-page-bg-dark dark:focus:text-text-primary-dark dark:focus:ring-focus-ring-dark"
+        class="md:focus:z-(--z-skip-navigation-link) sr-only font-sans text-xs uppercase tracking-wide md:focus:not-sr-only md:focus:absolute md:focus:left-2 md:focus:top-2 md:focus:bg-page-bg md:focus:px-2 md:focus:py-1 md:focus:text-text-primary md:focus:outline-none md:focus:ring-4 md:focus:ring-focus-ring dark:focus:bg-page-bg-dark dark:focus:text-text-primary-dark dark:focus:ring-focus-ring-dark"
     >
         {t.a11y.skipNavigationLink}
     </a>
@@ -30,7 +30,7 @@ const t = getTranslation(locale);
         class="z-(--z-header-bar) relative mx-auto border-b border-border-default bg-page-bg px-4 dark:border-border-default-dark dark:bg-page-bg-dark"
     >
         <div
-            class="mx-auto flex h-12 items-center justify-between pb-px font-mono text-[11px] uppercase sm:max-w-[608px] md:h-20 md:max-w-[736px] lg:max-w-[896px]"
+            class="mx-auto flex h-12 items-center justify-between pb-px font-sans text-xs uppercase tracking-wide sm:max-w-[608px] md:h-20 md:max-w-[736px] lg:max-w-[896px]"
         >
             <div class="flex items-center gap-8">
                 <div class="shrink-0">
