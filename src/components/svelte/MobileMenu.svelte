@@ -23,15 +23,15 @@
 
     const baseMenuPanelClasses = [
         'z-(--z-mobile-menu) fixed left-1/2 top-0 w-screen -translate-x-1/2 md:hidden pt-12',
-        'bg-page-bg border-t border-border-default dark:bg-page-bg-dark dark:border-border-default-dark',
+        'bg-page-bg dark:bg-page-bg-dark',
         'motion-safe:duration-333 motion-safe:transition-[clip-path]',
     ].join(' ');
 
     let menuPanelClass = $derived(
         isOpen
             ? baseMenuPanelClasses +
-                  ' translate-y-0 pointer-events-auto [clip-path:inset(49px_0_0_0)] motion-safe:ease-out'
-            : baseMenuPanelClasses + ' pointer-events-none [clip-path:inset(49px_0_100%_0)] motion-safe:ease-in',
+                  ' translate-y-0 pointer-events-auto [clip-path:inset(36px_0_0_0)] motion-safe:ease-out'
+            : baseMenuPanelClasses + ' pointer-events-none [clip-path:inset(36px_0_100%_0)] motion-safe:ease-in',
     );
 
     let menuButtonElement: HTMLButtonElement | undefined = $state();
