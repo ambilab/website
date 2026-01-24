@@ -94,7 +94,7 @@ const readingTime = calculateReadingTime(content);
                         <Icon name="tag" class="h-4 w-4 text-text-muted dark:text-text-muted-dark" />
 
                         {tags.map((tag) => (
-                            <span class="rounded-full bg-tag-bg px-3 py-1 text-xs font-medium text-tag-text dark:bg-tag-bg-dark dark:text-tag-text-dark">
+                            <span class="bg-tag-bg text-tag-text dark:bg-tag-bg-dark dark:text-tag-text-dark rounded-full px-3 py-1 text-xs font-medium">
                                 {tag}
                             </span>
                         ))}
@@ -110,3 +110,15 @@ const readingTime = calculateReadingTime(content);
 
     <HeadingLinks />
 </PageLayout>
+
+<style>
+    :global(:root) {
+        --color-tag-bg: #ecfccb; /* lime.100 */
+        --color-tag-text: #3f6212; /* lime.800 */
+    }
+
+    :global(.dark) {
+        --color-tag-bg-dark: #1a2e05; /* lime.900 */
+        --color-tag-text-dark: #d9f99d; /* lime.200 */
+    }
+</style>

@@ -12,9 +12,6 @@ export default {
                 'page-bg-muted': 'var(--color-page-bg-muted)',
                 'page-bg-muted-dark': 'var(--color-page-bg-muted-dark)',
 
-                'menu-dimmer-bg': 'var(--color-menu-dimmer-bg)',
-                'menu-dimmer-bg-dark': 'var(--color-menu-dimmer-bg-dark)',
-
                 surface: 'var(--color-surface)',
                 'surface-dark': 'var(--color-surface-dark)',
                 'surface-hover': 'var(--color-surface-hover)',
@@ -43,13 +40,6 @@ export default {
                 'link-active': 'var(--color-link-active)',
                 'link-active-dark': 'var(--color-link-active-dark)',
 
-                'button-primary': 'var(--color-button-primary)',
-                'button-primary-hover': 'var(--color-button-primary-hover)',
-                'button-primary-text': 'var(--color-button-primary-text)',
-                'button-primary-dark': 'var(--color-button-primary-dark)',
-                'button-primary-hover-dark': 'var(--color-button-primary-hover-dark)',
-                'button-primary-text-dark': 'var(--color-button-primary-text-dark)',
-
                 'info-bg': 'var(--color-info-bg)',
                 'info-bg-dark': 'var(--color-info-bg-dark)',
                 'info-border': 'var(--color-info-border)',
@@ -67,26 +57,6 @@ export default {
                 'success-text-dark': 'var(--color-success-text-dark)',
                 'error-text': 'var(--color-error-text)',
                 'error-text-dark': 'var(--color-error-text-dark)',
-
-                'tag-bg': 'var(--color-tag-bg)',
-                'tag-bg-dark': 'var(--color-tag-bg-dark)',
-                'tag-text': 'var(--color-tag-text)',
-                'tag-text-dark': 'var(--color-tag-text-dark)',
-
-                'table-header-bg': 'var(--color-table-header-bg)',
-                'table-header-bg-dark': 'var(--color-table-header-bg-dark)',
-                'table-header-border': 'var(--color-table-header-border)',
-                'table-header-border-dark': 'var(--color-table-header-border-dark)',
-                'table-border': 'var(--color-table-border)',
-                'table-border-dark': 'var(--color-table-border-dark)',
-
-                anchor: 'var(--color-anchor)',
-                'anchor-dark': 'var(--color-anchor-dark)',
-
-                'selection-bg': 'var(--color-selection-bg)',
-                'selection-text': 'var(--color-selection-text)',
-                'selection-bg-dark': 'var(--color-selection-bg-dark)',
-                'selection-text-dark': 'var(--color-selection-text-dark)',
             },
         },
     },
