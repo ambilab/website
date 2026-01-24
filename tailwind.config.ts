@@ -47,6 +47,9 @@ export default {
                 'button-primary-hover-dark': 'var(--color-button-primary-hover-dark)',
                 'button-primary-text-dark': 'var(--color-button-primary-text-dark)',
 
+                'focus-ring': 'var(--color-focus-ring)',
+                'focus-ring-dark': 'var(--color-focus-ring-dark)',
+
                 'info-bg': 'var(--color-info-bg)',
                 'info-bg-dark': 'var(--color-info-bg-dark)',
                 'info-border': 'var(--color-info-border)',
