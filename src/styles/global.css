@@ -239,48 +239,6 @@ body {
     color: theme('colors.lime.100');
 }
 
-/* Custom scrollbar */
-/* Firefox scrollbar styles */
-html {
-    scrollbar-width: thin;
-    scrollbar-color: var(--color-border-subtle) var(--color-surface-hover);
-}
-
-.dark {
-    scrollbar-color: var(--color-border-subtle-dark) var(--color-page-bg-dark);
-}
-
-/* WebKit scrollbar styles */
-::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
-}
-
-::-webkit-scrollbar-track {
-    background: var(--color-surface-hover);
-}
-
-.dark ::-webkit-scrollbar-track {
-    background: var(--color-page-bg-dark);
-}
-
-::-webkit-scrollbar-thumb {
-    background: var(--color-border-subtle);
-    border-radius: 5px;
-}
-
-.dark ::-webkit-scrollbar-thumb {
-    background: var(--color-border-subtle-dark);
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: var(--color-text-muted);
-}
-
-.dark ::-webkit-scrollbar-thumb:hover {
-    background: var(--color-text-muted-dark);
-}
-
 .expressive-code {
     @apply -mx-3 pb-4 sm:-mx-6;
 }
