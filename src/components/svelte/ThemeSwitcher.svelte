@@ -20,12 +20,17 @@
         }
     };
 
-    const handleThemeToggle = () => {
+    const handleThemeToggle = (event: MouseEvent) => {
         try {
             toggleDarkMode();
             updateTheme();
 
             logger.info(`Theme toggled to ${currentTheme}`);
+
+            // Remove focus to prevent a persistent hover state.
+            if (event.currentTarget instanceof HTMLElement) {
+                event.currentTarget.blur();
+            }
         } catch (error) {
             logger.error('Failed to toggle theme', error);
         }
