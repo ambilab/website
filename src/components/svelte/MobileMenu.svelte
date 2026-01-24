@@ -190,7 +190,7 @@
     </button>
 
     <div
-        class="motion-safe:duration-333 fixed inset-x-0 bottom-0 top-12 bg-menu-dimmer-bg opacity-0 motion-safe:transition-opacity md:hidden dark:bg-menu-dimmer-bg-dark"
+        class="menu-dimmer motion-safe:duration-333 fixed inset-x-0 bottom-0 top-12 opacity-0 motion-safe:transition-opacity md:hidden"
         class:opacity-100={isOpen}
         class:motion-safe:ease-out={isOpen}
         class:motion-safe:ease-in={!isOpen}
@@ -216,3 +216,14 @@
         </nav>
     </div>
 </div>
+
+<style>
+    .menu-dimmer {
+        --color-menu-dimmer-bg: color-mix(in srgb, #a1a1aa 80%, transparent); /* zinc.400 */
+        background-color: var(--color-menu-dimmer-bg);
+    }
+
+    :global(.dark) .menu-dimmer {
+        --color-menu-dimmer-bg: color-mix(in srgb, #3f3f46 80%, transparent); /* zinc.700 */
+    }
+</style>

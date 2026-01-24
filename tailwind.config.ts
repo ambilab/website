@@ -12,9 +12,6 @@ export default {
                 'page-bg-muted': 'var(--color-page-bg-muted)',
                 'page-bg-muted-dark': 'var(--color-page-bg-muted-dark)',
 
-                'menu-dimmer-bg': 'var(--color-menu-dimmer-bg)',
-                'menu-dimmer-bg-dark': 'var(--color-menu-dimmer-bg-dark)',
-
                 surface: 'var(--color-surface)',
                 'surface-dark': 'var(--color-surface-dark)',
                 'surface-hover': 'var(--color-surface-hover)',
@@ -72,21 +69,6 @@ export default {
                 'tag-bg-dark': 'var(--color-tag-bg-dark)',
                 'tag-text': 'var(--color-tag-text)',
                 'tag-text-dark': 'var(--color-tag-text-dark)',
-
-                'table-header-bg': 'var(--color-table-header-bg)',
-                'table-header-bg-dark': 'var(--color-table-header-bg-dark)',
-                'table-header-border': 'var(--color-table-header-border)',
-                'table-header-border-dark': 'var(--color-table-header-border-dark)',
-                'table-border': 'var(--color-table-border)',
-                'table-border-dark': 'var(--color-table-border-dark)',
-
-                anchor: 'var(--color-anchor)',
-                'anchor-dark': 'var(--color-anchor-dark)',
-
-                'selection-bg': 'var(--color-selection-bg)',
-                'selection-text': 'var(--color-selection-text)',
-                'selection-bg-dark': 'var(--color-selection-bg-dark)',
-                'selection-text-dark': 'var(--color-selection-text-dark)',
             },
         },
     },

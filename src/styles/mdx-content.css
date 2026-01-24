@@ -1,19 +1,19 @@
 @reference '../styles/global.css';
 
-/* MDX Content Styling */
 .mdx-content {
-    /* Links with external indicator */
+    --color-table-header-bg: #f9fafb; /* gray.50 */
+    --color-table-header-border: #d1d5db; /* gray.300 */
+    --color-table-border: #e5e7eb; /* gray.200 */
+
     & a:not(.anchor) {
         @apply relative font-medium text-link underline underline-offset-4 hover:text-link-hover dark:text-link-dark dark:hover:text-link-hover-dark;
 
-        /* External links get arrow indicator */
         &[href^='http']::after,
         &[href^='https']::after {
             @apply ml-1 inline-block text-xs content-['↗'];
         }
     }
 
-    /* Headings with anchor links */
     & h1,
     & h2,
     & h3,
@@ -21,7 +21,7 @@
         @apply relative scroll-mt-20 font-bold;
 
         & .anchor {
-            @apply absolute -left-6 text-anchor no-underline opacity-0 dark:text-anchor-dark;
+            @apply absolute -left-6 no-underline opacity-0;
         }
 
         &:hover .anchor {
@@ -45,7 +45,6 @@
         @apply mb-2 mt-6 text-xl font-semibold;
     }
 
-    /* Paragraphs and lists */
     & p {
         @apply mb-4 leading-relaxed;
     }
@@ -63,7 +62,6 @@
         @apply mb-2 list-decimal;
     }
 
-    /* Nested lists */
     & ul ul,
     & ol ul {
         @apply mb-2 mt-2;
@@ -74,19 +72,16 @@
         @apply mb-2 mt-2;
     }
 
-    /* Inline code (Expressive Code handles code blocks) */
     & p code,
     & li code,
     & td code {
         @apply rounded bg-surface-code px-1.5 py-0.5 font-mono text-sm text-text-primary dark:bg-surface-code-dark dark:text-text-primary-dark;
     }
 
-    /* Code blocks are handled by Expressive Code */
     & pre {
         @apply my-6 overflow-x-auto rounded-lg;
     }
 
-    /* Images */
     & img {
         @apply my-4 h-auto max-w-full rounded-lg;
     }
@@ -99,7 +94,6 @@
         }
     }
 
-    /* Blockquotes */
     & blockquote {
         @apply my-4 border-l-4 border-info-border pl-4 italic text-text-secondary dark:text-text-secondary-dark;
 
@@ -108,29 +102,35 @@
         }
     }
 
-    /* Tables */
     & table {
         @apply my-4 w-full border-collapse;
 
         & th {
-            @apply border-b-2 border-table-header-border bg-table-header-bg p-2 text-left font-semibold dark:border-table-header-border-dark dark:bg-table-header-bg-dark;
+            border-bottom-width: 2px;
+            border-bottom-style: solid;
+            border-color: var(--color-table-header-border);
+            background-color: var(--color-table-header-bg);
+            padding: 0.5rem;
+            text-align: left;
+            font-weight: 600;
         }
 
         & td {
-            @apply border-b border-table-border p-2 dark:border-table-border-dark;
+            border-bottom-width: 1px;
+            border-bottom-style: solid;
+            border-color: var(--color-table-border);
+            padding: 0.5rem;
         }
 
         & tr:last-child td {
-            @apply border-b-0;
+            border-bottom-width: 0;
         }
     }
 
-    /* Horizontal rule */
     & hr {
         @apply my-8 border-t border-border-default dark:border-border-default-dark;
     }
 
-    /* Strong and emphasis */
     & strong {
         @apply font-bold text-text-primary dark:text-text-primary-dark;
     }
@@ -139,22 +139,18 @@
         @apply italic;
     }
 
-    /* Abbreviations */
     & abbr {
         @apply cursor-help border-b border-dotted border-border-subtle dark:border-border-subtle-dark;
     }
 
-    /* Mark/highlight */
     & mark {
         @apply rounded bg-warning-highlight px-1 dark:bg-warning-highlight-dark;
     }
 
-    /* Keyboard input */
     & kbd {
         @apply rounded border border-border-medium bg-surface-code px-2 py-1 font-mono text-sm shadow-sm dark:border-border-medium-dark dark:bg-surface-code-dark;
     }
 
-    /* Details/summary */
     & details {
         @apply my-4 rounded-lg border border-border-default p-4 dark:border-border-default-dark;
 
@@ -167,7 +163,6 @@
         }
     }
 
-    /* Subscript and superscript */
     & sub,
     & sup {
         @apply text-xs;
@@ -180,4 +175,10 @@
     & sup {
         @apply align-super;
     }
+}
+
+.dark .mdx-content {
+    --color-table-header-bg: #111827; /* gray.900 */
+    --color-table-header-border: #374151; /* gray.700 */
+    --color-table-border: #1f2937; /* gray.800 */
 }

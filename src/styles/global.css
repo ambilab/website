@@ -14,18 +14,6 @@
     --color-page-bg-muted: theme('colors.gray.50');
     --color-page-bg-muted-dark: theme('colors.gray.950');
 
-    --color-menu-dimmer-bg: color-mix(in srgb, theme('colors.zinc.400') 80%, transparent);
-    --color-menu-dimmer-bg-dark: color-mix(in srgb, theme('colors.zinc.700') 80%, transparent);
-
-    --color-cookie-banner-bg: theme('colors.blue.600');
-    --color-cookie-banner-bg-dark: theme('colors.blue.600');
-    --color-cookie-banner-text: theme('colors.white');
-    --color-cookie-banner-text-dark: theme('colors.white');
-    --color-cookie-banner-button-bg: theme('colors.white');
-    --color-cookie-banner-button-bg-dark: theme('colors.white');
-    --color-cookie-banner-button-text: theme('colors.blue.900');
-    --color-cookie-banner-button-text-dark: theme('colors.blue.900');
-
     --color-surface: theme('colors.white');
     --color-surface-dark: theme('colors.zinc.600');
     --color-surface-hover: theme('colors.gray.100');
@@ -34,8 +22,8 @@
     --color-surface-code-dark: theme('colors.gray.800');
 
     /* Semantic Colors - Borders */
-    --color-border-default: theme('colors.gray.300');
-    --color-border-default-dark: theme('colors.gray.700');
+    --color-border-default: theme('colors.zinc.300');
+    --color-border-default-dark: theme('colors.zinc.800');
     --color-border-medium: theme('colors.gray.300');
     --color-border-medium-dark: theme('colors.gray.700');
     --color-border-subtle: theme('colors.gray.400');
@@ -50,25 +38,25 @@
     --color-text-muted-dark: theme('colors.zinc.400');
 
     /* Semantic Colors - Links */
-    --color-link: theme('colors.blue.600');
-    --color-link-hover: theme('colors.blue.700');
-    --color-link-dark: theme('colors.blue.400');
-    --color-link-hover-dark: theme('colors.blue.300');
+    --color-link: theme('colors.green.600');
+    --color-link-hover: theme('colors.lime.700');
+    --color-link-dark: theme('colors.lime.400');
+    --color-link-hover-dark: theme('colors.lime.300');
     --color-link-active: theme('colors.black');
     --color-link-active-dark: theme('colors.white');
 
     /* Semantic Colors - Buttons */
-    --color-button-primary: theme('colors.blue.600');
-    --color-button-primary-hover: theme('colors.blue.700');
+    --color-button-primary: theme('colors.lime.600');
+    --color-button-primary-dark: theme('colors.lime.500');
+    --color-button-primary-hover: theme('colors.lime.700');
     --color-button-primary-text: theme('colors.white');
-    --color-button-primary-dark: theme('colors.blue.500');
-    --color-button-primary-hover-dark: theme('colors.blue.400');
+    --color-button-primary-hover-dark: theme('colors.lime.400');
     --color-button-primary-text-dark: theme('colors.white');
 
     /* Semantic Colors - Accents */
-    --color-info-bg: theme('colors.blue.50');
-    --color-info-bg-dark: theme('colors.blue.950');
-    --color-info-border: theme('colors.blue.500');
+    --color-info-bg: theme('colors.lime.50');
+    --color-info-bg-dark: theme('colors.lime.950');
+    --color-info-border: theme('colors.lime.500');
     --color-warning-bg: theme('colors.yellow.50');
     --color-warning-bg-dark: theme('colors.yellow.950');
     --color-warning-border: theme('colors.yellow.200');
@@ -85,28 +73,10 @@
     --color-error-text-dark: theme('colors.red.400');
 
     /* Semantic Colors - Tags/Badges */
-    --color-tag-bg: theme('colors.blue.100');
-    --color-tag-bg-dark: theme('colors.blue.900');
-    --color-tag-text: theme('colors.blue.800');
-    --color-tag-text-dark: theme('colors.blue.200');
-
-    /* Semantic Colors - Tables */
-    --color-table-header-bg: theme('colors.gray.50');
-    --color-table-header-bg-dark: theme('colors.gray.900');
-    --color-table-header-border: theme('colors.gray.300');
-    --color-table-header-border-dark: theme('colors.gray.700');
-    --color-table-border: theme('colors.gray.200');
-    --color-table-border-dark: theme('colors.gray.800');
-
-    /* Semantic Colors - Misc */
-    --color-anchor: theme('colors.gray.400');
-    --color-anchor-dark: theme('colors.gray.600');
-
-    /* Semantic Colors - Selection */
-    --color-selection-bg: theme('colors.lime.300');
-    --color-selection-text: theme('colors.lime.800');
-    --color-selection-bg-dark: theme('colors.lime.700');
-    --color-selection-text-dark: theme('colors.lime.100');
+    --color-tag-bg: theme('colors.lime.100');
+    --color-tag-bg-dark: theme('colors.lime.900');
+    --color-tag-text: theme('colors.lime.800');
+    --color-tag-text-dark: theme('colors.lime.200');
 
     /* Dot pattern background */
     --bg-dots-image: radial-gradient(circle, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
@@ -125,7 +95,7 @@
     .bg-dots {
         background-image: var(--bg-dots-image);
         background-size: 8px 8px;
-        background-position: 0 0;
+        background-position: 0 3px;
     }
 }
 
@@ -141,6 +111,7 @@
 }
 
 html {
+    /*noinspection CssNoGenericFontName*/
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -230,13 +201,13 @@ body {
 
 /* Selection colors */
 ::selection {
-    background-color: var(--color-selection-bg);
-    color: var(--color-selection-text);
+    background-color: theme('colors.lime.300');
+    color: theme('colors.lime.800');
 }
 
 .dark ::selection {
-    background-color: var(--color-selection-bg-dark);
-    color: var(--color-selection-text-dark);
+    background-color: theme('colors.lime.700');
+    color: theme('colors.lime.100');
 }
 
 /* Custom scrollbar */

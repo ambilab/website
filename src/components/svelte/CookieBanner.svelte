@@ -38,7 +38,7 @@
 
 {#if isVisible}
     <div
-        class="z-(--z-cookie-banner) bg-cookie-banner-bg text-cookie-banner-text dark:bg-cookie-banner-bg-dark dark:text-cookie-banner-text-dark fixed bottom-0 left-0 right-0 select-none px-4 pb-3 pt-2 sm:pt-3 md:py-7"
+        class="cookie-banner z-(--z-cookie-banner) fixed bottom-0 left-0 right-0 select-none px-4 pb-3 pt-2 sm:pt-3 md:py-7"
     >
         <div
             class="container mx-auto flex flex-col items-start justify-between gap-1 sm:max-w-[608px] sm:flex-row sm:items-center md:max-w-[736px] lg:max-w-[896px]"
@@ -49,7 +49,7 @@
 
             <button
                 onclick={handleDismiss}
-                class="bg-cookie-banner-button-bg text-cookie-banner-button-text dark:bg-cookie-banner-button-bg-dark dark:text-cookie-banner-button-text-dark flex cursor-pointer items-center px-2 pb-[4px] pt-[3.5px] font-mono text-[11px] uppercase disabled:opacity-50"
+                class="cookie-banner-button flex cursor-pointer items-center px-2 pb-[4px] pt-[3.5px] font-mono text-[11px] uppercase disabled:opacity-50"
                 aria-label={t.cookie.dismissLabel}
             >
                 {t.cookie.button}
@@ -57,3 +57,20 @@
         </div>
     </div>
 {/if}
+
+<style>
+    .cookie-banner {
+        --color-cookie-banner-bg: #2563eb; /* blue.600 */
+        --color-cookie-banner-text: #ffffff; /* white */
+        --color-cookie-banner-button-bg: #ffffff; /* white */
+        --color-cookie-banner-button-text: #1e3a8a; /* blue.900 */
+
+        background-color: var(--color-cookie-banner-bg);
+        color: var(--color-cookie-banner-text);
+    }
+
+    .cookie-banner-button {
+        background-color: var(--color-cookie-banner-button-bg);
+        color: var(--color-cookie-banner-button-text);
+    }
+</style>
