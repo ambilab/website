@@ -36,7 +36,7 @@
             `bg-button-${name}-bg dark:bg-button-${name}-bg-dark`,
             `[&:hover,&:focus]:bg-button-${name}-bg-hover dark:[&:hover,&:focus]:bg-button-${name}-bg-hover-dark`,
             `text-button-${name}-text dark:text-button-${name}-text-dark`,
-            `[&:hover,&:focus]:text-button-${name}-text-hover [&:hover,&:focus]:dark:text-button-${name}-text-hover-dark`,
+            `[&:hover,&:focus]:text-button-${name}-text-hover dark:[&:hover,&:focus]:text-button-${name}-text-hover-dark`,
         ].join(' ');
     }
 
