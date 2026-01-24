@@ -50,7 +50,7 @@
             <button
                 onclick={handleDismiss}
                 class="bg-cookie-banner-button-bg text-cookie-banner-button-text dark:bg-cookie-banner-button-bg-dark dark:text-cookie-banner-button-text-dark flex cursor-pointer items-center px-2 pb-[4px] pt-[3.5px] font-mono text-[11px] uppercase disabled:opacity-50"
-                aria-label="Dismiss the cookie banner"
+                aria-label={t.cookie.dismissLabel}
             >
                 {t.cookie.button}
             </button>
