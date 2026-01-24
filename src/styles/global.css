@@ -45,13 +45,40 @@
     --color-link-active: theme('colors.black');
     --color-link-active-dark: theme('colors.white');
 
-    /* Semantic Colors - Buttons */
-    --color-button-primary: theme('colors.lime.600');
-    --color-button-primary-dark: theme('colors.lime.500');
-    --color-button-primary-hover: theme('colors.lime.700');
+    /* Semantic Colors - Primary Button */
+    --color-button-primary-bg: theme('colors.lime.700');
+    --color-button-primary-bg-dark: theme('colors.lime.500');
+    --color-button-primary-bg-hover: theme('colors.lime.800');
+    --color-button-primary-bg-hover-dark: theme('colors.lime.400');
     --color-button-primary-text: theme('colors.white');
-    --color-button-primary-hover-dark: theme('colors.lime.400');
-    --color-button-primary-text-dark: theme('colors.white');
+    --color-button-primary-text-dark: theme('colors.black');
+    --color-button-primary-text-hover: theme('colors.white');
+    --color-button-primary-text-hover-dark: theme('colors.black');
+
+    /* Semantic Colors - Secondary Button */
+    --color-button-secondary-bg: theme('colors.zinc.800');
+    --color-button-secondary-bg-dark: theme('colors.zinc.200');
+    --color-button-secondary-bg-hover: theme('colors.zinc.900');
+    --color-button-secondary-bg-hover-dark: theme('colors.zinc.100');
+    --color-button-secondary-text: theme('colors.white');
+    --color-button-secondary-text-dark: theme('colors.black');
+    --color-button-secondary-text-hover: theme('colors.white');
+    --color-button-secondary-text-hover-dark: theme('colors.black');
+
+    /* Semantic Colors - Outline Button */
+    --color-button-outline-bg: theme('colors.zinc.200');
+    --color-button-outline-bg-dark: theme('colors.zinc.900');
+    --color-button-outline-bg-hover: theme('colors.zinc.200');
+    --color-button-outline-bg-hover-dark: theme('colors.zinc.900');
+    --color-button-outline-text: theme('colors.zinc.900');
+    --color-button-outline-text-dark: theme('colors.zinc.200');
+    --color-button-outline-text-hover: theme('colors.black');
+    --color-button-outline-text-hover-dark: theme('colors.white');
+    --color-button-outline-border: theme('colors.zinc.900');
+    --color-button-outline-border-dark: theme('colors.zinc.200');
+    --color-button-outline-border-hover: theme('colors.black');
+    --color-button-outline-border-hover-dark: theme('colors.white');
+
 
     /* Semantic Colors - Focus States */
     --color-focus-ring: #556f29;
