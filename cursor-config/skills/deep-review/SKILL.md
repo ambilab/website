@@ -30,14 +30,16 @@ pushing significant changes or creating pull requests.
    - Run `git log origin/main..HEAD --oneline` to see commit history
    - Identify which files changed and their purpose
 
-4. **Launch code-reviewer subagent**
-   - Use the Task tool with `subagent_type: "code-reviewer"`
-   - Provide the diff and ask for analysis of:
+4. **Perform comprehensive code review**
+   - Analyze the diff for:
      - Bugs and logic errors
-     - Security vulnerabilities
-     - Code quality issues
+     - Security vulnerabilities (XSS, injection, auth bypass)
+     - Performance issues (N+1 queries, unnecessary renders)
+     - Error handling gaps (missing null checks, unhandled promises)
+     - Code quality issues (duplicated code, complex logic)
      - Adherence to project conventions
-   - Request confidence-based filtering (only high-priority issues)
+   - Focus only on high-confidence, high-priority issues
+   - Verify each issue by reading the actual file contents
 
 5. **Check project-specific rules**
    - **RULE #1**: No emoji anywhere (code, comments, docs, commits)
@@ -126,7 +128,7 @@ Recommendation: [Brief recommendation]
 | ----------- | --------------------------- | ------------------------------- |
 | Speed       | Fast (seconds)              | Thorough (1-2 minutes)          |
 | Checks      | lint, typecheck, spellcheck | Full preflight + security audit |
-| AI Analysis | Rule-based only             | code-reviewer subagent          |
+| AI Analysis | Rule-based only             | Comprehensive manual review     |
 | Output      | Issue list                  | PR-ready summary                |
 | Use Case    | Quick iteration             | Pre-push/PR                     |
 

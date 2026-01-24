@@ -27,6 +27,16 @@ A **stop hook** runs automatically after you complete tasks:
 
 ## Available Skills
 
+### /quick-format
+
+Fastest formatting without verification:
+
+```cursor
+/quick-format
+```
+
+Runs formatters only. Use for quick cleanup when you just need to fix formatting.
+
 ### /format
 
 Quick format and verification:
@@ -35,7 +45,7 @@ Quick format and verification:
 /format
 ```
 
-Formats all code and verifies formatting passes. Use during development for quick checks.
+Formats all code, shows what changed, and verifies formatting passes. Use during development for quick checks.
 
 ### /preflight
 
@@ -45,7 +55,7 @@ Comprehensive pre-commit checks:
 /preflight
 ```
 
-Runs ALL quality checks: format, lint, typecheck, spellcheck, knip. Use before creating commits or PRs.
+Runs ALL quality checks: format, lint, typecheck, tests, spellcheck, knip. Use before creating commits or PRs.
 
 ### /pr
 
@@ -75,8 +85,8 @@ Comprehensive pre-push review (replaces CodeRabbit):
 /deep-review
 ```
 
-Runs full preflight, security audit, launches `code-reviewer` subagent for AI analysis, and generates a PR-ready
-summary. Use before pushing to remote.
+Runs full preflight, security audit, comprehensive manual code review, and generates a PR-ready summary. Use before
+pushing to remote.
 
 ## Local Code Review Workflow
 
@@ -92,13 +102,13 @@ using Cursor skills and git hooks.
 
 ### What Replaced CodeRabbit
 
-| CodeRabbit Feature | Local Replacement                        |
-| ------------------ | ---------------------------------------- |
-| Auto PR review     | `/review` or `/deep-review` before push  |
-| Security scanning  | `pnpm audit` + `eslint-plugin-security`  |
-| Code quality       | Biome + ESLint + TypeScript strict       |
-| Best practices     | Project rules + `code-reviewer` subagent |
-| Change summary     | `/deep-review` generates PR summary      |
+| CodeRabbit Feature | Local Replacement                         |
+| ------------------ | ----------------------------------------- |
+| Auto PR review     | `/review` or `/deep-review` before push   |
+| Security scanning  | `pnpm audit` + `eslint-plugin-security`   |
+| Code quality       | Biome + ESLint + TypeScript strict        |
+| Best practices     | Project rules + comprehensive AI analysis |
+| Change summary     | `/deep-review` generates PR summary       |
 
 ### Benefits of Local Review
 

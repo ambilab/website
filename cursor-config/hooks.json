@@ -13,8 +13,8 @@
         "patterns": ["**/*.json", "**/*.jsonc"]
       },
       {
-        "command": "pnpm prettier --write ${file}",
-        "description": "Auto-format Astro/Svelte/Markdown files with Prettier",
+        "command": "pnpm exec prettier --config prettier.config.js --write ${file}",
+        "description": "Auto-format Astro/Svelte/Markdown files with Prettier and plugins",
         "patterns": ["**/*.astro", "**/*.svelte", "**/*.md", "**/*.mdx"]
       }
     ],
