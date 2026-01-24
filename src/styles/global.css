@@ -16,8 +16,6 @@
 
     --color-surface: theme('colors.white');
     --color-surface-dark: theme('colors.zinc.600');
-    --color-surface-hover: theme('colors.gray.100');
-    --color-surface-hover-dark: theme('colors.gray.800');
     --color-surface-code: theme('colors.gray.100');
     --color-surface-code-dark: theme('colors.gray.800');
 
@@ -79,9 +77,12 @@
     --color-button-outline-border-hover: theme('colors.black');
     --color-button-outline-border-hover-dark: theme('colors.white');
 
+    /* Semantic Colors - Active States */
+    --color-active: #bdd0a2;
+    --color-active-dark: #2b341a;
 
     /* Semantic Colors - Focus States */
-    --color-focus-ring: #556f29;
+    --color-focus-ring: #7aa740;
     --color-focus-ring-dark: #668e20;
 
     /* Semantic Colors - Accents */
