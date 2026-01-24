@@ -224,7 +224,6 @@
     }
 
     :global(.dark) .menu-dimmer {
-        --color-menu-dimmer-bg-dark: color-mix(in srgb, #3f3f46 80%, transparent); /* zinc.700 */
-        background-color: var(--color-menu-dimmer-bg-dark);
+        --color-menu-dimmer-bg: color-mix(in srgb, #3f3f46 80%, transparent); /* zinc.700 */
     }
 </style>
