@@ -46,12 +46,12 @@ const currentPath = Astro.url.pathname;
     <body
         class:list={[
             import.meta.env.DEV && 'debug-screens',
-            'bg-page-bg text-text-primary dark:bg-page-bg-dark dark:text-text-primary-dark',
+            'flex min-h-screen flex-col bg-page-bg text-text-primary dark:bg-page-bg-dark dark:text-text-primary-dark',
         ]}
     >
         <Menu locale={locale} currentPath={currentPath} translationPath={translationPath} />
 
-        <main id="main-content" class="bg-dots min-h-screen">
+        <main id="main-content" class="bg-dots flex-1">
             <slot />
         </main>
 
