@@ -80,12 +80,10 @@ export function validateEnv(env?: Record<string, unknown>): ValidatedEnv {
         return validatedEnv;
     } catch (error: unknown) {
         if (error instanceof z.ZodError) {
-            const missingVars = error.errors
-                .map((err: z.ZodIssue) => `${err.path.join('.')}: ${err.message}`)
-                .join('\n');
+            const missingVars = error.issues.map((err) => `${err.path.join('.')}: ${err.message}`).join('\n');
 
             logger.error('Environment variable validation failed', {
-                errors: error.errors,
+                errors: error.issues,
             });
 
             throw new Error(
