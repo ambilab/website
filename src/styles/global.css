@@ -11,8 +11,6 @@
     /* Semantic Colors - Page & Surface Backgrounds */
     --color-page-bg: theme('colors.zinc.200');
     --color-page-bg-dark: theme('colors.zinc.900');
-    --color-page-bg-muted: theme('colors.gray.50');
-    --color-page-bg-muted-dark: theme('colors.gray.950');
 
     --color-surface: theme('colors.white');
     --color-surface-dark: theme('colors.zinc.600');
@@ -162,7 +160,7 @@ body {
      * - dlig: Discretionary ligatures
      * - zero: Slashed zero for clarity
      * - tnum: Tabular numbers for alignment in tables
-     * - cv01, cv06, cv08, cv10, cv13: Character variants for improved readability
+     * - cv01, cv06, cv08, cv09, cv10, cv13: Character variants for improved readability
      *
      * Disabled features (0):
      * - calt: Contextual alternates (disabled for consistency)
@@ -186,7 +184,7 @@ body {
         'cv06' 1,
         'cv07' 0,
         'cv08' 1,
-        'cv09' 0,
+        'cv09' 1,
         'cv10' 1,
         'cv11' 0,
         'cv12' 0,
@@ -200,7 +198,7 @@ body {
 
 /* Focus styles for accessibility */
 *:focus-visible {
-    @apply outline-focus-ring dark:outline-focus-ring-dark outline-4 outline-offset-2;
+    @apply outline-4 outline-offset-2 outline-focus-ring dark:outline-focus-ring-dark;
 }
 
 /* Smooth scroll behavior (respects prefers-reduced-motion) */

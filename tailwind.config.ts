@@ -9,8 +9,6 @@ export default {
             colors: {
                 'page-bg': 'var(--color-page-bg)',
                 'page-bg-dark': 'var(--color-page-bg-dark)',
-                'page-bg-muted': 'var(--color-page-bg-muted)',
-                'page-bg-muted-dark': 'var(--color-page-bg-muted-dark)',
 
                 surface: 'var(--color-surface)',
                 'surface-dark': 'var(--color-surface-dark)',

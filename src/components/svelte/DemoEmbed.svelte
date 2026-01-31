@@ -126,7 +126,7 @@
 <figure class={`demo-embed ${className}`}>
     {#if shouldShowLink}
         <div
-            class="flex min-h-[200px] flex-col items-center justify-center rounded-lg border border-border-default bg-page-bg-muted p-8 text-center dark:border-border-default-dark dark:bg-page-bg-muted-dark"
+            class="flex min-h-[200px] flex-col items-center justify-center rounded-lg border border-border-default p-8 text-center dark:border-border-default-dark"
             style={aspectRatioStyle}
         >
             <p class="mb-4 text-sm text-text-muted dark:text-text-muted-dark">

@@ -57,9 +57,17 @@
     </button>
 {/if}
 
-<style>
+<style lang="postcss">
     .go-to-top-button {
         bottom: calc(2rem + var(--cookie-banner-height, 0px));
         right: 2rem;
+
+        @media (min-width: 640px) {
+            bottom: calc(2rem + var(--cookie-banner-height-sm, 0px));
+        }
+
+        @media (min-width: 768px) {
+            bottom: calc(2rem + var(--cookie-banner-height-md, 0px));
+        }
     }
 </style>

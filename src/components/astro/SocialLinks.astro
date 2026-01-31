@@ -1,10 +1,12 @@
 ---
+import { SITE } from '@config/site';
+
 interface SocialLink {
     name: string;
     url: string;
 }
 
-const socialLinks: SocialLink[] = [];
+const socialLinks: SocialLink[] = [{ name: 'GitHub', url: SITE.SOCIAL.GITHUB }];
 ---
 
 <div class="flex flex-wrap gap-1">
@@ -15,7 +17,9 @@ const socialLinks: SocialLink[] = [];
                 target="_blank"
                 rel="noopener noreferrer"
                 class="border border-text-primary-dark px-[7px] py-[5px]"
-            />
+            >
+                {link.name}
+            </a>
         ))
     }
 </div>

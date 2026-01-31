@@ -15,65 +15,47 @@ const t = getTranslation(locale);
 const currentYear = new Date().getFullYear();
 ---
 
-<footer
-    class="footer-with-banner-spacing border-t border-border-default bg-page-bg-muted dark:border-border-default-dark dark:bg-page-bg-muted-dark"
->
-    <div class="container mx-auto px-4 py-12">
-        <div class="grid gap-8 md:grid-cols-3">
-            <div>
-                <h3 class="mb-4 text-lg font-bold">Ambilab</h3>
+<footer class="footer select-none border-border-default-dark bg-text-primary text-text-primary-dark dark:border-t">
+    <div class="container mx-auto px-4 py-2.5 sm:py-[18px] md:max-w-3xl md:py-[48px] md:pb-[34px] lg:max-w-[928px]">
+        <div class="grid gap-4 md:grid-cols-3">
+            <div class="md:-my-6">
+                <h3 class="-ml-px">Ambilab</h3>
 
-                <p class="text-sm text-text-muted dark:text-text-muted-dark">
+                <p class="-ml-px text-balance font-mono text-[11px] uppercase leading-3 antialiased">
                     {t.footer.description}
                 </p>
             </div>
 
-            <div>
-                <h4 class="mb-4 text-sm font-semibold uppercase tracking-wider">
-                    {t.footer.navigation}
-                </h4>
-
-                <ul class="space-y-2 text-sm">
+            <div class="-ml-px font-mono text-[11px] uppercase leading-3 antialiased">
+                <ul class="space-y-0">
                     <li>
-                        <a
-                            href={getRoute('home', locale)}
-                            class="[&:hover,&:focus]:text-link-hover dark:[&:hover,&:focus]:text-link-hover-dark text-text-muted dark:text-text-muted-dark"
-                        >
+                        <a href={getRoute('home', locale)}>
                             {t.nav.home}
                         </a>
                     </li>
 
                     <li>
-                        <a
-                            href={getRoute('about', locale)}
-                            class="[&:hover,&:focus]:text-link-hover dark:[&:hover,&:focus]:text-link-hover-dark text-text-muted dark:text-text-muted-dark"
-                        >
+                        <a href={getRoute('about', locale)}>
                             {t.nav.about}
                         </a>
                     </li>
 
                     <li>
-                        <a
-                            href={getRoute('blog', locale)}
-                            class="[&:hover,&:focus]:text-link-hover dark:[&:hover,&:focus]:text-link-hover-dark text-text-muted dark:text-text-muted-dark"
-                        >
+                        <a href={getRoute('blog', locale)}>
                             {t.nav.blog}
                         </a>
                     </li>
 
                     <li>
-                        <a
-                            href={getRoute('rss', locale)}
-                            class="[&:hover,&:focus]:text-link-hover dark:[&:hover,&:focus]:text-link-hover-dark text-text-muted dark:text-text-muted-dark"
-                        >
+                        <a href={getRoute('rss', locale)}>
                             {t.nav.rss}
                         </a>
                     </li>
                 </ul>
             </div>
 
-            <div>
-                <h4 class="mb-4 text-sm font-semibold uppercase tracking-wider">
+            <div class="font-mono text-[11px] uppercase leading-3 antialiased">
+                <h4 class="-ml-px mb-0.5">
                     {t.footer.followAmbilab}
                 </h4>
 
@@ -81,16 +63,22 @@ const currentYear = new Date().getFullYear();
             </div>
         </div>
 
-        <div
-            class="mt-8 border-t border-border-default pt-8 text-center text-sm text-text-muted dark:border-border-default-dark dark:text-text-muted-dark"
-        >
+        <div class="-ml-px mt-[18px] font-mono text-[11px] uppercase leading-3 antialiased">
             {t.footer.copyright} © {currentYear} Ambilab. {t.footer.allRightsReserved}.
         </div>
     </div>
 </footer>
 
 <style>
-    .footer-with-banner-spacing {
+    .footer {
         padding-bottom: var(--cookie-banner-height, 0px);
+
+        @media (min-width: 640px) {
+            padding-bottom: var(--cookie-banner-height-sm, 0px);
+        }
+
+        @media (min-width: 768px) {
+            padding-bottom: var(--cookie-banner-height-md, 0px);
+        }
     }
 </style>
