@@ -11,8 +11,6 @@
     /* Semantic Colors - Page & Surface Backgrounds */
     --color-page-bg: theme('colors.zinc.200');
     --color-page-bg-dark: theme('colors.zinc.900');
-    --color-page-bg-muted: theme('colors.gray.50');
-    --color-page-bg-muted-dark: theme('colors.gray.950');
 
     --color-surface: theme('colors.white');
     --color-surface-dark: theme('colors.zinc.600');
