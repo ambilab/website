@@ -25,8 +25,8 @@ const nonce = Astro.locals.nonce;
 // Plausible Analytics configuration
 const plausibleScriptCom = import.meta.env.PUBLIC_PLAUSIBLE_SCRIPT_COM;
 const plausibleScriptCz = import.meta.env.PUBLIC_PLAUSIBLE_SCRIPT_CZ;
-const isComDomain = currentDomain.includes('ambilab.com');
-const isCzDomain = currentDomain.includes('ambilab.cz');
+const isComDomain = currentDomain === 'ambilab.com' || currentDomain.endsWith('.ambilab.com');
+const isCzDomain = currentDomain === 'ambilab.cz' || currentDomain.endsWith('.ambilab.cz');
 const plausibleScript = isComDomain ? plausibleScriptCom : isCzDomain ? plausibleScriptCz : undefined;
 ---
 
