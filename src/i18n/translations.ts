@@ -104,7 +104,7 @@ export const translations: Record<Locale, Translations> = {
             allRightsReserved: 'All rights reserved',
             description: 'A bilingual (English/Czech) marketing website and blog for Ambilab.',
             navigation: 'Navigation',
-            followAmbilab: 'Follow Ambilab',
+            followAmbilab: 'Follow Us:',
         },
 
         newsletter: {
@@ -181,7 +181,7 @@ export const translations: Record<Locale, Translations> = {
             allRightsReserved: 'Všechna práva vyhrazena',
             description: 'Webová pixel-art herní engine.',
             navigation: 'Navigace',
-            followAmbilab: 'Sledujte Ambilab',
+            followAmbilab: 'Sledujte nás:',
         },
 
         newsletter: {
