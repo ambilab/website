@@ -59,7 +59,7 @@
 
 <style>
     .go-to-top-button {
-        bottom: calc(2rem + var(--cookie-banner-height, 0px));
+        bottom: calc(2rem + var(--cookie-banner-height, 0px)); /* TODO: sm + md */
         right: 2rem;
     }
 </style>

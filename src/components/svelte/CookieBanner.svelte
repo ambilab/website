@@ -36,9 +36,13 @@
     $effect(() => {
         if (typeof document !== 'undefined' && hydrated) {
             if (isVisible) {
-                document.documentElement.style.setProperty('--cookie-banner-height', '80px');
+                document.documentElement.style.setProperty('--cookie-banner-height', '74px');
+                document.documentElement.style.setProperty('--cookie-banner-height-sm', '48px');
+                document.documentElement.style.setProperty('--cookie-banner-height-md', '80px');
             } else {
                 document.documentElement.style.removeProperty('--cookie-banner-height');
+                document.documentElement.style.removeProperty('--cookie-banner-height-sm');
+                document.documentElement.style.removeProperty('--cookie-banner-height-md');
             }
         }
     });
@@ -55,12 +59,12 @@
 
 {#if isVisible}
     <div
-        class="cookie-banner z-(--z-cookie-banner) fixed bottom-0 left-0 right-0 select-none px-4 pb-3 pt-2 antialiased sm:pt-3 md:py-7"
+        class="cookie-banner z-(--z-cookie-banner) fixed bottom-0 left-0 right-0 select-none px-4 pb-3 pt-2.5 antialiased sm:pt-3 md:py-7"
     >
         <div
             class="container mx-auto flex flex-col items-start justify-between gap-1 sm:max-w-[608px] sm:flex-row sm:items-center md:max-w-[736px] lg:max-w-[896px]"
         >
-            <p class="text-balance font-mono text-[11px] uppercase leading-4">
+            <p class="-ml-px max-w-[200px] text-balance font-mono text-[11px] uppercase leading-3 sm:max-w-none">
                 {t.cookie.message}
             </p>
 
