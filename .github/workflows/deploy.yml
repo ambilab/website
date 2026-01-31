@@ -60,12 +60,19 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Set Plausible env
+        run: |
+          if [ -n "${{ secrets.PUBLIC_PLAUSIBLE_SCRIPT_COM }}" ]; then
+            echo "PUBLIC_PLAUSIBLE_SCRIPT_COM=${{ secrets.PUBLIC_PLAUSIBLE_SCRIPT_COM }}" >> "$GITHUB_ENV"
+          fi
+          if [ -n "${{ secrets.PUBLIC_PLAUSIBLE_SCRIPT_CZ }}" ]; then
+            echo "PUBLIC_PLAUSIBLE_SCRIPT_CZ=${{ secrets.PUBLIC_PLAUSIBLE_SCRIPT_CZ }}" >> "$GITHUB_ENV"
+          fi
+
       - name: Build site
         run: pnpm build
         env:
           NODE_ENV: production
-          PUBLIC_PLAUSIBLE_SCRIPT_COM: ${{ secrets.PUBLIC_PLAUSIBLE_SCRIPT_COM }}
-          PUBLIC_PLAUSIBLE_SCRIPT_CZ: ${{ secrets.PUBLIC_PLAUSIBLE_SCRIPT_CZ }}
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v6
