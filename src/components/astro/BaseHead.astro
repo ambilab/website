@@ -21,6 +21,13 @@ const currentDomain = Astro.url.hostname;
 
 // CSP nonce from middleware for inline scripts/styles.
 const nonce = Astro.locals.nonce;
+
+// Plausible Analytics configuration
+const plausibleScriptCom = import.meta.env.PUBLIC_PLAUSIBLE_SCRIPT_COM;
+const plausibleScriptCz = import.meta.env.PUBLIC_PLAUSIBLE_SCRIPT_CZ;
+const isComDomain = currentDomain.includes('ambilab.com');
+const isCzDomain = currentDomain.includes('ambilab.cz');
+const plausibleScript = isComDomain ? plausibleScriptCom : isCzDomain ? plausibleScriptCz : undefined;
 ---
 
 <ClientRouter />
@@ -140,8 +147,14 @@ const nonce = Astro.locals.nonce;
     `}
 ></style>
 
-<link rel="preconnect" href="https://plausible.io" />
-<link rel="dns-prefetch" href="https://plausible.io" />
+{
+    import.meta.env.PROD && plausibleScript && (
+        <>
+            <link rel="preconnect" href="https://plausible.io" />
+            <link rel="dns-prefetch" href="https://plausible.io" />
+        </>
+    )
+}
 
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -205,4 +218,15 @@ const nonce = Astro.locals.nonce;
     })}
 />
 
-{import.meta.env.PROD && <script is:inline defer data-domain={currentDomain} src="https://plausible.io/js/script.js" />}
+{
+    import.meta.env.PROD && plausibleScript && (
+        <>
+            <script is:inline async src={plausibleScript} nonce={nonce} />
+            <script
+                is:inline
+                nonce={nonce}
+                set:html={`window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};plausible.init();`}
+            />
+        </>
+    )
+}

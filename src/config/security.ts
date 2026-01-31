@@ -22,12 +22,15 @@ export function buildCSP(config: CSPConfig): string {
 
     // Astro doesn't support CSP nonces for hydration scripts yet, so we use unsafe-inline
     // for both dev and prod. Nonce generation is still available for inline scripts in templates.
+    // Plausible Analytics: https://plausible.io is allowed for privacy-friendly analytics tracking
     const scriptSrc = `'self' https://plausible.io 'unsafe-inline'`;
 
     // unsafe-inline and unsafe-hashes allow inline styles and style attributes.
     const styleSrc = `'self' https://fonts.vancura.dev 'unsafe-inline' 'unsafe-hashes'`;
 
     // Dev allows WebSocket connections for HMR.
+    // Plausible Analytics: API endpoint for sending analytics events
+    // Buttondown: API endpoint for newsletter subscriptions
     const connectSrc = isDev
         ? `'self' https://plausible.io https://api.buttondown.email ws://localhost:* ws://127.0.0.1:*`
         : `'self' https://plausible.io https://api.buttondown.email https://fonts.vancura.dev`;
