@@ -64,6 +64,8 @@ jobs:
         run: pnpm build
         env:
           NODE_ENV: production
+          PUBLIC_PLAUSIBLE_SCRIPT_COM: ${{ secrets.PUBLIC_PLAUSIBLE_SCRIPT_COM }}
+          PUBLIC_PLAUSIBLE_SCRIPT_CZ: ${{ secrets.PUBLIC_PLAUSIBLE_SCRIPT_CZ }}
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v6
