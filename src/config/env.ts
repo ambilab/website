@@ -22,6 +22,26 @@ const envSchema = z.object({
     BUTTONDOWN_API_KEY: z.string().optional(),
 
     /**
+     * Plausible Analytics Script URL for ambilab.com
+     * Optional - if not set, analytics will be disabled
+     */
+    PUBLIC_PLAUSIBLE_SCRIPT_COM: z
+        .string()
+        .url({ error: 'Plausible script URL must be a valid URL' })
+        .refine((url) => url.startsWith('https://'), { error: 'Plausible script URL must use HTTPS' })
+        .optional(),
+
+    /**
+     * Plausible Analytics Script URL for ambilab.cz
+     * Optional - if not set, analytics will be disabled
+     */
+    PUBLIC_PLAUSIBLE_SCRIPT_CZ: z
+        .string()
+        .url({ error: 'Plausible script URL must be a valid URL' })
+        .refine((url) => url.startsWith('https://'), { error: 'Plausible script URL must use HTTPS' })
+        .optional(),
+
+    /**
      * Node environment
      * Automatically set by Astro/Vite
      */
@@ -70,6 +90,8 @@ export function validateEnv(env?: Record<string, unknown>): ValidatedEnv {
         // Note: DEV/PROD are booleans in Astro but stored as strings here for schema consistency
         const envObject: Record<string, unknown> = {
             BUTTONDOWN_API_KEY: sourceEnv.BUTTONDOWN_API_KEY,
+            PUBLIC_PLAUSIBLE_SCRIPT_COM: sourceEnv.PUBLIC_PLAUSIBLE_SCRIPT_COM,
+            PUBLIC_PLAUSIBLE_SCRIPT_CZ: sourceEnv.PUBLIC_PLAUSIBLE_SCRIPT_CZ,
             NODE_ENV: sourceEnv.NODE_ENV,
             DEV: sourceEnv.DEV ? 'true' : undefined,
             PROD: sourceEnv.PROD ? 'true' : undefined,
