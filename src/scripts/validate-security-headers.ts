@@ -44,8 +44,7 @@ function validateProductionCSP(): ValidationResult[] {
     const results: ValidationResult[] = [];
 
     try {
-        const testNonce = 'test-nonce-123';
-        const prodCSP = buildCSP({ nonce: testNonce, isDev: false });
+        const prodCSP = buildCSP({ isDev: false });
 
         // NOTE: We intentionally use 'unsafe-inline' instead of nonces because
         // Astro's hydration system doesn't support CSP nonces for dynamically
@@ -82,8 +81,7 @@ function validateDevelopmentCSP(): ValidationResult[] {
     const results: ValidationResult[] = [];
 
     try {
-        const testNonce = 'test-nonce-123';
-        const devCSP = buildCSP({ nonce: testNonce, isDev: true });
+        const devCSP = buildCSP({ isDev: true });
 
         const hasUnsafeInline = devCSP.includes("'unsafe-inline'");
 

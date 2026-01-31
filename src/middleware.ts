@@ -31,7 +31,6 @@ function createErrorResponse(pathname: string): Response {
     const response = new Response('Error', { status });
 
     applySecurityHeaders(response.headers, {
-        nonce: generateNonce(),
         isDev: import.meta.env.DEV,
     });
 
@@ -51,9 +50,9 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
         const response = await next();
 
-        // Dev CSP uses unsafe-inline without nonce; prod uses strict nonces.
+        // CSP uses unsafe-inline for scripts since Astro hydration doesn't support nonces.
+        // Nonce is still available in context.locals for inline scripts in templates.
         applySecurityHeaders(response.headers, {
-            nonce,
             isDev: import.meta.env.DEV,
         });
 

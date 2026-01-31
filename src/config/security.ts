@@ -14,7 +14,6 @@ export const STATIC_SECURITY_HEADERS = {
 } as const;
 
 export interface CSPConfig {
-    nonce: string;
     isDev?: boolean;
 }
 
@@ -22,7 +21,7 @@ export function buildCSP(config: CSPConfig): string {
     const { isDev = false } = config;
 
     // Astro doesn't support CSP nonces for hydration scripts yet, so we use unsafe-inline
-    // for both dev and prod. The nonce is still generated but not used in CSP.
+    // for both dev and prod. Nonce generation is still available for inline scripts in templates.
     const scriptSrc = `'self' https://plausible.io 'unsafe-inline'`;
 
     // unsafe-inline and unsafe-hashes allow inline styles and style attributes.
