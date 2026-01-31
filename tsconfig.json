@@ -28,8 +28,7 @@
       "@lib/*": ["./src/lib/*"],
       "@utils/*": ["./src/utils/*"],
       "@type/*": ["./src/types/*"],
-      "@i18n/*": ["./src/i18n/*"],
-      "@assets/*": ["./src/assets/*"]
+      "@i18n/*": ["./src/i18n/*"]
     }
   },
   "include": ["src/**/*"],
