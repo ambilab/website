@@ -27,7 +27,8 @@ const envSchema = z.object({
      */
     PUBLIC_PLAUSIBLE_SCRIPT_COM: z
         .string()
-        .regex(/^https:\/\//, { message: 'Plausible script URL must use HTTPS' })
+        .url({ error: 'Plausible script URL must be a valid URL' })
+        .refine((url) => url.startsWith('https://'), { error: 'Plausible script URL must use HTTPS' })
         .optional(),
 
     /**
@@ -36,7 +37,8 @@ const envSchema = z.object({
      */
     PUBLIC_PLAUSIBLE_SCRIPT_CZ: z
         .string()
-        .regex(/^https:\/\//, { message: 'Plausible script URL must use HTTPS' })
+        .url({ error: 'Plausible script URL must be a valid URL' })
+        .refine((url) => url.startsWith('https://'), { error: 'Plausible script URL must use HTTPS' })
         .optional(),
 
     /**
