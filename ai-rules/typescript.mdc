@@ -88,16 +88,15 @@ function formatPost(post: BlogPost | null): string {
 
 Configure in `tsconfig.json`, use throughout the codebase:
 
-| Alias           | Path               |
-| --------------- | ------------------ |
-| `@/*`           | `./src/*`          |
+| Alias           | Path                 |
+| --------------- | -------------------- |
+| `@/*`           | `./src/*`            |
 | `@components/*` | `./src/components/*` |
-| `@config/*`     | `./src/config/*`   |
-| `@lib/*`        | `./src/lib/*`      |
-| `@utils/*`      | `./src/utils/*`    |
-| `@type/*`       | `./src/types/*`    |
-| `@i18n/*`       | `./src/i18n/*`     |
-| `@assets/*`     | `./src/assets/*`   |
+| `@config/*`     | `./src/config/*`     |
+| `@lib/*`        | `./src/lib/*`        |
+| `@utils/*`      | `./src/utils/*`      |
+| `@type/*`       | `./src/types/*`      |
+| `@i18n/*`       | `./src/i18n/*`       |
 
 ## Import Order (ESLint simple-import-sort)
 
@@ -152,8 +151,8 @@ import { createLogger } from '@utils/logger';
 
 const logger = createLogger({ prefix: 'MyComponent' });
 
-logger.info('Initialized');  // [MyComponent] Initialized
-logger.warn('Warning');      // [MyComponent] Warning
+logger.info('Initialized'); // [MyComponent] Initialized
+logger.warn('Warning'); // [MyComponent] Warning
 logger.error('Failed', err); // [MyComponent] Failed
 ```
 
@@ -164,9 +163,5 @@ Use `safeExecute` for operations that may fail:
 ```typescript
 import { safeExecute } from '@utils/safe-execute';
 
-const result = safeExecute(
-  () => riskyOperation(),
-  'fallback value',
-  'Operation failed'
-);
+const result = safeExecute(() => riskyOperation(), 'fallback value', 'Operation failed');
 ```

@@ -30,7 +30,6 @@ This rule has no exceptions. Use plain text descriptions instead.
 
 **What to use instead:**
 
-- For icons: Create SVG files in `src/assets/icons/` and use the `Icon` component
 - For status indicators: Use text labels like `[PASS]`, `[FAIL]`, `[SUCCESS]`, `[ERROR]`
 - For visual markers: Use plain text like `Completed`, `Failed`, or semantic HTML
 
@@ -59,7 +58,6 @@ All code must pass strict TypeScript checks:
 - **Language**: TypeScript (strict mode)
 - **Content**: MDX via Astro Content Collections
 - **Code Highlighting**: Expressive Code (Shiki-based)
-- **Icons**: Custom SVGs
 - **Package Manager**: pnpm
 - **Deployment**: Cloudflare Pages
 - **Linting**: Biome + ESLint + Prettier
@@ -71,8 +69,6 @@ website/
   functions/              # Cloudflare Pages edge functions (advanced mode)
   public/                 # Static assets (favicons, OG images)
   src/
-    assets/
-      icons/             # SVG icons for Icon component
     components/
       astro/             # Astro-only components
       svelte/            # Interactive Svelte components
@@ -297,7 +293,6 @@ import { createLogger } from '@utils/logger';
 - `@utils/*` - src/utils/\*
 - `@type/*` - src/types/\*
 - `@i18n/*` - src/i18n/\*
-- `@assets/*` - src/assets/\*
 
 ## Git Commits
 

@@ -1,39 +1,21 @@
 ---
-import type { IconName } from '@config/icons';
-import { SITE } from '@config/site';
-
-import Icon from './Icon.astro';
-
 interface SocialLink {
     name: string;
     url: string;
-    icon: IconName;
 }
 
-const socialLinks: SocialLink[] = [
-    { name: 'X', url: SITE.SOCIAL.X, icon: 'x' },
-    { name: 'Threads', url: SITE.SOCIAL.THREADS, icon: 'threads' },
-    { name: 'Instagram', url: SITE.SOCIAL.INSTAGRAM, icon: 'instagram' },
-    { name: 'LinkedIn', url: SITE.SOCIAL.LINKEDIN, icon: 'linkedin' },
-    { name: 'Mastodon', url: SITE.SOCIAL.MASTODON, icon: 'mastodon' },
-    { name: 'Bluesky', url: SITE.SOCIAL.BLUESKY, icon: 'bluesky' },
-    { name: 'GitHub', url: SITE.SOCIAL.GITHUB, icon: 'github' },
-];
+const socialLinks: SocialLink[] = [];
 ---
 
-<div class="flex flex-wrap gap-3">
+<div class="flex flex-wrap gap-1">
     {
         socialLinks.map((link) => (
             <a
                 href={link.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="[&:hover,&:focus]:bg-active dark:[&:hover,&:focus]:bg-active-dark flex h-9 w-9 items-center justify-center rounded-lg border border-border-default dark:border-border-default-dark"
-                aria-label={link.name}
-                title={link.name}
-            >
-                <Icon name={link.icon} class="h-5 w-5" ariaLabel={link.name} decorative={false} />
-            </a>
+                class="border border-text-primary-dark px-[7px] py-[5px]"
+            />
         ))
     }
 </div>

@@ -308,25 +308,6 @@ For images requiring srcset and responsive sizes:
 <ResponsiveImage src="/images/screenshot.png" alt="Screenshot description" width={800} height={600} client:visible />
 ```
 
-### Icons
-
-Use SVGs in `src/assets/icons/` with the `Icon` component:
-
-```astro
----
-import Icon from '@components/astro/Icon.astro';
----
-
-<!-- Decorative icon (default) -->
-<Icon name="github" class="h-5 w-5" />
-
-<!-- Semantic icon with accessible label -->
-<Icon name="github" ariaLabel="GitHub profile" decorative={false} />
-```
-
-Available icons: `bluesky`, `calendar`, `clock`, `github`, `instagram`, `linkedin`, `mastodon`, `pixel-heart`,
-`refresh`, `tag`, `threads`, `user`, `x`.
-
 ## Demo Embeds
 
 Use `DemoEmbed` for sandboxed iframes with security validation:

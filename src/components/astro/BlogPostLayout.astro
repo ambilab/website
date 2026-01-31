@@ -8,7 +8,6 @@ import type { ISEOMetadata } from '@type/seo';
 import { formatDate } from '@utils/formatDate';
 
 import HeadingLinks from './HeadingLinks.astro';
-import Icon from './Icon.astro';
 import PageLayout from './PageLayout.astro';
 
 export interface Props extends ISEOMetadata {
@@ -53,13 +52,10 @@ const readingTime = calculateReadingTime(content);
 
             <div class="flex flex-wrap items-center gap-4 text-sm text-text-muted dark:text-text-muted-dark">
                 <div class="flex items-center gap-2">
-                    <Icon name="user" class="h-4 w-4" />
                     <span>{author}</span>
                 </div>
 
                 <div class="flex items-center gap-2">
-                    <Icon name="calendar" class="h-4 w-4" />
-
                     <time datetime={pubDate.toISOString()}>
                         {t.blog.publishedOn}
                         {formatDate(pubDate, locale)}
@@ -69,8 +65,6 @@ const readingTime = calculateReadingTime(content);
                 {
                     updatedDate && (
                         <div class="flex items-center gap-2">
-                            <Icon name="refresh" class="h-4 w-4" />
-
                             <time datetime={updatedDate.toISOString()}>
                                 {t.blog.updatedOn} {formatDate(updatedDate, locale)}
                             </time>
@@ -79,8 +73,6 @@ const readingTime = calculateReadingTime(content);
                 }
 
                 <div class="flex items-center gap-2">
-                    <Icon name="clock" class="h-4 w-4" />
-
                     <span>
                         {readingTime}
                         {t.blog.minutesShort}
@@ -91,8 +83,6 @@ const readingTime = calculateReadingTime(content);
             {
                 tags.length > 0 && (
                     <div class="mt-4 flex flex-wrap items-center gap-2">
-                        <Icon name="tag" class="h-4 w-4 text-text-muted dark:text-text-muted-dark" />
-
                         {tags.map((tag) => (
                             <span class="rounded-full bg-tag-bg px-3 py-1 text-xs font-medium text-tag-text dark:bg-tag-bg-dark dark:text-tag-text-dark">
                                 {tag}
