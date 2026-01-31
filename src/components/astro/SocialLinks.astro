@@ -1,6 +1,4 @@
 ---
-import { SITE } from '@config/site';
-
 interface SocialLink {
     name: string;
     url: string;
@@ -9,17 +7,15 @@ interface SocialLink {
 const socialLinks: SocialLink[] = [];
 ---
 
-<div class="flex flex-wrap gap-3">
+<div class="flex flex-wrap gap-1">
     {
         socialLinks.map((link) => (
             <a
                 href={link.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="[&:hover,&:focus]:bg-active dark:[&:hover,&:focus]:bg-active-dark flex h-9 w-9 items-center justify-center rounded-lg border border-border-default dark:border-border-default-dark"
-                aria-label={link.name}
-                title={link.name}
-            ></a>
+                class="border border-text-primary-dark px-[7px] py-[5px]"
+            />
         ))
     }
 </div>
