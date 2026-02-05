@@ -22,14 +22,15 @@ const { code, title, description, homeButtonText, homeLink = '/', locale } = Ast
     permalink={`${Astro.url.origin}/${code}`}
     locale={locale}
 >
-    <div class="container mx-auto flex select-none flex-col items-center justify-center px-4 py-8 text-center">
-        <h1 class="mb-6 block w-full font-sans text-7xl font-light">
-            {code}
+    <div
+        class="container mx-auto flex select-none flex-col items-start justify-start px-4 py-[9px] md:max-w-screen-md md:py-[22px] lg:max-w-[928px]"
+    >
+        <h1
+            class="-ml-[3px] mb-[6px] block w-full text-5xl font-light leading-[48px] tracking-tight md:-ml-[4px] md:mb-[9px] md:text-7xl md:leading-[72px]"
+        >
+            {code}.
+            <span class="block text-balance">{description}</span>
         </h1>
-
-        <p class="mb-8 w-full space-y-3">
-            {description}
-        </p>
 
         <Button client:load href={homeLink}>{homeButtonText}</Button>
     </div>
