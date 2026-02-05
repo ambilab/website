@@ -1,0 +1,20 @@
+---
+import ErrorPage from '@components/astro/ErrorPage.astro';
+import { DEFAULT_LOCALE } from '@i18n/config';
+import { getTranslation } from '@i18n/translations';
+import { getLocalizedPath } from '@i18n/utils';
+
+const detectedLocale = Astro.locals.locale ?? DEFAULT_LOCALE;
+const t = getTranslation(detectedLocale);
+
+const homePath = getLocalizedPath('', detectedLocale);
+---
+
+<ErrorPage
+    code={500}
+    title={t.serverError.title}
+    description={t.serverError.description}
+    homeButtonText={t.serverError.goHome}
+    homeLink={homePath}
+    locale={detectedLocale}
+/>
