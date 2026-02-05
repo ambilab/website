@@ -5,6 +5,7 @@ import { getTranslation } from '@i18n/translations';
 import { calculateReadingTime } from '@i18n/utils';
 import type { Locale } from '@type/locale';
 import type { ISEOMetadata } from '@type/seo';
+import type { LocaleContent } from '@utils/content-loader';
 import { formatDate } from '@utils/formatDate';
 
 import HeadingLinks from './HeadingLinks.astro';
@@ -19,6 +20,7 @@ export interface Props extends ISEOMetadata {
     tags?: string[];
     content: string;
     translationPath?: string;
+    pageMap?: LocaleContent['pageMap'] | undefined;
 }
 
 const {
@@ -32,6 +34,7 @@ const {
     tags = [],
     content,
     translationPath,
+    pageMap,
     ...seoProps
 } = Astro.props as Props;
 const t = getTranslation(locale);
@@ -43,6 +46,7 @@ const readingTime = calculateReadingTime(content);
     title={title}
     description={description}
     permalink={permalink}
+    pageMap={pageMap}
     {...translationPath ? { translationPath } : {}}
     {...seoProps}
 >

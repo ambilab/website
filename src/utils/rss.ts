@@ -3,9 +3,8 @@ import { SITE } from '@config/site';
 import { getTranslation } from '@i18n/translations';
 import type { Locale } from '@type/locale';
 import type { APIContext } from 'astro';
-import type { CollectionEntry } from 'astro:content';
-import { getCollection } from 'astro:content';
 
+import { loadLocaleContent, normalizeSlug, sortBlogPostsByDate } from './content-loader';
 import { createLogger } from './logger';
 
 const logger = createLogger({ prefix: 'RSS' });
@@ -15,7 +14,7 @@ export function getBlogPostLink(postId: string): string {
         throw new Error(`Invalid post ID format: ${postId}. Expected format: "locale/slug.mdx"`);
     }
 
-    return `/blog/${postId.replace(/\.(mdx|md)$/, '').replace(/^[^/]+\//, '')}`;
+    return `/blog/${normalizeSlug(postId)}`;
 }
 
 export async function generateRssFeed(
@@ -25,12 +24,8 @@ export async function generateRssFeed(
     languageCode: string,
 ): Promise<Response> {
     try {
-        const posts = await getCollection(
-            'blog',
-            (entry: CollectionEntry<'blog'>) => !entry.data.draft && entry.data.locale === locale,
-        );
-
-        const sortedPosts = [...posts].sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
+        const content = await loadLocaleContent(locale);
+        const sortedPosts = sortBlogPostsByDate(content.blogPosts);
         const recentPosts = sortedPosts.slice(0, 20);
         const t = getTranslation(locale);
         const description = t.footer.description;

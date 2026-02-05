@@ -5,6 +5,7 @@ import CookieBanner from '@components/svelte/CookieBanner.svelte';
 import GoToTop from '@components/svelte/GoToTop.svelte';
 import type { Locale } from '@type/locale';
 import type { ISEOMetadata } from '@type/seo';
+import { loadLocaleContent, type LocaleContent } from '@utils/content-loader';
 
 import Footer from './Footer.astro';
 import Head from './Head.astro';
@@ -13,10 +14,14 @@ import Menu from './Menu.astro';
 export interface Props extends ISEOMetadata {
     locale: Locale;
     translationPath?: string;
+    pageMap?: LocaleContent['pageMap'] | undefined;
 }
 
-const { locale, translationPath, ...seoProps } = Astro.props as Props;
+const { locale, translationPath, pageMap: providedPageMap, ...seoProps } = Astro.props as Props;
 const currentPath = Astro.url.pathname;
+
+// Use provided pageMap if available, otherwise load content (fallback for error pages)
+const pageMap = providedPageMap ?? (await loadLocaleContent(locale)).pageMap;
 ---
 
 <!doctype html>
@@ -49,7 +54,7 @@ const currentPath = Astro.url.pathname;
             'flex min-h-screen flex-col bg-page-bg text-text-primary dark:bg-page-bg-dark dark:text-text-primary-dark',
         ]}
     >
-        <Menu locale={locale} currentPath={currentPath} translationPath={translationPath} />
+        <Menu locale={locale} currentPath={currentPath} translationPath={translationPath} pageMap={pageMap} />
 
         <main id="main-content" class="bg-dots flex-1">
             <slot />

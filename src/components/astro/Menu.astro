@@ -6,14 +6,16 @@ import ThemeSwitcher from '@components/svelte/ThemeSwitcher.svelte';
 import { getRoute } from '@config/routes';
 import { getTranslation } from '@i18n/translations';
 import type { Locale } from '@type/locale';
+import type { LocaleContent } from '@utils/content-loader';
 
 export interface Props {
     locale: Locale;
     currentPath: string;
     translationPath?: string | undefined;
+    pageMap?: LocaleContent['pageMap'] | undefined;
 }
 
-const { locale, currentPath, translationPath } = Astro.props as Props;
+const { locale, currentPath, translationPath, pageMap } = Astro.props as Props;
 
 const t = getTranslation(locale);
 ---
@@ -49,7 +51,7 @@ const t = getTranslation(locale);
                 </div>
 
                 <nav aria-label="Main navigation" class="hidden items-center md:flex">
-                    <MenuNav locale={locale} currentPath={currentPath} mobile={false} />
+                    <MenuNav locale={locale} currentPath={currentPath} mobile={false} pageMap={pageMap} />
                 </nav>
             </div>
 
@@ -63,7 +65,7 @@ const t = getTranslation(locale);
                 <MobileMenu client:load>
                     <div class="flex flex-col items-center justify-start px-4">
                         <div class="w-full text-left sm:max-w-[608px]">
-                            <MenuNav locale={locale} currentPath={currentPath} mobile={true} />
+                            <MenuNav locale={locale} currentPath={currentPath} mobile={true} pageMap={pageMap} />
                         </div>
 
                         <div class="flex w-full items-end justify-end pb-3 sm:max-w-[608px]">
