@@ -32,111 +32,105 @@ const plausibleScript = isComDomain ? plausibleScriptCom : isCzDomain ? plausibl
 
 <ClientRouter />
 
-{
-    import.meta.env.PROD && (
-        <>
-            <link rel="preconnect" href="https://fonts.vancura.dev" crossorigin />
-            <link rel="dns-prefetch" href="https://fonts.vancura.dev" />
+<link rel="preconnect" href="https://fonts.vancura.dev" crossorigin />
+<link rel="dns-prefetch" href="https://fonts.vancura.dev" />
 
-            <link
-                rel="preload"
-                href="https://fonts.vancura.dev/InnovatorGrotesk-Regular.woff2"
-                as="font"
-                type="font/woff2"
-                crossorigin
-            />
+<link
+    rel="preload"
+    href="https://fonts.vancura.dev/InnovatorGrotesk-Regular.woff2"
+    as="font"
+    type="font/woff2"
+    crossorigin
+/>
 
-            <link
-                rel="preload"
-                href="https://fonts.vancura.dev/InnovatorGrotesk-Medium.woff2"
-                as="font"
-                type="font/woff2"
-                crossorigin
-            />
+<link
+    rel="preload"
+    href="https://fonts.vancura.dev/InnovatorGrotesk-Medium.woff2"
+    as="font"
+    type="font/woff2"
+    crossorigin
+/>
 
-            <link
-                rel="preload"
-                href="https://fonts.vancura.dev/InnovatorGrotesk-SemiBold.woff2"
-                as="font"
-                type="font/woff2"
-                crossorigin
-            />
+<link
+    rel="preload"
+    href="https://fonts.vancura.dev/InnovatorGrotesk-SemiBold.woff2"
+    as="font"
+    type="font/woff2"
+    crossorigin
+/>
 
-            <link
-                rel="preload"
-                href="https://fonts.vancura.dev/InnovatorGrotesk-Bold.woff2"
-                as="font"
-                type="font/woff2"
-                crossorigin
-            />
-        </>
-    )
-}
+<link
+    rel="preload"
+    href="https://fonts.vancura.dev/InnovatorGrotesk-Bold.woff2"
+    as="font"
+    type="font/woff2"
+    crossorigin
+/>
+
+<link rel="preload" href="https://fonts.vancura.dev/Nerissimo-Light.woff2" as="font" type="font/woff2" crossorigin />
 
 <link rel="preload" href="/fonts/DepartureMono-Regular.woff2" as="font" type="font/woff2" crossorigin />
-
-{
-    import.meta.env.PROD && (
-        <style
-            is:inline
-            nonce={nonce}
-            set:html={`
-                @font-face {
-                    font-family: 'Innovator Grotesk';
-                    src: url('https://fonts.vancura.dev/InnovatorGrotesk-Light.woff2') format('woff2');
-                    font-weight: 300;
-                    font-style: normal;
-                    font-display: swap;
-                }
-
-                @font-face {
-                    font-family: 'Innovator Grotesk';
-                    src: url('https://fonts.vancura.dev/InnovatorGrotesk-Regular.woff2') format('woff2');
-                    font-weight: 400;
-                    font-style: normal;
-                    font-display: swap;
-                }
-
-                @font-face {
-                    font-family: 'Innovator Grotesk';
-                    src: url('https://fonts.vancura.dev/InnovatorGrotesk-Medium.woff2') format('woff2');
-                    font-weight: 500;
-                    font-style: normal;
-                    font-display: swap;
-                }
-
-                @font-face {
-                    font-family: 'Innovator Grotesk';
-                    src: url('https://fonts.vancura.dev/InnovatorGrotesk-SemiBold.woff2') format('woff2');
-                    font-weight: 600;
-                    font-style: normal;
-                    font-display: swap;
-                }
-
-                @font-face {
-                    font-family: 'Innovator Grotesk';
-                    src: url('https://fonts.vancura.dev/InnovatorGrotesk-Bold.woff2') format('woff2');
-                    font-weight: 700;
-                    font-style: normal;
-                    font-display: swap;
-                }
-
-                @font-face {
-                    font-family: 'Innovator Grotesk';
-                    src: url('https://fonts.vancura.dev/InnovatorGrotesk-Black.woff2') format('woff2');
-                    font-weight: 900;
-                    font-style: normal;
-                    font-display: swap;
-                }
-            `}
-        />
-    )
-}
 
 <style
     is:inline
     nonce={nonce}
     set:html={`
+        @font-face {
+            font-family: 'Innovator Grotesk';
+            src: url('https://fonts.vancura.dev/InnovatorGrotesk-Light.woff2') format('woff2');
+            font-weight: 300;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Innovator Grotesk';
+            src: url('https://fonts.vancura.dev/InnovatorGrotesk-Regular.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Innovator Grotesk';
+            src: url('https://fonts.vancura.dev/InnovatorGrotesk-Medium.woff2') format('woff2');
+            font-weight: 500;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Innovator Grotesk';
+            src: url('https://fonts.vancura.dev/InnovatorGrotesk-SemiBold.woff2') format('woff2');
+            font-weight: 600;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Innovator Grotesk';
+            src: url('https://fonts.vancura.dev/InnovatorGrotesk-Bold.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Innovator Grotesk';
+            src: url('https://fonts.vancura.dev/InnovatorGrotesk-Black.woff2') format('woff2');
+            font-weight: 900;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Nerissimo';
+            src: url('https://fonts.vancura.dev/Nerissimo-Light.woff2') format('woff2');
+            font-weight: 300;
+            font-style: normal;
+            font-display: swap;
+        }
+
         @font-face {
             font-family: 'Departure Mono';
             src: url('/fonts/DepartureMono-Regular.woff2') format('woff2');

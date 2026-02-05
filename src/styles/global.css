@@ -7,6 +7,7 @@
 @theme {
     --font-sans: 'Innovator Grotesk', system-ui, sans-serif;
     --font-mono: 'Departure Mono', ui-monospace, 'SF Mono', Menlo, Monaco, Consolas, monospace;
+    --font-display: 'Nerissimo', system-ui, sans-serif;
 
     /* Semantic Colors - Page & Surface Backgrounds */
     --color-page-bg: theme('colors.zinc.200');
@@ -194,6 +195,44 @@ body {
         'ss01' 0,
         'ss02' 0,
         'ss03' 0;
+}
+
+h1,
+h2,
+h3 {
+    font-family: var(--font-display);
+
+    /**
+     * OpenType font features for Nerissimo.
+     *
+     * Enabled features (1):
+     * - kern: Kerning for improved letter spacing
+     * - liga: Standard ligatures
+     * - clig: Contextual ligatures
+     * - calt: Contextual alternates for better text flow
+     * - onum: Oldstyle figures (varying heights, descenders for 3,4,5,7,9)
+     * - pnum: Proportional figures (variable-width numbers)
+     * - zero: Slashed zero for clarity
+     *
+     * Disabled features (0):
+     * - dlig: Discretionary ligatures (not used)
+     * - lnum: Lining figures (disabled in favor of oldstyle)
+     * - tnum: Tabular figures (disabled in favor of proportional)
+     *
+     * Note: Nerissimo uses different OpenType features than Innovator Grotesk.
+     * Oldstyle figures provide a more elegant, traditional appearance for headings.
+     */
+    font-feature-settings:
+        'kern' 1,
+        'liga' 1,
+        'clig' 1,
+        'calt' 1,
+        'dlig' 0,
+        'zero' 1,
+        'tnum' 0;
+
+    font-variant-numeric: lining-nums;
+    text-transform: uppercase;
 }
 
 /* Focus styles for accessibility */
