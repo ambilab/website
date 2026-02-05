@@ -3,7 +3,7 @@ import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import svelte from '@astrojs/svelte';
 import tailwindcss from '@tailwindcss/vite';
-import { defineConfig } from 'astro/config';
+import { defineConfig, envField } from 'astro/config';
 import expressiveCode from 'astro-expressive-code';
 import remarkGfm from 'remark-gfm';
 import remarkSmartypants from 'remark-smartypants';
@@ -18,6 +18,15 @@ export default defineConfig({
             enabled: true,
         },
     }),
+
+    env: {
+        schema: {
+            BUTTONDOWN_API_KEY: envField.string({
+                context: 'server',
+                access: 'secret',
+            }),
+        },
+    },
 
     integrations: [
         svelte(),

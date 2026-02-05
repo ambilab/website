@@ -1,5 +1,6 @@
 import { createLogger } from '@utils/logger';
 import type { APIRoute } from 'astro';
+import { getSecret } from 'astro:env/server';
 
 const logger = createLogger({ prefix: 'Newsletter API' });
 
@@ -34,29 +35,17 @@ function validateEmail(email: unknown): ValidationResult {
     return { valid: true };
 }
 
-function validateApiKey(apiKey: string | undefined): ValidationResult {
-    if (!apiKey) {
-        logger.error("BUTTONDOWN_API_KEY isn't set");
-
-        return { valid: false, error: "Newsletter service isn't configured" };
-    }
-
-    return { valid: true };
-}
-
 async function logButtondownError(response: Response): Promise<void> {
-    logger.error(`Buttondown API error: Status ${response.status}`);
+    logger.error(`Buttondown API error: Status ${response.status} ${response.statusText}`);
 
     try {
         const errorText = await response.text();
-        const errorData = JSON.parse(errorText) as { message?: string; error?: string };
+        const errorData = JSON.parse(errorText) as { message?: string; error?: string; [key: string]: unknown };
         const errorMessage = errorData.message || errorData.error;
 
-        if (errorMessage) {
-            logger.error(`Buttondown API error message: ${errorMessage}`);
-        }
+        logger.error(`Buttondown API error message: ${errorMessage ?? 'Unknown error'}`);
     } catch {
-        // Failed to parse error response, status code already logged.
+        logger.error('Failed to parse Buttondown error response as JSON');
     }
 }
 
@@ -67,7 +56,7 @@ async function subscribeToButtondown(email: string, apiKey: string): Promise<Sub
             'Content-Type': 'application/json',
             Authorization: `Token ${apiKey}`,
         },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email_address: email }),
     });
 
     if (!response.ok) {
@@ -94,14 +83,14 @@ export const POST: APIRoute = async ({ request }) => {
             return jsonResponse({ error: emailValidation.error }, 400);
         }
 
-        const buttondownApiKey = import.meta.env.BUTTONDOWN_API_KEY;
-        const apiKeyValidation = validateApiKey(buttondownApiKey);
+        const apiKey = getSecret('BUTTONDOWN_API_KEY');
 
-        if (!apiKeyValidation.valid) {
-            return jsonResponse({ error: apiKeyValidation.error }, 500);
+        if (!apiKey) {
+            logger.error('BUTTONDOWN_API_KEY is not configured');
+            return jsonResponse({ error: 'Newsletter service is not configured' }, 500);
         }
 
-        const result = await subscribeToButtondown(email, buttondownApiKey);
+        const result = await subscribeToButtondown(email, apiKey);
 
         if (!result.success) {
             return jsonResponse({ error: result.error }, result.status);

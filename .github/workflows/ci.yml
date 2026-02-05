@@ -159,6 +159,7 @@ jobs:
         run: pnpm build
         env:
           NODE_ENV: production
+          BUTTONDOWN_API_KEY: ${{ secrets.BUTTONDOWN_API_KEY }}
 
       - name: Validate security headers
         run: pnpm validate:security
