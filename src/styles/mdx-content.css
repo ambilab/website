@@ -6,7 +6,7 @@
     --color-table-border: #e5e7eb; /* gray.200 */
 
     & a:not(.anchor) {
-        @apply relative font-medium text-link underline underline-offset-4 [&:hover,&:focus]:text-link-hover dark:text-link-dark dark:[&:hover,&:focus]:text-link-hover-dark;
+        @apply [&:hover,&:focus]:text-link-hover dark:[&:hover,&:focus]:text-link-hover-dark relative font-medium text-link underline underline-offset-4 dark:text-link-dark;
 
         &[href^='http']::after,
         &[href^='https']::after {
@@ -18,7 +18,7 @@
     & h2,
     & h3,
     & h4 {
-        @apply relative scroll-mt-20 font-bold;
+        @apply relative scroll-mt-20 text-balance;
 
         & .anchor {
             @apply absolute -left-6 no-underline opacity-0;
@@ -30,23 +30,33 @@
     }
 
     & h1 {
-        @apply mb-4 mt-8 text-4xl;
+        @apply -ml-[1.5px] mb-[16px] mt-[27px];
+        @apply text-[36px] leading-[36px];
+        @apply sm:-ml-[2px] sm:mt-[30px] sm:text-[40px] sm:leading-[40px];
+        @apply md:-ml-[4px] md:mb-[12px] md:mt-[34px] md:text-[73px] md:font-light md:leading-[72px] md:tracking-tight;
     }
 
     & h2 {
-        @apply mb-4 mt-12 border-t border-border-default pt-8 text-3xl dark:border-border-default-dark;
+        @apply mb-[16px] mt-[32px] pt-[32px];
+        @apply border-t-2 border-border-default dark:border-border-default-dark;
+        @apply text-[32px] leading-[32px];
+        @apply md:mb-[16px] md:mt-[40px] md:pt-[46px] md:text-[40px] md:leading-[40px];
     }
 
     & h3 {
-        @apply mb-3 mt-8 text-2xl font-semibold;
+        @apply mb-[14px] mt-[40px];
+        @apply text-[24px] leading-[24px];
+        @apply md:mb-[18px] md:mt-[46px] md:text-[32px] md:leading-[32px];
     }
 
     & h4 {
-        @apply mb-2 mt-6 text-xl font-semibold;
+        @apply mb-[8px] mt-[8px] text-[16px] font-semibold leading-[24px];
     }
 
     & p {
-        @apply mb-4 leading-relaxed;
+        @apply mb-4;
+        @apply text-[14px] leading-[20px];
+        @apply md:leading-(--line-height-rhythm-2) md:text-base;
     }
 
     & ul,
