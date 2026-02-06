@@ -201,11 +201,14 @@ body {
      * - dlig: Discretionary ligatures
      * - zero: Slashed zero for clarity
      * - tnum: Tabular numbers for alignment in tables
-     * - cv01, cv06, cv08, cv09, cv10, cv13: Character variants for improved readability
+     * - cv01: Character variant 1
+     * - cv08: Character variant 8
+     * - cv13: Character variant 13
      *
      * Disabled features (0):
      * - calt: Contextual alternates (disabled for consistency)
-     * - Other cv/ss features: Not used or not supported by the font
+     * - cv02-cv07, cv09-cv12, cv14-cv15: Character variants (not used)
+     * - ss01-ss03: Stylistic sets (not used)
      *
      * Note: Unsupported features are silently ignored by browsers.
      */
@@ -222,11 +225,11 @@ body {
         'cv03' 0,
         'cv04' 0,
         'cv05' 0,
-        'cv06' 1,
+        'cv06' 0,
         'cv07' 0,
         'cv08' 1,
-        'cv09' 1,
-        'cv10' 1,
+        'cv09' 0,
+        'cv10' 0,
         'cv11' 0,
         'cv12' 0,
         'cv13' 1,
