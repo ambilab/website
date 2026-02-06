@@ -109,6 +109,12 @@
     --color-tag-text: theme('colors.lime.800');
     --color-tag-text-dark: theme('colors.lime.200');
 
+    /* Vertical rhythm (8px grid) */
+    --spacing-rhythm: 8px;
+    --line-height-rhythm-3: 24px; /* 3x8: body text, h4 */
+    --line-height-rhythm-4: 32px; /* 4x8: prose-lg body, h3 */
+    --line-height-rhythm-5: 40px; /* 5x8: h1, h2 */
+
     /* Dot pattern background */
     --bg-dots-image: radial-gradient(circle, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
 
@@ -126,7 +132,30 @@
     .bg-dots {
         background-image: var(--bg-dots-image);
         background-size: 8px 8px;
-        background-position: 0 3px;
+
+        /**
+         * Background position: 0 3.5px
+         *
+         * This half-pixel vertical shift (3.5px = 8px / 2 - 0.5px) better aligns
+         * the dots to the 8px rhythm grid. Adjusted for visual harmony with the
+         * vertical rhythm system.
+         */
+        background-position: 0 3.5px;
+    }
+}
+
+/* Vertical Rhythm Debug Overlay */
+@layer utilities {
+    .debug-rhythm {
+        background-image:
+            linear-gradient(to bottom, rgba(255, 0, 0, 0.25) 0 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(255, 0, 0, 0.1) 0 1px, transparent 1px);
+        background-size:
+            100% calc(var(--spacing-rhythm) * 4),
+            100% var(--spacing-rhythm);
+        background-position:
+            0 calc(var(--spacing-rhythm) * -2),
+            0 calc(var(--spacing-rhythm) * -2);
     }
 }
 
@@ -144,6 +173,17 @@
 html {
     /*noinspection CssNoGenericFontName*/
     font-family: var(--font-sans);
+
+    /**
+     * Unitless line-height: 1.5
+     *
+     * 24px = 3x8 grid, defines 1rlh at default 16px root font size.
+     * Note: This value is relative to font-size. If font-size changes
+     * (e.g., responsive typography, user settings), the computed line-height
+     * will scale proportionally. The rhythm grid overlay uses fixed pixel
+     * values (8px/32px) and will not automatically align if font-size changes.
+     */
+    line-height: 1.5;
 }
 
 body {
