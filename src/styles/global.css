@@ -109,6 +109,12 @@
     --color-tag-text: theme('colors.lime.800');
     --color-tag-text-dark: theme('colors.lime.200');
 
+    /* Vertical rhythm (8px grid) */
+    --spacing-rhythm: 8px;
+    --line-height-rhythm-3: 24px; /* 3x8: body text, h4 */
+    --line-height-rhythm-4: 32px; /* 4x8: prose-lg body, h3 */
+    --line-height-rhythm-5: 40px; /* 5x8: h1, h2 */
+
     /* Dot pattern background */
     --bg-dots-image: radial-gradient(circle, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
 
@@ -126,7 +132,22 @@
     .bg-dots {
         background-image: var(--bg-dots-image);
         background-size: 8px 8px;
-        background-position: 0 3px;
+        background-position: 0 3.5px;
+    }
+}
+
+/* Vertical Rhythm Debug Overlay */
+@layer utilities {
+    .debug-rhythm {
+        background-image:
+            linear-gradient(to bottom, rgba(255, 0, 0, 0.25) 0 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(255, 0, 0, 0.1) 0 1px, transparent 1px);
+        background-size:
+            100% 32px,
+            100% 8px;
+        background-position:
+            0 -16px,
+            0 -16px;
     }
 }
 
@@ -144,6 +165,7 @@
 html {
     /*noinspection CssNoGenericFontName*/
     font-family: var(--font-sans);
+    line-height: 1.5; /* 24px = 3x8 grid, defines 1rlh */
 }
 
 body {
