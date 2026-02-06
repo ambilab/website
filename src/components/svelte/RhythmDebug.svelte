@@ -26,6 +26,8 @@
     onMount(() => {
         window.addEventListener('keydown', handleKeydown);
 
+        toggle();
+
         return () => {
             window.removeEventListener('keydown', handleKeydown);
 
