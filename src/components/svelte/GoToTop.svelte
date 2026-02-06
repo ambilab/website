@@ -48,7 +48,7 @@
     <button
         transition:fade={{ duration: COMPONENT_CONFIG.goToTop.animationDuration }}
         onclick={handleClick}
-        class="go-to-top-button z-(--z-go-to-top) [&:hover,&:focus]:bg-button-primary-hover [&:hover,&:focus]:shadow-xl dark:[&:hover,&:focus]:bg-button-primary-hover-dark bg-button-primary dark:bg-button-primary-dark fixed rounded-full p-3 text-button-primary-text shadow-lg dark:text-button-primary-text-dark"
+        class="go-to-top-button [&:hover,&:focus]:bg-button-primary-hover [&:hover,&:focus]:shadow-xl dark:[&:hover,&:focus]:bg-button-primary-hover-dark bg-button-primary dark:bg-button-primary-dark fixed z-go-to-top rounded-full p-3 text-button-primary-text shadow-lg dark:text-button-primary-text-dark"
         aria-label="Go to top"
     >
         <svg class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
