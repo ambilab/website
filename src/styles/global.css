@@ -119,12 +119,12 @@
     --bg-dots-image: radial-gradient(circle, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
 
     /* Z-index values */
-    --z-header: 50;
-    --z-mobile-menu: 60;
-    --z-header-bar: 100;
-    --z-cookie-banner: 110;
-    --z-go-to-top: 120;
-    --z-skip-navigation-link: 200;
+    --z-index-header: 50;
+    --z-index-mobile-menu: 60;
+    --z-index-header-bar: 100;
+    --z-index-cookie-banner: 110;
+    --z-index-go-to-top: 120;
+    --z-index-skip-navigation-link: 200;
 }
 
 /* Dot Background Utilities */
