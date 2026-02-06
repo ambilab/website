@@ -17,7 +17,7 @@
     };
 
     const handleKeydown = (event: KeyboardEvent) => {
-        if (event.ctrlKey && event.shiftKey && event.key === 'G') {
+        if (event.ctrlKey && event.shiftKey && event.code === 'KeyG') {
             event.preventDefault();
             toggle();
         }
