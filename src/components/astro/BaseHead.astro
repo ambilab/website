@@ -68,6 +68,7 @@ const plausibleScript = isComDomain ? plausibleScriptCom : isCzDomain ? plausibl
 />
 
 <link rel="preload" href="https://fonts.vancura.dev/Nerissimo-Light.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="https://fonts.vancura.dev/Nerissimo-Book.woff2" as="font" type="font/woff2" crossorigin />
 
 <link rel="preload" href="/fonts/DepartureMono-Regular.woff2" as="font" type="font/woff2" crossorigin />
 
@@ -127,6 +128,14 @@ const plausibleScript = isComDomain ? plausibleScriptCom : isCzDomain ? plausibl
             font-family: 'Nerissimo';
             src: url('https://fonts.vancura.dev/Nerissimo-Light.woff2') format('woff2');
             font-weight: 300;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'Nerissimo';
+            src: url('https://fonts.vancura.dev/Nerissimo-Book.woff2') format('woff2');
+            font-weight: 400;
             font-style: normal;
             font-display: swap;
         }

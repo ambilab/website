@@ -19,8 +19,8 @@
     --color-surface-code-dark: theme('colors.gray.800');
 
     /* Semantic Colors - Borders */
-    --color-border-default: theme('colors.zinc.300');
-    --color-border-default-dark: theme('colors.zinc.800');
+    --color-border-default: theme('colors.zinc.400');
+    --color-border-default-dark: theme('colors.zinc.700');
     --color-border-medium: theme('colors.gray.300');
     --color-border-medium-dark: theme('colors.gray.700');
     --color-border-subtle: theme('colors.gray.400');
@@ -111,9 +111,12 @@
 
     /* Vertical rhythm (8px grid) */
     --spacing-rhythm: 8px;
-    --line-height-rhythm-3: 24px; /* 3x8: body text, h4 */
-    --line-height-rhythm-4: 32px; /* 4x8: prose-lg body, h3 */
-    --line-height-rhythm-5: 40px; /* 5x8: h1, h2 */
+
+    /* Line heights for vertical rhythm - define as utilities */
+    --line-height-rhythm-2: 16px;
+    --line-height-rhythm-3: 24px;
+    --line-height-rhythm-4: 32px;
+    --line-height-rhythm-5: 40px;
 
     /* Dot pattern background */
     --bg-dots-image: radial-gradient(circle, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
@@ -146,16 +149,18 @@
 
 /* Vertical Rhythm Debug Overlay */
 @layer utilities {
-    .debug-rhythm {
-        background-image:
-            linear-gradient(to bottom, rgba(255, 0, 0, 0.25) 0 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(255, 0, 0, 0.1) 0 1px, transparent 1px);
-        background-size:
-            100% calc(var(--spacing-rhythm) * 4),
-            100% var(--spacing-rhythm);
-        background-position:
-            0 calc(var(--spacing-rhythm) * -2),
-            0 calc(var(--spacing-rhythm) * -2);
+    @media (min-width: theme('screens.md')) {
+        .debug-rhythm {
+            background-image:
+                linear-gradient(to bottom, rgba(255, 0, 0, 0.25) 0 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 0, 0, 0.1) 0 1px, transparent 1px);
+            background-size:
+                100% calc(var(--spacing-rhythm) * 4),
+                100% var(--spacing-rhythm);
+            background-position:
+                0 calc(var(--spacing-rhythm) * -2),
+                0 calc(var(--spacing-rhythm) * -2);
+        }
     }
 }
 
@@ -201,11 +206,14 @@ body {
      * - dlig: Discretionary ligatures
      * - zero: Slashed zero for clarity
      * - tnum: Tabular numbers for alignment in tables
-     * - cv01, cv06, cv08, cv09, cv10, cv13: Character variants for improved readability
+     * - cv01: Character variant 1
+     * - cv08: Character variant 8
+     * - cv13: Character variant 13
      *
      * Disabled features (0):
      * - calt: Contextual alternates (disabled for consistency)
-     * - Other cv/ss features: Not used or not supported by the font
+     * - cv02-cv07, cv09-cv12, cv14-cv15: Character variants (not used)
+     * - ss01-ss03: Stylistic sets (not used)
      *
      * Note: Unsupported features are silently ignored by browsers.
      */
@@ -222,11 +230,11 @@ body {
         'cv03' 0,
         'cv04' 0,
         'cv05' 0,
-        'cv06' 1,
+        'cv06' 0,
         'cv07' 0,
         'cv08' 1,
-        'cv09' 1,
-        'cv10' 1,
+        'cv09' 0,
+        'cv10' 0,
         'cv11' 0,
         'cv12' 0,
         'cv13' 1,
