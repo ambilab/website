@@ -34,6 +34,10 @@
     --color-card-bg: theme('colors.lime.700');
     --color-card-text: theme('colors.white');
 
+    /* Semantic Colors - Stickie */
+    --color-stickie-bg: theme('colors.yellow.400');
+    --color-stickie-text: theme('colors.black');
+
     /* Semantic Colors - Primary Button */
     --color-button-primary-bg: theme('colors.lime.700');
     --color-button-primary-bg-hover: theme('colors.lime.800');
@@ -127,6 +131,10 @@
     --color-card-bg: theme('colors.lime.500');
     --color-card-text: theme('colors.black');
 
+    /* Semantic Colors - Stickie */
+    --color-stickie-bg: theme('colors.yellow.400');
+    --color-stickie-text: theme('colors.black');
+
     /* Semantic Colors - Primary Button */
     --color-button-primary-bg: theme('colors.lime.500');
     --color-button-primary-bg-hover: theme('colors.lime.400');
@@ -189,6 +197,13 @@
         box-shadow:
             0 2px 0 0 var(--color-page-bg),
             0 4px 0 0 var(--color-card-bg);
+    }
+
+    /* Stickie background utilities */
+    .stickie-with-shadows {
+        box-shadow:
+            0 2px 0 0 var(--color-page-bg),
+            0 4px 0 0 var(--color-stickie-bg);
     }
 
     /* Vertical Rhythm Debug Overlay */

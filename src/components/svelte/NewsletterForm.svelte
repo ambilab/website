@@ -1,4 +1,5 @@
 <script lang="ts">
+    import Button from '@components/svelte/Button.svelte';
     import { getTranslation } from '@i18n/translations';
     import type { Locale } from '@type/locale';
     import { createLogger } from '@utils/logger';
@@ -56,10 +57,10 @@
     };
 </script>
 
-<div class="rounded-lg bg-info-bg p-6">
-    <h3 class="mb-2 text-xl font-semibold">{t.newsletter.title}</h3>
+<div class="stickie-with-shadows -mx-[16px] select-none bg-stickie-bg px-[16px] py-[16px] text-stickie-text">
+    <h3 class="mt-px! md:mt-[2px]! mb-2!">{t.newsletter.title}</h3>
 
-    <p class="mb-4 text-sm text-text-muted">
+    <p class="text-balance">
         {t.newsletter.description}
     </p>
 
@@ -70,37 +71,20 @@
             placeholder={t.newsletter.emailPlaceholder}
             required
             disabled={status === 'loading'}
-            class="flex-1 rounded-lg border border-border-medium px-4 py-2 focus:border-focus-ring focus:outline-none focus:ring-2 focus:ring-focus-ring disabled:opacity-50"
+            class="flex-1 border-2 border-stickie-text px-4 py-2 focus:border-stickie-text focus:bg-stickie-text focus:text-white focus:outline-none focus:ring-focus-ring disabled:opacity-50"
         />
 
-        <button
-            type="submit"
-            disabled={status === 'loading'}
-            class="bg-button-primary [&:hover,&:focus]:bg-button-primary-hover inline-flex items-center gap-2 rounded-lg px-4 py-2 font-medium text-button-primary-text disabled:opacity-50"
-        >
+        <Button type="submit" class="[&:hover,&:focus]:bg-stickie-text bg-stickie-text" disabled={status === 'loading'}>
             {#if status === 'loading'}
-                <svg class="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                        d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                    />
-                </svg>
-
                 {t.newsletter.subscribing}
             {:else}
                 {t.buttons.subscribe}
             {/if}
-        </button>
+        </Button>
     </form>
 
     {#if message}
-        <p
-            class="mt-2 text-sm"
-            class:text-success-text={status === 'success'}
-            class:text-error-text={status === 'error'}
-        >
+        <p class="mb-0! mt-4 text-balance">
             {message}
         </p>
     {/if}

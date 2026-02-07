@@ -27,6 +27,9 @@ export default {
                 'card-bg': 'var(--color-card-bg)',
                 'card-text': 'var(--color-card-text)',
 
+                'stickie-bg': 'var(--color-stickie-bg)',
+                'stickie-text': 'var(--color-stickie-text)',
+
                 'button-primary-bg': 'var(--color-button-primary-bg)',
                 'button-primary-bg-hover': 'var(--color-button-primary-bg-hover)',
                 'button-primary-text': 'var(--color-button-primary-text)',
