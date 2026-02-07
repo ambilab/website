@@ -239,23 +239,25 @@ import DemoEmbed from '@components/svelte/DemoEmbed.svelte';
 
 ### Semantic Design Tokens
 
-The project uses semantic design tokens for consistent theming:
+The project uses semantic design tokens with automatic dark mode switching:
 
-- **CSS Custom Properties**: Defined in `src/styles/global.css` using `@theme`
+- **CSS Custom Properties**: Defined in `src/styles/global.css` using `@theme` and `.dark` selector
 - **Tailwind Utilities**: Mapped in `tailwind.config.ts` theme.extend.colors
-- **Usage**: Use semantic classes like `text-text-muted`, `bg-surface`, `border-border-default`
+- **Usage**: Use single semantic classes like `text-text-muted`, `bg-surface`, `border-border-default`
+- **Dark Mode**: Colors automatically switch when `.dark` class is applied to the document
 
 **Available token categories:**
 
-- `page-bg-*` - Page backgrounds
-- `surface-*` - Component surfaces
-- `border-*` - Border colors
-- `text-*` - Text colors (primary, secondary, muted)
-- `link-*` - Link colors and states
-- `button-*` - Button colors
-- `tag-*` / `table-*` / `anchor-*` - Specific component colors
+- `page-bg` - Page backgrounds
+- `surface` / `surface-code` - Component surfaces
+- `border-default` / `border-medium` / `border-subtle` - Border colors
+- `text-primary` / `text-secondary` / `text-muted` - Text colors
+- `link` / `link-hover` / `link-active` - Link colors and states
+- `button-primary-*` / `button-secondary-*` / `button-outline-*` - Button colors
+- `tag-bg` / `tag-text` - Tag/badge colors
 
-All tokens support dark mode with `-dark` suffix: `text-text-primary` / `dark:text-text-primary-dark`
+**No `-dark` variants needed**: CSS variables automatically change values based on `.dark` class, so you only need one
+class name (e.g., `bg-page-bg` works for both light and dark modes)
 
 ### CSS Organization
 
@@ -363,6 +365,6 @@ See `ai-rules/agent-workflow.mdc` for detailed workflow guidance.
 4. **Skipping frontmatter fields** – Required fields must be present
 5. **Using `any` type** – Use proper types or `unknown`
 6. **Hardcoding strings** – Use `src/i18n/translations.ts`
-7. **Hardcoding colors** – Use semantic design tokens instead of `gray-900`, `blue-600`, etc.
+7. **Hardcoding colors** – Use semantic design tokens (single class names, no `dark:` variants needed)
 8. **Missing alt text** – All images need alt attributes
 9. **Ignoring reduced motion** – Animations must respect `prefers-reduced-motion`
