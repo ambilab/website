@@ -125,10 +125,10 @@
     const aspectRatioStyle = $derived(`aspect-ratio: ${safeAspectRatio}; width: 100%;`);
 </script>
 
-<figure class={`demo-embed  ${className}`}>
+<figure class={`demo-embed ${className}`}>
     {#if shouldShowLink}
         <div
-            class="flex min-h-[200px] select-none flex-col items-center justify-center bg-black p-8 text-center"
+            class="demo-embed__panel flex min-h-[200px] select-none flex-col items-center justify-center bg-black p-8 text-center"
             style={aspectRatioStyle}
         >
             <p class="text-[11px]! mb-4 text-balance font-mono uppercase text-white antialiased md:w-1/2">
@@ -140,12 +140,14 @@
             </p>
 
             {#if isValidSrc}
-                <Button href={validatedSrc} size="sm" variant="outline">Open Demo in New Tab</Button>
+                <Button href={validatedSrc} target="_blank" rel="noopener noreferrer" size="sm" variant="outline">
+                    Open Demo in New Tab
+                </Button>
             {/if}
         </div>
     {:else if !isValidSrc}
         <div
-            class="flex min-h-[200px] flex-col items-center justify-center bg-error-text p-8 text-center"
+            class="demo-embed__panel flex min-h-[200px] flex-col items-center justify-center bg-error-bg p-8 text-center"
             style={aspectRatioStyle}
         >
             <p class="text-[11px]! mb-4 text-balance font-mono uppercase text-white antialiased md:w-1/2">
@@ -161,7 +163,6 @@
             allow={allowPermissions}
             allowfullscreen
             sandbox={sandboxPermissions}
-            class="border border-border-default"
         ></iframe>
     {/if}
 
@@ -176,7 +177,7 @@
     .demo-embed {
         margin: 2rem 0;
 
-        div {
+        .demo-embed__panel {
             box-shadow:
                 0 2px 0 0 var(--color-page-bg),
                 0 4px 0 0 var(--color-black);
