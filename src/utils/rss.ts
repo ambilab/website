@@ -26,22 +26,36 @@ export async function generateRssFeed(
     try {
         const content = await loadLocaleContent(locale);
         const sortedPosts = sortBlogPostsByDate(content.blogPosts);
-        const recentPosts = sortedPosts.slice(0, 20);
+
+        // Filter out draft posts and limit to 20 most recent
+        const publishedPosts = sortedPosts.filter((post) => !post.data.draft);
+        const recentPosts = publishedPosts.slice(0, 20);
+
         const t = getTranslation(locale);
         const description = t.footer.description;
+
+        // Ensure we have a valid site URL
+        const siteUrl = context.site?.toString() || SITE.URL;
+        if (!siteUrl.startsWith('http')) {
+            throw new Error(`Invalid site URL: ${siteUrl}`);
+        }
 
         return rss({
             title: `${SITE.NAME} - ${localeLabel}`,
             description,
-            site: context.site?.toString() || SITE.URL,
+            site: siteUrl,
             items: recentPosts.map((post) => ({
                 title: post.data.title,
                 description: post.data.description,
                 pubDate: post.data.pubDate,
                 link: getBlogPostLink(post.id),
                 categories: post.data.tags,
+                author: post.data.author,
             })),
             customData: `<language>${languageCode}</language>`,
+            xmlns: {
+                atom: 'http://www.w3.org/2005/Atom',
+            },
         });
     } catch (error) {
         logger.error(`Failed to generate RSS feed for locale ${locale}`, error);
