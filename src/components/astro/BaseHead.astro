@@ -163,7 +163,18 @@ const plausibleScript = isComDomain ? plausibleScriptCom : isCzDomain ? plausibl
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="canonical" href={canonical} />
 <link rel="sitemap" href="/sitemap-index.xml" />
-<link rel="alternate" type="application/rss+xml" href={getRoute('rss', locale)} title={`${SITE.NAME} RSS`} />
+<link
+    rel="alternate"
+    type="application/rss+xml"
+    href={getRoute('rss', locale)}
+    title={`${SITE.NAME} RSS (${locale === 'en' ? 'English' : 'Čeština'})`}
+/>
+<link
+    rel="alternate"
+    type="application/rss+xml"
+    href={getRoute('rss', locale === 'en' ? 'cs' : 'en')}
+    title={`${SITE.NAME} RSS (${locale === 'en' ? 'Čeština' : 'English'})`}
+/>
 
 <title>{title}</title>
 
