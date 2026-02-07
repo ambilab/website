@@ -24,7 +24,7 @@
     }: Props = $props();
 
     const baseClasses =
-        'inline-flex items-center justify-center ' +
+        'button select-none inline-flex items-center justify-center ' +
         'disabled:opacity-50 disabled:pointer-events-none ' +
         'focus:outline-none focus:ring-4 focus:ring-offset-2 ' +
         'focus:ring-offset-page-bg focus:ring-focus-ring';
