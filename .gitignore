@@ -21,15 +21,26 @@ dist/
 CLAUDE.md
 .claude
 
+# Editor configurations
+# VS Code: Version settings.json and extensions.json
 .vscode/launch.json
 .vscode/*.code-workspace
 !.vscode/settings.json
 !.vscode/extensions.json
+
+# WebStorm/IntelliJ: Ignore all project files
 .idea/
 *.iml
-.zed/
+
+# Zed: Version settings.json, ignore generated files
+.zed/*
+!.zed/settings.json
+
+# Cursor: Ignore generated files, version cursor-config/ (source of truth)
 .cursor/
 !cursor-config/
+
+# Vim/Emacs swap files
 *.swp
 *.swo
 *~
