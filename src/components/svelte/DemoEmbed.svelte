@@ -126,10 +126,10 @@
 <figure class={`demo-embed ${className}`}>
     {#if shouldShowLink}
         <div
-            class="flex min-h-[200px] flex-col items-center justify-center rounded-lg border border-border-default p-8 text-center dark:border-border-default-dark"
+            class="flex min-h-[200px] flex-col items-center justify-center rounded-lg border border-border-default p-8 text-center"
             style={aspectRatioStyle}
         >
-            <p class="mb-4 text-sm text-text-muted dark:text-text-muted-dark">
+            <p class="mb-4 text-sm text-text-muted">
                 Demo preview is not available in development due to CSP restrictions.
             </p>
 
@@ -138,7 +138,7 @@
                     href={validatedSrc}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="[&:hover,&:focus]:bg-button-primary-hover dark:[&:hover,&:focus]:bg-button-primary-hover-dark bg-button-primary dark:bg-button-primary-dark inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium text-button-primary-text focus:outline-none focus:ring-2 focus:ring-focus-ring focus:ring-offset-2 focus:ring-offset-page-bg dark:text-button-primary-text-dark dark:focus:ring-focus-ring-dark dark:focus:ring-offset-page-bg-dark"
+                    class="bg-button-primary [&:hover,&:focus]:bg-button-primary-hover inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium text-button-primary-text focus:outline-none focus:ring-2 focus:ring-focus-ring focus:ring-offset-2 focus:ring-offset-page-bg"
                 >
                     Open Demo in New Tab
 
@@ -152,21 +152,17 @@
                     </svg>
                 </a>
             {:else}
-                <p class="text-sm text-error-text dark:text-error-text-dark">Invalid demo source URL</p>
+                <p class="text-sm text-error-text">Invalid demo source URL</p>
             {/if}
         </div>
     {:else if !isValidSrc}
         <div
-            class="flex min-h-[200px] flex-col items-center justify-center rounded-lg border border-warning-border bg-warning-bg p-8 text-center dark:border-warning-border-dark dark:bg-warning-bg-dark"
+            class="flex min-h-[200px] flex-col items-center justify-center rounded-lg border border-warning-border bg-warning-bg p-8 text-center"
             style={aspectRatioStyle}
         >
-            <p class="mb-2 text-sm font-medium text-warning-heading dark:text-warning-heading-dark">
-                Invalid or untrusted demo source
-            </p>
+            <p class="mb-2 text-sm font-medium text-warning-heading">Invalid or untrusted demo source</p>
 
-            <p class="text-xs text-warning-text dark:text-warning-text-dark">
-                Only allowlisted sources are allowed for security reasons.
-            </p>
+            <p class="text-xs text-warning-text">Only allowlisted sources are allowed for security reasons.</p>
         </div>
     {:else}
         <iframe
@@ -177,11 +173,11 @@
             allow={allowPermissions}
             allowfullscreen
             sandbox={sandboxPermissions}
-            class="rounded-lg border border-border-default dark:border-border-default-dark"
+            class="rounded-lg border border-border-default"
         ></iframe>
     {/if}
     {#if title}
-        <figcaption class="mt-2 text-center text-sm text-text-muted dark:text-text-muted-dark">
+        <figcaption class="mt-2 text-center text-sm text-text-muted">
             {title}
         </figcaption>
     {/if}

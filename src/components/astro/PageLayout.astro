@@ -50,10 +50,7 @@ const pageMap = providedPageMap ?? (await loadLocaleContent(locale)).pageMap;
     </head>
 
     <body
-        class:list={[
-            import.meta.env.DEV && 'debug-screens',
-            'flex min-h-screen flex-col bg-page-bg text-text-primary dark:bg-page-bg-dark dark:text-text-primary-dark',
-        ]}
+        class:list={[import.meta.env.DEV && 'debug-screens', 'flex min-h-screen flex-col bg-page-bg text-text-primary']}
     >
         <Menu locale={locale} currentPath={currentPath} translationPath={translationPath} pageMap={pageMap} />
 

@@ -56,10 +56,10 @@
     };
 </script>
 
-<div class="rounded-lg bg-info-bg p-6 dark:bg-info-bg-dark">
+<div class="rounded-lg bg-info-bg p-6">
     <h3 class="mb-2 text-xl font-semibold">{t.newsletter.title}</h3>
 
-    <p class="mb-4 text-sm text-text-muted dark:text-text-muted-dark">
+    <p class="mb-4 text-sm text-text-muted">
         {t.newsletter.description}
     </p>
 
@@ -70,13 +70,13 @@
             placeholder={t.newsletter.emailPlaceholder}
             required
             disabled={status === 'loading'}
-            class="flex-1 rounded-lg border border-border-medium px-4 py-2 focus:border-focus-ring focus:outline-none focus:ring-2 focus:ring-focus-ring disabled:opacity-50 dark:border-border-medium-dark dark:bg-surface-dark dark:focus:border-focus-ring-dark dark:focus:ring-focus-ring-dark"
+            class="flex-1 rounded-lg border border-border-medium px-4 py-2 focus:border-focus-ring focus:outline-none focus:ring-2 focus:ring-focus-ring disabled:opacity-50"
         />
 
         <button
             type="submit"
             disabled={status === 'loading'}
-            class="[&:hover,&:focus]:bg-button-primary-hover dark:[&:hover,&:focus]:bg-button-primary-hover-dark bg-button-primary dark:bg-button-primary-dark inline-flex items-center gap-2 rounded-lg px-4 py-2 font-medium text-button-primary-text disabled:opacity-50 dark:text-button-primary-text-dark"
+            class="bg-button-primary [&:hover,&:focus]:bg-button-primary-hover inline-flex items-center gap-2 rounded-lg px-4 py-2 font-medium text-button-primary-text disabled:opacity-50"
         >
             {#if status === 'loading'}
                 <svg class="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -99,9 +99,7 @@
         <p
             class="mt-2 text-sm"
             class:text-success-text={status === 'success'}
-            class:dark:text-success-text-dark={status === 'success'}
             class:text-error-text={status === 'error'}
-            class:dark:text-error-text-dark={status === 'error'}
         >
             {message}
         </p>

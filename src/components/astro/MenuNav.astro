@@ -43,10 +43,8 @@ const navItems = [
 
 const getNavItemClasses = (isActive: boolean): string => {
     return isActive
-        ? 'bg-text-primary dark:bg-text-primary-dark text-white dark:text-black'
-        : 'text-text-secondary dark:text-text-secondary-dark ' +
-              '[&:hover,&:focus]:bg-active dark:[&:hover,&:focus]:bg-active-dark ' +
-              '[&:hover,&:focus]:text-text-primary dark:[&:hover,&:focus]:text-text-primary-dark';
+        ? 'bg-text-primary text-page-bg'
+        : 'text-text-secondary ' + '[&:hover,&:focus]:bg-active ' + '[&:hover,&:focus]:text-text-primary';
 };
 ---
 
