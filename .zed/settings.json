@@ -1,0 +1,40 @@
+{
+  "format_on_save": "on",
+  "formatter": "auto",
+  "languages": {
+    "CSS": {
+      "language_servers": ["tailwindcss-intellisense-css", "!vscode-css-language-server", "..."],
+      "format_on_save": "on"
+    },
+    "TypeScript": {
+      "formatter": "language_server"
+    },
+    "JavaScript": {
+      "formatter": "language_server"
+    },
+    "JSON": {
+      "formatter": "language_server"
+    },
+    "Astro": {
+      "formatter": "prettier"
+    },
+    "HTML": {
+      "formatter": "prettier"
+    },
+    "Markdown": {
+      "formatter": "prettier"
+    },
+    "Svelte": {
+      "formatter": "language_server"
+    }
+  },
+  "lsp": {
+    "tailwindcss-language-server": {
+      "settings": {
+        "experimental": {
+          "classRegex": []
+        }
+      }
+    }
+  }
+}
