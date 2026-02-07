@@ -113,6 +113,7 @@
     --spacing-rhythm: 8px;
 
     /* Line heights for vertical rhythm - define as utilities */
+    --line-height-rhythm-2: 16px;
     --line-height-rhythm-3: 24px;
     --line-height-rhythm-4: 32px;
     --line-height-rhythm-5: 40px;
