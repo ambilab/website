@@ -60,6 +60,7 @@ export default {
                 'warning-highlight': 'var(--color-warning-highlight)',
                 'success-text': 'var(--color-success-text)',
                 'error-text': 'var(--color-error-text)',
+                'error-bg': 'var(--color-error-bg)',
 
                 'tag-bg': 'var(--color-tag-bg)',
                 'tag-text': 'var(--color-tag-text)',

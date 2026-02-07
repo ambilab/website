@@ -5,6 +5,8 @@
         variant?: 'primary' | 'secondary' | 'outline';
         size?: 'md' | 'sm';
         href?: string;
+        target?: string;
+        rel?: string;
         type?: 'button' | 'submit' | 'reset';
         disabled?: boolean;
         class?: string;
@@ -16,12 +18,39 @@
         variant = 'primary',
         size = 'md',
         href,
+        target,
+        rel,
         type = 'button',
         disabled = false,
         class: className = '',
         onclick,
         children,
     }: Props = $props();
+
+    // Compute safe rel value to protect against reverse-tabnabbing when target="_blank"
+    const safeRel = $derived.by(() => {
+        // If no target or target is not _blank, use rel as-is
+        if (!target || target !== '_blank') {
+            return rel;
+        }
+
+        // Parse existing rel tokens
+        const relTokens = rel ? rel.trim().split(/\s+/) : [];
+
+        // Check if security tokens are already present
+        const hasNoopener = relTokens.includes('noopener');
+        const hasNoreferrer = relTokens.includes('noreferrer');
+
+        // Add missing security tokens
+        if (!hasNoopener) {
+            relTokens.push('noopener');
+        }
+        if (!hasNoreferrer) {
+            relTokens.push('noreferrer');
+        }
+
+        return relTokens.join(' ');
+    });
 
     const baseClasses =
         'button select-none inline-flex items-center justify-center ' +
@@ -80,7 +109,7 @@
 </script>
 
 {#if href}
-    <a {href} class={classes} role="button" onkeydown={handleKeydown} {onclick}>
+    <a {href} {target} rel={safeRel} class={classes} role="button" onkeydown={handleKeydown} {onclick}>
         {@render children?.()}
     </a>
 {:else}
