@@ -3,117 +3,51 @@ import BlogPostLayout from '@components/astro/BlogPostLayout.astro';
 import PageLayout from '@components/astro/PageLayout.astro';
 import { DEFAULT_LOCALE } from '@i18n/config';
 import { getTranslation } from '@i18n/translations';
-import type { Locale } from '@type/locale';
-import { findBlogPost, findPage, loadLocaleContent, normalizeSlug, sortBlogPostsByDate } from '@utils/content-loader';
+import { normalizeSlug } from '@utils/content-loader';
+import { resolveContent } from '@utils/content-resolver';
 import { formatDate } from '@utils/formatDate';
 import { createLogger } from '@utils/logger';
-import type { CollectionEntry } from 'astro:content';
+import { parseRoute } from '@utils/route-parser';
 
-const logger = createLogger({ prefix: 'ContentPage' });
+const logger = createLogger({ prefix: '[...slug]' });
 const detectedLocale = Astro.locals.locale ?? DEFAULT_LOCALE;
-const { slug } = Astro.params;
-const requestPath = slug || 'index';
-const isBlogIndex = requestPath === 'blog';
-const isBlogPost = requestPath.startsWith('blog/');
-const actualSlug = isBlogPost ? requestPath.replace('blog/', '') : requestPath;
+const route = parseRoute(Astro.params.slug);
 
-let renderType: 'blog-index' | 'blog-post' | 'page' | 'not-found' | 'error';
-let entry: CollectionEntry<'blog'> | CollectionEntry<'pages'> | undefined;
-let sortedBlogPosts: CollectionEntry<'blog'>[] = [];
-let Content: any;
-let locale: Locale = detectedLocale;
-let siteUrl = Astro.url.origin;
-let permalink = '';
-let content: Awaited<ReturnType<typeof loadLocaleContent>> | undefined;
-
+let resolvedContent;
 try {
-    // Load all content collections in parallel once (major performance optimization)
-    content = await loadLocaleContent(detectedLocale);
-
-    if (isBlogIndex) {
-        sortedBlogPosts = sortBlogPostsByDate(content.blogPosts);
-        permalink = `${siteUrl}/blog`;
-        renderType = 'blog-index';
-    } else if (isBlogPost) {
-        entry = findBlogPost(actualSlug, content);
-
-        if (entry) {
-            const rendered = await entry.render();
-            const entrySlug = normalizeSlug(entry.id);
-
-            Content = rendered.Content;
-            locale = entry.data.locale;
-            permalink = `${siteUrl}/blog/${entrySlug}`;
-            renderType = 'blog-post';
-        } else {
-            renderType = 'not-found';
-        }
-    } else {
-        entry = findPage(actualSlug, content);
-
-        if (entry) {
-            const rendered = await entry.render();
-            const entrySlug = normalizeSlug(entry.id);
-
-            Content = rendered.Content;
-            locale = entry.data.locale;
-            permalink = `${siteUrl}/${entrySlug === 'index' ? '' : entrySlug}`;
-            renderType = 'page';
-        } else {
-            renderType = 'not-found';
-        }
-    }
-} catch (error) {
-    logger.error(`Failed to load content for path: ${requestPath}`, error);
-
-    renderType = 'error';
-}
-
-if (renderType === 'error') {
+    resolvedContent = await resolveContent(route, detectedLocale, Astro.url.origin);
+} catch (err) {
+    logger.error('Failed to resolve content', { route, detectedLocale, error: err });
     return Astro.redirect('/500');
 }
 
-if (renderType === 'not-found') {
+if (!resolvedContent) {
     return Astro.redirect('/404');
 }
 
 const t = getTranslation(detectedLocale);
-
-let translationPath: string | undefined;
-
-if (renderType === 'blog-index') {
-    translationPath = '/blog';
-} else if (renderType === 'page' && entry) {
-    if (actualSlug === 'index') {
-        translationPath = '/';
-    } else if (entry.data.translationSlug) {
-        translationPath = `/${entry.data.translationSlug}`;
-    }
-} else if (renderType === 'blog-post' && entry && entry.data.translationSlug) {
-    translationPath = `/blog/${entry.data.translationSlug}`;
-}
 ---
 
 {
-    renderType === 'blog-index' ? (
+    resolvedContent.type === 'blog-index' ? (
         <PageLayout
             title={`${t.blog.title} | Ambilab`}
             description={t.blog.description}
-            permalink={permalink}
-            locale={locale}
-            pageMap={content?.pageMap}
-            {...(translationPath ? { translationPath } : {})}
+            permalink={resolvedContent.permalink}
+            locale={resolvedContent.locale}
+            pageMap={resolvedContent.content.pageMap}
+            translationPath={resolvedContent.translationPath}
         >
             <div class="container mx-auto px-4 py-12">
                 <div class="mx-auto max-w-4xl">
                     <h1 class="mb-4 text-4xl font-bold">{t.blog.title}</h1>
                     <p class="mb-12 text-xl text-text-muted">{t.blog.description}</p>
 
-                    {sortedBlogPosts.length === 0 ? (
+                    {resolvedContent.sortedBlogPosts.length === 0 ? (
                         <p class="text-text-muted">{t.blog.noPosts}</p>
                     ) : (
                         <div class="space-y-8">
-                            {sortedBlogPosts.map((post) => {
+                            {resolvedContent.sortedBlogPosts.map((post) => {
                                 const postSlug = normalizeSlug(post.id);
                                 const postUrl = `/blog/${postSlug}`;
 
@@ -127,7 +61,7 @@ if (renderType === 'blog-index') {
 
                                         <div class="mb-3 flex items-center gap-4 text-sm text-text-muted">
                                             <time datetime={post.data.pubDate.toISOString()}>
-                                                {formatDate(post.data.pubDate, locale)}
+                                                {formatDate(post.data.pubDate, resolvedContent.locale)}
                                             </time>
                                             {post.data.tags.length > 0 && (
                                                 <div class="flex flex-wrap gap-2">
@@ -156,36 +90,36 @@ if (renderType === 'blog-index') {
                 </div>
             </div>
         </PageLayout>
-    ) : renderType === 'page' && entry ? (
+    ) : resolvedContent.type === 'page' ? (
         <PageLayout
-            title={`${entry.data.title} | Ambilab`}
-            description={entry.data.description}
-            permalink={permalink}
-            locale={locale}
-            pageMap={content?.pageMap}
-            {...(translationPath ? { translationPath } : {})}
+            title={`${resolvedContent.entry.data.title} | Ambilab`}
+            description={resolvedContent.entry.data.description}
+            permalink={resolvedContent.permalink}
+            locale={resolvedContent.locale}
+            pageMap={resolvedContent.content.pageMap}
+            {...(resolvedContent.translationPath ? { translationPath: resolvedContent.translationPath } : {})}
         >
             <article class="container mx-auto px-4 pb-[36px] sm:pb-[40px] md:pb-[48px]">
                 <div class="mdx-content prose prose-lg mx-auto max-w-4xl dark:prose-invert">
-                    <Content />
+                    <resolvedContent.Content />
                 </div>
             </article>
         </PageLayout>
-    ) : renderType === 'blog-post' && entry ? (
+    ) : (
         <BlogPostLayout
-            title={`${entry.data.title} | Ambilab`}
-            description={entry.data.description}
-            permalink={permalink}
-            locale={locale}
-            pubDate={entry.data.pubDate}
-            updatedDate={entry.data.updatedDate}
-            author={entry.data.author}
-            tags={entry.data.tags}
-            content={entry.body}
-            pageMap={content?.pageMap}
-            {...(translationPath ? { translationPath } : {})}
+            title={`${resolvedContent.entry.data.title} | Ambilab`}
+            description={resolvedContent.entry.data.description}
+            permalink={resolvedContent.permalink}
+            locale={resolvedContent.locale}
+            pubDate={resolvedContent.entry.data.pubDate}
+            updatedDate={resolvedContent.entry.data.updatedDate}
+            author={resolvedContent.entry.data.author}
+            tags={resolvedContent.entry.data.tags}
+            content={resolvedContent.entry.body}
+            pageMap={resolvedContent.content.pageMap}
+            {...(resolvedContent.translationPath ? { translationPath: resolvedContent.translationPath } : {})}
         >
-            <Content />
+            <resolvedContent.Content />
         </BlogPostLayout>
-    ) : null
+    )
 }
