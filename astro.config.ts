@@ -1,6 +1,5 @@
 import cloudflare from '@astrojs/cloudflare';
 import mdx from '@astrojs/mdx';
-import sitemap from '@astrojs/sitemap';
 import svelte from '@astrojs/svelte';
 import tailwindcss from '@tailwindcss/vite';
 import { defineConfig, envField } from 'astro/config';
@@ -55,7 +54,9 @@ export default defineConfig({
             remarkPlugins: [remarkGfm, remarkSmartypants],
         }),
 
-        sitemap(),
+        // Note: Sitemap is implemented via custom endpoints at /sitemap.xml,
+        // /en/sitemap.xml, and /cs/sitemap.xml to properly handle the bilingual
+        // architecture with domain-based locale detection (ambilab.com / ambilab.cz).
     ],
 
     image: {
