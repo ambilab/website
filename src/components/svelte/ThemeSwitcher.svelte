@@ -63,7 +63,7 @@
 
 <button
     onclick={handleThemeToggle}
-    class="[&:hover,&:focus]:text-text-primary dark:[&:hover,&:focus]:text-text-primary-dark [&:hover,&:focus]:bg-active dark:[&:hover,&:focus]:bg-active-dark -mr-[6px] flex cursor-pointer items-center text-text-secondary dark:text-text-secondary-dark"
+    class="[&:hover,&:focus]:text-text-primary [&:hover,&:focus]:bg-active -mr-[6px] flex cursor-pointer items-center text-text-secondary"
     aria-label="Toggle theme"
     title={currentTheme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
 >

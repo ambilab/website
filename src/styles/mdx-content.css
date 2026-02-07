@@ -6,7 +6,7 @@
     --color-table-border: #e5e7eb; /* gray.200 */
 
     & a:not(.anchor) {
-        @apply [&:hover,&:focus]:text-link-hover dark:[&:hover,&:focus]:text-link-hover-dark relative font-medium text-link underline underline-offset-4 dark:text-link-dark;
+        @apply [&:hover,&:focus]:text-link-hover relative font-medium text-link underline underline-offset-4;
 
         &[href^='http']::after,
         &[href^='https']::after {
@@ -38,7 +38,7 @@
 
     & h2 {
         @apply mb-[16px] mt-[32px] pt-[32px];
-        @apply border-t-2 border-border-default dark:border-border-default-dark;
+        @apply border-t-2 border-border-default;
         @apply text-[32px] leading-[32px];
         @apply md:mb-[16px] md:mt-[40px] md:pt-[46px] md:text-[40px] md:leading-[40px];
     }
@@ -85,7 +85,7 @@
     & p code,
     & li code,
     & td code {
-        @apply rounded bg-surface-code px-1.5 py-0.5 font-mono text-sm text-text-primary dark:bg-surface-code-dark dark:text-text-primary-dark;
+        @apply rounded bg-surface-code px-1.5 py-0.5 font-mono text-sm text-text-primary;
     }
 
     & pre {
@@ -100,12 +100,12 @@
         @apply my-6;
 
         & figcaption {
-            @apply mt-2 text-center text-sm text-text-muted dark:text-text-muted-dark;
+            @apply mt-2 text-center text-sm text-text-muted;
         }
     }
 
     & blockquote {
-        @apply my-4 border-l-4 border-info-border pl-4 italic text-text-secondary dark:text-text-secondary-dark;
+        @apply my-4 border-l-4 border-info-border pl-4 italic text-text-secondary;
 
         & p {
             @apply mb-2;
@@ -138,11 +138,11 @@
     }
 
     & hr {
-        @apply my-8 border-t border-border-default dark:border-border-default-dark;
+        @apply my-8 border-t border-border-default;
     }
 
     & strong {
-        @apply font-bold text-text-primary dark:text-text-primary-dark;
+        @apply font-bold text-text-primary;
     }
 
     & em {
@@ -150,19 +150,19 @@
     }
 
     & abbr {
-        @apply cursor-help border-b border-dotted border-border-subtle dark:border-border-subtle-dark;
+        @apply cursor-help border-b border-dotted border-border-subtle;
     }
 
     & mark {
-        @apply rounded bg-warning-highlight px-1 dark:bg-warning-highlight-dark;
+        @apply rounded bg-warning-highlight px-1;
     }
 
     & kbd {
-        @apply rounded border border-border-medium bg-surface-code px-2 py-1 font-mono text-sm shadow-sm dark:border-border-medium-dark dark:bg-surface-code-dark;
+        @apply rounded border border-border-medium bg-surface-code px-2 py-1 font-mono text-sm shadow-sm;
     }
 
     & details {
-        @apply my-4 rounded-lg border border-border-default p-4 dark:border-border-default-dark;
+        @apply my-4 rounded-lg border border-border-default p-4;
 
         & summary {
             @apply cursor-pointer select-none font-semibold;

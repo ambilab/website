@@ -26,7 +26,7 @@
 
     const baseMenuPanelClasses = [
         'z-mobile-menu fixed left-1/2 top-0 w-screen -translate-x-1/2 md:hidden pt-12',
-        'bg-page-bg dark:bg-page-bg-dark',
+        'bg-page-bg',
         'motion-safe:duration-333 motion-safe:transition-[clip-path]',
     ].join(' ');
 
@@ -283,7 +283,7 @@
     <button
         bind:this={menuButtonElement}
         type="button"
-        class="[&:hover,&:focus]:bg-active dark:[&:hover,&:focus]:bg-active-dark [&:hover,&:focus]:text-text-primary dark:[&:hover,&:focus]:text-text-primary-dark cursor-pointer text-text-secondary md:hidden dark:text-text-secondary-dark"
+        class="[&:hover,&:focus]:bg-active [&:hover,&:focus]:text-text-primary cursor-pointer text-text-secondary md:hidden"
         aria-label={isOpen ? 'Close menu' : 'Open menu'}
         aria-expanded={isOpen}
         aria-controls="mobile-menu"

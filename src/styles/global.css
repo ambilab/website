@@ -11,103 +11,65 @@
 
     /* Semantic Colors - Page & Surface Backgrounds */
     --color-page-bg: theme('colors.zinc.200');
-    --color-page-bg-dark: theme('colors.zinc.900');
 
     --color-surface: theme('colors.white');
-    --color-surface-dark: theme('colors.zinc.600');
     --color-surface-code: theme('colors.gray.100');
-    --color-surface-code-dark: theme('colors.gray.800');
 
     /* Semantic Colors - Borders */
     --color-border-default: theme('colors.zinc.400');
-    --color-border-default-dark: theme('colors.zinc.700');
     --color-border-medium: theme('colors.gray.300');
-    --color-border-medium-dark: theme('colors.gray.700');
     --color-border-subtle: theme('colors.gray.400');
-    --color-border-subtle-dark: theme('colors.gray.600');
 
     /* Semantic Colors - Text */
     --color-text-primary: theme('colors.zinc.900');
-    --color-text-primary-dark: theme('colors.zinc.200');
     --color-text-secondary: theme('colors.zinc.600');
-    --color-text-secondary-dark: theme('colors.zinc.400');
     --color-text-muted: theme('colors.zinc.600');
-    --color-text-muted-dark: theme('colors.zinc.400');
 
     /* Semantic Colors - Links */
     --color-link: theme('colors.green.600');
     --color-link-hover: theme('colors.lime.700');
-    --color-link-dark: theme('colors.lime.400');
-    --color-link-hover-dark: theme('colors.lime.300');
     --color-link-active: theme('colors.black');
-    --color-link-active-dark: theme('colors.white');
 
     /* Semantic Colors - Primary Button */
     --color-button-primary-bg: theme('colors.lime.700');
-    --color-button-primary-bg-dark: theme('colors.lime.500');
     --color-button-primary-bg-hover: theme('colors.lime.800');
-    --color-button-primary-bg-hover-dark: theme('colors.lime.400');
     --color-button-primary-text: theme('colors.white');
-    --color-button-primary-text-dark: theme('colors.black');
     --color-button-primary-text-hover: theme('colors.white');
-    --color-button-primary-text-hover-dark: theme('colors.black');
 
     /* Semantic Colors - Secondary Button */
     --color-button-secondary-bg: theme('colors.zinc.800');
-    --color-button-secondary-bg-dark: theme('colors.zinc.200');
     --color-button-secondary-bg-hover: theme('colors.zinc.900');
-    --color-button-secondary-bg-hover-dark: theme('colors.zinc.100');
     --color-button-secondary-text: theme('colors.white');
-    --color-button-secondary-text-dark: theme('colors.black');
     --color-button-secondary-text-hover: theme('colors.white');
-    --color-button-secondary-text-hover-dark: theme('colors.black');
 
     /* Semantic Colors - Outline Button */
     --color-button-outline-bg: theme('colors.zinc.200');
-    --color-button-outline-bg-dark: theme('colors.zinc.900');
     --color-button-outline-bg-hover: theme('colors.zinc.200');
-    --color-button-outline-bg-hover-dark: theme('colors.zinc.900');
     --color-button-outline-text: theme('colors.zinc.900');
-    --color-button-outline-text-dark: theme('colors.zinc.200');
     --color-button-outline-text-hover: theme('colors.black');
-    --color-button-outline-text-hover-dark: theme('colors.white');
     --color-button-outline-border: theme('colors.zinc.900');
-    --color-button-outline-border-dark: theme('colors.zinc.200');
     --color-button-outline-border-hover: theme('colors.black');
-    --color-button-outline-border-hover-dark: theme('colors.white');
 
     /* Semantic Colors - Active States */
     --color-active: #bdd0a2;
-    --color-active-dark: #2b341a;
 
     /* Semantic Colors - Focus States */
     --color-focus-ring: #7aa740;
-    --color-focus-ring-dark: #668e20;
 
     /* Semantic Colors - Accents */
     --color-info-bg: theme('colors.lime.50');
-    --color-info-bg-dark: theme('colors.lime.950');
     --color-info-border: theme('colors.lime.500');
     --color-warning-bg: theme('colors.yellow.50');
-    --color-warning-bg-dark: theme('colors.yellow.950');
     --color-warning-border: theme('colors.yellow.200');
-    --color-warning-border-dark: theme('colors.yellow.900');
     --color-warning-text: theme('colors.yellow.600');
-    --color-warning-text-dark: theme('colors.yellow.400');
     --color-warning-heading: theme('colors.yellow.800');
-    --color-warning-heading-dark: theme('colors.yellow.200');
     --color-warning-highlight: theme('colors.yellow.200');
-    --color-warning-highlight-dark: theme('colors.yellow.800');
     --color-success-text: theme('colors.green.600');
-    --color-success-text-dark: theme('colors.green.400');
     --color-error-text: theme('colors.red.600');
-    --color-error-text-dark: theme('colors.red.400');
 
     /* Semantic Colors - Tags/Badges */
     --color-tag-bg: theme('colors.lime.100');
-    --color-tag-bg-dark: theme('colors.lime.900');
     --color-tag-text: theme('colors.lime.800');
-    --color-tag-text-dark: theme('colors.lime.200');
 
     /* Vertical rhythm (8px grid) */
     --spacing-rhythm: 8px;
@@ -130,8 +92,77 @@
     --z-index-skip-navigation-link: 200;
 }
 
-/* Dot Background Utilities */
+.dark {
+    color-scheme: dark;
+
+    /* Dot pattern background for dark mode */
+    --bg-dots-image: radial-gradient(circle, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+
+    /* Semantic Colors - Page & Surface Backgrounds */
+    --color-page-bg: theme('colors.zinc.900');
+
+    --color-surface: theme('colors.zinc.600');
+    --color-surface-code: theme('colors.gray.800');
+
+    /* Semantic Colors - Borders */
+    --color-border-default: theme('colors.zinc.700');
+    --color-border-medium: theme('colors.gray.700');
+    --color-border-subtle: theme('colors.gray.600');
+
+    /* Semantic Colors - Text */
+    --color-text-primary: theme('colors.zinc.200');
+    --color-text-secondary: theme('colors.zinc.400');
+    --color-text-muted: theme('colors.zinc.400');
+
+    /* Semantic Colors - Links */
+    --color-link: theme('colors.green.400');
+    --color-link-hover: theme('colors.lime.300');
+    --color-link-active: theme('colors.white');
+
+    /* Semantic Colors - Primary Button */
+    --color-button-primary-bg: theme('colors.lime.500');
+    --color-button-primary-bg-hover: theme('colors.lime.400');
+    --color-button-primary-text: theme('colors.black');
+    --color-button-primary-text-hover: theme('colors.black');
+
+    /* Semantic Colors - Secondary Button */
+    --color-button-secondary-bg: theme('colors.zinc.200');
+    --color-button-secondary-bg-hover: theme('colors.zinc.100');
+    --color-button-secondary-text: theme('colors.black');
+    --color-button-secondary-text-hover: theme('colors.black');
+
+    /* Semantic Colors - Outline Button */
+    --color-button-outline-bg: theme('colors.zinc.900');
+    --color-button-outline-bg-hover: theme('colors.zinc.900');
+    --color-button-outline-text: theme('colors.zinc.200');
+    --color-button-outline-text-hover: theme('colors.white');
+    --color-button-outline-border: theme('colors.zinc.200');
+    --color-button-outline-border-hover: theme('colors.white');
+
+    /* Semantic Colors - Active States */
+    --color-active: #2b341a;
+
+    /* Semantic Colors - Focus States */
+    --color-focus-ring: #668e20;
+
+    /* Semantic Colors - Accents */
+    --color-info-bg: theme('colors.lime.950');
+    --color-warning-bg: theme('colors.yellow.950');
+    --color-warning-border: theme('colors.yellow.900');
+    --color-warning-text: theme('colors.yellow.400');
+    --color-warning-heading: theme('colors.yellow.200');
+    --color-warning-highlight: theme('colors.yellow.800');
+    --color-success-text: theme('colors.green.400');
+    --color-error-text: theme('colors.red.400');
+
+    /* Semantic Colors - Tags/Badges */
+    --color-tag-bg: theme('colors.lime.900');
+    --color-tag-text: theme('colors.lime.200');
+}
+
+
 @layer utilities {
+    /* Dot Background Utilities */
     .bg-dots {
         background-image: var(--bg-dots-image);
         background-size: 8px 8px;
@@ -145,10 +176,8 @@
          */
         background-position: 0 3.5px;
     }
-}
 
-/* Vertical Rhythm Debug Overlay */
-@layer utilities {
+    /* Vertical Rhythm Debug Overlay */
     @media (min-width: theme('screens.md')) {
         .debug-rhythm {
             background-image:
@@ -166,13 +195,6 @@
 
 :root {
     color-scheme: light dark;
-}
-
-.dark {
-    color-scheme: dark;
-
-    /* Dot pattern background for dark mode */
-    --bg-dots-image: radial-gradient(circle, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
 }
 
 html {
@@ -285,7 +307,7 @@ h3 {
 
 /* Focus styles for accessibility */
 *:focus-visible {
-    @apply outline-4 outline-offset-2 outline-focus-ring dark:outline-focus-ring-dark;
+    @apply outline-4 outline-offset-2 outline-focus-ring;
 }
 
 /* Smooth scroll behavior (respects prefers-reduced-motion) */

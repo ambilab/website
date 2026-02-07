@@ -44,7 +44,7 @@
 <button
     onclick={handleLocaleSwitch}
     disabled={isAnimating}
-    class="[&:hover,&:focus]:text-text-primary dark:[&:hover,&:focus]:text-text-primary-dark [&:hover,&:focus]:bg-active dark:[&:hover,&:focus]:bg-active-dark flex cursor-pointer items-center px-2 pb-[4px] pt-[3.5px] uppercase text-text-secondary disabled:opacity-50 dark:text-text-secondary-dark"
+    class="[&:hover,&:focus]:text-text-primary [&:hover,&:focus]:bg-active flex cursor-pointer items-center px-2 pb-[4px] pt-[3.5px] uppercase text-text-secondary disabled:opacity-50"
     aria-label="Switch language"
 >
     <span>&rarr; {otherConfig.name}</span>

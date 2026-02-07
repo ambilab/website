@@ -54,7 +54,7 @@ const readingTime = calculateReadingTime(content);
         <header class="mb-12">
             <h1 class="mb-4 text-4xl font-bold md:text-5xl">{title}</h1>
 
-            <div class="flex flex-wrap items-center gap-4 text-sm text-text-muted dark:text-text-muted-dark">
+            <div class="flex flex-wrap items-center gap-4 text-sm text-text-muted">
                 <div class="flex items-center gap-2">
                     <span>{author}</span>
                 </div>
@@ -88,7 +88,7 @@ const readingTime = calculateReadingTime(content);
                 tags.length > 0 && (
                     <div class="mt-4 flex flex-wrap items-center gap-2">
                         {tags.map((tag) => (
-                            <span class="rounded-full bg-tag-bg px-3 py-1 text-xs font-medium text-tag-text dark:bg-tag-bg-dark dark:text-tag-text-dark">
+                            <span class="rounded-full bg-tag-bg px-3 py-1 text-xs font-medium text-tag-text">
                                 {tag}
                             </span>
                         ))}
