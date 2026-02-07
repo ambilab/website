@@ -42,9 +42,9 @@
     $effect(() => {
         if (typeof document !== 'undefined' && hydrated) {
             if (isVisible) {
-                document.documentElement.style.setProperty('--cookie-banner-height', '74px');
-                document.documentElement.style.setProperty('--cookie-banner-height-sm', '48px');
-                document.documentElement.style.setProperty('--cookie-banner-height-md', '80px');
+                document.documentElement.style.setProperty('--cookie-banner-height', '76px');
+                document.documentElement.style.setProperty('--cookie-banner-height-sm', '50px');
+                document.documentElement.style.setProperty('--cookie-banner-height-md', '82px');
             } else {
                 resetCookieBannerProperties();
             }
@@ -63,7 +63,7 @@
 
 {#if isVisible}
     <div
-        class="cookie-banner fixed bottom-0 left-0 right-0 z-cookie-banner select-none px-4 pb-3 pt-2.5 antialiased sm:pt-3 md:py-7"
+        class="cookie-banner fixed bottom-0 left-0 right-0 z-cookie-banner select-none border-t-2 border-page-bg px-4 pb-3 pt-2.5 antialiased sm:pt-3 md:py-7"
     >
         <div
             class="container mx-auto flex flex-col items-start justify-between gap-1 sm:max-w-[608px] sm:flex-row sm:items-center md:max-w-[736px] lg:max-w-[896px]"
