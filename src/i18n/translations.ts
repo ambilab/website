@@ -8,7 +8,7 @@ export interface Translations {
 
     nav: {
         home: string;
-        about: string;
+        projects: string;
         blog: string;
         rss: string;
     };
@@ -87,7 +87,7 @@ export const translations: Record<Locale, Translations> = {
 
         nav: {
             home: 'Home',
-            about: 'About',
+            projects: 'Projects',
             blog: 'Blog',
             rss: 'RSS Feed',
         },
@@ -102,7 +102,7 @@ export const translations: Record<Locale, Translations> = {
         footer: {
             copyright: 'Copyright',
             allRightsReserved: 'All rights reserved',
-            description: 'A bilingual (English/Czech) marketing website and blog for Ambilab.',
+            description: 'What pink drop port tired new north highway ugly art finished happy.',
             navigation: 'Navigation',
             followAmbilab: 'Follow Us:',
         },
@@ -164,7 +164,7 @@ export const translations: Record<Locale, Translations> = {
 
         nav: {
             home: 'Domů',
-            about: 'O projektu',
+            projects: 'Projekty',
             blog: 'Blog',
             rss: 'RSS kanál',
         },

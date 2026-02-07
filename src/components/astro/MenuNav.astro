@@ -29,15 +29,9 @@ const navItems = [
     },
 
     {
-        href: getRoute('about', locale),
-        label: getPageTitle(locale === 'en' ? 'about' : 'o-projektu') ?? t.nav.about,
-        isActive: isRouteActive(currentPath, 'about'),
-    },
-
-    {
-        href: getRoute('blog', locale),
-        label: t.blog.title,
-        isActive: isRouteActive(currentPath, 'blog'),
+        href: getRoute('projects', locale),
+        label: getPageTitle(locale === 'en' ? 'projects' : 'projekty') ?? t.nav.projects,
+        isActive: isRouteActive(currentPath, 'projects'),
     },
 ];
 

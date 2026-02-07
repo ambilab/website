@@ -6,9 +6,9 @@ export const ROUTES = {
         cs: '/',
     },
 
-    about: {
-        en: '/about',
-        cs: '/o-projektu',
+    projects: {
+        en: '/projects',
+        cs: '/projekty',
     },
 
     blog: {
