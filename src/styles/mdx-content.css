@@ -37,10 +37,14 @@
     }
 
     & h2 {
-        @apply mb-[16px] mt-[32px] pt-[32px];
-        @apply border-t-2 border-border-default;
+        @apply relative mb-[16px] mt-[30px] pt-[30px];
         @apply text-[32px] leading-[32px];
-        @apply md:mb-[16px] md:mt-[40px] md:pt-[46px] md:text-[40px] md:leading-[40px];
+        @apply md:mb-[25px] md:mt-[39px] md:pt-[40px] md:text-[40px] md:leading-[40px];
+
+        &::before {
+            @apply absolute left-0 top-0 h-0.5 w-[100px] bg-border-default;
+            content: '';
+        }
     }
 
     & h3 {
@@ -61,7 +65,9 @@
 
     & ul,
     & ol {
-        @apply mb-4 pl-6;
+        @apply mb-4 pl-3 sm:pl-6;
+        @apply text-[14px] leading-[20px];
+        @apply md:leading-(--line-height-rhythm-2) md:text-base;
     }
 
     & ul li {
@@ -100,7 +106,7 @@
         @apply my-6;
 
         & figcaption {
-            @apply mt-2 text-center text-sm text-text-muted;
+            @apply mt-2 text-balance font-mono text-[11px] uppercase antialiased;
         }
     }
 
