@@ -1,0 +1,26 @@
+# robots.txt for Ambilab bilingual website
+# https://ambilab.com (English) and https://ambilab.cz (Czech)
+
+User-agent: *
+Allow: /
+
+# Disallow preview and error pages
+Disallow: /preview-404
+Disallow: /preview-500
+Disallow: /preview-503
+
+# Disallow API endpoints
+Disallow: /api/
+
+# Sitemaps for both domains
+# Main comprehensive sitemap (all content)
+Sitemap: https://ambilab.com/sitemap.xml
+Sitemap: https://ambilab.cz/sitemap.xml
+
+# Locale-specific sitemaps
+Sitemap: https://ambilab.com/en/sitemap.xml
+Sitemap: https://ambilab.cz/cs/sitemap.xml
+
+# RSS feeds (optional, but helps discovery)
+Sitemap: https://ambilab.com/en/rss.xml
+Sitemap: https://ambilab.cz/cs/rss.xml
