@@ -1,4 +1,6 @@
 <script lang="ts">
+    import Button from '@components/svelte/Button.svelte';
+
     interface Props {
         src: string;
         title?: string;
@@ -123,46 +125,32 @@
     const aspectRatioStyle = $derived(`aspect-ratio: ${safeAspectRatio}; width: 100%;`);
 </script>
 
-<figure class={`demo-embed ${className}`}>
+<figure class={`demo-embed  ${className}`}>
     {#if shouldShowLink}
         <div
-            class="flex min-h-[200px] flex-col items-center justify-center rounded-lg border border-border-default p-8 text-center"
+            class="flex min-h-[200px] select-none flex-col items-center justify-center bg-black p-8 text-center"
             style={aspectRatioStyle}
         >
-            <p class="mb-4 text-sm text-text-muted">
-                Demo preview is not available in development due to CSP restrictions.
+            <p class="text-[11px]! mb-4 text-balance font-mono uppercase text-white antialiased md:w-1/2">
+                {#if isValidSrc}
+                    Demo preview is not available in development due to CSP restrictions.
+                {:else}
+                    Invalid demo source URL
+                {/if}
             </p>
 
             {#if isValidSrc}
-                <a
-                    href={validatedSrc}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="bg-button-primary [&:hover,&:focus]:bg-button-primary-hover inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium text-button-primary-text focus:outline-none focus:ring-2 focus:ring-focus-ring focus:ring-offset-2 focus:ring-offset-page-bg"
-                >
-                    Open Demo in New Tab
-
-                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                        />
-                    </svg>
-                </a>
-            {:else}
-                <p class="text-sm text-error-text">Invalid demo source URL</p>
+                <Button href={validatedSrc} size="sm" variant="outline">Open Demo in New Tab</Button>
             {/if}
         </div>
     {:else if !isValidSrc}
         <div
-            class="flex min-h-[200px] flex-col items-center justify-center rounded-lg border border-warning-border bg-warning-bg p-8 text-center"
+            class="flex min-h-[200px] flex-col items-center justify-center bg-error-text p-8 text-center"
             style={aspectRatioStyle}
         >
-            <p class="mb-2 text-sm font-medium text-warning-heading">Invalid or untrusted demo source</p>
-
-            <p class="text-xs text-warning-text">Only allowlisted sources are allowed for security reasons.</p>
+            <p class="text-[11px]! mb-4 text-balance font-mono uppercase text-white antialiased md:w-1/2">
+                Invalid or untrusted demo source. Only allowlisted sources are allowed for security reasons.
+            </p>
         </div>
     {:else}
         <iframe
@@ -173,19 +161,26 @@
             allow={allowPermissions}
             allowfullscreen
             sandbox={sandboxPermissions}
-            class="rounded-lg border border-border-default"
+            class="border border-border-default"
         ></iframe>
     {/if}
+
     {#if title}
-        <figcaption class="mt-2 text-center text-sm text-text-muted">
+        <figcaption>
             {title}
         </figcaption>
     {/if}
 </figure>
 
-<style>
+<style lang="postcss">
     .demo-embed {
         margin: 2rem 0;
+
+        div {
+            box-shadow:
+                0 2px 0 0 var(--color-page-bg),
+                0 4px 0 0 var(--color-black);
+        }
     }
 
     iframe {
