@@ -16,9 +16,9 @@
     --color-surface-code: theme('colors.gray.100');
 
     /* Semantic Colors - Borders */
-    --color-border-default: theme('colors.zinc.400');
-    --color-border-medium: theme('colors.gray.300');
-    --color-border-subtle: theme('colors.gray.400');
+    --color-border-default: theme('colors.zinc.900');
+    --color-border-medium: theme('colors.gray.600');
+    --color-border-subtle: theme('colors.gray.300');
 
     /* Semantic Colors - Text */
     --color-text-primary: theme('colors.zinc.900');
@@ -105,9 +105,9 @@
     --color-surface-code: theme('colors.gray.800');
 
     /* Semantic Colors - Borders */
-    --color-border-default: theme('colors.zinc.700');
-    --color-border-medium: theme('colors.gray.700');
-    --color-border-subtle: theme('colors.gray.600');
+    --color-border-default: theme('colors.zinc.200');
+    --color-border-medium: theme('colors.gray.500');
+    --color-border-subtle: theme('colors.gray.800');
 
     /* Semantic Colors - Text */
     --color-text-primary: theme('colors.zinc.200');
@@ -159,7 +159,6 @@
     --color-tag-bg: theme('colors.lime.900');
     --color-tag-text: theme('colors.lime.200');
 }
-
 
 @layer utilities {
     /* Dot Background Utilities */
