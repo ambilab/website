@@ -8,17 +8,9 @@ const { title, class: className = '' } = Astro.props as Props;
 ---
 
 <div class:list={['card-with-shadows -mx-[16px] bg-card-bg px-[16px] pb-[2px] pt-[16px] text-card-text', className]}>
-    {title && <h3 class="mt-px! mb-2!">{title}</h3>}
+    {title && <h3 class="mt-px! md:mt-[2px]! mb-2!">{title}</h3>}
 
     <div class="text-balance">
         <slot />
     </div>
 </div>
-
-<style>
-    .card-with-shadows {
-        box-shadow:
-            0 2px 0 0 var(--color-page-bg),
-            0 4px 0 0 var(--color-card-bg);
-    }
-</style>

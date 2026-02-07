@@ -184,6 +184,13 @@
         background-position: 0 3.5px;
     }
 
+    /* Card background utilities */
+    .card-with-shadows {
+        box-shadow:
+            0 2px 0 0 var(--color-page-bg),
+            0 4px 0 0 var(--color-card-bg);
+    }
+
     /* Vertical Rhythm Debug Overlay */
     @media (min-width: theme('screens.md')) {
         .debug-rhythm {
