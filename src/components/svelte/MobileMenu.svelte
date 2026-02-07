@@ -12,7 +12,7 @@
         width: 24,
         height: 24,
         viewBox: '0 0 24 24',
-        fill: 'currentColor',
+        fill: 'var(--color-page-bg)',
         xmlns: 'http://www.w3.org/2000/svg',
     } as const;
 
@@ -304,31 +304,45 @@
     });
 </script>
 
-<div bind:this={menuContainerElement} class="-mx-[6px] h-6 w-6">
+<div bind:this={menuContainerElement} class="h-6 w-6">
     <button
         bind:this={menuButtonElement}
         type="button"
-        class="[&:hover,&:focus]:bg-active [&:hover,&:focus]:text-text-primary cursor-pointer text-text-secondary md:hidden"
+        class="cursor-pointer bg-text-primary text-text-secondary md:hidden"
         aria-label={isOpen ? 'Close menu' : 'Open menu'}
         aria-expanded={isOpen}
         aria-controls="mobile-menu"
         onclick={toggleMenu}
     >
-        {#if isOpen}
-            <svg {...svgProps}>
-                <rect x="6" y="6" width="3" height="3" />
-                <rect x="10.5" y="10.5" width="3" height="3" />
-                <rect x="15" y="6" width="3" height="3" />
-                <rect x="15" y="15" width="3" height="3" />
-                <rect x="6" y="15" width="3" height="3" />
-            </svg>
-        {:else}
-            <svg {...svgProps}>
-                <rect x="6" y="6" width="12" height="3" />
-                <rect x="6" y="15" width="12" height="3" />
-                <rect x="6" y="10.5" width="12" height="3" />
-            </svg>
-        {/if}
+        <svg {...svgProps}>
+            <rect
+                x="6"
+                y={isOpen ? '6' : '6'}
+                width="12"
+                height="3"
+                class="motion-safe:duration-333 motion-safe:transition-all"
+                class:motion-safe:ease-out={isOpen}
+                class:motion-safe:ease-in={!isOpen}
+            />
+            <rect
+                x="6"
+                y={isOpen ? '6' : '10.5'}
+                width="12"
+                height="3"
+                class="motion-safe:duration-333 motion-safe:transition-all"
+                class:motion-safe:ease-out={isOpen}
+                class:motion-safe:ease-in={!isOpen}
+            />
+            <rect
+                x="6"
+                y={isOpen ? '6' : '15'}
+                width="12"
+                height="3"
+                class="motion-safe:duration-333 motion-safe:transition-all"
+                class:motion-safe:ease-out={isOpen}
+                class:motion-safe:ease-in={!isOpen}
+            />
+        </svg>
     </button>
 
     <div
