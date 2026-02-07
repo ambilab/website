@@ -20,6 +20,14 @@ export function parseRoute(slug: string | undefined): ParsedRoute {
     if (requestPath.startsWith('blog/')) {
         const postSlug = requestPath.replace('blog/', '');
 
+        if (!postSlug) {
+            return {
+                type: 'blog-index',
+                slug: 'index',
+                requestPath,
+            };
+        }
+
         return {
             type: 'blog-post',
             slug: postSlug,

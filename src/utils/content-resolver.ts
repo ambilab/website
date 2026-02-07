@@ -81,13 +81,12 @@ async function resolveBlogIndex(locale: Locale, siteUrl: string): Promise<BlogIn
     const content = await loadLocaleContent(locale);
     const sortedBlogPosts = sortBlogPostsByDate(content.blogPosts);
     const permalink = buildPermalink(siteUrl, 'blog-index', 'index');
-    const translationPath = buildTranslationPath('blog-index', 'index');
 
     return {
         type: 'blog-index',
         locale,
         permalink,
-        translationPath: translationPath ?? '/blog',
+        translationPath: '/blog',
         sortedBlogPosts,
         content,
     };
