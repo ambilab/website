@@ -1,5 +1,5 @@
 ---
-import { getRoute, isRouteActive } from '@config/routes';
+import { getRoute, isRouteActive, PAGE_SLUGS } from '@config/routes';
 import { getTranslation } from '@i18n/translations';
 import type { Locale } from '@type/locale';
 import type { LocaleContent } from '@utils/content-loader';
@@ -24,13 +24,13 @@ const getPageTitle = (slug: string): string | undefined => {
 const navItems = [
     {
         href: getRoute('home', locale),
-        label: getPageTitle('index') ?? t.nav.home,
+        label: getPageTitle(PAGE_SLUGS.home[locale]) ?? t.nav.home,
         isActive: isRouteActive(currentPath, 'home'),
     },
 
     {
         href: getRoute('projects', locale),
-        label: getPageTitle(locale === 'en' ? 'projects' : 'projekty') ?? t.nav.projects,
+        label: getPageTitle(PAGE_SLUGS.projects[locale]) ?? t.nav.projects,
         isActive: isRouteActive(currentPath, 'projects'),
     },
 ];
