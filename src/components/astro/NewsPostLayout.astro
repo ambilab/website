@@ -107,7 +107,9 @@ const newsUrl = `${getRoute('news', locale)}`;
         <div class="mdx-content 2xl:px-76 prose prose-lg mx-auto mb-12 dark:prose-invert md:mb-16 lg:px-12 xl:px-44">
             <slot />
 
-            <div class="select-none font-mono text-[22px] uppercase leading-3 antialiased">&spades;</div>
+            <div class="select-none font-mono text-[22px] uppercase leading-3 antialiased" aria-hidden="true">
+                &spades;
+            </div>
         </div>
     </article>
 
