@@ -20,7 +20,7 @@ const displayPosts = hasLimit ? posts.slice(0, Math.max(0, limit)) : posts;
 
 {
     displayPosts.length === 0 ? (
-        <p class="text-text-muted">{t.news.noPosts}</p>
+        <p class="font-mono text-[11px] uppercase leading-3 antialiased">{t.news.noPosts}</p>
     ) : (
         <div class="space-y-8">
             {displayPosts.map((post) => {
@@ -28,36 +28,21 @@ const displayPosts = hasLimit ? posts.slice(0, Math.max(0, limit)) : posts;
                 const postUrl = `${getRoute('news', locale)}/${postSlug}`;
 
                 return (
-                    <article class="border-b border-border-default pb-8 last:border-b-0">
-                        <a href={postUrl} class="group">
-                            <h2 class="mb-2 text-2xl font-bold group-[&:hover,&:focus]:text-link-hover">
+                    <a href={postUrl}>
+                        <article class="card-with-shadows [&:hover,&:focus]:bg-text-primary -mx-[16px] bg-card-bg px-[16px] pb-[2px] pt-[16px] text-card-text">
+                            <h2 class="mt-px! md:mt-[2px]! mb-2! text-[20px] leading-[20px] md:text-[24px] md:leading-[24px]">
                                 {post.data.title}
                             </h2>
-                        </a>
 
-                        <div class="mb-3 flex items-center gap-4 text-sm text-text-muted">
-                            <time datetime={post.data.pubDate.toISOString()}>
-                                {formatDate(post.data.pubDate, locale)}
-                            </time>
+                            <div class="font-mono text-[11px] uppercase leading-3 antialiased">
+                                <time datetime={post.data.pubDate.toISOString()}>
+                                    {formatDate(post.data.pubDate, locale)}
+                                </time>
+                            </div>
 
-                            {post.data.tags.length > 0 && (
-                                <div class="flex flex-wrap gap-2">
-                                    {post.data.tags.map((tag: string) => (
-                                        <span class="bg-tag-bg px-3 py-1 text-xs text-tag-text">{tag}</span>
-                                    ))}
-                                </div>
-                            )}
-                        </div>
-
-                        <p class="mb-4 text-text-secondary">{post.data.description}</p>
-
-                        <a
-                            href={postUrl}
-                            class="[&:hover,&:focus]:text-link-hover inline-flex items-center font-medium text-link"
-                        >
-                            {t.buttons.readMore} →
-                        </a>
-                    </article>
+                            <p class="my-3">{post.data.description}</p>
+                        </article>
+                    </a>
                 );
             })}
         </div>

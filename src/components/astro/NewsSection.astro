@@ -1,5 +1,6 @@
 ---
 import NewsList from '@components/astro/NewsList.astro';
+import Button from '@components/svelte/Button.svelte';
 import { getRoute } from '@config/routes';
 import { getTranslation } from '@i18n/translations';
 import type { Locale } from '@type/locale';
@@ -19,24 +20,16 @@ const sortedPosts = sortNewsPostsByDate(content.newsPosts);
 const newsUrl = getRoute('news', locale);
 ---
 
-<section class="my-12">
-    <div class="mb-8 flex items-end justify-between">
-        <div>
-            <h2 class="mb-2 text-3xl font-bold">{t.news.title}</h2>
-            <p class="text-lg text-text-muted">{t.news.description}</p>
-        </div>
+<section>
+    <NewsList posts={sortedPosts} locale={locale} limit={limit} />
 
+    <div class="mt-8">
         {
             showViewAll && sortedPosts.length > 0 && (
-                <a
-                    href={newsUrl}
-                    class="[&:hover,&:focus]:text-link-hover inline-flex items-center font-medium text-link"
-                >
+                <Button client:load href={newsUrl} variant="secondary">
                     {t.news.allPosts} →
-                </a>
+                </Button>
             )
         }
     </div>
-
-    <NewsList posts={sortedPosts} locale={locale} limit={limit} />
 </section>

@@ -54,7 +54,9 @@ const newsUrl = `${getRoute('news', locale)}`;
     {...seoProps}
 >
     <article class="container mx-auto px-4">
-        <header class="mx-auto -mt-[2px] mb-8 max-w-[764px] pt-3 md:mb-12 md:pt-[29px] lg:max-w-[896px]">
+        <header
+            class="mx-auto mb-8 mt-[18px] max-w-[764px] pt-3 sm:mt-[21px] md:mb-[43px] md:mt-[28px] lg:max-w-[896px]"
+        >
             <Button client:load href={newsUrl} variant="secondary" size="sm">&larr; {t.news.title}</Button>
 
             <h1
@@ -100,8 +102,10 @@ const newsUrl = `${getRoute('news', locale)}`;
             </div>
         </header>
 
-        <div class="mdx-content 2xl:px-76 prose prose-lg mx-auto mb-12 dark:prose-invert lg:mb-14 lg:px-12 xl:px-44">
+        <div class="mdx-content 2xl:px-76 prose prose-lg mx-auto mb-12 dark:prose-invert md:mb-16 lg:px-12 xl:px-44">
             <slot />
+
+            <div class="font-mono text-[22px] uppercase leading-3 antialiased">&spades;</div>
         </div>
     </article>
 
