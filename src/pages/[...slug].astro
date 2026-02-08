@@ -1,5 +1,5 @@
 ---
-import BlogPostLayout from '@components/astro/BlogPostLayout.astro';
+import NewsPostLayout from '@components/astro/NewsPostLayout.astro';
 import PageLayout from '@components/astro/PageLayout.astro';
 import { DEFAULT_LOCALE } from '@i18n/config';
 import { getTranslation } from '@i18n/translations';
@@ -29,10 +29,10 @@ const t = getTranslation(detectedLocale);
 ---
 
 {
-    resolvedContent.type === 'blog-index' ? (
+    resolvedContent.type === 'news-index' ? (
         <PageLayout
-            title={`${t.blog.title} | Ambilab`}
-            description={t.blog.description}
+            title={`${t.news.title} | Ambilab`}
+            description={t.news.description}
             permalink={resolvedContent.permalink}
             locale={resolvedContent.locale}
             pageMap={resolvedContent.content.pageMap}
@@ -40,16 +40,16 @@ const t = getTranslation(detectedLocale);
         >
             <div class="container mx-auto px-4 py-12">
                 <div class="mx-auto max-w-4xl">
-                    <h1 class="mb-4 text-4xl font-bold">{t.blog.title}</h1>
-                    <p class="mb-12 text-xl text-text-muted">{t.blog.description}</p>
+                    <h1 class="mb-4 text-4xl font-bold">{t.news.title}</h1>
+                    <p class="mb-12 text-xl text-text-muted">{t.news.description}</p>
 
-                    {resolvedContent.sortedBlogPosts.length === 0 ? (
-                        <p class="text-text-muted">{t.blog.noPosts}</p>
+                    {resolvedContent.sortedNewsPosts.length === 0 ? (
+                        <p class="text-text-muted">{t.news.noPosts}</p>
                     ) : (
                         <div class="space-y-8">
-                            {resolvedContent.sortedBlogPosts.map((post) => {
+                            {resolvedContent.sortedNewsPosts.map((post) => {
                                 const postSlug = normalizeSlug(post.id);
-                                const postUrl = `/blog/${postSlug}`;
+                                const postUrl = `/news/${postSlug}`;
 
                                 return (
                                     <article class="border-b border-border-default pb-8 last:border-b-0">
@@ -106,7 +106,7 @@ const t = getTranslation(detectedLocale);
             </article>
         </PageLayout>
     ) : (
-        <BlogPostLayout
+        <NewsPostLayout
             title={`${resolvedContent.entry.data.title} | Ambilab`}
             description={resolvedContent.entry.data.description}
             permalink={resolvedContent.permalink}
@@ -120,6 +120,6 @@ const t = getTranslation(detectedLocale);
             {...(resolvedContent.translationPath ? { translationPath: resolvedContent.translationPath } : {})}
         >
             <resolvedContent.Content />
-        </BlogPostLayout>
+        </NewsPostLayout>
     )
 }

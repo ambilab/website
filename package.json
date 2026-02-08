@@ -2,7 +2,7 @@
   "name": "website",
   "version": "1.0.0",
   "type": "module",
-  "description": "A bilingual (English/Czech) marketing website and blog for Ambilab.",
+  "description": "A bilingual (English/Czech) marketing website and news for Ambilab.",
   "author": "Ambilab",
   "repository": {
     "type": "git",

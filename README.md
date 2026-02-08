@@ -1,6 +1,6 @@
 # Ambilab Website
 
-Bilingual marketing website and blog for Ambilab.
+Bilingual marketing website and news for Ambilab.
 
 ## Run
 

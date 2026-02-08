@@ -4,17 +4,17 @@ import { getTranslation } from '@i18n/translations';
 import type { Locale } from '@type/locale';
 import type { APIContext } from 'astro';
 
-import { loadLocaleContent, normalizeSlug, sortBlogPostsByDate } from './content-loader';
+import { loadLocaleContent, normalizeSlug, sortNewsPostsByDate } from './content-loader';
 import { createLogger } from './logger';
 
 const logger = createLogger({ prefix: 'RSS' });
 
-export function getBlogPostLink(postId: string): string {
+export function getNewsPostLink(postId: string): string {
     if (!postId.includes('/')) {
         throw new Error(`Invalid post ID format: ${postId}. Expected format: "locale/slug.mdx"`);
     }
 
-    return `/blog/${normalizeSlug(postId)}`;
+    return `/news/${normalizeSlug(postId)}`;
 }
 
 export async function generateRssFeed(
@@ -25,7 +25,7 @@ export async function generateRssFeed(
 ): Promise<Response> {
     try {
         const content = await loadLocaleContent(locale);
-        const sortedPosts = sortBlogPostsByDate(content.blogPosts);
+        const sortedPosts = sortNewsPostsByDate(content.newsPosts);
 
         // Filter out draft posts and limit to 20 most recent
         const publishedPosts = sortedPosts.filter((post) => !post.data.draft);
@@ -54,7 +54,7 @@ export async function generateRssFeed(
                 title: post.data.title,
                 description: post.data.description,
                 pubDate: post.data.pubDate,
-                link: getBlogPostLink(post.id),
+                link: getNewsPostLink(post.id),
                 categories: post.data.tags,
                 author: post.data.author.trim() || SITE.AUTHOR,
             })),

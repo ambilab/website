@@ -1,29 +1,29 @@
 import type { Locale } from '@type/locale';
-import { findBlogPost, findPage, loadLocaleContent, normalizeSlug, sortBlogPostsByDate } from '@utils/content-loader';
+import { findNewsPost, findPage, loadLocaleContent, normalizeSlug, sortNewsPostsByDate } from '@utils/content-loader';
 import { createLogger } from '@utils/logger';
 import type { ParsedRoute } from '@utils/route-parser';
 import type { CollectionEntry } from 'astro:content';
 
 const logger = createLogger({ prefix: 'ContentResolver' });
 
-type RenderedContent<T extends 'blog' | 'pages'> = Awaited<ReturnType<CollectionEntry<T>['render']>>['Content'];
+type RenderedContent<T extends 'news' | 'pages'> = Awaited<ReturnType<CollectionEntry<T>['render']>>['Content'];
 
-export interface BlogIndexContent {
-    type: 'blog-index';
+export interface NewsIndexContent {
+    type: 'news-index';
     locale: Locale;
     permalink: string;
     translationPath: string;
-    sortedBlogPosts: CollectionEntry<'blog'>[];
+    sortedNewsPosts: CollectionEntry<'news'>[];
     content: Awaited<ReturnType<typeof loadLocaleContent>>;
 }
 
-export interface BlogPostContent {
-    type: 'blog-post';
+export interface NewsPostContent {
+    type: 'news-post';
     locale: Locale;
     permalink: string;
     translationPath: string | undefined;
-    entry: CollectionEntry<'blog'>;
-    Content: RenderedContent<'blog'>;
+    entry: CollectionEntry<'news'>;
+    Content: RenderedContent<'news'>;
     content: Awaited<ReturnType<typeof loadLocaleContent>>;
 }
 
@@ -37,15 +37,15 @@ export interface PageContent {
     content: Awaited<ReturnType<typeof loadLocaleContent>>;
 }
 
-export type ResolvedContent = BlogIndexContent | BlogPostContent | PageContent;
+export type ResolvedContent = NewsIndexContent | NewsPostContent | PageContent;
 
 function buildPermalink(siteUrl: string, routeType: ParsedRoute['type'], slug: string): string {
-    if (routeType === 'blog-index') {
-        return `${siteUrl}/blog`;
+    if (routeType === 'news-index') {
+        return `${siteUrl}/news`;
     }
 
-    if (routeType === 'blog-post') {
-        return `${siteUrl}/blog/${slug}`;
+    if (routeType === 'news-post') {
+        return `${siteUrl}/news/${slug}`;
     }
 
     return `${siteUrl}/${slug === 'index' ? '' : slug}`;
@@ -54,10 +54,10 @@ function buildPermalink(siteUrl: string, routeType: ParsedRoute['type'], slug: s
 function buildTranslationPath(
     routeType: ParsedRoute['type'],
     slug: string,
-    entry?: CollectionEntry<'blog'> | CollectionEntry<'pages'>,
+    entry?: CollectionEntry<'news'> | CollectionEntry<'pages'>,
 ): string | undefined {
-    if (routeType === 'blog-index') {
-        return '/blog';
+    if (routeType === 'news-index') {
+        return '/news';
     }
 
     if (routeType === 'page' && entry) {
@@ -70,31 +70,31 @@ function buildTranslationPath(
         }
     }
 
-    if (routeType === 'blog-post' && entry?.data.translationSlug) {
-        return `/blog/${entry.data.translationSlug}`;
+    if (routeType === 'news-post' && entry?.data.translationSlug) {
+        return `/news/${entry.data.translationSlug}`;
     }
 
     return undefined;
 }
 
-async function resolveBlogIndex(locale: Locale, siteUrl: string): Promise<BlogIndexContent> {
+async function resolveNewsIndex(locale: Locale, siteUrl: string): Promise<NewsIndexContent> {
     const content = await loadLocaleContent(locale);
-    const sortedBlogPosts = sortBlogPostsByDate(content.blogPosts);
-    const permalink = buildPermalink(siteUrl, 'blog-index', 'index');
+    const sortedNewsPosts = sortNewsPostsByDate(content.newsPosts);
+    const permalink = buildPermalink(siteUrl, 'news-index', 'index');
 
     return {
-        type: 'blog-index',
+        type: 'news-index',
         locale,
         permalink,
-        translationPath: '/blog',
-        sortedBlogPosts,
+        translationPath: '/news',
+        sortedNewsPosts,
         content,
     };
 }
 
-async function resolveBlogPost(slug: string, locale: Locale, siteUrl: string): Promise<BlogPostContent | null> {
+async function resolveNewsPost(slug: string, locale: Locale, siteUrl: string): Promise<NewsPostContent | null> {
     const content = await loadLocaleContent(locale);
-    const entry = findBlogPost(slug, content);
+    const entry = findNewsPost(slug, content);
 
     if (!entry) {
         return null;
@@ -102,11 +102,11 @@ async function resolveBlogPost(slug: string, locale: Locale, siteUrl: string): P
 
     const rendered = await entry.render();
     const entrySlug = normalizeSlug(entry.id);
-    const permalink = buildPermalink(siteUrl, 'blog-post', entrySlug);
-    const translationPath = buildTranslationPath('blog-post', entrySlug, entry);
+    const permalink = buildPermalink(siteUrl, 'news-post', entrySlug);
+    const translationPath = buildTranslationPath('news-post', entrySlug, entry);
 
     return {
-        type: 'blog-post',
+        type: 'news-post',
         locale: entry.data.locale,
         permalink,
         translationPath,
@@ -146,12 +146,12 @@ export async function resolveContent(
     siteUrl: string,
 ): Promise<ResolvedContent | null> {
     try {
-        if (route.type === 'blog-index') {
-            return await resolveBlogIndex(locale, siteUrl);
+        if (route.type === 'news-index') {
+            return await resolveNewsIndex(locale, siteUrl);
         }
 
-        if (route.type === 'blog-post') {
-            return await resolveBlogPost(route.slug, locale, siteUrl);
+        if (route.type === 'news-post') {
+            return await resolveNewsPost(route.slug, locale, siteUrl);
         }
 
         return await resolvePage(route.slug, locale, siteUrl);

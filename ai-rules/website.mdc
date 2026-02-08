@@ -6,7 +6,7 @@ alwaysApply: true
 
 # Ambilab Website Project Rules
 
-A bilingual (English/Czech) marketing website and blog for Ambilab.
+A bilingual (English/Czech) marketing website and news for Ambilab.
 
 ## CRITICAL RULES
 
@@ -74,7 +74,7 @@ website/
       svelte/            # Interactive Svelte components
     config/              # Site, security, component config
     content/
-      blog/              # Blog posts by locale (en/, cs/)
+      news/              # News posts by locale (en/, cs/)
       pages/             # Static pages by locale
     i18n/                # Locale config, translations, utils
     lib/                 # Reusable libraries (images)
@@ -150,12 +150,12 @@ Located in `src/components/svelte/`. Interactive, hydratable, typed with `$props
 
 ## Content Collections
 
-### Blog Posts
+### News Posts
 
 Schema defined in `src/content/config.ts`:
 
 ```typescript
-const blogCollection = defineCollection({
+const newsCollection = defineCollection({
   type: 'content',
   schema: z.object({
     title: z.string(),
@@ -175,7 +175,7 @@ Note: `z.coerce.date()` automatically converts date strings from frontmatter to 
 
 ### Adding Content
 
-1. Create MDX file in `src/content/blog/en/` or `src/content/blog/cs/`
+1. Create MDX file in `src/content/news/en/` or `src/content/news/cs/`
 2. Add frontmatter with required fields
 3. Link translations via `translationSlug`
 4. Write content in MDX
@@ -282,7 +282,7 @@ Enforced by Biome (TS/JS/JSON/CSS) and Prettier (Astro/Svelte/Markdown):
 Use type imports for type-only imports:
 
 ```typescript
-import type { BlogPost } from '@type/content';
+import type { NewsPost } from '@type/content';
 import { createLogger } from '@utils/logger';
 ```
 
@@ -306,7 +306,7 @@ Format: `<type>(<scope>): <description>`
 
 **Types:** `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`
 
-**Scopes:** `blog`, `i18n`, `components`, `seo`, `security`, `api`, `ci`, `docs`
+**Scopes:** `news`, `i18n`, `components`, `seo`, `security`, `api`, `ci`, `docs`
 
 ### AI-Assisted Commits
 

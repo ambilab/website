@@ -21,7 +21,7 @@ Project uses strict TypeScript (`tsconfig.json`):
 Always use `import type` for types:
 
 ```typescript
-import type { BlogPost } from '@type/content';
+import type { NewsPost } from '@type/content';
 import { createLogger } from '@utils/logger';
 ```
 
@@ -56,8 +56,8 @@ if (!element) throw new Error('Game element not found');
 
 | Type                | Convention  | Examples                  |
 | ------------------- | ----------- | ------------------------- |
-| Interfaces/Types    | PascalCase  | `BlogPost`, `Locale`      |
-| Variables/Functions | camelCase   | `blogPosts`, `formatDate` |
+| Interfaces/Types    | PascalCase  | `NewsPost`, `Locale`      |
+| Variables/Functions | camelCase   | `NewsPosts`, `formatDate` |
 | Constants           | UPPER_SNAKE | `DEFAULT_LOCALE`          |
 | Unused params       | `_prefix`   | `_event`                  |
 
@@ -67,7 +67,7 @@ Use async/await, load in parallel when possible:
 
 ```typescript
 const [posts, pages] = await Promise.all([
-  getCollection('blog', ({ data }) => data.locale === locale),
+  getCollection('news, ({ data }) => data.locale === locale),
   getCollection('pages', ({ data }) => data.locale === locale),
 ]);
 ```
@@ -77,7 +77,7 @@ const [posts, pages] = await Promise.all([
 Use guard clauses with descriptive errors:
 
 ```typescript
-function formatPost(post: BlogPost | null): string {
+function formatPost(post: NewsPost | null): string {
   if (!post) return '';
   if (!post.title) return 'Untitled';
   return `${post.title} - ${formatDate(post.pubDate)}`;
@@ -112,15 +112,15 @@ Use named exports (not default):
 ```typescript
 export function formatDate(date: Date): string {}
 export const DEFAULT_LOCALE = 'en';
-export interface BlogPost {}
+export interface NewsPost {}
 ```
 
 ## Utility Types
 
 ```typescript
-type PartialPost = Partial<BlogPost>;
-type PostPreview = Pick<BlogPost, 'title' | 'pubDate'>;
-type PostWithoutId = Omit<BlogPost, 'id'>;
+type PartialPost = Partial<NewsPost>;
+type PostPreview = Pick<NewsPost, 'title' | 'pubDate'>;
+type PostWithoutId = Omit<NewsPost, 'id'>;
 
 const LOCALES = ['en', 'cs'] as const;
 type Locale = (typeof LOCALES)[number]; // 'en' | 'cs'
@@ -129,7 +129,7 @@ type Locale = (typeof LOCALES)[number]; // 'en' | 'cs'
 ## Zod Schemas
 
 ```typescript
-const blogPostSchema = z.object({
+const NewsPostSchema = z.object({
   title: z.string().min(1),
   description: z.string().max(160),
   locale: z.enum(['en', 'cs']),
@@ -139,7 +139,7 @@ const blogPostSchema = z.object({
   draft: z.boolean().default(false),
 });
 
-type BlogPost = z.infer<typeof blogPostSchema>;
+type NewsPost = z.infer<typeof NewsPostSchema>;
 ```
 
 ## Logger Pattern

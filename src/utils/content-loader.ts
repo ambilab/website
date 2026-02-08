@@ -1,7 +1,7 @@
 /**
  * Content Collection Loader
  *
- * Optimized content loading utilities for blog posts and pages.
+ * Optimized content loading utilities for news posts and pages.
  *
  * This module provides O(1) lookup performance via indexed Maps and eliminates
  * duplicate collection fetching by loading all content once in parallel.
@@ -25,14 +25,14 @@ export type NormalizedSlug = string;
  * Parallel-fetched content collections for a specific locale.
  */
 export interface LocaleContent {
-    /** All blog posts (excluding drafts) for the locale */
-    blogPosts: CollectionEntry<'blog'>[];
+    /** All news posts (excluding drafts) for the locale */
+    newsPosts: CollectionEntry<'news'>[];
 
     /** All pages for the locale */
     pages: CollectionEntry<'pages'>[];
 
-    /** Blog post lookup map (slug -> entry) for O(1) access */
-    blogPostMap: Map<NormalizedSlug, CollectionEntry<'blog'>>;
+    /** News post lookup map (slug -> entry) for O(1) access */
+    newsPostMap: Map<NormalizedSlug, CollectionEntry<'news'>>;
 
     /** Page lookup map (slug -> entry) for O(1) access */
     pageMap: Map<NormalizedSlug, CollectionEntry<'pages'>>;
@@ -61,7 +61,7 @@ export function normalizeSlug(entryId: string): NormalizedSlug {
  * @param entries - Array of content entries to index
  * @returns Map with normalized slugs as keys and entries as values
  */
-function createEntryMap<T extends 'blog' | 'pages'>(
+function createEntryMap<T extends 'news' | 'pages'>(
     entries: CollectionEntry<T>[],
 ): Map<NormalizedSlug, CollectionEntry<T>> {
     return new Map(entries.map((entry) => [normalizeSlug(entry.id), entry]));
@@ -71,7 +71,7 @@ function createEntryMap<T extends 'blog' | 'pages'>(
  * Fetches all content collections for a locale in parallel.
  *
  * This is the primary optimization: instead of fetching collections
- * multiple times per request, we fetch both blog posts and pages once
+ * multiple times per request, we fetch both news posts and pages once
  * in parallel and create indexed Maps for fast lookups.
  *
  * @param locale - The locale to fetch content for
@@ -79,7 +79,7 @@ function createEntryMap<T extends 'blog' | 'pages'>(
  *
  * @example
  * const content = await loadLocaleContent('en');
- * const post = content.blogPostMap.get('hello-world'); // O(1) lookup
+ * const post = content.newsPostMap.get('hello-world'); // O(1) lookup
  */
 export async function loadLocaleContent(locale: Locale): Promise<LocaleContent> {
     logger.info(`Loading content collections for locale: ${locale}`);
@@ -88,30 +88,30 @@ export async function loadLocaleContent(locale: Locale): Promise<LocaleContent> 
 
     try {
         // Fetch both collections in parallel (major optimization)
-        const [blogPosts, pages] = await Promise.all([
+        const [newsPosts, pages] = await Promise.all([
             getCollection(
-                'blog',
-                (entry: CollectionEntry<'blog'>) => !entry.data.draft && entry.data.locale === locale,
+                'news',
+                (entry: CollectionEntry<'news'>) => !entry.data.draft && entry.data.locale === locale,
             ),
             getCollection('pages', (entry: CollectionEntry<'pages'>) => entry.data.locale === locale),
         ]);
 
         // Create indexed Maps for O(1) lookups
-        const blogPostMap = createEntryMap(blogPosts);
+        const newsPostMap = createEntryMap(newsPosts);
         const pageMap = createEntryMap(pages);
 
         const duration = performance.now() - startTime;
 
-        logger.info(`Loaded ${blogPosts.length} blog posts and ${pages.length} pages in ${duration.toFixed(2)}ms`, {
+        logger.info(`Loaded ${newsPosts.length} news posts and ${pages.length} pages in ${duration.toFixed(2)}ms`, {
             locale,
-            blogPostCount: blogPosts.length,
+            newsPostCount: newsPosts.length,
             pageCount: pages.length,
         });
 
         return {
-            blogPosts,
+            newsPosts,
             pages,
-            blogPostMap,
+            newsPostMap,
             pageMap,
         };
     } catch (error) {
@@ -121,14 +121,14 @@ export async function loadLocaleContent(locale: Locale): Promise<LocaleContent> 
 }
 
 /**
- * Finds a blog post by slug using O(1) Map lookup.
+ * Finds a news post by slug using O(1) Map lookup.
  *
  * @param slug - The normalized slug to search for
  * @param content - Pre-loaded locale content with indexed maps
- * @returns The blog post entry or undefined if not found
+ * @returns The news post entry or undefined if not found
  */
-export function findBlogPost(slug: NormalizedSlug, content: LocaleContent): CollectionEntry<'blog'> | undefined {
-    return content.blogPostMap.get(slug);
+export function findNewsPost(slug: NormalizedSlug, content: LocaleContent): CollectionEntry<'news'> | undefined {
+    return content.newsPostMap.get(slug);
 }
 
 /**
@@ -143,11 +143,11 @@ export function findPage(slug: NormalizedSlug, content: LocaleContent): Collecti
 }
 
 /**
- * Sorts blog posts by publication date (newest first).
+ * Sorts news posts by publication date (newest first).
  *
- * @param posts - Array of blog post entries to sort
+ * @param posts - Array of news post entries to sort
  * @returns New array sorted by pubDate descending
  */
-export function sortBlogPostsByDate(posts: CollectionEntry<'blog'>[]): CollectionEntry<'blog'>[] {
+export function sortNewsPostsByDate(posts: CollectionEntry<'news'>[]): CollectionEntry<'news'>[] {
     return [...posts].sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
 }

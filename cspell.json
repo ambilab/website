@@ -61,7 +61,7 @@
     "CHANGELOG.md",
     "CLAUDE.md",
     ".pnpm-store",
-    "src/content/blog/cs/**",
+    "src/content/news/cs/**",
     "src/content/pages/cs/**",
     "public/fonts/**"
   ],

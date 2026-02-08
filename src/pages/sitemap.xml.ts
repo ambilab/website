@@ -6,8 +6,8 @@ import type { APIRoute } from 'astro';
  *
  * This generates a comprehensive sitemap.xml that includes:
  * - All pages (English and Czech)
- * - All blog posts (English and Czech)
- * - Blog index pages
+ * - All news posts (English and Czech)
+ * - News index pages
  *
  * The sitemap uses the appropriate domain for each locale:
  * - English content: https://ambilab.com

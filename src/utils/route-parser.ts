@@ -1,4 +1,4 @@
-export type RouteType = 'blog-index' | 'blog-post' | 'page';
+export type RouteType = 'news-index' | 'news-post' | 'page';
 
 export interface ParsedRoute {
     type: RouteType;
@@ -9,27 +9,27 @@ export interface ParsedRoute {
 export function parseRoute(slug: string | undefined): ParsedRoute {
     const requestPath = slug || 'index';
 
-    if (requestPath === 'blog') {
+    if (requestPath === 'news') {
         return {
-            type: 'blog-index',
+            type: 'news-index',
             slug: 'index',
             requestPath,
         };
     }
 
-    if (requestPath.startsWith('blog/')) {
-        const postSlug = requestPath.replace('blog/', '');
+    if (requestPath.startsWith('news/')) {
+        const postSlug = requestPath.replace('news/', '');
 
         if (!postSlug) {
             return {
-                type: 'blog-index',
+                type: 'news-index',
                 slug: 'index',
                 requestPath,
             };
         }
 
         return {
-            type: 'blog-post',
+            type: 'news-post',
             slug: postSlug,
             requestPath,
         };

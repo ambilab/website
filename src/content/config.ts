@@ -1,7 +1,7 @@
 import { LOCALES } from '@i18n/config';
 import { defineCollection, z } from 'astro:content';
 
-const blogCollection = defineCollection({
+const newsCollection = defineCollection({
     type: 'content',
     schema: z.object({
         title: z.string(),
@@ -28,6 +28,6 @@ const pagesCollection = defineCollection({
 });
 
 export const collections = {
-    blog: blogCollection,
+    news: newsCollection,
     pages: pagesCollection,
 };

@@ -128,9 +128,9 @@ using Cursor skills and git hooks.
 4. Fix any reported issues
 5. Use `/pr` to create a pull request
 
-### Adding Blog Posts
+### Adding News Posts
 
-1. Create MDX files: `src/content/blog/en/slug.mdx` and `cs/slug.mdx`
+1. Create MDX files: `src/content/news/en/slug.mdx` and `cs/slug.mdx`
 2. Add required frontmatter (title, description, locale, pubDate, translationSlug)
 3. Link translations via `translationSlug` field
 4. Write content

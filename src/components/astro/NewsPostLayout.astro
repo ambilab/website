@@ -61,7 +61,7 @@ const readingTime = calculateReadingTime(content);
 
                 <div class="flex items-center gap-2">
                     <time datetime={pubDate.toISOString()}>
-                        {t.blog.publishedOn}
+                        {t.news.publishedOn}
                         {formatDate(pubDate, locale)}
                     </time>
                 </div>
@@ -70,7 +70,7 @@ const readingTime = calculateReadingTime(content);
                     updatedDate && (
                         <div class="flex items-center gap-2">
                             <time datetime={updatedDate.toISOString()}>
-                                {t.blog.updatedOn} {formatDate(updatedDate, locale)}
+                                {t.news.updatedOn} {formatDate(updatedDate, locale)}
                             </time>
                         </div>
                     )
@@ -79,7 +79,7 @@ const readingTime = calculateReadingTime(content);
                 <div class="flex items-center gap-2">
                     <span>
                         {readingTime}
-                        {t.blog.minutesShort}
+                        {t.news.minutesShort}
                     </span>
                 </div>
             </div>

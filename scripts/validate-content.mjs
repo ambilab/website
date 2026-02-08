@@ -19,7 +19,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT_DIR = join(__dirname, '..');
 const CONTENT_DIR = join(ROOT_DIR, 'src', 'content');
 
-const COLLECTIONS = ['blog', 'pages'];
+const COLLECTIONS = ['news', 'pages'];
 const _LOCALES = ['en', 'cs'];
 
 /**

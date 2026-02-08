@@ -1,7 +1,7 @@
 /**
  * Sitemap Generation Utilities
  *
- * Generates sitemap entries for all pages, blog posts, and special routes
+ * Generates sitemap entries for all pages, news posts, and special routes
  * across both English and Czech locales.
  */
 
@@ -57,19 +57,19 @@ function generatePageEntries(pages: CollectionEntry<'pages'>[], locale: Locale):
 }
 
 /**
- * Generates sitemap entries for all blog posts in a locale.
+ * Generates sitemap entries for all news posts in a locale.
  *
- * @param posts - Array of blog post entries
+ * @param posts - Array of news post entries
  * @param locale - The locale of the posts
  * @returns Array of sitemap entries
  */
-function generateBlogPostEntries(posts: CollectionEntry<'blog'>[], locale: Locale): SitemapEntry[] {
+function generateNewsPostEntries(posts: CollectionEntry<'news'>[], locale: Locale): SitemapEntry[] {
     const domain = getLocaleDomain(locale);
     const entries: SitemapEntry[] = [];
 
     for (const post of posts) {
         const slug = normalizeSlug(post.id);
-        const url = `${domain}/blog/${slug}`;
+        const url = `${domain}/news/${slug}`;
 
         entries.push({
             url,
@@ -83,16 +83,16 @@ function generateBlogPostEntries(posts: CollectionEntry<'blog'>[], locale: Local
 }
 
 /**
- * Generates sitemap entry for the blog index page.
+ * Generates sitemap entry for the news index page.
  *
- * @param locale - The locale of the blog index
- * @returns Sitemap entry for the blog index
+ * @param locale - The locale of the news index
+ * @returns Sitemap entry for the news index
  */
-function generateBlogIndexEntry(locale: Locale): SitemapEntry {
+function generateNewsIndexEntry(locale: Locale): SitemapEntry {
     const domain = getLocaleDomain(locale);
 
     return {
-        url: `${domain}/blog`,
+        url: `${domain}/news`,
         changefreq: 'daily',
         priority: 0.7,
     };
@@ -114,13 +114,13 @@ export async function generateLocaleSitemapEntries(locale: Locale): Promise<Site
         // Add page entries
         entries.push(...generatePageEntries(content.pages, locale));
 
-        // Add blog index entry (only if there are blog posts)
-        if (content.blogPosts.length > 0) {
-            entries.push(generateBlogIndexEntry(locale));
+        // Add news index entry (only if there are news posts)
+        if (content.newsPosts.length > 0) {
+            entries.push(generateNewsIndexEntry(locale));
         }
 
-        // Add blog post entries
-        entries.push(...generateBlogPostEntries(content.blogPosts, locale));
+        // Add news post entries
+        entries.push(...generateNewsPostEntries(content.newsPosts, locale));
 
         logger.info(`Generated ${entries.length} sitemap entries for locale: ${locale}`);
 

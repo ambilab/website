@@ -41,7 +41,7 @@ interface Props {
 const { title, description } = Astro.props;
 
 // 4. Data fetching / logic
-const posts = await getCollection('blog');
+const posts = await getCollection('news');
 ---
 
 <Layout {title}>
@@ -64,14 +64,14 @@ Pages in `src/pages/` handle routing:
 ---
 // src/pages/[...slug].astro
 // This file uses a rest parameter [...slug] to capture nested paths
-// like: en/blog/hello-world
+// like: en/news/hello-world
 import { getCollection } from 'astro:content';
-import BlogPostLayout from '@components/astro/BlogPostLayout.astro';
+import NewsPostLayout from '@components/astro/NewsPostLayout.astro';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog');
+  const posts = await getCollection('news');
   return posts.map((post) => ({
-    params: { slug: `${post.data.locale}/blog/${post.data.slug}` },
+    params: { slug: `${post.data.locale}/news/${post.data.slug}` },
     props: { post },
   }));
 }
@@ -80,9 +80,9 @@ const { post } = Astro.props;
 const { Content } = await post.render();
 ---
 
-<BlogPostLayout {...post.data}>
+<NewsPostLayout {...post.data}>
   <Content />
-</BlogPostLayout>
+</NewsPostLayout>
 ```
 
 ### Layout Components
@@ -214,10 +214,10 @@ const nonce = Astro.locals.nonce; // CSP nonce
 import { getCollection, getEntry } from 'astro:content';
 
 // Get all posts, filter by locale
-const enPosts = await getCollection('blog', ({ data }) => data.locale === 'en');
+const enPosts = await getCollection('news', ({ data }) => data.locale === 'en');
 
 // Get single entry
-const post = await getEntry('blog', 'en/hello-world');
+const post = await getEntry('news', 'en/hello-world');
 const { Content } = await post.render();
 ```
 

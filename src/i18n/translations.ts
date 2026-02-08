@@ -9,7 +9,7 @@ export interface Translations {
     nav: {
         home: string;
         projects: string;
-        blog: string;
+        news: string;
         rss: string;
     };
 
@@ -43,7 +43,7 @@ export interface Translations {
         button: string;
     };
 
-    blog: {
+    news: {
         publishedOn: string;
         updatedOn: string;
         readingTime: string;
@@ -88,7 +88,7 @@ export const translations: Record<Locale, Translations> = {
         nav: {
             home: 'Home',
             projects: 'Projects',
-            blog: 'Blog',
+            news: 'News',
             rss: 'RSS Feed',
         },
 
@@ -122,14 +122,14 @@ export const translations: Record<Locale, Translations> = {
             button: 'Got it',
         },
 
-        blog: {
+        news: {
             publishedOn: 'Published on',
             updatedOn: 'Updated on',
             readingTime: 'Reading time',
             minutesShort: 'min',
             tags: 'Tags',
             author: 'Author',
-            title: 'Blog',
+            title: 'News',
             description: 'Latest articles and updates from Ambilab',
             allPosts: 'All posts',
             noPosts: 'No posts available yet.',
@@ -165,7 +165,7 @@ export const translations: Record<Locale, Translations> = {
         nav: {
             home: 'Domů',
             projects: 'Projekty',
-            blog: 'Blog',
+            news: 'Novinky',
             rss: 'RSS kanál',
         },
 
@@ -199,14 +199,14 @@ export const translations: Record<Locale, Translations> = {
             button: 'Rozumím',
         },
 
-        blog: {
+        news: {
             publishedOn: 'Publikováno',
             updatedOn: 'Aktualizováno',
             readingTime: 'Doba čtení',
             minutesShort: 'min',
             tags: 'Štítky',
             author: 'Autor',
-            title: 'Blog',
+            title: 'Novinky',
             description: 'Nejnovější články a aktuality z Ambilabu',
             allPosts: 'Všechny příspěvky',
             noPosts: 'Zatím nejsou k dispozici žádné příspěvky.',
