@@ -13,7 +13,8 @@ export interface Props {
 
 const { posts, locale, limit } = Astro.props as Props;
 const t = getTranslation(locale);
-const displayPosts = limit ? posts.slice(0, limit) : posts;
+const hasLimit = typeof limit === 'number';
+const displayPosts = hasLimit ? posts.slice(0, Math.max(0, limit)) : posts;
 ---
 
 {
