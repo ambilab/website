@@ -5,6 +5,7 @@
  * across both English and Czech locales.
  */
 
+import { getRoute } from '@config/routes';
 import { LOCALES } from '@i18n/config';
 import type { Locale } from '@type/locale';
 import type { CollectionEntry } from 'astro:content';
@@ -66,10 +67,11 @@ function generatePageEntries(pages: CollectionEntry<'pages'>[], locale: Locale):
 function generateNewsPostEntries(posts: CollectionEntry<'news'>[], locale: Locale): SitemapEntry[] {
     const domain = getLocaleDomain(locale);
     const entries: SitemapEntry[] = [];
+    const newsRoute = getRoute('news', locale);
 
     for (const post of posts) {
         const slug = normalizeSlug(post.id);
-        const url = `${domain}/news/${slug}`;
+        const url = `${domain}${newsRoute}/${slug}`;
 
         entries.push({
             url,
@@ -90,9 +92,10 @@ function generateNewsPostEntries(posts: CollectionEntry<'news'>[], locale: Local
  */
 function generateNewsIndexEntry(locale: Locale): SitemapEntry {
     const domain = getLocaleDomain(locale);
+    const newsRoute = getRoute('news', locale);
 
     return {
-        url: `${domain}/news`,
+        url: `${domain}${newsRoute}`,
         changefreq: 'daily',
         priority: 0.7,
     };

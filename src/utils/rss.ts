@@ -1,4 +1,5 @@
 import rss from '@astrojs/rss';
+import { getRoute } from '@config/routes';
 import { SITE } from '@config/site';
 import { getTranslation } from '@i18n/translations';
 import type { Locale } from '@type/locale';
@@ -9,12 +10,12 @@ import { createLogger } from './logger';
 
 const logger = createLogger({ prefix: 'RSS' });
 
-export function getNewsPostLink(postId: string): string {
+export function getNewsPostLink(postId: string, locale: Locale): string {
     if (!postId.includes('/')) {
         throw new Error(`Invalid post ID format: ${postId}. Expected format: "locale/slug.mdx"`);
     }
 
-    return `/news/${normalizeSlug(postId)}`;
+    return `${getRoute('news', locale)}/${normalizeSlug(postId)}`;
 }
 
 export async function generateRssFeed(
@@ -54,7 +55,7 @@ export async function generateRssFeed(
                 title: post.data.title,
                 description: post.data.description,
                 pubDate: post.data.pubDate,
-                link: getNewsPostLink(post.id),
+                link: getNewsPostLink(post.id, locale),
                 categories: post.data.tags,
                 author: SITE.AUTHOR,
             })),

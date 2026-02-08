@@ -1,3 +1,4 @@
+import { getRoute } from '@config/routes';
 import type { Locale } from '@type/locale';
 import { findNewsPost, findPage, loadLocaleContent, normalizeSlug, sortNewsPostsByDate } from '@utils/content-loader';
 import { createLogger } from '@utils/logger';
@@ -39,13 +40,13 @@ export interface PageContent {
 
 export type ResolvedContent = NewsIndexContent | NewsPostContent | PageContent;
 
-function buildPermalink(siteUrl: string, routeType: ParsedRoute['type'], slug: string): string {
+function buildPermalink(siteUrl: string, routeType: ParsedRoute['type'], slug: string, locale: Locale): string {
     if (routeType === 'news-index') {
-        return `${siteUrl}/news`;
+        return `${siteUrl}${getRoute('news', locale)}`;
     }
 
     if (routeType === 'news-post') {
-        return `${siteUrl}/news/${slug}`;
+        return `${siteUrl}${getRoute('news', locale)}/${slug}`;
     }
 
     return `${siteUrl}/${slug === 'index' ? '' : slug}`;
@@ -54,10 +55,11 @@ function buildPermalink(siteUrl: string, routeType: ParsedRoute['type'], slug: s
 function buildTranslationPath(
     routeType: ParsedRoute['type'],
     slug: string,
+    translationLocale: Locale,
     entry?: CollectionEntry<'news'> | CollectionEntry<'pages'>,
 ): string | undefined {
     if (routeType === 'news-index') {
-        return '/news';
+        return getRoute('news', translationLocale);
     }
 
     if (routeType === 'page' && entry) {
@@ -71,7 +73,7 @@ function buildTranslationPath(
     }
 
     if (routeType === 'news-post' && entry?.data.translationSlug) {
-        return `/news/${entry.data.translationSlug}`;
+        return `${getRoute('news', translationLocale)}/${entry.data.translationSlug}`;
     }
 
     return undefined;
@@ -80,13 +82,14 @@ function buildTranslationPath(
 async function resolveNewsIndex(locale: Locale, siteUrl: string): Promise<NewsIndexContent> {
     const content = await loadLocaleContent(locale);
     const sortedNewsPosts = sortNewsPostsByDate(content.newsPosts);
-    const permalink = buildPermalink(siteUrl, 'news-index', 'index');
+    const permalink = buildPermalink(siteUrl, 'news-index', 'index', locale);
+    const translationLocale: Locale = locale === 'en' ? 'cs' : 'en';
 
     return {
         type: 'news-index',
         locale,
         permalink,
-        translationPath: '/news',
+        translationPath: getRoute('news', translationLocale),
         sortedNewsPosts,
         content,
     };
@@ -102,8 +105,9 @@ async function resolveNewsPost(slug: string, locale: Locale, siteUrl: string): P
 
     const rendered = await entry.render();
     const entrySlug = normalizeSlug(entry.id);
-    const permalink = buildPermalink(siteUrl, 'news-post', entrySlug);
-    const translationPath = buildTranslationPath('news-post', entrySlug, entry);
+    const permalink = buildPermalink(siteUrl, 'news-post', entrySlug, locale);
+    const translationLocale: Locale = locale === 'en' ? 'cs' : 'en';
+    const translationPath = buildTranslationPath('news-post', entrySlug, translationLocale, entry);
 
     return {
         type: 'news-post',
@@ -126,8 +130,9 @@ async function resolvePage(slug: string, locale: Locale, siteUrl: string): Promi
 
     const rendered = await entry.render();
     const entrySlug = normalizeSlug(entry.id);
-    const permalink = buildPermalink(siteUrl, 'page', entrySlug);
-    const translationPath = buildTranslationPath('page', entrySlug, entry);
+    const permalink = buildPermalink(siteUrl, 'page', entrySlug, locale);
+    const translationLocale: Locale = locale === 'en' ? 'cs' : 'en';
+    const translationPath = buildTranslationPath('page', entrySlug, translationLocale, entry);
 
     return {
         type: 'page',
