@@ -1,0 +1,63 @@
+---
+import { getTranslation } from '@i18n/translations';
+import type { Locale } from '@type/locale';
+import { normalizeSlug } from '@utils/content-loader';
+import { formatDate } from '@utils/formatDate';
+import type { CollectionEntry } from 'astro:content';
+
+export interface Props {
+    posts: CollectionEntry<'news'>[];
+    locale: Locale;
+    limit?: number;
+}
+
+const { posts, locale, limit } = Astro.props as Props;
+const t = getTranslation(locale);
+const displayPosts = limit ? posts.slice(0, limit) : posts;
+---
+
+{
+    displayPosts.length === 0 ? (
+        <p class="text-text-muted">{t.news.noPosts}</p>
+    ) : (
+        <div class="space-y-8">
+            {displayPosts.map((post) => {
+                const postSlug = normalizeSlug(post.id);
+                const postUrl = `/news/${postSlug}`;
+
+                return (
+                    <article class="border-b border-border-default pb-8 last:border-b-0">
+                        <a href={postUrl} class="group">
+                            <h2 class="mb-2 text-2xl font-bold group-[&:hover,&:focus]:text-link-hover">
+                                {post.data.title}
+                            </h2>
+                        </a>
+
+                        <div class="mb-3 flex items-center gap-4 text-sm text-text-muted">
+                            <time datetime={post.data.pubDate.toISOString()}>
+                                {formatDate(post.data.pubDate, locale)}
+                            </time>
+
+                            {post.data.tags.length > 0 && (
+                                <div class="flex flex-wrap gap-2">
+                                    {post.data.tags.map((tag: string) => (
+                                        <span class="bg-tag-bg px-3 py-1 text-xs text-tag-text">{tag}</span>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+
+                        <p class="mb-4 text-text-secondary">{post.data.description}</p>
+
+                        <a
+                            href={postUrl}
+                            class="[&:hover,&:focus]:text-link-hover inline-flex items-center font-medium text-link"
+                        >
+                            {t.buttons.readMore} →
+                        </a>
+                    </article>
+                );
+            })}
+        </div>
+    )
+}
