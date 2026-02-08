@@ -22,6 +22,28 @@ export const ROUTES = {
     },
 } as const;
 
+export const PAGE_SLUGS: Record<keyof typeof ROUTES, Record<Locale, string>> = {
+    home: {
+        en: 'index',
+        cs: 'index',
+    },
+
+    projects: {
+        en: 'projects',
+        cs: 'projekty',
+    },
+
+    news: {
+        en: 'news',
+        cs: 'news',
+    },
+
+    rss: {
+        en: 'rss',
+        cs: 'rss',
+    },
+};
+
 export function getRoute(route: keyof typeof ROUTES, locale: Locale): string {
     return ROUTES[route][locale];
 }
