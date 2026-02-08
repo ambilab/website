@@ -45,7 +45,7 @@
     --color-button-primary-text-hover: theme('colors.white');
 
     /* Semantic Colors - Secondary Button */
-    --color-button-secondary-bg: theme('colors.zinc.800');
+    --color-button-secondary-bg: theme('colors.zinc.900');
     --color-button-secondary-bg-hover: theme('colors.zinc.900');
     --color-button-secondary-text: theme('colors.white');
     --color-button-secondary-text-hover: theme('colors.white');
