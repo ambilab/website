@@ -22,7 +22,7 @@ const displayPosts = hasLimit ? posts.slice(0, Math.max(0, limit)) : posts;
     displayPosts.length === 0 ? (
         <p class="font-mono text-[11px] uppercase leading-3 antialiased">{t.news.noPosts}</p>
     ) : (
-        <div class="space-y-8">
+        <div class="select-none space-y-8">
             {displayPosts.map((post) => {
                 const postSlug = normalizeSlug(post.id);
                 const postUrl = `${getRoute('news', locale)}/${postSlug}`;
