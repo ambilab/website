@@ -1,0 +1,42 @@
+---
+import NewsList from '@components/astro/NewsList.astro';
+import { getRoute } from '@config/routes';
+import { getTranslation } from '@i18n/translations';
+import type { Locale } from '@type/locale';
+import { loadLocaleContent, sortNewsPostsByDate } from '@utils/content-loader';
+
+export interface Props {
+    locale: Locale;
+    limit?: number;
+    showViewAll?: boolean;
+}
+
+const { locale, limit = 3, showViewAll = true } = Astro.props as Props;
+
+const t = getTranslation(locale);
+const content = await loadLocaleContent(locale);
+const sortedPosts = sortNewsPostsByDate(content.newsPosts);
+const newsUrl = getRoute('news', locale);
+---
+
+<section class="my-12">
+    <div class="mb-8 flex items-end justify-between">
+        <div>
+            <h2 class="mb-2 text-3xl font-bold">{t.news.title}</h2>
+            <p class="text-lg text-text-muted">{t.news.description}</p>
+        </div>
+
+        {
+            showViewAll && sortedPosts.length > 0 && (
+                <a
+                    href={newsUrl}
+                    class="[&:hover,&:focus]:text-link-hover inline-flex items-center font-medium text-link"
+                >
+                    {t.news.allPosts} →
+                </a>
+            )
+        }
+    </div>
+
+    <NewsList posts={sortedPosts} locale={locale} limit={limit} />
+</section>
