@@ -1,5 +1,6 @@
 <script lang="ts">
     import { LOCALE_CONFIGS } from '@i18n/config';
+    import { getTranslation } from '@i18n/translations';
     import { getTranslationLocale, setLocaleCookie } from '@i18n/utils';
     import type { Locale } from '@type/locale';
     import { createLogger } from '@utils/logger';
@@ -13,6 +14,8 @@
     }
 
     let { currentLocale, translationPath }: Props = $props();
+
+    const t = $derived(getTranslation(currentLocale));
 
     let isAnimating = $state(false);
 
@@ -45,7 +48,7 @@
     onclick={handleLocaleSwitch}
     disabled={isAnimating}
     class="[&:hover,&:focus]:text-text-primary [&:hover,&:focus]:bg-active flex cursor-pointer items-center px-2 pb-[4px] pt-[3.5px] uppercase text-text-secondary disabled:opacity-50"
-    aria-label="Switch language"
+    aria-label={t.a11y.switchLanguage}
 >
     <span>&rarr; {otherConfig.name}</span>
 </button>

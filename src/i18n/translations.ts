@@ -4,6 +4,15 @@ import type { Locale } from '@type/locale';
 export interface Translations {
     a11y: {
         skipNavigationLink: string;
+        openMenu: string;
+        closeMenu: string;
+        toggleTheme: string;
+        switchToLightMode: string;
+        switchToDarkMode: string;
+        goToTop: string;
+        switchLanguage: string;
+        homeLinkLabel: string;
+        demoEmbedTitle: string;
     };
 
     nav: {
@@ -82,6 +91,15 @@ export const translations: Record<Locale, Translations> = {
     en: {
         a11y: {
             skipNavigationLink: 'Skip to the main content',
+            openMenu: 'Open menu',
+            closeMenu: 'Close menu',
+            toggleTheme: 'Toggle theme',
+            switchToLightMode: 'Switch to light mode',
+            switchToDarkMode: 'Switch to dark mode',
+            goToTop: 'Go to top',
+            switchLanguage: 'Switch language',
+            homeLinkLabel: 'Ambilab Home',
+            demoEmbedTitle: 'Demo embed',
         },
 
         nav: {
@@ -158,6 +176,15 @@ export const translations: Record<Locale, Translations> = {
     cs: {
         a11y: {
             skipNavigationLink: 'Přeskočit na hlavní obsah',
+            openMenu: 'Otevřít menu',
+            closeMenu: 'Zavřít menu',
+            toggleTheme: 'Přepnout motiv',
+            switchToLightMode: 'Přepnout na světlý režim',
+            switchToDarkMode: 'Přepnout na tmavý režim',
+            goToTop: 'Zpět nahoru',
+            switchLanguage: 'Přepnout jazyk',
+            homeLinkLabel: 'Ambilab domovská stránka',
+            demoEmbedTitle: 'Demo náhled',
         },
 
         nav: {

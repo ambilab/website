@@ -1,15 +1,20 @@
 <script lang="ts">
     import { COMPONENT_CONFIG } from '@config/components';
+    import { getTranslation } from '@i18n/translations';
+    import type { Locale } from '@type/locale';
     import { debounce } from '@utils/debounce';
     import { scrollToTop } from '@utils/scroll';
     import { onMount } from 'svelte';
     import { fade } from 'svelte/transition';
 
     interface Props {
+        locale: Locale;
         forceVisible?: boolean;
     }
 
-    let { forceVisible = false }: Props = $props();
+    let { locale, forceVisible = false }: Props = $props();
+
+    const t = $derived(getTranslation(locale));
 
     let isVisible = $state(false);
 
@@ -49,7 +54,7 @@
         transition:fade={{ duration: COMPONENT_CONFIG.goToTop.animationDuration }}
         onclick={handleClick}
         class="go-to-top-button [&:hover,&:focus]:bg-button-primary-hover [&:hover,&:focus]:shadow-xl bg-button-primary fixed z-go-to-top p-3 text-button-primary-text shadow-lg"
-        aria-label="Go to top"
+        aria-label={t.a11y.goToTop}
     >
         <svg class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
             <path d="M12 4L4 12L5.41 13.41L11 7.83V20H13V7.83L18.59 13.41L20 12L12 4Z" />

@@ -1,12 +1,17 @@
 <script lang="ts">
+    import { getTranslation } from '@i18n/translations';
+    import type { Locale } from '@type/locale';
     import { debounce } from '@utils/debounce';
     import type { Snippet } from 'svelte';
 
     interface Props {
+        locale: Locale;
         children?: Snippet;
     }
 
-    let { children }: Props = $props();
+    let { locale, children }: Props = $props();
+
+    const t = $derived(getTranslation(locale));
 
     const svgProps = {
         width: 24,
@@ -309,7 +314,7 @@
         bind:this={menuButtonElement}
         type="button"
         class="cursor-pointer bg-text-primary text-text-secondary md:hidden"
-        aria-label={isOpen ? 'Close menu' : 'Open menu'}
+        aria-label={isOpen ? t.a11y.closeMenu : t.a11y.openMenu}
         aria-expanded={isOpen}
         aria-controls="mobile-menu"
         onclick={toggleMenu}
