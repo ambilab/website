@@ -46,7 +46,7 @@ const pageMap = providedPageMap ?? (await loadLocaleContent(locale)).pageMap;
             document.addEventListener('astro:after-swap', applyTheme);
         </script>
 
-        <Head {...seoProps} locale={locale} />
+        <Head {...seoProps} locale={locale} {...translationPath ? { translationPath } : {}} />
     </head>
 
     <body
