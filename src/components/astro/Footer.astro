@@ -26,7 +26,10 @@ const currentYear = new Date().getFullYear();
                 </p>
             </div>
 
-            <div class="-ml-px font-mono text-[11px] uppercase leading-3 antialiased">
+            <nav
+                aria-label={t.footer.footerNavAria}
+                class="-ml-px font-mono text-[11px] uppercase leading-3 antialiased"
+            >
                 <ul class="space-y-0">
                     <li>
                         <a href={getRoute('home', locale)}>
@@ -46,15 +49,15 @@ const currentYear = new Date().getFullYear();
                         </a>
                     </li>
                 </ul>
-            </div>
+            </nav>
 
-            <div class="font-mono text-[11px] uppercase leading-3 antialiased">
+            <nav aria-label={t.footer.socialLinksAria} class="font-mono text-[11px] uppercase leading-3 antialiased">
                 <h4 class="-ml-px mb-0.5">
                     {t.footer.followAmbilab}
                 </h4>
 
                 <SocialLinks />
-            </div>
+            </nav>
         </div>
 
         <div class="-ml-px mt-[18px] font-mono text-[11px] uppercase leading-3 antialiased">
