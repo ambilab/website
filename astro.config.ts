@@ -63,6 +63,7 @@ export default defineConfig({
     image: {
         service: {
             entrypoint: 'astro/assets/services/sharp',
+            // Sharp supports AVIF, WebP, and JPEG. Use format="avif" on Image component for best compression.
         },
     },
 

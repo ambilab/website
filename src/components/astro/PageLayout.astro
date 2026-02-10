@@ -62,7 +62,7 @@ const pageMap = providedPageMap ?? (await loadLocaleContent(locale)).pageMap;
 
         <Footer locale={locale} />
 
-        <GoToTop client:idle locale={locale} />
+        <GoToTop client:visible locale={locale} />
 
         <CookieBanner client:idle locale={locale} />
 
