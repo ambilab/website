@@ -87,9 +87,11 @@
         </Button>
     </form>
 
-    {#if message}
-        <p class="mb-0! mt-4 text-balance">
-            {message}
-        </p>
-    {/if}
+    <div aria-live="polite" role="status">
+        {#if message}
+            <p class="mb-0! mt-4 text-balance">
+                {message}
+            </p>
+        {/if}
+    </div>
 </div>
