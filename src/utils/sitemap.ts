@@ -6,7 +6,6 @@
  */
 
 import { getRoute } from '@config/routes';
-import { LOCALES } from '@i18n/config';
 import type { Locale } from '@type/locale';
 import type { CollectionEntry } from 'astro:content';
 
@@ -130,35 +129,6 @@ export async function generateLocaleSitemapEntries(locale: Locale): Promise<Site
         return entries;
     } catch (error) {
         logger.error(`Failed to generate sitemap entries for locale: ${locale}`, error);
-        throw error;
-    }
-}
-
-/**
- * Generates all sitemap entries for all supported locales.
- *
- * @returns Array of all sitemap entries
- */
-export async function generateAllSitemapEntries(): Promise<SitemapEntry[]> {
-    logger.info('Generating sitemap entries for all locales');
-
-    const startTime = performance.now();
-
-    try {
-        // Generate entries for all locales in parallel
-        const localeEntriesArrays = await Promise.all(LOCALES.map((locale) => generateLocaleSitemapEntries(locale)));
-
-        const allEntries = localeEntriesArrays.flat();
-
-        const duration = performance.now() - startTime;
-
-        logger.info(
-            `Generated ${allEntries.length} total sitemap entries for ${LOCALES.length} locales in ${duration.toFixed(2)}ms`,
-        );
-
-        return allEntries;
-    } catch (error) {
-        logger.error('Failed to generate sitemap entries', error);
         throw error;
     }
 }
