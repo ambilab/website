@@ -25,9 +25,9 @@
     --color-text-secondary: theme('colors.zinc.600');
     --color-text-muted: theme('colors.zinc.600');
 
-    /* Semantic Colors - Links */
-    --color-link: theme('colors.lime.600');
-    --color-link-hover: theme('colors.lime.700');
+    /* Semantic Colors - Links (lime.700 for WCAG AA 4.5:1 on page-bg) */
+    --color-link: theme('colors.lime.700');
+    --color-link-hover: theme('colors.lime.800');
     --color-link-active: theme('colors.black');
 
     /* Semantic Colors - Card */
@@ -79,6 +79,10 @@
     /* Semantic Colors - Tags/Badges */
     --color-tag-bg: theme('colors.lime.100');
     --color-tag-text: theme('colors.lime.800');
+
+    /* Semantic Colors - Footer */
+    --color-footer-bg: theme('colors.zinc.900');
+    --color-footer-text: theme('colors.zinc.200');
 
     /* Vertical rhythm (8px grid) */
     --spacing-rhythm: 8px;
@@ -176,6 +180,10 @@
     /* Semantic Colors - Tags/Badges */
     --color-tag-bg: theme('colors.lime.900');
     --color-tag-text: theme('colors.lime.200');
+
+    /* Semantic Colors - Footer */
+    --color-footer-bg: theme('colors.zinc.900');
+    --color-footer-text: theme('colors.zinc.200');
 }
 
 @layer utilities {
