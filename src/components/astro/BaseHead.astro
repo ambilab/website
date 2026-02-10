@@ -4,6 +4,7 @@ import { SITE } from '@config/site';
 import { getTranslationLocale } from '@i18n/utils';
 import type { Locale } from '@type/locale';
 import type { ISEOMetadata } from '@type/seo';
+import { buildLocaleUrl, extractPathFromUrl } from '@utils/hreflang-urls';
 import { ClientRouter } from 'astro:transitions';
 
 export interface Props extends ISEOMetadata {
@@ -12,6 +13,7 @@ export interface Props extends ISEOMetadata {
     permalink: string;
     ogImage?: string;
     locale?: Locale;
+    translationPath?: string;
 }
 
 const {
@@ -20,6 +22,7 @@ const {
     ogImage,
     permalink,
     locale = 'en',
+    translationPath,
     articlePublishedTime,
     articleModifiedTime,
     articleAuthor,
@@ -44,6 +47,18 @@ const isCzDomain = currentDomain === 'ambilab.cz' || currentDomain.endsWith('.am
 const plausibleScript = isComDomain ? plausibleScriptCom : isCzDomain ? plausibleScriptCz : undefined;
 
 const translationLocale = getTranslationLocale(locale);
+
+// Hreflang URLs for bilingual SEO
+// Extract path from current permalink to rebuild with correct domain
+const currentPath = extractPathFromUrl(permalink);
+const currentLocaleUrl = buildLocaleUrl(locale, currentPath);
+
+// Build alternate locale URL if translation exists
+const alternateLocale = translationLocale;
+const alternateLocaleUrl = translationPath ? buildLocaleUrl(alternateLocale, translationPath) : undefined;
+
+// x-default always points to English version
+const xDefaultUrl = locale === 'en' ? currentLocaleUrl : alternateLocaleUrl || currentLocaleUrl;
 ---
 
 <ClientRouter />
@@ -191,6 +206,11 @@ const translationLocale = getTranslationLocale(locale);
     href={getRoute('rss', translationLocale)}
     title={`${SITE.NAME} RSS (${locale === 'en' ? 'Čeština' : 'English'})`}
 />
+
+{/* Hreflang tags for bilingual SEO */}
+<link rel="alternate" hreflang={locale} href={currentLocaleUrl} />
+{alternateLocaleUrl && <link rel="alternate" hreflang={alternateLocale} href={alternateLocaleUrl} />}
+<link rel="alternate" hreflang="x-default" href={xDefaultUrl} />
 
 <title>{title}</title>
 
