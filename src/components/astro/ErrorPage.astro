@@ -11,9 +11,10 @@ interface Props {
     homeButtonText: string;
     homeLink?: string;
     locale: Locale;
+    requestId?: string;
 }
 
-const { code, title, description, homeButtonText, homeLink = '/', locale } = Astro.props as Props;
+const { code, title, description, homeButtonText, homeLink = '/', locale, requestId } = Astro.props as Props;
 ---
 
 <PageLayout
@@ -32,6 +33,13 @@ const { code, title, description, homeButtonText, homeLink = '/', locale } = Ast
             <span class="block text-balance">{description}</span>
         </h1>
 
+        {
+            requestId && (
+                <p class="mt-4 font-mono text-sm text-text-muted" id="request-id">
+                    {requestId}
+                </p>
+            )
+        }
         <Button client:load href={homeLink}>{homeButtonText}</Button>
     </div>
 </PageLayout>
