@@ -14,6 +14,8 @@
               sizes?: string;
               class?: string;
               loading?: 'lazy' | 'eager';
+              /** When true, use sync decoding for LCP images; when false, use async for lazy images. */
+              priority?: boolean;
           }
         | {
               src: ImageMetadata;
@@ -23,10 +25,14 @@
               sizes?: string;
               class?: string;
               loading?: 'lazy' | 'eager';
+              /** When true, use sync decoding for LCP images; when false, use async for lazy images. */
+              priority?: boolean;
           };
-    let { src, alt, sizes, class: className = '', width, height, loading = 'lazy' }: Props = $props();
+    let { src, alt, sizes, class: className = '', width, height, loading = 'lazy', priority = false }: Props = $props();
 
     const responsiveSizes = $derived(getResponsiveSizes(sizes));
+    const decoding = $derived(priority ? ('sync' as const) : ('async' as const));
+    const effectiveLoading = $derived(priority ? 'eager' : loading);
     const imageSrc = $derived(typeof src === 'string' ? src : src.src);
     const imageWidth = $derived(width ?? (typeof src === 'string' ? undefined : src.width));
     const imageHeight = $derived(height ?? (typeof src === 'string' ? undefined : src.height));
@@ -45,4 +51,13 @@
     });
 </script>
 
-<img src={imageSrc} {alt} width={imageWidth} height={imageHeight} sizes={responsiveSizes} class={className} {loading} />
+<img
+    src={imageSrc}
+    {alt}
+    width={imageWidth}
+    height={imageHeight}
+    sizes={responsiveSizes}
+    class={className}
+    loading={effectiveLoading}
+    {decoding}
+/>
