@@ -64,7 +64,7 @@
         {t.newsletter.description}
     </p>
 
-    <form onsubmit={handleSubmit} class="flex gap-2">
+    <form onsubmit={handleSubmit} class="flex gap-2" aria-busy={status === 'loading'}>
         <label for="newsletter-email" class="sr-only">{t.newsletter.emailPlaceholder}</label>
         <input
             id="newsletter-email"
@@ -74,6 +74,8 @@
             placeholder={t.newsletter.emailPlaceholder}
             required
             disabled={status === 'loading'}
+            aria-invalid={status === 'error'}
+            aria-describedby={status === 'error' && message ? 'newsletter-status' : undefined}
             class="flex-1 border-2 border-stickie-text px-4 py-2 focus:border-stickie-text focus:bg-stickie-text focus:text-white focus:outline-none focus:ring-focus-ring disabled:opacity-50"
         />
 
@@ -90,7 +92,7 @@
         </Button>
     </form>
 
-    <div aria-live="polite" role="status">
+    <div id="newsletter-status" role="status" aria-live="polite" aria-atomic="true">
         {#if message}
             <p class="mb-0! mt-4 text-balance">
                 {message}
