@@ -40,6 +40,9 @@ CLAUDE.md
 .cursor/
 !cursor-config/
 
+# Claude Code: Ignore generated files, version claude-config/ (source of truth)
+!claude-config/
+
 # Vim/Emacs swap files
 *.swp
 *.swo
