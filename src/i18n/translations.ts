@@ -46,6 +46,7 @@ export interface Translations {
         subscribing: string;
         success: string;
         error: string;
+        rateLimitError: string;
     };
 
     cookie: {
@@ -136,6 +137,7 @@ export const translations: Record<Locale, Translations> = {
             subscribing: 'Subscribing...',
             success: 'Thanks for subscribing!',
             error: 'Something went wrong. Please try again.',
+            rateLimitError: 'Too many attempts. Please try again later.',
         },
 
         cookie: {
@@ -224,6 +226,7 @@ export const translations: Record<Locale, Translations> = {
             subscribing: 'Odesílám...',
             success: 'Děkujeme za odběr!',
             error: 'Něco se pokazilo. Zkuste to prosím znovu.',
+            rateLimitError: 'Příliš mnoho pokusů. Zkuste to prosím později.',
         },
 
         cookie: {

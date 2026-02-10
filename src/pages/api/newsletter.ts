@@ -4,6 +4,32 @@ import { getSecret } from 'astro:env/server';
 
 const logger = createLogger({ prefix: 'Newsletter API' });
 
+const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000;
+const RATE_LIMIT_MAX_SUBMISSIONS = 3;
+
+const submissionTimestamps = new Map<string, number[]>();
+
+function getClientIp(request: Request, clientAddress?: string): string {
+    const cfIp = request.headers.get('cf-connecting-ip');
+    const forwarded = request.headers.get('x-forwarded-for');
+    return clientAddress ?? cfIp ?? forwarded?.split(',')[0]?.trim() ?? 'unknown';
+}
+
+function isRateLimited(ip: string): boolean {
+    const now = Date.now();
+    const cutoff = now - RATE_LIMIT_WINDOW_MS;
+    const timestamps = submissionTimestamps.get(ip) ?? [];
+    const recent = timestamps.filter((t) => t > cutoff);
+
+    if (recent.length >= RATE_LIMIT_MAX_SUBMISSIONS) {
+        return true;
+    }
+
+    recent.push(now);
+    submissionTimestamps.set(ip, recent);
+    return false;
+}
+
 interface ValidationResult {
     valid: boolean;
     error?: string;
@@ -72,10 +98,20 @@ async function subscribeToButtondown(email: string, apiKey: string): Promise<Sub
     return { success: true, status: 200 };
 }
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, clientAddress }) => {
     try {
-        const body = await request.json();
-        const { email } = body;
+        const body = (await request.json()) as { email?: string; website?: string };
+        const { email, website: honeypot } = body;
+
+        if (honeypot && typeof honeypot === 'string' && honeypot.trim().length > 0) {
+            return jsonResponse({ error: 'Something went wrong. Please try again.' }, 400);
+        }
+
+        const ip = getClientIp(request, clientAddress);
+
+        if (isRateLimited(ip)) {
+            return jsonResponse({ error: 'rate_limit' }, 429);
+        }
 
         const emailValidation = validateEmail(email);
 
@@ -90,7 +126,7 @@ export const POST: APIRoute = async ({ request }) => {
             return jsonResponse({ error: 'Newsletter service is not configured' }, 500);
         }
 
-        const result = await subscribeToButtondown(email, apiKey);
+        const result = await subscribeToButtondown(email as string, apiKey as string);
 
         if (!result.success) {
             return jsonResponse({ error: result.error }, result.status);
