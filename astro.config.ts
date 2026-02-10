@@ -54,9 +54,10 @@ export default defineConfig({
             remarkPlugins: [remarkGfm, remarkSmartypants],
         }),
 
-        // Note: Sitemap is implemented via custom endpoints at /sitemap.xml,
-        // /en/sitemap.xml, and /cs/sitemap.xml to properly handle the bilingual
-        // architecture with domain-based locale detection (ambilab.com / ambilab.cz).
+        // Note: Sitemap is implemented via custom endpoints at /sitemap-index.xml
+        // (sitemap index), /en/sitemap.xml, and /cs/sitemap.xml to properly handle
+        // the bilingual architecture with domain-based locale detection
+        // (ambilab.com / ambilab.cz).
     ],
 
     image: {
