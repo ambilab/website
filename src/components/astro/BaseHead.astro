@@ -53,12 +53,13 @@ const translationLocale = getTranslationLocale(locale);
 const currentPath = extractPathFromUrl(permalink);
 const currentLocaleUrl = buildLocaleUrl(locale, currentPath);
 
-// Build alternate locale URL if translation exists
+// Build alternate locale URL (use translationPath when pages have different slugs)
 const alternateLocale = translationLocale;
-const alternateLocaleUrl = translationPath ? buildLocaleUrl(alternateLocale, translationPath) : undefined;
+const alternatePath = translationPath ?? currentPath;
+const alternateLocaleUrl = buildLocaleUrl(alternateLocale, alternatePath);
 
 // x-default always points to English version
-const xDefaultUrl = locale === 'en' ? currentLocaleUrl : alternateLocaleUrl || currentLocaleUrl;
+const xDefaultUrl = locale === 'en' ? currentLocaleUrl : alternateLocaleUrl;
 ---
 
 <ClientRouter />
@@ -197,19 +198,21 @@ const xDefaultUrl = locale === 'en' ? currentLocaleUrl : alternateLocaleUrl || c
 <link
     rel="alternate"
     type="application/rss+xml"
-    href={getRoute('rss', locale)}
+    hreflang={locale}
+    href={buildLocaleUrl(locale, getRoute('rss', locale))}
     title={`${SITE.NAME} RSS (${locale === 'en' ? 'English' : 'Čeština'})`}
 />
 <link
     rel="alternate"
     type="application/rss+xml"
-    href={getRoute('rss', translationLocale)}
+    hreflang={translationLocale}
+    href={buildLocaleUrl(translationLocale, getRoute('rss', translationLocale))}
     title={`${SITE.NAME} RSS (${locale === 'en' ? 'Čeština' : 'English'})`}
 />
 
 {/* Hreflang tags for bilingual SEO */}
-<link rel="alternate" hreflang={locale} href={currentLocaleUrl} />
-{alternateLocaleUrl && <link rel="alternate" hreflang={alternateLocale} href={alternateLocaleUrl} />}
+<link rel="alternate" hreflang="en" href={locale === 'en' ? currentLocaleUrl : alternateLocaleUrl} />
+<link rel="alternate" hreflang="cs" href={locale === 'cs' ? currentLocaleUrl : alternateLocaleUrl} />
 <link rel="alternate" hreflang="x-default" href={xDefaultUrl} />
 
 <title>{title}</title>
