@@ -5,4 +5,7 @@ export interface ISEOMetadata {
     ogImage?: string;
     articlePublishedTime?: Date;
     articleModifiedTime?: Date;
+    articleAuthor?: string;
+    articleSection?: string;
+    articleTags?: string[];
 }

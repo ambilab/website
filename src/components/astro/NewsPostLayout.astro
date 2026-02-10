@@ -3,6 +3,7 @@ import '@/styles/mdx-content.css';
 
 import Button from '@components/svelte/Button.svelte';
 import { getRoute } from '@config/routes';
+import { SITE } from '@config/site';
 import { getTranslation } from '@i18n/translations';
 import { calculateReadingTime } from '@i18n/utils';
 import type { Locale } from '@type/locale';
@@ -44,6 +45,14 @@ const t = getTranslation(locale);
 const readingTime = calculateReadingTime(content);
 const displayTitle = providedDisplayTitle || title.replace(/ ￭ Ambilab$/, '');
 const newsUrl = `${getRoute('news', locale)}`;
+
+const articleMetadata = {
+    articlePublishedTime: pubDate,
+    ...(updatedDate ? { articleModifiedTime: updatedDate } : {}),
+    articleAuthor: SITE.AUTHOR,
+    articleSection: t.news.title,
+    articleTags: tags,
+};
 ---
 
 <PageLayout
@@ -54,6 +63,7 @@ const newsUrl = `${getRoute('news', locale)}`;
     pageMap={pageMap}
     {...translationPath ? { translationPath } : {}}
     {...seoProps}
+    {...articleMetadata}
 >
     <article class="container mx-auto px-4">
         <header
