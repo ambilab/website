@@ -63,6 +63,8 @@
 
 {#if isVisible}
     <div
+        role="region"
+        aria-label={t.cookie.regionLabel}
         class="cookie-banner fixed bottom-0 left-0 right-0 z-cookie-banner select-none border-t-2 border-page-bg px-4 pb-3 pt-2.5 antialiased sm:pt-3 md:py-7"
     >
         <div
