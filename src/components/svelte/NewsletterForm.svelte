@@ -65,8 +65,11 @@
     </p>
 
     <form onsubmit={handleSubmit} class="flex gap-2">
+        <label for="newsletter-email" class="sr-only">{t.newsletter.emailPlaceholder}</label>
         <input
+            id="newsletter-email"
             type="email"
+            autocomplete="email"
             bind:value={email}
             placeholder={t.newsletter.emailPlaceholder}
             required
