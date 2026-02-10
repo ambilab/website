@@ -13,7 +13,6 @@
     "scripts/**",
     "src/components/astro/Card.astro",
     "src/components/svelte/DemoEmbed.svelte",
-    "src/components/svelte/NewsletterForm.svelte",
     "src/components/svelte/ResponsiveImage.svelte",
     "src/env.d.ts",
     "src/lib/images.ts",
