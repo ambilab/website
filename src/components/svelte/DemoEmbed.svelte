@@ -1,8 +1,11 @@
 <script lang="ts">
     import Button from '@components/svelte/Button.svelte';
+    import { getTranslation } from '@i18n/translations';
+    import type { Locale } from '@type/locale';
 
     interface Props {
         src: string;
+        locale: Locale;
         title?: string;
         aspectRatio?: string;
         class?: string;
@@ -41,6 +44,7 @@
 
     let {
         src,
+        locale,
         title,
         aspectRatio = '16/9',
         class: className = '',
@@ -49,6 +53,8 @@
         allowAutoplay = true,
         allowMotionSensors = !desktopOnly,
     }: Props = $props();
+
+    const t = $derived(getTranslation(locale));
 
     const validationResult = $derived(validateSrcUrl(src));
     const validatedSrc = $derived(validationResult ?? safeFallbackURL);
@@ -157,7 +163,7 @@
     {:else}
         <iframe
             src={validatedSrc}
-            title={title ?? 'Demo embed'}
+            title={title ?? t.a11y.demoEmbedTitle}
             style={aspectRatioStyle}
             loading="lazy"
             allow={allowPermissions}
