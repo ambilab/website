@@ -3,6 +3,7 @@
     import { getTranslation } from '@i18n/translations';
     import type { Locale } from '@type/locale';
     import { debounce } from '@utils/debounce';
+    import { prefersReducedMotion } from '@utils/dom';
     import { scrollToTop } from '@utils/scroll';
     import { onMount } from 'svelte';
     import { fade } from 'svelte/transition';
@@ -17,6 +18,11 @@
     const t = $derived(getTranslation(locale));
 
     let isVisible = $state(false);
+    let reducedMotion = $state(false);
+
+    const transitionConfig = $derived(
+        reducedMotion ? { duration: 0 } : { duration: COMPONENT_CONFIG.goToTop.animationDuration },
+    );
 
     const handleScroll = debounce(() => {
         if (!forceVisible) {
@@ -29,12 +35,11 @@
     };
 
     onMount(() => {
+        reducedMotion = prefersReducedMotion();
+
         if (forceVisible) {
             isVisible = true;
-
-            return () => {
-                // No cleanup needed when forceVisible is true.
-            };
+            return;
         }
 
         const scrollHandler = handleScroll as EventListener;
@@ -51,7 +56,7 @@
 
 {#if isVisible || forceVisible}
     <button
-        transition:fade={{ duration: COMPONENT_CONFIG.goToTop.animationDuration }}
+        transition:fade={transitionConfig}
         onclick={handleClick}
         class="go-to-top-button [&:hover,&:focus]:bg-button-primary-hover [&:hover,&:focus]:shadow-xl bg-button-primary fixed z-go-to-top p-3 text-button-primary-text shadow-lg"
         aria-label={t.a11y.goToTop}

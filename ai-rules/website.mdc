@@ -254,9 +254,34 @@ The project uses semantic design tokens with automatic dark mode switching:
 - `link` / `link-hover` / `link-active` - Link colors and states
 - `button-primary-*` / `button-secondary-*` / `button-outline-*` - Button colors
 - `tag-bg` / `tag-text` - Tag/badge colors
+- `footer-bg` / `footer-text` - Footer background and text
 
 **No `-dark` variants needed**: CSS variables automatically change values based on `.dark` class, so you only need one
 class name (e.g., `bg-page-bg` works for both light and dark modes)
+
+### Responsive Breakpoint Strategy
+
+Use mobile-first responsive utilities. Tailwind default breakpoints:
+
+| Breakpoint | Min Width | Use Case                    |
+| ---------- | --------- | --------------------------- |
+| (default)  | 0px       | Mobile baseline             |
+| `sm:`      | 640px     | Large phones, small tablets |
+| `md:`      | 768px     | Tablets                     |
+| `lg:`      | 1024px    | Desktops                    |
+| `xl:`      | 1280px    | Large desktops              |
+| `2xl:`     | 1536px    | Extra large screens         |
+
+**Patterns:**
+
+- Start with mobile styles, add modifiers for larger screens: `text-sm md:text-base lg:text-lg`
+- Stack on mobile, row on desktop: `flex flex-col gap-4 md:flex-row`
+- Full width on mobile, constrained on desktop: `w-full md:max-w-xl`
+- Use semantic spacing: `px-4 sm:px-6 md:px-8` for progressive padding
+- Forms: `flex flex-col sm:flex-row` for full-width inputs on mobile
+
+**Color contrast**: All text/background pairs meet WCAG AA 4.5:1. Validate with
+[WebAIM Contrast Checker](https://webaim.org/resources/contrastchecker/).
 
 ### CSS Organization
 

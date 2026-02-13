@@ -151,9 +151,14 @@
         position: absolute;
         left: -1.5rem;
         opacity: 0;
-        transition: opacity 0.2s;
         text-decoration: none;
         color: var(--color-anchor);
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+        :global(.mdx-content .anchor) {
+            transition: opacity 0.2s;
+        }
     }
 
     :global(.mdx-content h1:hover .anchor),
