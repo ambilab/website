@@ -19,14 +19,24 @@ test.describe('Locale switching', () => {
         const localeButton = page.getByRole('button', { name: /Switch language|Přepnout jazyk/i });
         await expect(localeButton).toBeVisible();
 
+        // Assert initial state is English
+        const htmlLang = await page.locator('html').getAttribute('lang');
+        const bodyText = await page.locator('body').textContent();
+        
+        expect(htmlLang).toBe('en');
+        expect(bodyText?.includes('Home') || bodyText?.includes('Projects')).toBeTruthy();
+
+        // Click to switch locale
         await localeButton.click();
 
         await page.waitForLoadState('networkidle');
 
-        const htmlLang = await page.locator('html').getAttribute('lang');
-        const bodyText = await page.locator('body').textContent();
+        // Assert locale transitioned to Czech
+        const htmlLangAfter = await page.locator('html').getAttribute('lang');
+        const bodyTextAfter = await page.locator('body').textContent();
 
-        expect(htmlLang === 'cs' || bodyText?.includes('Domů') || bodyText?.includes('Projekty')).toBeTruthy();
+        expect(htmlLangAfter).toBe('cs');
+        expect(bodyTextAfter?.includes('Domů') || bodyTextAfter?.includes('Projekty')).toBeTruthy();
     });
 
     test('should persist locale via cookie after switch', async ({ page, context }) => {
