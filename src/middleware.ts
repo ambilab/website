@@ -4,6 +4,7 @@ import { detectLocaleFromHostname, getLocaleFromCookie } from '@i18n/utils';
 import type { Locale } from '@type/locale';
 import { createLogger } from '@utils/logger';
 import { defineMiddleware } from 'astro:middleware';
+import { nanoid } from 'nanoid';
 
 const logger = createLogger({ prefix: 'Middleware' });
 
@@ -47,6 +48,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
         context.locals.nonce = nonce;
         context.locals.locale = resolveLocale(context.request);
+        context.locals.requestId = nanoid();
 
         const response = await next();
 

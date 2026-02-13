@@ -1,10 +1,18 @@
 export type LogLevel = 'debug' | 'info' | 'warning' | 'error';
 
+export type LogContext = {
+    requestId?: string;
+    url?: string;
+    locale?: string;
+} & Record<string, unknown>;
+
 export interface ILogger {
     debug: (message: string, meta?: Record<string, unknown>) => void;
     info: (message: string, meta?: Record<string, unknown>) => void;
     warn: (message: string, meta?: Record<string, unknown>) => void;
     error: (message: string, error?: unknown, meta?: Record<string, unknown>) => void;
+    /** Log with context (requestId, url, locale) merged into meta for error tracking. */
+    errorWithContext: (message: string, context: LogContext, error?: unknown) => void;
 }
 
 export interface LoggerOptions {
@@ -92,6 +100,19 @@ class Logger implements ILogger {
                 console.error(formatted);
             }
         }
+    }
+
+    public errorWithContext(message: string, context: LogContext, error?: unknown): void {
+        const meta: Record<string, unknown> = {};
+        if (context.requestId) meta.requestId = context.requestId;
+        if (context.url) meta.url = context.url;
+        if (context.locale) meta.locale = context.locale;
+        for (const [key, value] of Object.entries(context)) {
+            if (key !== 'requestId' && key !== 'url' && key !== 'locale' && value !== undefined) {
+                meta[key] = value;
+            }
+        }
+        this.error(message, error, Object.keys(meta).length > 0 ? meta : undefined);
     }
 }
 

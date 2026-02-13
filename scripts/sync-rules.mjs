@@ -285,7 +285,7 @@ function generateZed(rules) {
 function generateClaude(rules) {
     const combinedRules = combineRules(rules);
     const claudeConfig = generateClaudeConfig();
-    const fullContent = combinedRules + '\n\n---\n\n' + claudeConfig;
+    const fullContent = `${combinedRules}\n\n---\n\n${claudeConfig}`;
     writeRuleFile(join(ROOT_DIR, 'CLAUDE.md'), fullContent, 'CLAUDE.md');
 
     // Also sync claude-config (settings, skills, etc.).

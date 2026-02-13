@@ -289,6 +289,19 @@ For JS checks, use `prefersReducedMotion()` from `@utils/dom` (SSR-safe, returns
 
 ## Image Optimization
 
+### Format Strategy
+
+1. **AVIF first with fallbacks**: Use the `<Picture />` component (not `<Image />`) with `formats={['avif', 'webp']}`
+   and `fallbackFormat="jpeg"` for best compression with proper browser fallbacks. Note: `<Image />` with
+   `format="avif"` produces AVIF-only output without fallbacks; always use `<Picture />` when you need AVIF→WebP→JPEG
+   fallback support.
+2. **LCP images**: Use `priority={true}` on ResponsiveImage for above-the-fold content; sets `decoding="sync"` and
+   `loading="eager"`.
+3. **Below-fold images**: Use `loading="lazy"` and `decoding="async"` (ResponsiveImage default) to avoid blocking main
+   thread.
+4. **Responsive sizes**: Use `getResponsiveSizes()` for mobile-first breakpoints; defaults optimize for 100vw (mobile),
+   95vw (small tablet), 85vw (tablet), 75vw (desktop).
+
 ### Astro Image Component
 
 ```astro
@@ -302,10 +315,14 @@ import heroImage from '@assets/hero.png';
 
 ### ResponsiveImage Component
 
-For images requiring srcset and responsive sizes:
+For images requiring srcset and responsive sizes. Use `priority` for LCP images:
 
 ```svelte
-<ResponsiveImage src="/images/screenshot.png" alt="Screenshot description" width={800} height={600} client:visible />
+<!-- LCP / above-the-fold -->
+<ResponsiveImage src="/images/hero.png" alt="Hero" width={1200} height={600} priority client:visible />
+
+<!-- Below-fold -->
+<ResponsiveImage src="/images/screenshot.png" alt="Screenshot" width={800} height={600} client:visible />
 ```
 
 ## Demo Embeds

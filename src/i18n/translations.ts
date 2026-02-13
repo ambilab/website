@@ -34,7 +34,9 @@ export interface Translations {
         allRightsReserved: string;
         description: string;
         navigation: string;
+        footerNavAria: string;
         followAmbilab: string;
+        socialLinksAria: string;
     };
 
     newsletter: {
@@ -122,7 +124,9 @@ export const translations: Record<Locale, Translations> = {
             allRightsReserved: 'All rights reserved',
             description: 'What pink drop port tired new north highway ugly art finished happy.',
             navigation: 'Navigation',
+            footerNavAria: 'Footer navigation',
             followAmbilab: 'Follow Us:',
+            socialLinksAria: 'Social links',
         },
 
         newsletter: {
@@ -208,7 +212,9 @@ export const translations: Record<Locale, Translations> = {
             allRightsReserved: 'Všechna práva vyhrazena',
             description: 'Webová pixel-art herní engine.',
             navigation: 'Navigace',
+            footerNavAria: 'Navigace v patičce',
             followAmbilab: 'Sledujte nás:',
+            socialLinksAria: 'Sociální sítě',
         },
 
         newsletter: {
