@@ -64,6 +64,9 @@ export default {
 
                 'tag-bg': 'var(--color-tag-bg)',
                 'tag-text': 'var(--color-tag-text)',
+
+                'footer-bg': 'var(--color-footer-bg)',
+                'footer-text': 'var(--color-footer-text)',
             },
             zIndex: {
                 header: '50',

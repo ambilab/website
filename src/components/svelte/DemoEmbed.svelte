@@ -131,7 +131,7 @@
     const aspectRatioStyle = $derived(`aspect-ratio: ${safeAspectRatio}; width: 100%;`);
 </script>
 
-<figure class={`demo-embed ${className}`}>
+<figure class:list={['demo-embed', className]}>
     {#if shouldShowLink}
         <div
             class="demo-embed__panel flex min-h-[200px] select-none flex-col items-center justify-center bg-black p-8 text-center"
