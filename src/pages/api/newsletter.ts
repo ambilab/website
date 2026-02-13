@@ -6,8 +6,43 @@ const logger = createLogger({ prefix: 'Newsletter API' });
 
 const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000;
 const RATE_LIMIT_MAX_SUBMISSIONS = 3;
+const CLEANUP_INTERVAL_MS = 15 * 60 * 1000; // Run cleanup every 15 minutes
 
 const submissionTimestamps = new Map<string, number[]>();
+
+function cleanupOldTimestamps(): void {
+    const now = Date.now();
+    const cutoff = now - RATE_LIMIT_WINDOW_MS;
+    let removed = 0;
+    let updated = 0;
+
+    for (const [ip, timestamps] of submissionTimestamps.entries()) {
+        const recentTimestamps = timestamps.filter((t) => t > cutoff);
+
+        if (recentTimestamps.length === 0) {
+            submissionTimestamps.delete(ip);
+            removed++;
+        } else if (recentTimestamps.length < timestamps.length) {
+            submissionTimestamps.set(ip, recentTimestamps);
+            updated++;
+        }
+    }
+
+    if (removed > 0 || updated > 0) {
+        logger.info(`Cleaned up rate limit map: removed ${removed} IPs, updated ${updated} IPs`);
+    }
+}
+
+const cleanupIntervalId = setInterval(cleanupOldTimestamps, CLEANUP_INTERVAL_MS);
+
+if (typeof process !== 'undefined' && process.on) {
+    const cleanup = () => {
+        clearInterval(cleanupIntervalId);
+        logger.info('Cleared rate limit cleanup interval on shutdown');
+    };
+    process.on('SIGTERM', cleanup);
+    process.on('SIGINT', cleanup);
+}
 
 function getClientIp(request: Request, clientAddress?: string): string {
     const cfIp = request.headers.get('cf-connecting-ip');
