@@ -17,12 +17,16 @@ let resolvedContent;
 try {
     resolvedContent = await resolveContent(route, detectedLocale, Astro.url.origin);
 } catch (err) {
-    logger.errorWithContext('Failed to resolve content', {
-        requestId: Astro.locals.requestId,
-        url: Astro.url.href,
-        locale: detectedLocale,
-        route: route.requestPath,
-    }, err);
+    logger.errorWithContext(
+        'Failed to resolve content',
+        {
+            requestId: Astro.locals.requestId,
+            url: Astro.url.href,
+            locale: detectedLocale,
+            route: route.requestPath,
+        },
+        err,
+    );
     return Astro.redirect('/500');
 }
 
