@@ -47,9 +47,12 @@ test.describe('Locale switching', () => {
 
         await page.waitForLoadState('networkidle');
 
+        // Determine the expected locale after clicking by checking the html lang attribute
+        const expectedLocale = await page.locator('html').getAttribute('lang');
+
         const cookies = await context.cookies();
         const localeCookie = cookies.find((c) => c.name === 'locale');
 
-        expect(localeCookie?.value === 'en' || localeCookie?.value === 'cs').toBeTruthy();
+        expect(localeCookie?.value).toBe(expectedLocale);
     });
 });
