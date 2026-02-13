@@ -299,8 +299,9 @@ For JS checks, use `prefersReducedMotion()` from `@utils/dom` (SSR-safe, returns
    `loading="eager"`.
 3. **Below-fold images**: Use `loading="lazy"` and `decoding="async"` (ResponsiveImage default) to avoid blocking main
    thread.
-4. **Responsive sizes**: Use `getResponsiveSizes()` for mobile-first breakpoints; defaults optimize for 100vw (mobile),
-   95vw (small tablet), 85vw (tablet), 75vw (desktop).
+4. **Responsive sizes**: Use `getResponsiveSizes()` for mobile-first breakpoints; defaults optimize for 100vw (mobile,
+   <640px), 95vw (small tablet, <768px), 85vw (tablet, <1024px), 75vw (large desktop, <1280px), and an XL fixed cap at
+   1200px.
 
 ### Astro Image Component
 
