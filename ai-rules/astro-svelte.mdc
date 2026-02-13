@@ -302,7 +302,6 @@ For JS checks, use `prefersReducedMotion()` from `@utils/dom` (SSR-safe, returns
 4. **Responsive sizes**: Use `getResponsiveSizes()` for mobile-first breakpoints; defaults optimize for 100vw (mobile,
    <640px), 95vw (small tablet, <768px), 85vw (tablet, <1024px), 75vw (large desktop, <1280px), and an XL fixed cap at
    1200px.
-
 ### Astro Image Component
 
 ```astro
