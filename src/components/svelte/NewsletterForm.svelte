@@ -15,6 +15,7 @@
     const t = $derived(getTranslation(locale));
 
     let email = $state('');
+    let honeypot = $state('');
     let status = $state<'idle' | 'loading' | 'success' | 'error'>('idle');
     let message = $state('');
     let hasValidationError = $state(false);
@@ -36,7 +37,7 @@
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ email }),
+                body: JSON.stringify({ email, website: honeypot, locale }),
             });
 
             if (response.ok) {
@@ -44,14 +45,15 @@
                 message = t.newsletter.success;
                 email = '';
             } else {
-                const data = await response.json();
+                const data = (await response.json()) as { error?: string };
                 status = 'error';
-                message = data.error || t.newsletter.error;
+                message =
+                    data.error === 'rate_limit' ? t.newsletter.rateLimitError : (data.error ?? t.newsletter.error);
 
                 // Set hasValidationError to true only for field validation errors (400 status)
                 hasValidationError = response.status === 400;
 
-                logger.warn(`Newsletter subscription failed: ${data.error || 'Unknown error'}`);
+                logger.warn(`Newsletter subscription failed: ${data.error ?? 'Unknown error'}`);
             }
         } catch (error) {
             status = 'error';
@@ -72,6 +74,15 @@
 
     <form onsubmit={handleSubmit} class="flex flex-col gap-2 sm:flex-row sm:gap-2" aria-busy={status === 'loading'}>
         <label for="newsletter-email" class="sr-only">{t.newsletter.emailPlaceholder}</label>
+        <input
+            type="text"
+            name="website"
+            bind:value={honeypot}
+            tabindex="-1"
+            autocomplete="off"
+            aria-hidden="true"
+            class="absolute -left-[9999px] size-[1px] opacity-0"
+        />
         <input
             type="email"
             id="newsletter-email"
