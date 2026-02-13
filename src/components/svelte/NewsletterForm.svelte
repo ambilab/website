@@ -17,6 +17,7 @@
     let email = $state('');
     let status = $state<'idle' | 'loading' | 'success' | 'error'>('idle');
     let message = $state('');
+    let hasValidationError = $state(false);
 
     const handleSubmit = async (e: Event) => {
         e.preventDefault();
@@ -27,6 +28,7 @@
 
         status = 'loading';
         message = '';
+        hasValidationError = false;
 
         try {
             const response = await fetch('/api/newsletter', {
@@ -46,11 +48,15 @@
                 status = 'error';
                 message = data.error || t.newsletter.error;
 
+                // Set hasValidationError to true only for field validation errors (400 status)
+                hasValidationError = response.status === 400;
+
                 logger.warn(`Newsletter subscription failed: ${data.error || 'Unknown error'}`);
             }
         } catch (error) {
             status = 'error';
             message = t.newsletter.error;
+            hasValidationError = false;
 
             logger.error('Failed to submit the newsletter form', error);
         }
@@ -72,8 +78,8 @@
             placeholder={t.newsletter.emailPlaceholder}
             required
             disabled={status === 'loading'}
-            aria-invalid={status === 'error'}
-            aria-describedby={status === 'error' && message ? 'newsletter-status' : undefined}
+            aria-invalid={hasValidationError}
+            aria-describedby={hasValidationError && message ? 'newsletter-status' : undefined}
             class="flex-1 border-2 border-stickie-text px-4 py-2 focus:border-stickie-text focus:bg-stickie-text focus:text-white focus:outline-none focus:ring-focus-ring disabled:opacity-50"
         />
 
