@@ -111,7 +111,16 @@
 </script>
 
 {#if href}
-    <a {href} {target} rel={safeRel} class={classes} role="button" onkeydown={handleKeydown} {onclick} data-testid={dataTestId}>
+    <a
+        {href}
+        {target}
+        rel={safeRel}
+        class={classes}
+        role="button"
+        onkeydown={handleKeydown}
+        {onclick}
+        data-testid={dataTestId}
+    >
         {@render children?.()}
     </a>
 {:else}

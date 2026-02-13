@@ -1,4 +1,4 @@
-import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
+import { afterEach,beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { safeExecute } from './safe-execute';
 
@@ -45,7 +45,7 @@ describe('safeExecute', () => {
         expect(consoleErrorSpy).toHaveBeenCalledWith(
             expect.stringContaining('Custom error message'),
             expect.any(Error),
-            {}
+            {},
         );
         expect(consoleErrorSpy).toHaveBeenCalledTimes(1);
     });

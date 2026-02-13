@@ -22,7 +22,7 @@ test.describe('Locale switching', () => {
         // Assert initial state is English
         const htmlLang = await page.locator('html').getAttribute('lang');
         const bodyText = await page.locator('body').textContent();
-        
+
         expect(htmlLang).toBe('en');
         expect(bodyText?.includes('Home') || bodyText?.includes('Projects')).toBeTruthy();
 
