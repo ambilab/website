@@ -70,10 +70,12 @@
         {t.newsletter.description}
     </p>
 
-    <form onsubmit={handleSubmit} class="flex gap-2" aria-busy={status === 'loading'}>
+    <form onsubmit={handleSubmit} class="flex flex-col gap-2 sm:flex-row sm:gap-2" aria-busy={status === 'loading'}>
+        <label for="newsletter-email" class="sr-only">{t.newsletter.emailPlaceholder}</label>
         <input
             type="email"
             id="newsletter-email"
+            autocomplete="email"
             bind:value={email}
             placeholder={t.newsletter.emailPlaceholder}
             required
