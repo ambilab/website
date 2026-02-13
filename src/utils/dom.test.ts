@@ -5,9 +5,11 @@ import { toggleDarkMode } from './dom';
 describe('dom', () => {
     let mockDocumentElement: HTMLElement;
     let mockLocalStorage: Map<string, string>;
+    let initialClassName: string;
 
     beforeEach(() => {
         mockDocumentElement = document.documentElement;
+        initialClassName = document.documentElement.className;
         mockLocalStorage = new Map<string, string>();
         vi.stubGlobal('localStorage', {
             getItem: (key: string) => mockLocalStorage.get(key) ?? null,
@@ -24,6 +26,7 @@ describe('dom', () => {
     });
 
     afterEach(() => {
+        document.documentElement.className = initialClassName;
         vi.unstubAllGlobals();
     });
 
