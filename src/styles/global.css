@@ -374,6 +374,14 @@ h3 {
         animation-name: none;
         mask-image: none;
     }
+
+    /* Disable Tailwind animation utilities (animate-spin, animate-pulse, etc.) */
+    .animate-spin,
+    .animate-ping,
+    .animate-pulse,
+    .animate-bounce {
+        animation: none !important;
+    }
 }
 
 /* Selection colors */

@@ -6,5 +6,6 @@ declare namespace App {
     interface Locals {
         locale: 'en' | 'cs';
         nonce: string;
+        requestId: string;
     }
 }
