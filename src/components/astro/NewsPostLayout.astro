@@ -2,6 +2,7 @@
 import '@/styles/mdx-content.css';
 
 import Button from '@components/svelte/Button.svelte';
+import NewsletterForm from '@components/svelte/NewsletterForm.svelte';
 import { getRoute } from '@config/routes';
 import { SITE } from '@config/site';
 import { getTranslation } from '@i18n/translations';
@@ -120,6 +121,10 @@ const articleMetadata = {
             <div class="select-none font-mono text-[22px] uppercase leading-3 antialiased" aria-hidden="true">
                 &spades;
             </div>
+        </div>
+
+        <div class="mx-auto max-w-4xl">
+            <NewsletterForm client:idle locale={locale} />
         </div>
     </article>
 
