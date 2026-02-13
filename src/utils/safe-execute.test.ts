@@ -1,8 +1,18 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest';
 
 import { safeExecute } from './safe-execute';
 
 describe('safeExecute', () => {
+    let consoleErrorSpy: ReturnType<typeof vi.spyOn>;
+
+    beforeEach(() => {
+        consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    });
+
+    afterEach(() => {
+        consoleErrorSpy.mockRestore();
+    });
+
     it('should return the result when fn succeeds', () => {
         const result = safeExecute(() => 42, 0);
 
@@ -32,6 +42,12 @@ describe('safeExecute', () => {
         const result = safeExecute(throwFn, null, 'Custom error message');
 
         expect(result).toBeNull();
+        expect(consoleErrorSpy).toHaveBeenCalledWith(
+            expect.stringContaining('Custom error message'),
+            expect.any(Error),
+            {}
+        );
+        expect(consoleErrorSpy).toHaveBeenCalledTimes(1);
     });
 
     it('should handle non-Error throws', () => {
