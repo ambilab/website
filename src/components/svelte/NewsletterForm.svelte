@@ -58,7 +58,7 @@
 </script>
 
 <div class="stickie-with-shadows -mx-[16px] select-none bg-stickie-bg px-[16px] pb-[17px] pt-[16px] text-stickie-text">
-    <h3 class="mt-0! mb-2!">{t.newsletter.title}</h3>
+    <h3 class="mt-0! mb-2!" data-testid="newsletter-heading">{t.newsletter.title}</h3>
 
     <p class="text-balance">
         {t.newsletter.description}
@@ -76,6 +76,7 @@
             disabled={status === 'loading'}
             aria-invalid={status === 'error'}
             aria-describedby={status === 'error' && message ? 'newsletter-status' : undefined}
+            data-testid="newsletter-email"
             class="flex-1 border-2 border-stickie-text px-4 py-2 focus:border-stickie-text focus:bg-stickie-text focus:text-white focus:outline-none focus:ring-focus-ring disabled:opacity-50"
         />
 
@@ -83,6 +84,7 @@
             type="submit"
             class="[&:hover,&:focus]:bg-stickie-text bg-stickie-text text-white"
             disabled={status === 'loading'}
+            data-testid="newsletter-submit"
         >
             {#if status === 'loading'}
                 {t.newsletter.subscribing}

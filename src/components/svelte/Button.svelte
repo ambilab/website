@@ -12,6 +12,7 @@
         class?: string;
         onclick?: (ev: MouseEvent) => void;
         children?: Snippet;
+        'data-testid'?: string;
     }
 
     let {
@@ -25,6 +26,7 @@
         class: className = '',
         onclick,
         children,
+        'data-testid': dataTestId,
     }: Props = $props();
 
     // Compute safe rel value to protect against reverse-tabnabbing when target="_blank"
@@ -109,11 +111,11 @@
 </script>
 
 {#if href}
-    <a {href} {target} rel={safeRel} class={classes} role="button" onkeydown={handleKeydown} {onclick}>
+    <a {href} {target} rel={safeRel} class={classes} role="button" onkeydown={handleKeydown} {onclick} data-testid={dataTestId}>
         {@render children?.()}
     </a>
 {:else}
-    <button {type} {disabled} class={classes} {onclick}>
+    <button {type} {disabled} class={classes} {onclick} data-testid={dataTestId}>
         {@render children?.()}
     </button>
 {/if}
