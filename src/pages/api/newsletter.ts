@@ -104,7 +104,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
         const { email, website: honeypot } = body;
 
         if (honeypot && typeof honeypot === 'string' && honeypot.trim().length > 0) {
-            return jsonResponse({ error: 'Something went wrong. Please try again.' }, 400);
+            return jsonResponse({ ok: false }, 400);
         }
 
         const ip = getClientIp(request, clientAddress);
