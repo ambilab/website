@@ -15,8 +15,10 @@
     const t = $derived(getTranslation(locale));
 
     let email = $state('');
+    let honeypot = $state('');
     let status = $state<'idle' | 'loading' | 'success' | 'error'>('idle');
     let message = $state('');
+    let hasValidationError = $state(false);
 
     const handleSubmit = async (e: Event) => {
         e.preventDefault();
@@ -27,6 +29,7 @@
 
         status = 'loading';
         message = '';
+        hasValidationError = false;
 
         try {
             const response = await fetch('/api/newsletter', {
@@ -34,7 +37,7 @@
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ email }),
+                body: JSON.stringify({ email, website: honeypot, locale }),
             });
 
             if (response.ok) {
@@ -42,15 +45,20 @@
                 message = t.newsletter.success;
                 email = '';
             } else {
-                const data = await response.json();
+                const data = (await response.json()) as { error?: string };
                 status = 'error';
-                message = data.error || t.newsletter.error;
+                message =
+                    data.error === 'rate_limit' ? t.newsletter.rateLimitError : (data.error ?? t.newsletter.error);
 
-                logger.warn(`Newsletter subscription failed: ${data.error || 'Unknown error'}`);
+                // Set hasValidationError to true only for field validation errors (400 status)
+                hasValidationError = response.status === 400;
+
+                logger.warn(`Newsletter subscription failed: ${data.error ?? 'Unknown error'}`);
             }
         } catch (error) {
             status = 'error';
             message = t.newsletter.error;
+            hasValidationError = false;
 
             logger.error('Failed to submit the newsletter form', error);
         }
@@ -64,18 +72,27 @@
         {t.newsletter.description}
     </p>
 
-    <form onsubmit={handleSubmit} class="flex gap-2" aria-busy={status === 'loading'}>
+    <form onsubmit={handleSubmit} class="flex flex-col gap-2 sm:flex-row sm:gap-2" aria-busy={status === 'loading'}>
         <label for="newsletter-email" class="sr-only">{t.newsletter.emailPlaceholder}</label>
         <input
-            id="newsletter-email"
+            type="text"
+            name="website"
+            bind:value={honeypot}
+            tabindex="-1"
+            autocomplete="off"
+            aria-hidden="true"
+            class="absolute -left-[9999px] size-px opacity-0"
+        />
+        <input
             type="email"
+            id="newsletter-email"
             autocomplete="email"
             bind:value={email}
             placeholder={t.newsletter.emailPlaceholder}
             required
             disabled={status === 'loading'}
-            aria-invalid={status === 'error'}
-            aria-describedby={status === 'error' && message ? 'newsletter-status' : undefined}
+            aria-invalid={hasValidationError}
+            aria-describedby={hasValidationError && message ? 'newsletter-status' : undefined}
             data-testid="newsletter-email"
             class="flex-1 border-2 border-stickie-text px-4 py-2 focus:border-stickie-text focus:bg-stickie-text focus:text-white focus:outline-none focus:ring-focus-ring disabled:opacity-50"
         />

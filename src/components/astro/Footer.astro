@@ -16,13 +16,13 @@ const t = getTranslation(locale);
 const currentYear = new Date().getFullYear();
 ---
 
-<footer class="footer select-none bg-zinc-900 text-zinc-200 dark:border-t-2">
+<footer class="footer select-none bg-footer-bg text-footer-text dark:border-t-2">
     <div class="container mx-auto px-4 py-2.5 sm:py-[18px] md:max-w-3xl md:py-[48px] md:pb-[34px] lg:max-w-[928px]">
         <div class="mb-8 md:mb-12">
             <NewsletterForm client:idle locale={locale} />
         </div>
 
-        <div class="grid gap-4 md:grid-cols-3">
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
             <div class="md:-my-6">
                 <h3 class="-ml-px">Ambilab</h3>
 
@@ -35,7 +35,7 @@ const currentYear = new Date().getFullYear();
                 aria-label={t.footer.footerNavAria}
                 class="-ml-px font-mono text-[11px] uppercase leading-3 antialiased"
             >
-                <ul class="space-y-0">
+                <ul class="flex flex-col gap-2 sm:flex-row sm:flex-wrap md:flex-col md:gap-0">
                     <li>
                         <a href={getRoute('home', locale)}>
                             {t.nav.home}

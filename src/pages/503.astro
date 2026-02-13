@@ -17,4 +17,5 @@ const homePath = getLocalizedPath('', detectedLocale);
     homeButtonText={t.serviceUnavailable.goHome}
     homeLink={homePath}
     locale={detectedLocale}
+    requestId={Astro.locals.requestId}
 />
