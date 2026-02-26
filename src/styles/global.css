@@ -202,6 +202,10 @@
         background-position: 0 3.5px;
     }
 
+    .meta {
+        @apply font-mono text-[11px] uppercase leading-3 antialiased;
+    }
+
     /* Card background utilities */
     .card-with-shadows {
         box-shadow:

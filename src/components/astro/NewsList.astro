@@ -20,7 +20,7 @@ const displayPosts = hasLimit ? posts.slice(0, Math.max(0, limit)) : posts;
 
 {
     displayPosts.length === 0 ? (
-        <p class="font-mono text-[11px] uppercase leading-3 antialiased">{t.news.noPosts}</p>
+        <p class="meta">{t.news.noPosts}</p>
     ) : (
         <div class="select-none space-y-8">
             {displayPosts.map((post) => {
@@ -34,7 +34,7 @@ const displayPosts = hasLimit ? posts.slice(0, Math.max(0, limit)) : posts;
                                 {post.data.title}
                             </h2>
 
-                            <div class="font-mono text-[11px] uppercase leading-3 antialiased">
+                            <div class="meta">
                                 <time datetime={post.data.pubDate.toISOString()}>
                                     {formatDate(post.data.pubDate, locale)}
                                 </time>
