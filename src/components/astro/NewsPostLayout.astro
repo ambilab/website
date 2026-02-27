@@ -55,6 +55,40 @@ const imageUrl =
         ? rawImage
         : `${siteDomain}${rawImage.startsWith('/') ? rawImage : `/${rawImage}`}`;
 
+const sanitizeForJsonLd = (str: string): string =>
+    str.replace(/&/g, '\u0026').replace(/</g, '\u003C').replace(/>/g, '\u003E');
+
+const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: sanitizeForJsonLd(displayTitle),
+    description: sanitizeForJsonLd(description),
+    author: {
+        '@type': 'Organization',
+        name: SITE.AUTHOR,
+        url: SITE.URL,
+    },
+    datePublished: pubDate.toISOString(),
+    dateModified: (updatedDate || pubDate).toISOString(),
+    image: imageUrl,
+    url: permalink,
+    publisher: {
+        '@type': 'Organization',
+        name: SITE.NAME,
+        logo: {
+            '@type': 'ImageObject',
+            url: `${siteDomain}/logo.png`,
+            width: 600,
+            height: 60,
+        },
+    },
+    mainEntityOfPage: {
+        '@type': 'WebPage',
+        '@id': permalink,
+    },
+    ...(tags.length > 0 ? { keywords: sanitizeForJsonLd(tags.join(', ')) } : {}),
+};
+
 const articleMetadata = {
     articlePublishedTime: pubDate,
     ...(updatedDate ? { articleModifiedTime: updatedDate } : {}),
@@ -75,41 +109,7 @@ const articleMetadata = {
     {...articleMetadata}
 >
     <article class="container mx-auto px-4">
-        <script
-            is:inline
-            type="application/ld+json"
-            nonce={nonce}
-            set:html={JSON.stringify({
-                '@context': 'https://schema.org',
-                '@type': 'BlogPosting',
-                headline: displayTitle,
-                description: description,
-                author: {
-                    '@type': 'Organization',
-                    name: SITE.AUTHOR,
-                    url: SITE.URL,
-                },
-                datePublished: pubDate.toISOString(),
-                dateModified: (updatedDate || pubDate).toISOString(),
-                image: imageUrl,
-                url: permalink,
-                publisher: {
-                    '@type': 'Organization',
-                    name: SITE.NAME,
-                    logo: {
-                        '@type': 'ImageObject',
-                        url: `${siteDomain}/logo.png`,
-                        width: 600,
-                        height: 60,
-                    },
-                },
-                mainEntityOfPage: {
-                    '@type': 'WebPage',
-                    '@id': permalink,
-                },
-                ...(tags.length > 0 ? { keywords: tags.join(', ') } : {}),
-            })}
-        />
+        <script is:inline type="application/ld+json" nonce={nonce} set:html={JSON.stringify(jsonLd)} />
 
         <header class="mx-auto mb-8 mt-[18px] max-w-[764px] pt-3 sm:mt-[21px] md:mb-[43px] md:mt-7 lg:max-w-[896px]">
             <Button href={newsUrl} variant="secondary" size="sm">&larr; {t.news.title}</Button>
