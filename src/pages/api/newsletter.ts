@@ -96,22 +96,33 @@ function validateEmail(email: unknown): ValidationResult {
     return { valid: true };
 }
 
-async function logButtondownError(response: Response): Promise<void> {
-    logger.error(`Buttondown API error: Status ${response.status} ${response.statusText}`);
+interface ButtondownErrorResponse {
+    code?: string;
+    detail?: string;
+    [key: string]: unknown;
+}
 
+async function parseButtondownError(response: Response): Promise<ButtondownErrorResponse | null> {
     try {
         const errorText = await response.text();
-        const errorData = JSON.parse(errorText) as { message?: string; error?: string; [key: string]: unknown };
-        const errorMessage = errorData.message || errorData.error;
+        const errorData = JSON.parse(errorText) as ButtondownErrorResponse;
 
-        logger.error(`Buttondown API error message: ${errorMessage ?? 'Unknown error'}`);
+        logger.error(
+            `Buttondown API error: Status ${response.status} ${response.statusText} - ${errorData.detail ?? errorData.code ?? 'Unknown error'}`,
+        );
+
+        return errorData;
     } catch {
-        logger.error('Failed to parse Buttondown error response as JSON');
+        logger.error(`Buttondown API error: Status ${response.status} ${response.statusText} (unparseable response)`);
+
+        return null;
     }
 }
 
+const ALREADY_SUBSCRIBED_CODES = new Set(['email_already_exists', 'subscriber_already_exists']);
+
 async function subscribeToButtondown(email: string, apiKey: string): Promise<SubscriptionResult> {
-    const response = await fetch('https://api.buttondown.email/v1/subscribers', {
+    const response = await fetch('https://api.buttondown.com/v1/subscribers', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -121,7 +132,11 @@ async function subscribeToButtondown(email: string, apiKey: string): Promise<Sub
     });
 
     if (!response.ok) {
-        await logButtondownError(response);
+        const errorData = await parseButtondownError(response);
+
+        if (errorData?.code && ALREADY_SUBSCRIBED_CODES.has(errorData.code)) {
+            return { success: true, status: 200 };
+        }
 
         return {
             success: false,

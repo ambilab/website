@@ -32,8 +32,8 @@ export function buildCSP(config: CSPConfig): string {
     // Plausible Analytics: API endpoint for sending analytics events
     // Buttondown: API endpoint for newsletter subscriptions
     const connectSrc = isDev
-        ? `'self' https://plausible.io https://api.buttondown.email ws://localhost:* ws://127.0.0.1:*`
-        : `'self' https://plausible.io https://api.buttondown.email https://fonts.vancura.dev`;
+        ? `'self' https://plausible.io https://api.buttondown.com ws://localhost:* ws://127.0.0.1:*`
+        : `'self' https://plausible.io https://api.buttondown.com https://fonts.vancura.dev`;
 
     const parts = [
         `default-src 'self'`,
