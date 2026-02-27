@@ -1,6 +1,7 @@
 <script lang="ts">
     import { getTranslation } from '@i18n/translations';
     import type { Locale } from '@type/locale';
+    import { trackMobileMenuOpened } from '@utils/analytics';
     import { debounce } from '@utils/debounce';
     import type { Snippet } from 'svelte';
 
@@ -56,6 +57,10 @@
 
     function toggleMenu(): void {
         isOpen = !isOpen;
+
+        if (isOpen) {
+            trackMobileMenuOpened();
+        }
     }
 
     function closeMenu(): void {
