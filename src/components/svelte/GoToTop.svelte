@@ -32,7 +32,8 @@
     }, 100);
 
     const handleClick = () => {
-        const scrollDepth = (window.scrollY / document.body.scrollHeight) * 100;
+        const maxScroll = document.body.scrollHeight - window.innerHeight;
+        const scrollDepth = maxScroll > 0 ? (window.scrollY / maxScroll) * 100 : 0;
         trackScrollToTop(scrollDepth);
         scrollToTop(true);
     };
