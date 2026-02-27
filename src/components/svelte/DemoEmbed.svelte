@@ -2,6 +2,7 @@
     import Button from '@components/svelte/Button.svelte';
     import { getTranslation } from '@i18n/translations';
     import type { Locale } from '@type/locale';
+    import { trackDemoLoaded } from '@utils/analytics';
 
     interface Props {
         src: string;
@@ -169,6 +170,7 @@
             allow={allowPermissions}
             allowfullscreen
             sandbox={sandboxPermissions}
+            onload={() => trackDemoLoaded(validatedSrc, title ?? 'Untitled demo')}
         ></iframe>
     {/if}
 
