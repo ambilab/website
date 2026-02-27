@@ -70,13 +70,13 @@
         <div
             class="container mx-auto flex flex-col items-start justify-between gap-1 sm:max-w-[608px] sm:flex-row sm:items-center md:max-w-[736px] lg:max-w-[896px]"
         >
-            <p class="-ml-px max-w-[200px] text-balance font-mono text-[11px] uppercase leading-3 sm:max-w-none">
+            <p class="meta -ml-px max-w-[200px] text-balance sm:max-w-none">
                 {t.cookie.message}
             </p>
 
             <button
                 onclick={handleDismiss}
-                class="cookie-banner-button flex cursor-pointer items-center px-2 pb-[4px] pt-[3.5px] font-mono text-[11px] uppercase disabled:opacity-50"
+                class="meta cookie-banner-button flex cursor-pointer items-center px-2 py-[6px] disabled:opacity-50"
                 aria-label={t.cookie.dismissLabel}
             >
                 {t.cookie.button}

@@ -97,7 +97,7 @@
 
     const sizeClasses = {
         md: 'px-4 pt-2 pb-[9px] font-medium uppercase text-sm',
-        sm: 'px-2 pb-[4px] pt-[3.5px] font-mono text-[11px] uppercase antialiased',
+        sm: 'meta px-2 py-[6px]',
     };
 
     const classes = $derived(`${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${className}`);

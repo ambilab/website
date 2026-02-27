@@ -21,15 +21,12 @@ const currentYear = new Date().getFullYear();
             <div class="md:-my-6">
                 <h3 class="-ml-px">Ambilab</h3>
 
-                <p class="-ml-px text-balance font-mono text-[11px] uppercase leading-3 antialiased">
+                <p class="meta -ml-px text-balance">
                     {t.footer.description}
                 </p>
             </div>
 
-            <nav
-                aria-label={t.footer.footerNavAria}
-                class="-ml-px font-mono text-[11px] uppercase leading-3 antialiased"
-            >
+            <nav aria-label={t.footer.footerNavAria} class="meta -ml-px">
                 <ul class="flex flex-col gap-2 sm:flex-row sm:flex-wrap md:flex-col md:gap-0">
                     <li>
                         <a href={getRoute('home', locale)}>
@@ -51,7 +48,7 @@ const currentYear = new Date().getFullYear();
                 </ul>
             </nav>
 
-            <nav aria-label={t.footer.socialLinksAria} class="font-mono text-[11px] uppercase leading-3 antialiased">
+            <nav aria-label={t.footer.socialLinksAria} class="meta">
                 <h4 class="-ml-px mb-0.5">
                     {t.footer.followAmbilab}
                 </h4>
@@ -60,7 +57,7 @@ const currentYear = new Date().getFullYear();
             </nav>
         </div>
 
-        <div class="-ml-px mt-[18px] font-mono text-[11px] uppercase leading-3 antialiased">
+        <div class="meta -ml-px mt-[18px]">
             {t.footer.copyright} © {currentYear} Ambilab. {t.footer.allRightsReserved}.
         </div>
     </div>
