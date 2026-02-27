@@ -2,21 +2,17 @@
   "ci": {
     "collect": {
       "numberOfRuns": 3,
-      "url": [
-        "http://localhost:4321/en/",
-        "http://localhost:4321/en/news/",
-        "http://localhost:4321/cs/"
-      ],
+      "url": ["http://localhost:4321/en/", "http://localhost:4321/en/news/", "http://localhost:4321/cs/"],
       "settings": {
         "budgets": [
           {
             "path": "/*",
             "resourceSizes": [
-              {"resourceType": "script", "budget": 150},
-              {"resourceType": "stylesheet", "budget": 50},
-              {"resourceType": "image", "budget": 300},
-              {"resourceType": "font", "budget": 100},
-              {"resourceType": "total", "budget": 600}
+              { "resourceType": "script", "budget": 150 },
+              { "resourceType": "stylesheet", "budget": 50 },
+              { "resourceType": "image", "budget": 300 },
+              { "resourceType": "font", "budget": 100 },
+              { "resourceType": "total", "budget": 600 }
             ]
           }
         ]
@@ -25,13 +21,13 @@
     "assert": {
       "preset": "lighthouse:recommended",
       "assertions": {
-        "categories:performance": ["error", {"minScore": 0.9}],
-        "categories:accessibility": ["error", {"minScore": 0.95}],
-        "categories:seo": ["error", {"minScore": 0.95}],
-        "first-contentful-paint": ["error", {"maxNumericValue": 2000}],
-        "largest-contentful-paint": ["error", {"maxNumericValue": 2500}],
-        "cumulative-layout-shift": ["error", {"maxNumericValue": 0.1}],
-        "total-blocking-time": ["error", {"maxNumericValue": 300}]
+        "categories:performance": ["error", { "minScore": 0.9 }],
+        "categories:accessibility": ["error", { "minScore": 0.95 }],
+        "categories:seo": ["error", { "minScore": 0.95 }],
+        "first-contentful-paint": ["error", { "maxNumericValue": 2000 }],
+        "largest-contentful-paint": ["error", { "maxNumericValue": 2500 }],
+        "cumulative-layout-shift": ["error", { "maxNumericValue": 0.1 }],
+        "total-blocking-time": ["error", { "maxNumericValue": 300 }]
       }
     },
     "upload": {

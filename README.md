@@ -26,6 +26,7 @@ pnpm lhci autorun
 ```
 
 Performance budgets enforce:
+
 - Performance score ≥ 90
 - Accessibility score ≥ 95
 - SEO score ≥ 95
@@ -34,10 +35,13 @@ Performance budgets enforce:
 
 ## HTTP caching strategy
 
-Cloudflare Pages serves all static assets. The caching behaviour is:
+Cloudflare Pages serves all static assets. The caching behavior is:
 
-- **Immutable static assets** (`/_astro/*`, `/fonts/*`): Astro appends a content hash to filenames. Cloudflare sets `Cache-Control: public, max-age=31536000, immutable`. Safe to cache forever because any content change produces a new hash.
-- **HTML pages**: Served with `Cache-Control: public, max-age=0, must-revalidate` so browsers always revalidate with the CDN. Cloudflare still caches at the edge and serves from cache when the page has not changed.
+- **Immutable static assets** (`/_astro/*`, `/fonts/*`): Astro appends a content hash to filenames. Cloudflare sets
+  `Cache-Control: public, max-age=31536000, immutable`. Safe to cache forever because any content change produces a new
+  hash.
+- **HTML pages**: Served with `Cache-Control: public, max-age=0, must-revalidate` so browsers always revalidate with the
+  CDN. Cloudflare still caches at the edge and serves from cache when the page has not changed.
 - **Service worker / manifest**: Short cache (`max-age=0`) to ensure updates propagate immediately.
 
 No custom `_headers` file is required; Cloudflare Pages applies sensible defaults for the asset types above.
