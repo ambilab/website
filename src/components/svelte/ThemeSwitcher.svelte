@@ -1,6 +1,7 @@
 <script lang="ts">
     import { getTranslation } from '@i18n/translations';
     import type { Locale } from '@type/locale';
+    import { trackThemeSwitch } from '@utils/analytics';
     import { toggleDarkMode } from '@utils/dom';
     import { createLogger } from '@utils/logger';
     import { onMount } from 'svelte';
@@ -32,9 +33,11 @@
 
     const handleThemeToggle = (event: MouseEvent) => {
         try {
+            const fromTheme = currentTheme;
             toggleDarkMode();
             updateTheme();
 
+            trackThemeSwitch(currentTheme, fromTheme);
             logger.info(`Theme toggled to ${currentTheme}`);
 
             // Remove focus to prevent a persistent hover state.
