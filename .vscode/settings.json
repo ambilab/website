@@ -63,5 +63,11 @@
   },
 
   // Biome as ESLint alternative for some checks.
-  "biome.enabled": true
+  "biome.enabled": true,
+
+  // Suppress false-positive warnings for Tailwind at-rules (@apply, @reference, etc.)
+  // in component <style> blocks. These are valid Tailwind directives processed by the
+  // Vite plugin at build time; the CSS language server does not understand them.
+  "css.lint.unknownAtRules": "ignore",
+  "scss.lint.unknownAtRules": "ignore"
 }
