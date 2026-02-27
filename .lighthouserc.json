@@ -2,12 +2,25 @@
   "ci": {
     "collect": {
       "numberOfRuns": 3,
-      "startServerCommand": "pnpm preview",
       "url": [
         "http://localhost:4321/en/",
-        "http://localhost:4321/en/blog/",
+        "http://localhost:4321/en/news/",
         "http://localhost:4321/cs/"
-      ]
+      ],
+      "settings": {
+        "budgets": [
+          {
+            "path": "/*",
+            "resourceSizes": [
+              {"resourceType": "script", "budget": 150},
+              {"resourceType": "stylesheet", "budget": 50},
+              {"resourceType": "image", "budget": 300},
+              {"resourceType": "font", "budget": 100},
+              {"resourceType": "total", "budget": 600}
+            ]
+          }
+        ]
+      }
     },
     "assert": {
       "preset": "lighthouse:recommended",
@@ -23,18 +36,6 @@
     },
     "upload": {
       "target": "temporary-public-storage"
-    },
-    "budgets": [
-      {
-        "path": "/*",
-        "resourceSizes": [
-          {"resourceType": "script", "budget": 150},
-          {"resourceType": "stylesheet", "budget": 50},
-          {"resourceType": "image", "budget": 300},
-          {"resourceType": "font", "budget": 100},
-          {"resourceType": "total", "budget": 600}
-        ]
-      }
-    ]
+    }
   }
 }
