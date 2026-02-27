@@ -192,22 +192,22 @@
         @apply -mx-[16px] px-[16px] pb-[2px] pt-[16px];
         @apply bg-card-bg text-card-text;
 
-        h2 {
+        & h2 {
             @apply mb-2 mt-px text-[20px] leading-[20px];
             @apply md:mb-3 md:mt-[2px] md:text-[24px] md:leading-[24px];
         }
 
-        h3 {
+        & h3 {
             @apply mb-2 mt-px text-[20px] leading-[20px];
             @apply md:mt-[2px] md:text-[24px] md:leading-[24px];
         }
 
-        p {
+        & p {
             @apply text-balance pb-2.5 text-[14px] leading-[20px];
             @apply md:pb-4 md:text-base;
         }
 
-        .meta {
+        & .meta {
             @apply mb-1 md:mb-3;
         }
     }

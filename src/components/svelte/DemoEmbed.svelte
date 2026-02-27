@@ -183,7 +183,7 @@
     .demo-embed {
         margin: 2rem 0;
 
-        .demo-embed__panel {
+        & .demo-embed__panel {
             box-shadow:
                 0 2px 0 0 var(--color-page-bg),
                 0 4px 0 0 var(--color-black);
