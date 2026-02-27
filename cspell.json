@@ -3,6 +3,7 @@
   "language": "en,cs",
   "words": [
     "ahoj",
+    "adblockers",
     "aiassistant",
     "Ambilab",
     "amet",
@@ -12,6 +13,7 @@
     "biomejs",
     "blit",
     "buttondown",
+    "CCPA",
     "Čeština",
     "cloudflare",
     "commitlint",
@@ -23,6 +25,7 @@
     "jsonc",
     "Kbps",
     "LHCI",
+    "PECR",
     "motiv",
     "Nerissimo",
     "noreply",
@@ -70,7 +73,7 @@
     "src/content/pages/cs/**",
     "public/fonts/**"
   ],
-  "ignoreRegExpList": ["/#[0-9a-fA-F]{3,8}/", "/0x[0-9a-fA-F]+/"],
+  "ignoreRegExpList": ["/#[0-9a-fA-F]{3,8}/", "/0x[0-9a-fA-F]+/", "/pa-[a-zA-Z0-9_-]+\\.js/"],
   "allowCompoundWords": true,
   "dictionaries": ["typescript", "node", "html", "css", "fonts", "npm", "softwareTerms"],
   "userWords": ["Stickie"]
