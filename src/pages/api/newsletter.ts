@@ -102,14 +102,27 @@ interface ButtondownErrorResponse {
     [key: string]: unknown;
 }
 
+const ALREADY_SUBSCRIBED_CODES = new Set(['email_already_exists', 'subscriber_already_exists']);
+
+function isAlreadySubscribed(errorData: ButtondownErrorResponse): boolean {
+    if (errorData.code && ALREADY_SUBSCRIBED_CODES.has(errorData.code)) {
+        return true;
+    }
+
+    const detail = errorData.detail?.toLowerCase() ?? '';
+    return detail.includes('already subscribed') || detail.includes('already exists');
+}
+
 async function parseButtondownError(response: Response): Promise<ButtondownErrorResponse | null> {
     try {
         const errorText = await response.text();
         const errorData = JSON.parse(errorText) as ButtondownErrorResponse;
 
-        logger.error(
-            `Buttondown API error: Status ${response.status} ${response.statusText} - ${errorData.detail ?? errorData.code ?? 'Unknown error'}`,
-        );
+        if (!isAlreadySubscribed(errorData)) {
+            logger.error(
+                `Buttondown API error: Status ${response.status} ${response.statusText} - ${errorData.detail ?? errorData.code ?? 'Unknown error'}`,
+            );
+        }
 
         return errorData;
     } catch {
@@ -118,8 +131,6 @@ async function parseButtondownError(response: Response): Promise<ButtondownError
         return null;
     }
 }
-
-const ALREADY_SUBSCRIBED_CODES = new Set(['email_already_exists', 'subscriber_already_exists']);
 
 async function subscribeToButtondown(email: string, apiKey: string): Promise<SubscriptionResult> {
     const controller = new AbortController();
@@ -141,7 +152,7 @@ async function subscribeToButtondown(email: string, apiKey: string): Promise<Sub
         if (!response.ok) {
             const errorData = await parseButtondownError(response);
 
-            if (errorData?.code && ALREADY_SUBSCRIBED_CODES.has(errorData.code)) {
+            if (errorData && isAlreadySubscribed(errorData)) {
                 return { success: true, status: 200 };
             }
 
