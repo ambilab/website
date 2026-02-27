@@ -60,7 +60,7 @@
     & p {
         @apply mb-4;
         @apply text-[14px] leading-[20px];
-        @apply md:leading-(--line-height-rhythm-2) md:text-base;
+        @apply md:text-base md:leading-[24px];
         @apply lg:max-w-[736px];
         @apply last:mb-0;
     }
@@ -69,7 +69,7 @@
     & ol {
         @apply mb-4 pl-3 sm:pl-6;
         @apply text-[14px] leading-[20px];
-        @apply md:leading-(--line-height-rhythm-2) md:text-base;
+        @apply md:text-base md:leading-[24px];
     }
 
     & ul li {
