@@ -65,7 +65,7 @@
     };
 </script>
 
-<div class="stickie-with-shadows -mx-[16px] select-none bg-stickie-bg px-[16px] pb-[17px] pt-[16px] text-stickie-text">
+<div class="stickie-shadows -mx-[16px] select-none bg-stickie-bg px-[16px] pb-[17px] pt-[16px] text-stickie-text">
     <h3 class="mt-0! mb-2!" data-testid="newsletter-heading">{t.newsletter.title}</h3>
 
     <p class="text-balance">
@@ -74,6 +74,7 @@
 
     <form onsubmit={handleSubmit} class="flex flex-col gap-2 sm:flex-row sm:gap-2" aria-busy={status === 'loading'}>
         <label for="newsletter-email" class="sr-only">{t.newsletter.emailPlaceholder}</label>
+
         <input
             type="text"
             name="website"
@@ -83,6 +84,7 @@
             aria-hidden="true"
             class="absolute -left-[9999px] size-px opacity-0"
         />
+
         <input
             type="email"
             id="newsletter-email"

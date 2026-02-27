@@ -193,12 +193,12 @@
         background-size: 8px 8px;
 
         /**
-         * Background position: 0 3.5px
-         *
-         * This half-pixel vertical shift (3.5px = 8px / 2 - 0.5px) better aligns
-         * the dots to the 8px rhythm grid. Adjusted for visual harmony with the
-         * vertical rhythm system.
-         */
+        * Background position: 0 3.5px
+        *
+        * This half-pixel vertical shift (3.5px = 8px / 2 - 0.5px) better aligns
+        * the dots to the 8px rhythm grid. Adjusted for visual harmony with the
+        * vertical rhythm system.
+        */
         background-position: 0 3.5px;
     }
 
@@ -206,18 +206,51 @@
         @apply font-mono text-[11px] uppercase leading-3 antialiased;
     }
 
-    /* Card background utilities */
-    .card-with-shadows {
-        box-shadow:
-            0 2px 0 0 var(--color-page-bg),
-            0 4px 0 0 var(--color-card-bg);
+    /* Card utility - layout, colors, and child element styles */
+    .card {
+        @apply -mx-[16px] px-[16px] pb-[2px] pt-[16px];
+        @apply bg-card-bg text-card-text;
+
+        h2 {
+            @apply mb-2 mt-px;
+            @apply text-[20px] leading-[20px];
+            @apply md:mb-3 md:mt-[2px] md:text-[24px] md:leading-[24px];
+        }
+
+        h3 {
+            @apply mb-2 mt-px;
+            @apply text-[20px] leading-[20px];
+            @apply md:mt-[2px] md:text-[24px] md:leading-[24px];
+        }
+
+        p {
+            @apply pb-2.5;
+            @apply text-balance text-[14px] leading-[20px];
+            @apply md:pb-4 md:text-base;
+        }
+
+        .meta {
+            @apply mb-1;
+            @apply md:mb-3;
+        }
     }
 
-    /* Stickie background utilities */
-    .stickie-with-shadows {
-        box-shadow:
-            0 2px 0 0 var(--color-page-bg),
-            0 4px 0 0 var(--color-stickie-bg);
+    /* Card shadow modifier - stacked shadow effect at sm+ breakpoint */
+    .card-shadows {
+        @media (min-width: theme('screens.sm')) {
+            box-shadow:
+                0 2px 0 0 var(--color-page-bg),
+                0 4px 0 0 var(--color-card-bg);
+        }
+    }
+
+    /* Stickie shadow modifier - stacked shadow effect at sm+ breakpoint */
+    .stickie-shadows {
+        @media (min-width: theme('screens.sm')) {
+            box-shadow:
+                0 2px 0 0 var(--color-page-bg),
+                0 4px 0 0 var(--color-stickie-bg);
+        }
     }
 
     /* Vertical Rhythm Debug Overlay */
