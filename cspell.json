@@ -12,6 +12,7 @@
     "biomejs",
     "blit",
     "buttondown",
+    "CCPA",
     "Čeština",
     "cloudflare",
     "commitlint",
@@ -23,6 +24,7 @@
     "jsonc",
     "Kbps",
     "LHCI",
+    "PECR",
     "motiv",
     "Nerissimo",
     "noreply",
@@ -68,7 +70,8 @@
     ".pnpm-store",
     "src/content/news/cs/**",
     "src/content/pages/cs/**",
-    "public/fonts/**"
+    "public/fonts/**",
+    "docs/**"
   ],
   "ignoreRegExpList": ["/#[0-9a-fA-F]{3,8}/", "/0x[0-9a-fA-F]+/"],
   "allowCompoundWords": true,

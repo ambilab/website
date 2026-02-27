@@ -6,7 +6,8 @@
     "src/components/astro/Card.astro",
     "src/components/svelte/DemoEmbed.svelte",
     "src/components/svelte/ResponsiveImage.svelte",
-    "src/lib/images.ts"
+    "src/lib/images.ts",
+    "src/utils/analytics.ts"
   ],
   "ignoreExportsUsedInFile": true,
   "ignoreDependencies": ["tailwindcss-debug-screens"],
