@@ -96,41 +96,84 @@ function validateEmail(email: unknown): ValidationResult {
     return { valid: true };
 }
 
-async function logButtondownError(response: Response): Promise<void> {
-    logger.error(`Buttondown API error: Status ${response.status} ${response.statusText}`);
+interface ButtondownErrorResponse {
+    code?: string;
+    detail?: string;
+    [key: string]: unknown;
+}
 
+const ALREADY_SUBSCRIBED_CODES = new Set(['email_already_exists', 'subscriber_already_exists']);
+
+function isAlreadySubscribed(errorData: ButtondownErrorResponse): boolean {
+    if (errorData.code && ALREADY_SUBSCRIBED_CODES.has(errorData.code)) {
+        return true;
+    }
+
+    const detail = errorData.detail?.toLowerCase() ?? '';
+    return detail.includes('already subscribed') || detail.includes('already exists');
+}
+
+async function parseButtondownError(response: Response): Promise<ButtondownErrorResponse | null> {
     try {
         const errorText = await response.text();
-        const errorData = JSON.parse(errorText) as { message?: string; error?: string; [key: string]: unknown };
-        const errorMessage = errorData.message || errorData.error;
+        const errorData = JSON.parse(errorText) as ButtondownErrorResponse;
 
-        logger.error(`Buttondown API error message: ${errorMessage ?? 'Unknown error'}`);
+        if (!isAlreadySubscribed(errorData)) {
+            logger.error(
+                `Buttondown API error: Status ${response.status} ${response.statusText} - ${errorData.detail ?? errorData.code ?? 'Unknown error'}`,
+            );
+        }
+
+        return errorData;
     } catch {
-        logger.error('Failed to parse Buttondown error response as JSON');
+        logger.error(`Buttondown API error: Status ${response.status} ${response.statusText} (unparseable response)`);
+
+        return null;
     }
 }
 
 async function subscribeToButtondown(email: string, apiKey: string): Promise<SubscriptionResult> {
-    const response = await fetch('https://api.buttondown.email/v1/subscribers', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Token ${apiKey}`,
-        },
-        body: JSON.stringify({ email_address: email }),
-    });
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10_000);
 
-    if (!response.ok) {
-        await logButtondownError(response);
+    try {
+        const response = await fetch('https://api.buttondown.com/v1/subscribers', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Token ${apiKey}`,
+            },
+            body: JSON.stringify({ email_address: email }),
+            signal: controller.signal,
+        });
 
-        return {
-            success: false,
-            error: 'Failed to subscribe. Please try again later.',
-            status: response.status,
-        };
+        clearTimeout(timeoutId);
+
+        if (!response.ok) {
+            const errorData = await parseButtondownError(response);
+
+            if (errorData && isAlreadySubscribed(errorData)) {
+                return { success: true, status: 200 };
+            }
+
+            return {
+                success: false,
+                error: 'Failed to subscribe. Please try again later.',
+                status: response.status,
+            };
+        }
+
+        return { success: true, status: 200 };
+    } catch (error) {
+        clearTimeout(timeoutId);
+
+        if (error instanceof Error && error.name === 'AbortError') {
+            logger.error('Buttondown API request timed out after 10s');
+            return { success: false, error: 'Request timed out. Please try again later.', status: 408 };
+        }
+
+        throw error;
     }
-
-    return { success: true, status: 200 };
 }
 
 export const POST: APIRoute = async ({ request, clientAddress }) => {
