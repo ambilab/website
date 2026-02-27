@@ -85,7 +85,7 @@
     </div>
 {/if}
 
-<style>
+<style lang="postcss">
     .cookie-banner {
         --color-cookie-banner-bg: #2563eb; /* blue.600 */
         --color-cookie-banner-text: #ffffff; /* white */
