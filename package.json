@@ -21,7 +21,13 @@
       "vite-node": "^5.2.0",
       "esbuild": "^0.25.0",
       "wrangler": "^4.59.2",
-      "fast-xml-parser": "^5.3.4"
+      "fast-xml-parser": "^5.3.6",
+      "rollup": "^4.59.0",
+      "@typescript-eslint/typescript-estree>minimatch": "^9.0.7",
+      "eslint>minimatch": "^10.2.3",
+      "test-exclude>minimatch": "^9.0.7",
+      "get-uri>basic-ftp": "^5.2.0",
+      "minimatch@<3.1.4": "3.1.5"
     }
   },
   "dependencies": {
