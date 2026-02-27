@@ -189,21 +189,21 @@
 @layer components {
     /* Card component - full-bleed layout card with semantic colors and scoped element styles */
     .card {
-        @apply -mx-[16px] px-[16px] pb-[2px] pt-[16px];
+        @apply -mx-4 px-4 pb-[2px] pt-4;
         @apply bg-card-bg text-card-text;
 
         h2 {
-            @apply mb-2 mt-px text-[20px] leading-[20px];
-            @apply md:mb-3 md:mt-[2px] md:text-[24px] md:leading-[24px];
+            @apply mb-2 mt-px text-[20px] leading-5;
+            @apply md:text-[24px] md:mb-3 md:mt-[2px] md:leading-6;
         }
 
         h3 {
-            @apply mb-2 mt-px text-[20px] leading-[20px];
-            @apply md:mt-[2px] md:text-[24px] md:leading-[24px];
+            @apply text-[20px] mb-2 mt-px leading-5;
+            @apply md:text-[24px] md:mt-[2px] md:leading-6;
         }
 
         p {
-            @apply text-balance pb-2.5 text-[14px] leading-[20px];
+            @apply text-balance pb-2.5 text-[14px] leading-5;
             @apply md:pb-4 md:text-base;
         }
 
