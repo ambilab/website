@@ -3,6 +3,7 @@
   "language": "en,cs",
   "words": [
     "ahoj",
+    "adblockers",
     "aiassistant",
     "Ambilab",
     "amet",
@@ -70,10 +71,9 @@
     ".pnpm-store",
     "src/content/news/cs/**",
     "src/content/pages/cs/**",
-    "public/fonts/**",
-    "docs/**"
+    "public/fonts/**"
   ],
-  "ignoreRegExpList": ["/#[0-9a-fA-F]{3,8}/", "/0x[0-9a-fA-F]+/"],
+  "ignoreRegExpList": ["/#[0-9a-fA-F]{3,8}/", "/0x[0-9a-fA-F]+/", "/pa-[a-zA-Z0-9_-]+\\.js/"],
   "allowCompoundWords": true,
   "dictionaries": ["typescript", "node", "html", "css", "fonts", "npm", "softwareTerms"],
   "userWords": ["Stickie"]

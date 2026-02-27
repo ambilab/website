@@ -47,8 +47,12 @@ export function trackEvent(eventName: string, options?: PlausibleEventOptions): 
         return;
     }
 
-    if (typeof window.plausible === 'function') {
-        window.plausible(eventName, options);
+    try {
+        if (typeof window.plausible === 'function') {
+            window.plausible(eventName, options);
+        }
+    } catch {
+        // Silently swallow tracking errors so they never break user flows.
     }
 }
 
@@ -66,13 +70,37 @@ export function trackNewsletterSignup(locale: string): void {
 }
 
 /**
+ * Map a raw error message to a safe, bounded error code.
+ * Returns a predefined code for known errors, or 'unknown_error' for anything else.
+ * This prevents leaking sensitive error details to third-party analytics.
+ *
+ * @param error - Raw error message from the newsletter form
+ * @returns A safe error code suitable for analytics
+ */
+function getNewsletterErrorCode(error: string): string {
+    const normalized = error.toLowerCase();
+
+    if (normalized.includes('invalid') && normalized.includes('email')) return 'invalid_email';
+    if (normalized.includes('already') || normalized.includes('subscribed')) return 'already_subscribed';
+    if (normalized.includes('rate') || normalized.includes('limit')) return 'rate_limited';
+    if (normalized.includes('network') || normalized.includes('fetch')) return 'network_error';
+    if (normalized.includes('server') || normalized.includes('500')) return 'server_error';
+    if (normalized.includes('validation')) return 'validation_error';
+
+    return 'unknown_error';
+}
+
+/**
  * Track a failed newsletter subscription attempt.
+ * The raw error message is mapped to a safe error code to avoid
+ * leaking sensitive information to third-party analytics.
  *
  * @param locale - The locale of the page
- * @param error - Brief description of the failure reason
+ * @param error - Raw error message (will be sanitized before sending)
  */
 export function trackNewsletterError(locale: string, error: string): void {
-    trackEvent('Newsletter Error', { props: { locale, error } });
+    const errorCode = getNewsletterErrorCode(error);
+    trackEvent('Newsletter Error', { props: { locale, errorCode } });
 }
 
 /**
@@ -102,7 +130,7 @@ export function trackThemeSwitch(to: 'light' | 'dark', from: 'light' | 'dark'): 
  * @param hasTranslation - Whether a translated page exists for the current content
  */
 export function trackLanguageSwitch(from: string, to: string, hasTranslation: boolean): void {
-    trackEvent('Language Switched', { props: { from, to, hasTranslation: hasTranslation ? 'yes' : 'no' } });
+    trackEvent('Language Switched', { props: { from, to, hasTranslation } });
 }
 
 /**
@@ -135,7 +163,8 @@ export function trackMobileMenuOpened(): void {
  * @param scrollDepth - Percentage of page scrolled when button was clicked (0-100)
  */
 export function trackScrollToTop(scrollDepth: number): void {
-    trackEvent('Scroll To Top', { props: { scrollDepth } });
+    const clamped = Math.max(0, Math.min(100, Math.round(scrollDepth)));
+    trackEvent('Scroll To Top', { props: { scrollDepth: clamped } });
 }
 
 /**
