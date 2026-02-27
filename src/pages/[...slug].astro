@@ -67,14 +67,14 @@ const t = getTranslation(detectedLocale);
             pageMap={resolvedContent.content.pageMap}
             {...(resolvedContent.translationPath ? { translationPath: resolvedContent.translationPath } : {})}
         >
-            <article class="container mx-auto px-4 pb-[36px] sm:pb-[40px] md:pb-[48px]">
+            <article class="container mx-auto px-4 pb-8 sm:pb-10 md:pb-12">
                 <div class="mdx-content prose prose-lg mx-auto max-w-4xl dark:prose-invert">
                     <resolvedContent.Content />
                 </div>
             </article>
 
             {route.slug === 'index' && (
-                <div class="container mx-auto px-4 pb-[36px] sm:pb-[40px] md:pb-[48px]">
+                <div class="container mx-auto px-4 pb-8 sm:pb-10 md:pb-12">
                     <div class="mx-auto max-w-4xl">
                         <NewsSection locale={resolvedContent.locale} limit={3} />
                     </div>

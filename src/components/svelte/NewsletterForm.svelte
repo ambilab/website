@@ -65,15 +65,12 @@
     };
 </script>
 
-<div class="stickie-with-shadows -mx-[16px] select-none bg-stickie-bg px-[16px] pb-[17px] pt-[16px] text-stickie-text">
-    <h3 class="mt-0! mb-2!" data-testid="newsletter-heading">{t.newsletter.title}</h3>
+<div class="newsletter-form">
+    <h3 data-testid="newsletter-heading">{t.newsletter.title}</h3>
 
-    <p class="text-balance">
-        {t.newsletter.description}
-    </p>
-
-    <form onsubmit={handleSubmit} class="flex flex-col gap-2 sm:flex-row sm:gap-2" aria-busy={status === 'loading'}>
+    <form onsubmit={handleSubmit} aria-busy={status === 'loading'}>
         <label for="newsletter-email" class="sr-only">{t.newsletter.emailPlaceholder}</label>
+
         <input
             type="text"
             name="website"
@@ -83,6 +80,7 @@
             aria-hidden="true"
             class="absolute -left-[9999px] size-px opacity-0"
         />
+
         <input
             type="email"
             id="newsletter-email"
@@ -94,15 +92,10 @@
             aria-invalid={hasValidationError}
             aria-describedby={hasValidationError && message ? 'newsletter-status' : undefined}
             data-testid="newsletter-email"
-            class="flex-1 border-2 border-stickie-text px-4 py-2 focus:border-stickie-text focus:bg-stickie-text focus:text-white focus:outline-none focus:ring-focus-ring disabled:opacity-50"
+            class="newsletter-form__email-input"
         />
 
-        <Button
-            type="submit"
-            class="[&:hover,&:focus]:bg-stickie-text bg-stickie-text text-white"
-            disabled={status === 'loading'}
-            data-testid="newsletter-submit"
-        >
+        <Button type="submit" disabled={status === 'loading'} data-testid="newsletter-submit">
             {#if status === 'loading'}
                 {t.newsletter.subscribing}
             {:else}
@@ -113,9 +106,62 @@
 
     <div id="newsletter-status" role="status" aria-live="polite" aria-atomic="true">
         {#if message}
-            <p class="mb-0! mt-4 text-balance">
+            <p>
                 {message}
             </p>
         {/if}
     </div>
 </div>
+
+<style>
+    @reference "../../styles/global.css";
+
+    .newsletter-form {
+        @apply -mx-[16px] select-none;
+        @apply bg-stickie-bg text-stickie-text;
+        @apply px-[16px] pb-[17px] pt-[16px];
+
+        /* Scope primary button colors to the stickie palette without class overrides */
+        --color-button-primary-bg: var(--color-stickie-text);
+        --color-button-primary-bg-hover: var(--color-stickie-text);
+        --color-button-primary-text: white;
+        --color-button-primary-text-hover: white;
+
+        @media (min-width: 640px) {
+            box-shadow:
+                0 2px 0 0 var(--color-page-bg),
+                0 4px 0 0 var(--color-stickie-bg);
+        }
+
+        form {
+            @apply flex flex-col gap-2 sm:flex-row;
+        }
+
+        p {
+            @apply mb-1;
+            @apply text-[14px] leading-[20px];
+            @apply md:text-base md:leading-[24px];
+            @apply text-balance;
+        }
+
+        h3 {
+            @apply mb-1;
+            @apply text-[24px] leading-[24px];
+            @apply sm:w-2/3;
+            @apply md:text-[32px] md:leading-[32px];
+            @apply text-balance;
+        }
+
+        [role='status'] p {
+            @apply mb-0 mt-1;
+        }
+    }
+
+    .newsletter-form__email-input {
+        @apply flex-1 border-2 border-stickie-text px-4 py-2 disabled:opacity-50;
+
+        &:focus {
+            @apply border-stickie-text bg-stickie-text text-white outline-none ring-focus-ring;
+        }
+    }
+</style>

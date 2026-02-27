@@ -28,11 +28,9 @@ const displayPosts = hasLimit ? posts.slice(0, Math.max(0, limit)) : posts;
                 const postUrl = `${getRoute('news', locale)}/${postSlug}`;
 
                 return (
-                    <a href={postUrl} aria-label={post.data.title}>
-                        <article class="card-with-shadows -mx-[16px] bg-card-bg px-[16px] pb-[2px] pt-[16px] text-card-text">
-                            <h2 class="mt-px! md:mt-[2px]! mb-2! text-[20px] leading-[20px] md:text-[24px] md:leading-[24px]">
-                                {post.data.title}
-                            </h2>
+                    <a href={postUrl} aria-label={post.data.title} class="block">
+                        <article class="card card-shadows">
+                            <h2>{post.data.title}</h2>
 
                             <div class="meta">
                                 <time datetime={post.data.pubDate.toISOString()}>
@@ -40,7 +38,7 @@ const displayPosts = hasLimit ? posts.slice(0, Math.max(0, limit)) : posts;
                                 </time>
                             </div>
 
-                            <p class="my-3">{post.data.description}</p>
+                            <p>{post.data.description}</p>
                         </article>
                     </a>
                 );

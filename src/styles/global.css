@@ -186,38 +186,61 @@
     --color-footer-text: theme('colors.zinc.200');
 }
 
+@layer components {
+    /* Card component - full-bleed layout card with semantic colors and scoped element styles */
+    .card {
+        @apply -mx-[16px] px-[16px] pb-[2px] pt-[16px];
+        @apply bg-card-bg text-card-text;
+
+        h2 {
+            @apply mb-2 mt-px text-[20px] leading-[20px];
+            @apply md:mb-3 md:mt-[2px] md:text-[24px] md:leading-[24px];
+        }
+
+        h3 {
+            @apply mb-2 mt-px text-[20px] leading-[20px];
+            @apply md:mt-[2px] md:text-[24px] md:leading-[24px];
+        }
+
+        p {
+            @apply text-balance pb-2.5 text-[14px] leading-[20px];
+            @apply md:pb-4 md:text-base;
+        }
+
+        .meta {
+            @apply mb-1 md:mb-3;
+        }
+    }
+
+    /* Card shadow modifier - stacked shadow effect at sm+ breakpoint */
+    .card-shadows {
+        @media (min-width: theme('screens.sm')) {
+            box-shadow:
+                0 2px 0 0 var(--color-page-bg),
+                0 4px 0 0 var(--color-card-bg);
+        }
+    }
+}
+
 @layer utilities {
-    /* Dot Background Utilities */
+    /* Dot background pattern */
     .bg-dots {
         background-image: var(--bg-dots-image);
         background-size: 8px 8px;
 
         /**
-         * Background position: 0 3.5px
-         *
-         * This half-pixel vertical shift (3.5px = 8px / 2 - 0.5px) better aligns
-         * the dots to the 8px rhythm grid. Adjusted for visual harmony with the
-         * vertical rhythm system.
-         */
+        * Background position: 0 3.5px
+        *
+        * This half-pixel vertical shift (3.5px = 8px / 2 - 0.5px) better aligns
+        * the dots to the 8px rhythm grid. Adjusted for visual harmony with the
+        * vertical rhythm system.
+        */
         background-position: 0 3.5px;
     }
 
+    /* Meta typography - monospace label style used across components */
     .meta {
         @apply font-mono text-[11px] uppercase leading-3 antialiased;
-    }
-
-    /* Card background utilities */
-    .card-with-shadows {
-        box-shadow:
-            0 2px 0 0 var(--color-page-bg),
-            0 4px 0 0 var(--color-card-bg);
-    }
-
-    /* Stickie background utilities */
-    .stickie-with-shadows {
-        box-shadow:
-            0 2px 0 0 var(--color-page-bg),
-            0 4px 0 0 var(--color-stickie-bg);
     }
 
     /* Vertical Rhythm Debug Overlay */

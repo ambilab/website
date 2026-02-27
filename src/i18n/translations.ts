@@ -41,7 +41,6 @@ export interface Translations {
 
     newsletter: {
         title: string;
-        description: string;
         emailPlaceholder: string;
         subscribing: string;
         success: string;
@@ -131,8 +130,7 @@ export const translations: Record<Locale, Translations> = {
         },
 
         newsletter: {
-            title: 'Subscribe to Our Newsletter',
-            description: 'Get the latest updates from Ambilab delivered to your inbox.',
+            title: 'Get the latest updates from Ambilab delivered to your inbox.',
             emailPlaceholder: 'Enter your email',
             subscribing: 'Subscribing...',
             success: 'Thanks for subscribing!',
@@ -220,8 +218,7 @@ export const translations: Record<Locale, Translations> = {
         },
 
         newsletter: {
-            title: 'Odebírejte náš newsletter',
-            description: 'Získejte nejnovější aktualizace z Ambilab přímo do své e-mailové schránky.',
+            title: 'Získejte nejnovější aktualizace z Ambilab přímo do své e-mailové schránky.',
             emailPlaceholder: 'Zadejte svůj e-mail',
             subscribing: 'Odesílám...',
             success: 'Děkujeme za odběr!',
