@@ -117,9 +117,9 @@
     @reference "../../styles/global.css";
 
     .newsletter-form {
-        @apply -mx-[16px] select-none;
+        @apply -mx-4 select-none;
         @apply bg-stickie-bg text-stickie-text;
-        @apply px-[16px] pb-[17px] pt-[16px];
+        @apply px-4 pb-[17px] pt-4;
 
         /* Scope primary button colors to the stickie palette without class overrides */
         --color-button-primary-bg: var(--color-stickie-text);
@@ -139,16 +139,16 @@
 
         & p {
             @apply mb-1;
-            @apply text-[14px] leading-[20px];
-            @apply md:text-base md:leading-[24px];
+            @apply text-[14px] leading-5;
+            @apply md:text-base md:leading-6;
             @apply text-balance;
         }
 
         & h3 {
             @apply mb-1;
-            @apply text-[24px] leading-[24px];
+            @apply text-[24px] leading-6;
             @apply sm:w-2/3;
-            @apply md:text-[32px] md:leading-[32px];
+            @apply md:text-[32px] md:leading-8;
             @apply text-balance;
         }
 
