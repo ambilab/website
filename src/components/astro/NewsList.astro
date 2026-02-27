@@ -28,7 +28,7 @@ const displayPosts = hasLimit ? posts.slice(0, Math.max(0, limit)) : posts;
                 const postUrl = `${getRoute('news', locale)}/${postSlug}`;
 
                 return (
-                    <a href={postUrl} aria-label={post.data.title}>
+                    <a href={postUrl} aria-label={post.data.title} class="block">
                         <article class="card card-shadows">
                             <h2>{post.data.title}</h2>
 
