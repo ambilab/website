@@ -49,7 +49,11 @@ const newsUrl = `${getRoute('news', locale)}`;
 
 const nonce = Astro.locals.nonce;
 const siteDomain = Astro.url.origin;
-const ogImage = seoProps.ogImage;
+const rawImage = seoProps.ogImage || SITE.DEFAULT_OG_IMAGE;
+const imageUrl =
+    rawImage.startsWith('http://') || rawImage.startsWith('https://') || rawImage.startsWith('//')
+        ? rawImage
+        : `${siteDomain}${rawImage.startsWith('/') ? rawImage : `/${rawImage}`}`;
 
 const articleMetadata = {
     articlePublishedTime: pubDate,
@@ -87,7 +91,7 @@ const articleMetadata = {
                 },
                 datePublished: pubDate.toISOString(),
                 dateModified: (updatedDate || pubDate).toISOString(),
-                image: ogImage || SITE.DEFAULT_OG_IMAGE,
+                image: imageUrl,
                 url: permalink,
                 publisher: {
                     '@type': 'Organization',
@@ -95,6 +99,8 @@ const articleMetadata = {
                     logo: {
                         '@type': 'ImageObject',
                         url: `${siteDomain}/logo.png`,
+                        width: 600,
+                        height: 60,
                     },
                 },
                 mainEntityOfPage: {
