@@ -3,22 +3,10 @@
   "entry": ["src/pages/**/*.{astro,ts}"],
   "project": ["src/**/*.{ts,tsx,astro,svelte}"],
   "ignore": [
-    "**/*.spec.ts",
-    "**/*.test.ts",
-    ".astro/**",
-    ".wrangler/**",
-    "ai-rules/**",
-    "dist/**",
-    "node_modules/**",
-    "scripts/**",
     "src/components/astro/Card.astro",
     "src/components/svelte/DemoEmbed.svelte",
     "src/components/svelte/ResponsiveImage.svelte",
-    "src/env.d.ts",
-    "src/lib/images.ts",
-    "src/types/content.ts",
-    "src/types/index.ts",
-    "vitest.config.ts"
+    "src/lib/images.ts"
   ],
   "ignoreExportsUsedInFile": true,
   "ignoreDependencies": ["tailwindcss-debug-screens"],
