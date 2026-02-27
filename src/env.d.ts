@@ -2,6 +2,20 @@
 
 import '@type/astro';
 
+declare global {
+    interface Window {
+        plausible?: (
+            eventName: string,
+            options?: {
+                props?: Record<string, string | number | boolean>;
+                callback?: () => void;
+                revenue?: { amount: number; currency: string };
+                interactive?: boolean;
+            },
+        ) => void;
+    }
+}
+
 declare module '*?raw' {
     const content: string;
     export default content;

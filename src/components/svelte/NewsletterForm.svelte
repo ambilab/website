@@ -2,6 +2,7 @@
     import Button from '@components/svelte/Button.svelte';
     import { getTranslation } from '@i18n/translations';
     import type { Locale } from '@type/locale';
+    import { trackNewsletterError, trackNewsletterSignup } from '@utils/analytics';
     import { createLogger } from '@utils/logger';
 
     const logger = createLogger({ prefix: 'NewsletterForm' });
@@ -44,6 +45,7 @@
                 status = 'success';
                 message = t.newsletter.success;
                 email = '';
+                trackNewsletterSignup(locale);
             } else {
                 const data = (await response.json()) as { error?: string };
                 status = 'error';
@@ -53,6 +55,7 @@
                 // Set hasValidationError to true only for field validation errors (400 status)
                 hasValidationError = response.status === 400;
 
+                trackNewsletterError(locale, data.error ?? 'unknown');
                 logger.warn(`Newsletter subscription failed: ${data.error ?? 'Unknown error'}`);
             }
         } catch (error) {
@@ -60,6 +63,7 @@
             message = t.newsletter.error;
             hasValidationError = false;
 
+            trackNewsletterError(locale, 'network_error');
             logger.error('Failed to submit the newsletter form', error);
         }
     };
