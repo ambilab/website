@@ -113,7 +113,7 @@
     </div>
 </div>
 
-<style>
+<style lang="postcss">
     @reference "../../styles/global.css";
 
     .newsletter-form {
@@ -133,18 +133,18 @@
                 0 4px 0 0 var(--color-stickie-bg);
         }
 
-        form {
+        & form {
             @apply flex flex-col gap-2 sm:flex-row;
         }
 
-        p {
+        & p {
             @apply mb-1;
             @apply text-[14px] leading-5;
             @apply md:text-base md:leading-6;
             @apply text-balance;
         }
 
-        h3 {
+        & h3 {
             @apply mb-1;
             @apply text-[24px] leading-6;
             @apply sm:w-2/3;
@@ -152,7 +152,7 @@
             @apply text-balance;
         }
 
-        [role='status'] p {
+        & [role='status'] p {
             @apply mb-0 mt-1;
         }
     }

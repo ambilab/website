@@ -379,7 +379,7 @@
     </div>
 </div>
 
-<style>
+<style lang="postcss">
     .menu-dimmer {
         --color-menu-dimmer-bg: color-mix(in srgb, #a1a1aa 80%, transparent); /* zinc.400 */
         background-color: var(--color-menu-dimmer-bg);
