@@ -17,9 +17,30 @@ const socialLinks: SocialLink[] = [{ name: 'GitHub', url: SITE.SOCIAL.GITHUB }];
                 target="_blank"
                 rel="noopener noreferrer"
                 class="border border-zinc-200 px-[7px] py-[5px]"
+                data-track-platform={link.name}
             >
                 {link.name}
             </a>
         ))
     }
 </div>
+
+<script>
+    function handleSocialClick(event: MouseEvent, link: HTMLAnchorElement): void {
+        if (event.button !== 0 && event.button !== 1) return;
+
+        const platform = link.dataset.trackPlatform;
+        if (platform && typeof window.plausible === 'function') {
+            try {
+                window.plausible('Social Link Click', { props: { platform } });
+            } catch {
+                // Silently swallow tracking errors.
+            }
+        }
+    }
+
+    document.querySelectorAll<HTMLAnchorElement>('[data-track-platform]').forEach((link) => {
+        link.addEventListener('click', (e) => handleSocialClick(e, link));
+        link.addEventListener('auxclick', (e) => handleSocialClick(e, link));
+    });
+</script>
