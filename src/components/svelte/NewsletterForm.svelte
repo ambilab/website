@@ -66,7 +66,7 @@
 </script>
 
 <div class="newsletter-form">
-    <p data-testid="newsletter-heading">{t.newsletter.title}</p>
+    <h3 data-testid="newsletter-heading">{t.newsletter.title}</h3>
 
     <form onsubmit={handleSubmit} aria-busy={status === 'loading'}>
         <label for="newsletter-email" class="sr-only">{t.newsletter.emailPlaceholder}</label>
@@ -141,6 +141,14 @@
             @apply mb-1;
             @apply text-[14px] leading-[20px];
             @apply md:text-base md:leading-[24px];
+            @apply text-balance;
+        }
+
+        h3 {
+            @apply mb-1;
+            @apply text-[24px] leading-[24px];
+            @apply sm:w-2/3;
+            @apply md:text-[32px] md:leading-[32px];
             @apply text-balance;
         }
 
