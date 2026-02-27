@@ -76,7 +76,7 @@
 
             <button
                 onclick={handleDismiss}
-                class="meta cookie-banner-button flex cursor-pointer items-center px-2 pb-[4px] pt-[3.5px] disabled:opacity-50"
+                class="meta cookie-banner-button flex cursor-pointer items-center px-2 py-[6px] disabled:opacity-50"
                 aria-label={t.cookie.dismissLabel}
             >
                 {t.cookie.button}

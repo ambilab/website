@@ -156,7 +156,7 @@
             class="demo-embed__panel flex min-h-[200px] flex-col items-center justify-center bg-error-bg p-8 text-center"
             style={aspectRatioStyle}
         >
-            <p class="meta mb-4 text-balance text-error-text antialiased md:w-1/2">
+            <p class="meta mb-4 text-balance text-error-text md:w-1/2">
                 Invalid or untrusted demo source. Only allowlisted sources are allowed for security reasons.
             </p>
         </div>
