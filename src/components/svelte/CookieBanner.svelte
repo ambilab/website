@@ -67,12 +67,13 @@
     <div
         role="alertdialog"
         aria-label={t.cookie.bannerLabel}
+        aria-describedby="cookie-banner-message"
         class="cookie-banner fixed bottom-0 left-0 right-0 z-cookie-banner select-none border-t-2 border-page-bg px-4 pb-3 pt-2.5 antialiased sm:pt-3 md:py-7"
     >
         <div
             class="container mx-auto flex flex-col items-start justify-between gap-1 sm:max-w-[608px] sm:flex-row sm:items-center md:max-w-[736px] lg:max-w-[896px]"
         >
-            <p class="meta -ml-px max-w-[200px] text-balance sm:max-w-none">
+            <p id="cookie-banner-message" class="meta -ml-px max-w-[200px] text-balance sm:max-w-none">
                 {t.cookie.message}
             </p>
 
