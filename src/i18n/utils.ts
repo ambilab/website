@@ -43,12 +43,13 @@ export const getLocalizedPath = (slug: string, _locale: Locale): string => {
     return `/${cleanSlug}`;
 };
 
-export const calculateReadingTime = (content: string): number => {
-    const wordsPerMinute = 200;
+/**
+ * Strips markup, code blocks, frontmatter, and Markdown syntax from content
+ * so that only prose words remain for word-count purposes.
+ */
+const cleanContentForWordCount = (content: string): string => {
     const trimmed = content.trim();
-    if (!trimmed) {
-        return 0;
-    }
+    if (!trimmed) return '';
 
     let cleaned = trimmed.replace(/```[\s\S]*?```/g, '');
     cleaned = cleaned.replace(/^import\s+.*?;$/gm, '');
@@ -62,11 +63,25 @@ export const calculateReadingTime = (content: string): number => {
     cleaned = cleaned.replace(/^\s*\d+\.\s+/gm, '');
     cleaned = cleaned.replace(/\s+/g, ' ').trim();
 
-    if (!cleaned) {
-        return 0;
-    }
+    return cleaned;
+};
 
-    const words = cleaned.split(/\s+/).length;
+/**
+ * Returns the approximate word count of MDX/Markdown content,
+ * excluding code blocks, frontmatter, and HTML tags.
+ *
+ * @param content - Raw MDX/Markdown source string
+ * @returns Number of prose words
+ */
+export const calculateWordCount = (content: string): number => {
+    const cleaned = cleanContentForWordCount(content);
+    if (!cleaned) return 0;
+    return cleaned.split(/\s+/).length;
+};
 
+export const calculateReadingTime = (content: string): number => {
+    const wordsPerMinute = 200;
+    const words = calculateWordCount(content);
+    if (words === 0) return 0;
     return Math.ceil(words / wordsPerMinute);
 };
