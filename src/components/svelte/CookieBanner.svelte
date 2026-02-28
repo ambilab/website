@@ -15,6 +15,44 @@
 
     let isVisible = $state(true); // Start visible for SSR
     let hydrated = $state(false);
+    let bannerEl: HTMLDivElement | undefined = $state();
+    let previouslyFocusedEl: Element | null = null;
+
+    const FOCUSABLE_SELECTOR = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+    function getFocusableElements(): HTMLElement[] {
+        if (!bannerEl) return [];
+        return Array.from(bannerEl.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR));
+    }
+
+    function handleKeydown(event: KeyboardEvent) {
+        if (event.key === 'Escape') {
+            handleDismiss();
+            return;
+        }
+
+        if (event.key !== 'Tab') return;
+
+        const focusable = getFocusableElements();
+        if (focusable.length === 0) return;
+
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+
+        if (first === undefined || last === undefined) return;
+
+        if (event.shiftKey) {
+            if (document.activeElement === first) {
+                event.preventDefault();
+                last.focus();
+            }
+        } else {
+            if (document.activeElement === last) {
+                event.preventDefault();
+                first.focus();
+            }
+        }
+    }
 
     function resetCookieBannerProperties() {
         document.documentElement.style.removeProperty('--cookie-banner-height');
@@ -52,6 +90,25 @@
         }
     });
 
+    // Focus management: move focus into banner when it becomes visible after hydration
+    $effect(() => {
+        if (!hydrated || !isVisible || !bannerEl) return;
+
+        previouslyFocusedEl = document.activeElement;
+
+        // Defer focus to after the DOM update
+        requestAnimationFrame(() => {
+            const focusable = getFocusableElements();
+            const firstFocusable = focusable[0];
+
+            if (firstFocusable) {
+                firstFocusable.focus();
+            } else {
+                bannerEl?.focus();
+            }
+        });
+    });
+
     const handleDismiss = () => {
         try {
             localStorage.setItem(COMPONENT_CONFIG.cookieBanner.dismissedKey, 'true');
@@ -60,14 +117,24 @@
         }
         trackCookieBannerDismissed(locale);
         isVisible = false;
+
+        // Restore focus to the previously focused element
+        if (previouslyFocusedEl instanceof HTMLElement) {
+            previouslyFocusedEl.focus();
+        }
+        previouslyFocusedEl = null;
     };
 </script>
 
 {#if isVisible}
     <div
+        bind:this={bannerEl}
         role="alertdialog"
         aria-label={t.cookie.bannerLabel}
         aria-describedby="cookie-banner-message"
+        aria-modal="true"
+        tabindex="-1"
+        onkeydown={handleKeydown}
         class="cookie-banner fixed bottom-0 left-0 right-0 z-cookie-banner select-none border-t-2 border-page-bg px-4 pb-3 pt-2.5 antialiased sm:pt-3 md:py-7"
     >
         <div
