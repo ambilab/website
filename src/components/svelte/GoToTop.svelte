@@ -2,6 +2,7 @@
     import { COMPONENT_CONFIG } from '@config/components';
     import { getTranslation } from '@i18n/translations';
     import type { Locale } from '@type/locale';
+    import { trackScrollToTop } from '@utils/analytics';
     import { debounce } from '@utils/debounce';
     import { prefersReducedMotion } from '@utils/dom';
     import { scrollToTop } from '@utils/scroll';
@@ -31,6 +32,9 @@
     }, 100);
 
     const handleClick = () => {
+        const maxScroll = document.body.scrollHeight - window.innerHeight;
+        const scrollDepth = maxScroll > 0 ? (window.scrollY / maxScroll) * 100 : 0;
+        trackScrollToTop(scrollDepth);
         scrollToTop(true);
     };
 
