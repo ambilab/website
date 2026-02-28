@@ -97,7 +97,7 @@
         previouslyFocusedEl = document.activeElement;
 
         // Defer focus to after the DOM update
-        requestAnimationFrame(() => {
+        const rafId = requestAnimationFrame(() => {
             const focusable = getFocusableElements();
             const firstFocusable = focusable[0];
 
@@ -107,6 +107,10 @@
                 bannerEl?.focus();
             }
         });
+
+        return () => {
+            cancelAnimationFrame(rafId);
+        };
     });
 
     const handleDismiss = () => {
