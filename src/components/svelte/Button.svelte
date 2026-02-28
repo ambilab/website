@@ -37,8 +37,8 @@
     }: Props = $props();
 
     function handleClick(ev: MouseEvent): void {
-        if (trackFrom) {
-            trackCTAClick(trackFrom, href ?? '', trackLabel);
+        if (trackFrom && href) {
+            trackCTAClick(trackFrom, href, trackLabel);
         }
         onclick?.(ev);
     }
