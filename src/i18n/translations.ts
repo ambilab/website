@@ -52,7 +52,7 @@ export interface Translations {
     cookie: {
         message: string;
         dismissLabel: string;
-        regionLabel: string;
+        bannerLabel: string;
         button: string;
     };
 
@@ -143,7 +143,7 @@ export const translations: Record<Locale, Translations> = {
         cookie: {
             message: 'We use a cookie to remember your language preference.',
             dismissLabel: 'Dismiss the cookie banner',
-            regionLabel: 'Cookie consent',
+            bannerLabel: 'Cookie notice',
             button: 'Got it',
         },
 
@@ -232,7 +232,7 @@ export const translations: Record<Locale, Translations> = {
         cookie: {
             message: 'Používáme cookie pro zapamatování vašeho jazykového nastavení.',
             dismissLabel: 'Zavřít banner s cookies',
-            regionLabel: 'Souhlas s cookies',
+            bannerLabel: 'Oznámení o cookies',
             button: 'Rozumím',
         },
 
