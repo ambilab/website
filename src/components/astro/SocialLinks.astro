@@ -1,10 +1,21 @@
 ---
 import { SITE } from '@config/site';
+import { DEFAULT_LOCALE } from '@i18n/config.ts';
+import { getTranslation } from '@i18n/translations';
+import type { Locale } from '@type/locale';
 
 interface SocialLink {
     name: string;
     url: string;
 }
+
+export interface Props {
+    locale?: Locale;
+}
+
+const { locale: localeProp } = Astro.props as Partial<Props>;
+const locale: Locale = localeProp ?? DEFAULT_LOCALE;
+const t = getTranslation(locale);
 
 const socialLinks: SocialLink[] = [{ name: 'GitHub', url: SITE.SOCIAL.GITHUB }];
 ---
@@ -16,6 +27,7 @@ const socialLinks: SocialLink[] = [{ name: 'GitHub', url: SITE.SOCIAL.GITHUB }];
                 href={link.url}
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label={`${link.name} (${t.a11y.opensInNewTab})`}
                 class="border border-zinc-200 px-[7px] py-[5px]"
                 data-track-platform={link.name}
             >
