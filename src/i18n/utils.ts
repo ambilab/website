@@ -53,7 +53,8 @@ const cleanContentForWordCount = (content: string): string => {
 
     let cleaned = trimmed.replace(/^---\s*[\s\S]*?---\s*/, '');
     cleaned = cleaned.replace(/```[\s\S]*?```/g, '');
-    cleaned = cleaned.replace(/^import\s+.*?;?\s*$/gm, '');
+    cleaned = cleaned.replace(/^import\s[\s\S]*?from\s+['"][^'"]*['"];?\s*$/gm, '');
+    cleaned = cleaned.replace(/^import\s+['"][^'"]*['"];?\s*$/gm, '');
     cleaned = cleaned.replace(/<[^>]+>/g, '');
     cleaned = cleaned.replace(/`[^`]+`/g, '');
     cleaned = cleaned.replace(/!\[[^\]]*]\([^)]+\)/g, '');
