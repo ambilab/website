@@ -6,7 +6,7 @@ import NewsletterForm from '@components/svelte/NewsletterForm.svelte';
 import { getRoute } from '@config/routes';
 import { SITE } from '@config/site';
 import { getTranslation } from '@i18n/translations';
-import { calculateReadingTime } from '@i18n/utils';
+import { calculateReadingTime, calculateWordCount } from '@i18n/utils';
 import type { Locale } from '@type/locale';
 import type { ISEOMetadata } from '@type/seo';
 import type { LocaleContent } from '@utils/content-loader';
@@ -49,6 +49,7 @@ const newsUrl = `${getRoute('news', locale)}`;
 
 const nonce = Astro.locals.nonce;
 const siteDomain = Astro.url.origin;
+const wordCount = calculateWordCount(content);
 const rawImage = seoProps.ogImage || SITE.DEFAULT_OG_IMAGE;
 const imageUrl =
     rawImage.startsWith('http://') || rawImage.startsWith('https://') || rawImage.startsWith('//')
@@ -83,6 +84,7 @@ const jsonLd = {
         '@type': 'WebPage',
         '@id': permalink,
     },
+    wordCount,
     ...(tags.length > 0 ? { keywords: tags.join(', ') } : {}),
 };
 
