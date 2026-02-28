@@ -13,6 +13,7 @@ export interface Translations {
         switchLanguage: string;
         homeLinkLabel: string;
         demoEmbedTitle: string;
+        opensInNewTab: string;
     };
 
     nav: {
@@ -103,6 +104,7 @@ export const translations: Record<Locale, Translations> = {
             switchLanguage: 'Switch language',
             homeLinkLabel: 'Ambilab Home',
             demoEmbedTitle: 'Demo embed',
+            opensInNewTab: 'opens in new tab',
         },
 
         nav: {
@@ -191,6 +193,7 @@ export const translations: Record<Locale, Translations> = {
             switchLanguage: 'Přepnout jazyk',
             homeLinkLabel: 'Ambilab domovská stránka',
             demoEmbedTitle: 'Demo náhled',
+            opensInNewTab: 'otevře se v novém panelu',
         },
 
         nav: {
