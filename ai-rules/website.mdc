@@ -397,4 +397,5 @@ See `ai-rules/agent-workflow.mdc` for detailed workflow guidance.
 8. **Missing alt text** -- All images need alt attributes
 9. **Ignoring reduced motion** -- Animations must respect `prefers-reduced-motion`
 10. **Forgetting to update tests** -- When changing component behavior, update E2E tests in `tests/e2e/`
-11. **Breaking existing tests** -- Run `pnpm test:run` after changes to verify nothing is broken
+11. **Breaking existing tests** -- Run `pnpm test:run` for unit tests and `pnpm test:e2e` for E2E tests after changes to
+    verify nothing is broken
