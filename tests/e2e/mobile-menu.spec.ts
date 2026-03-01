@@ -170,13 +170,13 @@ test.describe('Mobile menu', () => {
         const menuPanel = page.locator('#mobile-menu');
 
         // Menu panel should be inert when closed
-        await expect(menuPanel).toHaveAttribute('inert', '');
+        await expect(menuPanel).toHaveAttribute('inert');
 
         // Open menu -- inert should be removed
         await openMenu(page);
 
         // When open, inert attribute should not be present
-        await expect(menuPanel).not.toHaveAttribute('inert', '');
+        await expect(menuPanel).not.toHaveAttribute('inert');
     });
 
     test('should not show mobile menu button on desktop viewport', async ({ browser }) => {
