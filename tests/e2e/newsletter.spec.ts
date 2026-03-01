@@ -14,12 +14,14 @@ import { expect, test } from '@playwright/test';
 test.describe('Newsletter subscription', () => {
     let newsletterEnabled = false;
 
-    test.beforeAll(async ({ browser }) => {
-        const context = await browser.newContext();
-        const page = await context.newPage();
-        await page.goto('/');
-        newsletterEnabled = (await page.getByTestId('newsletter-heading').count()) > 0;
-        await context.close();
+    test.beforeAll(() => {
+        // Read the feature flag from the environment variable used during the build.
+        // Mirrors featureFlag() in src/config/features.ts: enabled by default, disabled
+        // only when PUBLIC_NEWSLETTER is explicitly set to "false".
+        // Reading the env var (rather than checking the DOM) ensures tests run and
+        // fail with clear assertions when the feature is enabled but broken.
+        const envValue = process.env['PUBLIC_NEWSLETTER']?.toLowerCase();
+        newsletterEnabled = envValue !== 'false';
     });
 
     /** Checks the form's heading, email input, and submit button are all rendered and visible. */
