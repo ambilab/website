@@ -36,7 +36,8 @@ test.describe('News listing page', () => {
         // The datetime value should be a valid date string
         const datetime = await timeElements.first().getAttribute('datetime');
         expect(datetime).toBeTruthy();
-        expect(new Date(datetime!).toString()).not.toBe('Invalid Date');
+        expect(datetime).toBeDefined();
+        expect(new Date(datetime as string).toString()).not.toBe('Invalid Date');
     });
 
     test('should link news post to its detail page', async ({ page }) => {

@@ -103,6 +103,6 @@ test.describe('Go-to-Top button', () => {
         const button = page.locator('.go-to-top-button');
         const label = await button.getAttribute('aria-label');
         expect(label).toBeTruthy();
-        expect(label!.length).toBeGreaterThan(0);
+        expect(label?.length).toBeGreaterThan(0);
     });
 });
