@@ -108,6 +108,33 @@ function findNewsTranslation(
     return oppositeContent.newsPostMap.get(normalizeSlug(translationSlug));
 }
 
+/**
+ * Builds the hreflang alternates array for a sitemap entry.
+ *
+ * Always includes the primary locale link; appends the opposite locale link
+ * only when an opposite URL is supplied.
+ *
+ * @param locale - The primary locale of the entry
+ * @param primaryHref - The fully-qualified URL for the primary locale
+ * @param oppositeLocale - The opposite locale code
+ * @param oppositeHref - The fully-qualified URL for the opposite locale, if available
+ * @returns Array of hreflang alternate links
+ */
+function buildAlternates(
+    locale: Locale,
+    primaryHref: string,
+    oppositeLocale: Locale,
+    oppositeHref?: string,
+): SitemapAlternate[] {
+    const alternates: SitemapAlternate[] = [{ hreflang: locale, href: primaryHref }];
+
+    if (oppositeHref !== undefined) {
+        alternates.push({ hreflang: oppositeLocale, href: oppositeHref });
+    }
+
+    return alternates;
+}
+
 // #endregion
 
 // #region Entry Generators
@@ -135,21 +162,15 @@ function generatePageEntries(
         const slug = normalizeSlug(page.id);
         const url = slug === 'index' ? buildLocaleUrl(locale, '/') : buildLocaleUrl(locale, `/${slug}`);
 
-        const alternates: SitemapAlternate[] = [{ hreflang: locale, href: url }];
+        let oppositeHref: string | undefined;
 
         if (slug === 'index') {
-            if (oppositeContentAvailable) {
-                alternates.push({ hreflang: oppositeLocale, href: buildLocaleUrl(oppositeLocale, '/') });
-            }
+            oppositeHref = oppositeContentAvailable ? buildLocaleUrl(oppositeLocale, '/') : undefined;
         } else {
             const translation = findPageTranslation(page, oppositeContent);
 
             if (translation) {
-                const transSlug = normalizeSlug(translation.id);
-                alternates.push({
-                    hreflang: oppositeLocale,
-                    href: buildLocaleUrl(oppositeLocale, `/${transSlug}`),
-                });
+                oppositeHref = buildLocaleUrl(oppositeLocale, `/${normalizeSlug(translation.id)}`);
             }
         }
 
@@ -157,7 +178,7 @@ function generatePageEntries(
             url,
             changefreq: 'weekly',
             priority: slug === 'index' ? 1.0 : 0.8,
-            alternates,
+            alternates: buildAlternates(locale, url, oppositeLocale, oppositeHref),
         });
     }
 
@@ -187,24 +208,17 @@ function generateNewsEntries(
         const slug = normalizeSlug(post.id);
         const url = buildLocaleUrl(locale, `${newsRoute}/${slug}`);
 
-        const alternates: SitemapAlternate[] = [{ hreflang: locale, href: url }];
-
         const translation = findNewsTranslation(post, oppositeContent);
-
-        if (translation) {
-            const transSlug = normalizeSlug(translation.id);
-            alternates.push({
-                hreflang: oppositeLocale,
-                href: buildLocaleUrl(oppositeLocale, `${oppositeNewsRoute}/${transSlug}`),
-            });
-        }
+        const oppositeHref = translation
+            ? buildLocaleUrl(oppositeLocale, `${oppositeNewsRoute}/${normalizeSlug(translation.id)}`)
+            : undefined;
 
         entries.push({
             url,
             changefreq: 'monthly',
             priority: 0.6,
             lastmod: post.data.updatedDate ?? post.data.pubDate,
-            alternates,
+            alternates: buildAlternates(locale, url, oppositeLocale, oppositeHref),
         });
     }
 
@@ -225,18 +239,16 @@ function generateNewsIndexEntry(
     oppositeContentAvailable: boolean,
 ): SitemapEntry {
     const newsRoute = getRoute('news', locale);
-    const alternates: SitemapAlternate[] = [{ hreflang: locale, href: buildLocaleUrl(locale, newsRoute) }];
-
-    if (oppositeContentAvailable) {
-        const oppositeNewsRoute = getRoute('news', oppositeLocale);
-        alternates.push({ hreflang: oppositeLocale, href: buildLocaleUrl(oppositeLocale, oppositeNewsRoute) });
-    }
+    const url = buildLocaleUrl(locale, newsRoute);
+    const oppositeHref = oppositeContentAvailable
+        ? buildLocaleUrl(oppositeLocale, getRoute('news', oppositeLocale))
+        : undefined;
 
     return {
-        url: buildLocaleUrl(locale, newsRoute),
+        url,
         changefreq: 'daily',
         priority: 0.7,
-        alternates,
+        alternates: buildAlternates(locale, url, oppositeLocale, oppositeHref),
     };
 }
 
