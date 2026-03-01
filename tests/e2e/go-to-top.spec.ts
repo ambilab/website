@@ -15,6 +15,7 @@
 import type { Page } from '@playwright/test';
 import { expect, test } from '@playwright/test';
 
+// Matches COMPONENT_CONFIG.goToTop.showAfterScroll in src/config/components.ts
 const SHOW_AFTER_SCROLL = 300;
 const BUTTON_SELECTOR = '.go-to-top-button';
 
