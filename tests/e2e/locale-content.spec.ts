@@ -40,7 +40,7 @@ test.describe('English content (default locale)', () => {
 test.describe('Czech content (via locale cookie)', () => {
     test('should render Czech content on homepage when locale cookie is set', async ({ page, context }) => {
         // Set locale cookie before navigation
-        await context.addCookies([{ name: 'locale', value: 'cs', domain: 'localhost', path: '/' }]);
+        await context.addCookies([{ name: 'locale', value: 'cs', url: 'http://localhost:4321' }]);
 
         await page.goto('/');
 
@@ -49,7 +49,7 @@ test.describe('Czech content (via locale cookie)', () => {
     });
 
     test('should display Czech news on /novinky', async ({ page, context }) => {
-        await context.addCookies([{ name: 'locale', value: 'cs', domain: 'localhost', path: '/' }]);
+        await context.addCookies([{ name: 'locale', value: 'cs', url: 'http://localhost:4321' }]);
 
         await page.goto('/novinky');
 
@@ -61,7 +61,7 @@ test.describe('Czech content (via locale cookie)', () => {
     });
 
     test('should render Czech news detail page', async ({ page, context }) => {
-        await context.addCookies([{ name: 'locale', value: 'cs', domain: 'localhost', path: '/' }]);
+        await context.addCookies([{ name: 'locale', value: 'cs', url: 'http://localhost:4321' }]);
 
         await page.goto('/novinky/ahoj-svete');
 
@@ -72,7 +72,7 @@ test.describe('Czech content (via locale cookie)', () => {
     });
 
     test('should show Czech navigation labels', async ({ page, context }) => {
-        await context.addCookies([{ name: 'locale', value: 'cs', domain: 'localhost', path: '/' }]);
+        await context.addCookies([{ name: 'locale', value: 'cs', url: 'http://localhost:4321' }]);
 
         await page.goto('/');
 
@@ -84,7 +84,7 @@ test.describe('Czech content (via locale cookie)', () => {
     });
 
     test('should format dates in Czech locale', async ({ page, context }) => {
-        await context.addCookies([{ name: 'locale', value: 'cs', domain: 'localhost', path: '/' }]);
+        await context.addCookies([{ name: 'locale', value: 'cs', url: 'http://localhost:4321' }]);
 
         await page.goto('/novinky');
 
@@ -117,7 +117,7 @@ test.describe('Czech content (via locale cookie)', () => {
 
 test.describe('Locale cookie persistence', () => {
     test('should persist locale across page navigation', async ({ page, context }) => {
-        await context.addCookies([{ name: 'locale', value: 'cs', domain: 'localhost', path: '/' }]);
+        await context.addCookies([{ name: 'locale', value: 'cs', url: 'http://localhost:4321' }]);
 
         // Navigate to homepage
         await page.goto('/');
