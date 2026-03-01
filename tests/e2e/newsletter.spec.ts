@@ -51,7 +51,7 @@ test.describe('Newsletter subscription', () => {
         await page.getByTestId('newsletter-submit').click();
 
         // May show validation error or rate limit error if prior test runs consumed the quota
-        await expect(page.getByText(/invalid|Invalid email format|Too many attempts/i)).toBeVisible({ timeout: 5000 });
+        await expect(page.getByText(/invalid email format|Too many attempts/i)).toBeVisible({ timeout: 5000 });
     });
 
     /**
