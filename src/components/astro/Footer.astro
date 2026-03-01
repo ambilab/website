@@ -15,11 +15,16 @@ const t = getTranslation(locale);
 const currentYear = new Date().getFullYear();
 ---
 
-<footer class="footer select-none bg-footer-bg text-footer-text sm:dark:border-t-2">
-    <div class="container mx-auto px-4 py-2.5 sm:py-[18px] md:max-w-3xl md:py-12 md:pb-[34px] lg:max-w-[928px]">
-        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+<footer class="footer select-none bg-footer-bg text-footer-text">
+    <div
+        class="container mx-auto px-4 pb-[18px] pt-[16px] sm:max-w-[640px] sm:pb-[28px] sm:pt-[26px] md:max-w-[768px] md:pb-[34px] md:pt-[54px] lg:max-w-[928px]"
+    >
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
             <div class="md:-my-6">
-                <h3 class="-ml-px">Ambilab</h3>
+                <h3 class="-ml-px text-[22px] leading-[24px] text-lime-300 antialiased dark:text-lime-900">
+                    {t.footer.brand}
+                    <em class="font-light not-italic text-lime-500 dark:text-lime-700">{t.footer.product}</em>
+                </h3>
 
                 <p class="meta -ml-px text-balance">
                     {t.footer.description}
@@ -27,7 +32,7 @@ const currentYear = new Date().getFullYear();
             </div>
 
             <nav aria-label={t.footer.footerNavAria} class="meta -ml-px">
-                <ul class="flex flex-col gap-0 sm:flex-row sm:flex-wrap sm:gap-2 md:flex-col md:gap-0">
+                <ul class="flex flex-col md:flex-wrap">
                     <li>
                         <a href={getRoute('home', locale)}>
                             {t.nav.home}
@@ -58,7 +63,8 @@ const currentYear = new Date().getFullYear();
         </div>
 
         <div class="meta -ml-px mt-[18px]">
-            {t.footer.copyright} © {currentYear} Ambilab. {t.footer.allRightsReserved}.
+            {t.footer.copyright} © {currentYear}
+            {t.footer.brand}. {t.footer.allRightsReserved}.
         </div>
     </div>
 </footer>
