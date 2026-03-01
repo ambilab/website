@@ -41,8 +41,8 @@ export function escapeXml(str: string): string {
 
 /** A single hreflang alternate link for sitemap xhtml:link output. */
 export interface SitemapAlternate {
-    /** BCP 47 language code (e.g. 'en', 'cs'). */
-    hreflang: string;
+    /** Supported hreflang values for this project. */
+    hreflang: Locale | 'x-default';
 
     /** Fully-qualified URL for this language variant. */
     href: string;
