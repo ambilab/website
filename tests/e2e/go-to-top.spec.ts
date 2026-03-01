@@ -16,6 +16,7 @@ import type { Page } from '@playwright/test';
 import { expect, test } from '@playwright/test';
 
 const SHOW_AFTER_SCROLL = 300;
+const BUTTON_SELECTOR = '.go-to-top-button';
 
 /**
  * Checks whether the Go-to-Top button can actually appear on the page.
@@ -28,10 +29,22 @@ async function isGoToTopWorking(page: Page): Promise<boolean> {
 
     // Scroll to trigger the button (if hydrated)
     await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
-    await page.waitForTimeout(500);
 
-    const button = page.locator('.go-to-top-button');
-    return (await button.count()) > 0;
+    // Wait for the button to appear; short timeout since we just need to detect hydration
+    try {
+        await page.locator(BUTTON_SELECTOR).waitFor({ state: 'attached', timeout: 2000 });
+        return true;
+    } catch {
+        return false;
+    }
+}
+
+/**
+ * Scrolls the page and waits for the Go-to-Top button to become visible.
+ */
+async function scrollAndWaitForButton(page: Page, scrollY: number) {
+    await page.evaluate((px) => window.scrollTo(0, px), scrollY);
+    await expect(page.locator(BUTTON_SELECTOR)).toBeVisible();
 }
 
 test.describe('Go-to-Top button', () => {
@@ -40,9 +53,9 @@ test.describe('Go-to-Top button', () => {
         test.skip(!working, 'GoToTop cannot hydrate (client:visible with empty SSR output)');
 
         await page.goto('/');
-        await page.waitForTimeout(200);
+        await page.waitForLoadState('networkidle');
 
-        const button = page.locator('.go-to-top-button');
+        const button = page.locator(BUTTON_SELECTOR);
         await expect(button).not.toBeVisible();
     });
 
@@ -51,11 +64,7 @@ test.describe('Go-to-Top button', () => {
         test.skip(!working, 'GoToTop cannot hydrate (client:visible with empty SSR output)');
 
         await page.goto('/');
-        await page.evaluate((px) => window.scrollTo(0, px + 100), SHOW_AFTER_SCROLL);
-        await page.waitForTimeout(300);
-
-        const button = page.locator('.go-to-top-button');
-        await expect(button).toBeVisible();
+        await scrollAndWaitForButton(page, SHOW_AFTER_SCROLL + 100);
     });
 
     test('should hide when scrolling back to top', async ({ page }) => {
@@ -63,16 +72,10 @@ test.describe('Go-to-Top button', () => {
         test.skip(!working, 'GoToTop cannot hydrate (client:visible with empty SSR output)');
 
         await page.goto('/');
-        await page.evaluate((px) => window.scrollTo(0, px + 100), SHOW_AFTER_SCROLL);
-        await page.waitForTimeout(300);
-
-        const button = page.locator('.go-to-top-button');
-        await expect(button).toBeVisible();
+        await scrollAndWaitForButton(page, SHOW_AFTER_SCROLL + 100);
 
         await page.evaluate(() => window.scrollTo(0, 0));
-        await page.waitForTimeout(300);
-
-        await expect(button).not.toBeVisible();
+        await expect(page.locator(BUTTON_SELECTOR)).not.toBeVisible();
     });
 
     test('should scroll to top when clicked', async ({ page }) => {
@@ -80,16 +83,13 @@ test.describe('Go-to-Top button', () => {
         test.skip(!working, 'GoToTop cannot hydrate (client:visible with empty SSR output)');
 
         await page.goto('/');
-        await page.evaluate((px) => window.scrollTo(0, px + 200), SHOW_AFTER_SCROLL);
-        await page.waitForTimeout(300);
+        await scrollAndWaitForButton(page, SHOW_AFTER_SCROLL + 200);
 
-        const button = page.locator('.go-to-top-button');
+        const button = page.locator(BUTTON_SELECTOR);
         await button.click();
 
-        await page.waitForTimeout(500);
-
-        const scrollY = await page.evaluate(() => window.scrollY);
-        expect(scrollY).toBe(0);
+        // Wait for scroll animation to complete
+        await expect.poll(async () => page.evaluate(() => window.scrollY), { timeout: 2000 }).toBe(0);
     });
 
     test('should have an accessible aria-label', async ({ page }) => {
@@ -97,12 +97,10 @@ test.describe('Go-to-Top button', () => {
         test.skip(!working, 'GoToTop cannot hydrate (client:visible with empty SSR output)');
 
         await page.goto('/');
-        await page.evaluate((px) => window.scrollTo(0, px + 100), SHOW_AFTER_SCROLL);
-        await page.waitForTimeout(300);
+        await scrollAndWaitForButton(page, SHOW_AFTER_SCROLL + 100);
 
-        const button = page.locator('.go-to-top-button');
+        const button = page.locator(BUTTON_SELECTOR);
         const label = await button.getAttribute('aria-label');
         expect(label).toBeTruthy();
-        expect(label?.length).toBeGreaterThan(0);
     });
 });
