@@ -9,19 +9,19 @@ import { expect, test } from '@playwright/test';
 
 const PAGE_BG_VAR = '--color-page-bg';
 
-const getPageBg = () => getComputedStyle(document.documentElement).getPropertyValue('--color-page-bg').trim();
+const getPageBg = (varName: string) => getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
 
 test.describe('System theme detection', () => {
     test('should apply different styles for dark and light system preferences', async ({ page }) => {
         await page.emulateMedia({ colorScheme: 'light' });
         await page.goto('/');
 
-        const lightBg = await page.evaluate(getPageBg);
+        const lightBg = await page.evaluate(getPageBg, PAGE_BG_VAR);
 
         await page.emulateMedia({ colorScheme: 'dark' });
         await page.goto('/');
 
-        const darkBg = await page.evaluate(getPageBg);
+        const darkBg = await page.evaluate(getPageBg, PAGE_BG_VAR);
 
         expect(lightBg).toBeTruthy();
         expect(darkBg).toBeTruthy();
@@ -32,7 +32,7 @@ test.describe('System theme detection', () => {
         await page.emulateMedia({ colorScheme: 'light' });
         await page.goto('/');
 
-        const lightBg = await page.evaluate(getPageBg);
+        const lightBg = await page.evaluate(getPageBg, PAGE_BG_VAR);
 
         await page.emulateMedia({ colorScheme: 'dark' });
 
@@ -45,7 +45,7 @@ test.describe('System theme detection', () => {
             { timeout: 2000 },
         );
 
-        const darkBg = await page.evaluate(getPageBg);
+        const darkBg = await page.evaluate(getPageBg, PAGE_BG_VAR);
 
         expect(darkBg).not.toBe(lightBg);
     });
