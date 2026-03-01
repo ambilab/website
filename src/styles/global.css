@@ -106,86 +106,86 @@
 }
 
 @media (prefers-color-scheme: dark) {
-:root {
-    color-scheme: dark;
+    :root {
+        color-scheme: dark;
 
-    /* Dot pattern background for dark mode */
-    --bg-dots-image: radial-gradient(circle, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+        /* Dot pattern background for dark mode */
+        --bg-dots-image: radial-gradient(circle, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
 
-    /* Semantic Colors - Page & Surface Backgrounds */
-    --color-page-bg: theme('colors.zinc.900');
+        /* Semantic Colors - Page & Surface Backgrounds */
+        --color-page-bg: theme('colors.zinc.900');
 
-    --color-surface: theme('colors.zinc.600');
-    --color-surface-code: theme('colors.gray.800');
+        --color-surface: theme('colors.zinc.600');
+        --color-surface-code: theme('colors.gray.800');
 
-    /* Semantic Colors - Borders */
-    --color-border-default: theme('colors.zinc.200');
-    --color-border-medium: theme('colors.gray.500');
-    --color-border-subtle: theme('colors.gray.800');
+        /* Semantic Colors - Borders */
+        --color-border-default: theme('colors.zinc.200');
+        --color-border-medium: theme('colors.gray.500');
+        --color-border-subtle: theme('colors.gray.800');
 
-    /* Semantic Colors - Text */
-    --color-text-primary: theme('colors.zinc.200');
-    --color-text-secondary: theme('colors.zinc.400');
-    --color-text-muted: theme('colors.zinc.400');
+        /* Semantic Colors - Text */
+        --color-text-primary: theme('colors.zinc.200');
+        --color-text-secondary: theme('colors.zinc.400');
+        --color-text-muted: theme('colors.zinc.400');
 
-    /* Semantic Colors - Links */
-    --color-link: theme('colors.lime.400');
-    --color-link-hover: theme('colors.lime.300');
-    --color-link-active: theme('colors.white');
+        /* Semantic Colors - Links */
+        --color-link: theme('colors.lime.400');
+        --color-link-hover: theme('colors.lime.300');
+        --color-link-active: theme('colors.white');
 
-    /* Semantic Colors - Card */
-    --color-card-bg: theme('colors.lime.500');
-    --color-card-text: theme('colors.black');
+        /* Semantic Colors - Card */
+        --color-card-bg: theme('colors.lime.500');
+        --color-card-text: theme('colors.black');
 
-    /* Semantic Colors - Stickie */
-    --color-stickie-bg: theme('colors.yellow.400');
-    --color-stickie-text: theme('colors.black');
+        /* Semantic Colors - Stickie */
+        --color-stickie-bg: theme('colors.yellow.400');
+        --color-stickie-text: theme('colors.black');
 
-    /* Semantic Colors - Primary Button */
-    --color-button-primary-bg: theme('colors.lime.500');
-    --color-button-primary-bg-hover: theme('colors.lime.400');
-    --color-button-primary-text: theme('colors.black');
-    --color-button-primary-text-hover: theme('colors.black');
+        /* Semantic Colors - Primary Button */
+        --color-button-primary-bg: theme('colors.lime.500');
+        --color-button-primary-bg-hover: theme('colors.lime.400');
+        --color-button-primary-text: theme('colors.black');
+        --color-button-primary-text-hover: theme('colors.black');
 
-    /* Semantic Colors - Secondary Button */
-    --color-button-secondary-bg: theme('colors.zinc.200');
-    --color-button-secondary-bg-hover: theme('colors.zinc.100');
-    --color-button-secondary-text: theme('colors.black');
-    --color-button-secondary-text-hover: theme('colors.black');
+        /* Semantic Colors - Secondary Button */
+        --color-button-secondary-bg: theme('colors.zinc.200');
+        --color-button-secondary-bg-hover: theme('colors.zinc.100');
+        --color-button-secondary-text: theme('colors.black');
+        --color-button-secondary-text-hover: theme('colors.black');
 
-    /* Semantic Colors - Outline Button */
-    --color-button-outline-bg: theme('colors.zinc.900');
-    --color-button-outline-bg-hover: theme('colors.zinc.900');
-    --color-button-outline-text: theme('colors.zinc.200');
-    --color-button-outline-text-hover: theme('colors.white');
-    --color-button-outline-border: theme('colors.zinc.200');
-    --color-button-outline-border-hover: theme('colors.white');
+        /* Semantic Colors - Outline Button */
+        --color-button-outline-bg: theme('colors.zinc.900');
+        --color-button-outline-bg-hover: theme('colors.zinc.900');
+        --color-button-outline-text: theme('colors.zinc.200');
+        --color-button-outline-text-hover: theme('colors.white');
+        --color-button-outline-border: theme('colors.zinc.200');
+        --color-button-outline-border-hover: theme('colors.white');
 
-    /* Semantic Colors - Active States */
-    --color-active: #2b341a;
+        /* Semantic Colors - Active States */
+        --color-active: #2b341a;
 
-    /* Semantic Colors - Focus States */
-    --color-focus-ring: #668e20;
+        /* Semantic Colors - Focus States */
+        --color-focus-ring: #668e20;
 
-    /* Semantic Colors - Accents */
-    --color-info-bg: theme('colors.lime.950');
-    --color-warning-bg: theme('colors.yellow.950');
-    --color-warning-border: theme('colors.yellow.900');
-    --color-warning-text: theme('colors.yellow.400');
-    --color-warning-heading: theme('colors.yellow.200');
-    --color-warning-highlight: theme('colors.yellow.800');
-    --color-success-text: theme('colors.lime.400');
-    --color-error-text: theme('colors.red.400');
-    --color-error-bg: theme('colors.red.950');
+        /* Semantic Colors - Accents */
+        --color-info-bg: theme('colors.lime.950');
+        --color-warning-bg: theme('colors.yellow.950');
+        --color-warning-border: theme('colors.yellow.900');
+        --color-warning-text: theme('colors.yellow.400');
+        --color-warning-heading: theme('colors.yellow.200');
+        --color-warning-highlight: theme('colors.yellow.800');
+        --color-success-text: theme('colors.lime.400');
+        --color-error-text: theme('colors.red.400');
+        --color-error-bg: theme('colors.red.950');
 
-    /* Semantic Colors - Tags/Badges */
-    --color-tag-bg: theme('colors.lime.900');
-    --color-tag-text: theme('colors.lime.200');
+        /* Semantic Colors - Tags/Badges */
+        --color-tag-bg: theme('colors.lime.900');
+        --color-tag-text: theme('colors.lime.200');
 
-    /* Semantic Colors - Footer */
-    --color-footer-bg: theme('colors.zinc.900');
-    --color-footer-text: theme('colors.zinc.200');
-}
+        /* Semantic Colors - Footer */
+        --color-footer-bg: theme('colors.zinc.200');
+        --color-footer-text: theme('colors.zinc.900');
+    }
 }
 
 @layer components {
