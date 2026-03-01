@@ -121,9 +121,18 @@ test.describe('Mobile menu', () => {
         }
 
         // After cycling through all elements, focus should wrap back to the menu button
-        const activeTagName = await page.evaluate(() => document.activeElement?.tagName.toLowerCase());
-        // Focus should be on some focusable element (not lost)
-        expect(['a', 'button', 'input']).toContain(activeTagName);
+        const activeElement = await page.evaluate((selector) => {
+            const el = document.activeElement;
+            const menuBtn = document.querySelector(selector);
+            return {
+                isMenuButton: el === menuBtn,
+                ariaControls: el?.getAttribute('aria-controls'),
+                tagName: el?.tagName.toLowerCase(),
+            };
+        }, menuButtonSelector);
+
+        // Focus must wrap back to the menu toggle button specifically
+        expect(activeElement.isMenuButton).toBe(true);
     });
 
     test('should close menu when clicking the dimmer overlay', async ({ page }) => {
