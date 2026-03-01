@@ -6,15 +6,43 @@
  * All tests run at a mobile viewport width (375px) where the menu is visible.
  */
 
+import type { Page } from '@playwright/test';
 import { expect, test } from '@playwright/test';
 
 test.use({ viewport: { width: 375, height: 667 } });
 
 const menuButtonSelector = 'button[aria-controls="mobile-menu"]';
 
+/**
+ * Navigates to the homepage and waits for the MobileMenu Svelte
+ * component to hydrate. The component uses client:load, but we still
+ * need to wait for the JS to download and execute before interacting.
+ */
+async function gotoAndWaitForHydration(page: Page) {
+    await page.goto('/');
+    await page.waitForLoadState('networkidle');
+
+    // Wait for the menu button to be interactive by checking that its
+    // onclick handler has been attached by Svelte. We can detect this
+    // by verifying the Astro island has initialized -- the button's
+    // aria-label is set reactively, so we wait for it to be present.
+    const menuButton = page.locator(menuButtonSelector);
+    await expect(menuButton).toBeVisible();
+    await expect(menuButton).toHaveAttribute('aria-label', /.+/);
+}
+
+/**
+ * Opens the mobile menu and waits for it to be fully expanded.
+ */
+async function openMenu(page: Page) {
+    const menuButton = page.locator(menuButtonSelector);
+    await menuButton.click();
+    await expect(menuButton).toHaveAttribute('aria-expanded', 'true');
+}
+
 test.describe('Mobile menu', () => {
     test('should display hamburger button on mobile viewport', async ({ page }) => {
-        await page.goto('/');
+        await gotoAndWaitForHydration(page);
 
         const menuButton = page.locator(menuButtonSelector);
         await expect(menuButton).toBeVisible();
@@ -22,24 +50,18 @@ test.describe('Mobile menu', () => {
     });
 
     test('should open menu on button click and set aria-expanded', async ({ page }) => {
-        await page.goto('/');
-
-        const menuButton = page.locator(menuButtonSelector);
-        await menuButton.click();
-
-        await expect(menuButton).toHaveAttribute('aria-expanded', 'true');
+        await gotoAndWaitForHydration(page);
+        await openMenu(page);
 
         const menuPanel = page.locator('#mobile-menu');
         await expect(menuPanel).toHaveAttribute('aria-hidden', 'false');
     });
 
     test('should close menu on second button click', async ({ page }) => {
-        await page.goto('/');
+        await gotoAndWaitForHydration(page);
+        await openMenu(page);
 
         const menuButton = page.locator(menuButtonSelector);
-        await menuButton.click();
-        await expect(menuButton).toHaveAttribute('aria-expanded', 'true');
-
         await menuButton.click();
         await expect(menuButton).toHaveAttribute('aria-expanded', 'false');
 
@@ -48,22 +70,18 @@ test.describe('Mobile menu', () => {
     });
 
     test('should close menu when pressing Escape', async ({ page }) => {
-        await page.goto('/');
-
-        const menuButton = page.locator(menuButtonSelector);
-        await menuButton.click();
-        await expect(menuButton).toHaveAttribute('aria-expanded', 'true');
+        await gotoAndWaitForHydration(page);
+        await openMenu(page);
 
         await page.keyboard.press('Escape');
+
+        const menuButton = page.locator(menuButtonSelector);
         await expect(menuButton).toHaveAttribute('aria-expanded', 'false');
     });
 
     test('should close menu when clicking a navigation link', async ({ page }) => {
-        await page.goto('/');
-
-        const menuButton = page.locator(menuButtonSelector);
-        await menuButton.click();
-        await expect(menuButton).toHaveAttribute('aria-expanded', 'true');
+        await gotoAndWaitForHydration(page);
+        await openMenu(page);
 
         // Click the News link inside the mobile menu
         const newsLink = page.locator('#mobile-menu a[href="/news"]');
@@ -77,7 +95,7 @@ test.describe('Mobile menu', () => {
     });
 
     test('should lock body scroll when menu is open', async ({ page }) => {
-        await page.goto('/');
+        await gotoAndWaitForHydration(page);
 
         const menuButton = page.locator(menuButtonSelector);
 
@@ -85,23 +103,22 @@ test.describe('Mobile menu', () => {
         const overflowBefore = await page.evaluate(() => document.body.style.overflow);
         expect(overflowBefore).toBe('');
 
-        await menuButton.click();
+        await openMenu(page);
 
         const overflowAfter = await page.evaluate(() => document.body.style.overflow);
         expect(overflowAfter).toBe('hidden');
 
         // Close and verify scroll is restored
         await menuButton.click();
+        await expect(menuButton).toHaveAttribute('aria-expanded', 'false');
 
         const overflowRestored = await page.evaluate(() => document.body.style.overflow);
         expect(overflowRestored).toBe('');
     });
 
     test('should trap focus with Tab key cycling', async ({ page }) => {
-        await page.goto('/');
-
-        const menuButton = page.locator(menuButtonSelector);
-        await menuButton.click();
+        await gotoAndWaitForHydration(page);
+        await openMenu(page);
 
         // Get all focusable elements inside the menu panel
         const focusableCount = await page.evaluate(() => {
@@ -136,21 +153,19 @@ test.describe('Mobile menu', () => {
     });
 
     test('should close menu when clicking the dimmer overlay', async ({ page }) => {
-        await page.goto('/');
-
-        const menuButton = page.locator(menuButtonSelector);
-        await menuButton.click();
-        await expect(menuButton).toHaveAttribute('aria-expanded', 'true');
+        await gotoAndWaitForHydration(page);
+        await openMenu(page);
 
         // Click the dimmer overlay (the sibling div with class menu-dimmer)
         const dimmer = page.locator('.menu-dimmer');
         await dimmer.click({ force: true });
 
+        const menuButton = page.locator(menuButtonSelector);
         await expect(menuButton).toHaveAttribute('aria-expanded', 'false');
     });
 
     test('should set inert on menu panel when closed', async ({ page }) => {
-        await page.goto('/');
+        await gotoAndWaitForHydration(page);
 
         const menuPanel = page.locator('#mobile-menu');
 
@@ -158,8 +173,7 @@ test.describe('Mobile menu', () => {
         await expect(menuPanel).toHaveAttribute('inert', '');
 
         // Open menu -- inert should be removed
-        const menuButton = page.locator(menuButtonSelector);
-        await menuButton.click();
+        await openMenu(page);
 
         // When open, inert attribute should not be present
         await expect(menuPanel).not.toHaveAttribute('inert', '');
@@ -170,6 +184,7 @@ test.describe('Mobile menu', () => {
         const desktopContext = await browser.newContext({ viewport: { width: 1280, height: 800 } });
         const desktopPage = await desktopContext.newPage();
         await desktopPage.goto('/');
+        await desktopPage.waitForLoadState('networkidle');
 
         const menuButton = desktopPage.locator(menuButtonSelector);
         await expect(menuButton).not.toBeVisible();

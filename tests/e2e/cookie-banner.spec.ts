@@ -25,16 +25,18 @@ async function isCookieBannerEnabled(page: Page): Promise<boolean> {
 
 /**
  * Waits for the cookie banner to be fully interactive (hydrated).
- * The banner renders via SSR but the onclick handler only works after
- * Svelte hydration completes.
+ * The banner uses client:idle hydration, so we must wait for the Svelte
+ * component to hydrate and attach event handlers before interacting.
  */
 async function waitForBannerReady(page: Page) {
     const banner = page.locator('[role="alertdialog"]');
     await expect(banner).toBeVisible();
-    // Wait for Svelte hydration to attach event handlers
-    await page.waitForLoadState('networkidle');
-    // Small delay to ensure requestAnimationFrame focus management completes
-    await page.waitForTimeout(100);
+
+    // Wait for Svelte hydration: the component sets --cookie-banner-height
+    // CSS custom property after onMount completes (hydrated = true).
+    await page.waitForFunction(() => document.documentElement.style.getPropertyValue('--cookie-banner-height') !== '', {
+        timeout: 5000,
+    });
 }
 
 test.describe('Cookie banner', () => {
@@ -79,6 +81,9 @@ test.describe('Cookie banner', () => {
         await waitForBannerReady(page);
 
         const banner = page.locator('[role="alertdialog"]');
+
+        // Focus the banner so it receives keyboard events
+        await banner.focus();
         await page.keyboard.press('Escape');
 
         await expect(banner).not.toBeVisible();
