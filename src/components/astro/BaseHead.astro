@@ -46,6 +46,7 @@ const plausibleScriptCz = import.meta.env.PUBLIC_PLAUSIBLE_SCRIPT_CZ;
 const isComDomain = currentDomain === 'ambilab.com' || currentDomain.endsWith('.ambilab.com');
 const isCzDomain = currentDomain === 'ambilab.cz' || currentDomain.endsWith('.ambilab.cz');
 const plausibleScript = isComDomain ? plausibleScriptCom : isCzDomain ? plausibleScriptCz : undefined;
+const analyticsEnabled = FEATURES.analytics && import.meta.env.PROD && Boolean(plausibleScript);
 
 const translationLocale = getTranslationLocale(locale);
 
@@ -184,7 +185,7 @@ const xDefaultUrl = locale === 'en' ? currentLocaleUrl : alternateLocaleUrl;
 ></style>
 
 {
-    FEATURES.analytics && import.meta.env.PROD && plausibleScript && (
+    analyticsEnabled && (
         <>
             <link rel="preconnect" href="https://plausible.io" />
             <link rel="dns-prefetch" href="https://plausible.io" />
@@ -301,7 +302,7 @@ const xDefaultUrl = locale === 'en' ? currentLocaleUrl : alternateLocaleUrl;
 }
 
 {
-    FEATURES.analytics && import.meta.env.PROD && plausibleScript && (
+    analyticsEnabled && (
         <>
             <script is:inline async src={plausibleScript} nonce={nonce} />
             <script
