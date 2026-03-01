@@ -9,32 +9,32 @@
  * (via .dev.vars) so the API route returns predictable responses.
  */
 
-import type { Page } from '@playwright/test';
 import { expect, test } from '@playwright/test';
 
-/**
- * Checks whether the newsletter form is rendered on the page.
- * The component is gated by the newsletter feature flag in src/config/features.ts.
- */
-async function isNewsletterEnabled(page: Page): Promise<boolean> {
-    await page.goto('/');
-    const heading = page.getByTestId('newsletter-heading');
-    return (await heading.count()) > 0;
-}
-
 test.describe('Newsletter subscription', () => {
-    test('should display newsletter form on homepage', async ({ page }) => {
-        const enabled = await isNewsletterEnabled(page);
-        test.skip(!enabled, 'Newsletter feature flag is disabled');
+    let newsletterEnabled = false;
 
+    test.beforeAll(async ({ browser }) => {
+        const context = await browser.newContext();
+        const page = await context.newPage();
+        await page.goto('/');
+        newsletterEnabled = (await page.getByTestId('newsletter-heading').count()) > 0;
+        await context.close();
+    });
+
+    test('should display newsletter form on homepage', async ({ page }) => {
+        test.skip(!newsletterEnabled, 'Newsletter feature flag is disabled');
+
+        await page.goto('/');
         await expect(page.getByTestId('newsletter-heading')).toBeVisible();
         await expect(page.getByTestId('newsletter-email')).toBeVisible();
         await expect(page.getByTestId('newsletter-submit')).toBeVisible();
     });
 
     test('should show error when submitting invalid email', async ({ page }) => {
-        const enabled = await isNewsletterEnabled(page);
-        test.skip(!enabled, 'Newsletter feature flag is disabled');
+        test.skip(!newsletterEnabled, 'Newsletter feature flag is disabled');
+
+        await page.goto('/');
 
         // Bypass browser HTML5 validation so the server-side check runs.
         // Using novalidate on the form is more robust than changing input type,
@@ -51,9 +51,9 @@ test.describe('Newsletter subscription', () => {
     });
 
     test('should show error or success when submitting valid email', async ({ page }) => {
-        const enabled = await isNewsletterEnabled(page);
-        test.skip(!enabled, 'Newsletter feature flag is disabled');
+        test.skip(!newsletterEnabled, 'Newsletter feature flag is disabled');
 
+        await page.goto('/');
         await page.getByTestId('newsletter-email').fill('test@example.com');
         await page.getByTestId('newsletter-submit').click();
 
