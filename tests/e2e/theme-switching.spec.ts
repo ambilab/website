@@ -7,6 +7,8 @@
 
 import { expect, test } from '@playwright/test';
 
+const PAGE_BG_VAR = '--color-page-bg';
+
 const getPageBg = () => getComputedStyle(document.documentElement).getPropertyValue('--color-page-bg').trim();
 
 test.describe('System theme detection', () => {
@@ -35,11 +37,11 @@ test.describe('System theme detection', () => {
         await page.emulateMedia({ colorScheme: 'dark' });
 
         await page.waitForFunction(
-            (expectedToChange: string) => {
-                const current = getComputedStyle(document.documentElement).getPropertyValue('--color-page-bg').trim();
+            ([expectedToChange, cssVar]: [string, string]) => {
+                const current = getComputedStyle(document.documentElement).getPropertyValue(cssVar).trim();
                 return current !== expectedToChange;
             },
-            lightBg,
+            [lightBg, PAGE_BG_VAR] as [string, string],
             { timeout: 2000 },
         );
 
