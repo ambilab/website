@@ -20,7 +20,7 @@
     ],
     "stop": [
       {
-        "command": "./.cursor/hooks/on-stop.sh",
+        "command": ".cursor/hooks/on-stop.sh",
         "description": "Run quality checks after agent completion"
       }
     ]

@@ -119,6 +119,7 @@ function findNewsTranslation(
  * @param locale - The primary locale of the pages
  * @param oppositeContent - Pre-loaded content for the opposite locale (for translation lookup)
  * @param oppositeLocale - The locale code for the opposite locale
+ * @param oppositeContentAvailable - Whether the opposite locale content loaded successfully
  * @returns Array of sitemap entries with alternate links populated
  */
 function generatePageEntries(
@@ -126,6 +127,7 @@ function generatePageEntries(
     locale: Locale,
     oppositeContent: LocaleContent,
     oppositeLocale: Locale,
+    oppositeContentAvailable: boolean,
 ): SitemapEntry[] {
     const entries: SitemapEntry[] = [];
 
@@ -136,8 +138,9 @@ function generatePageEntries(
         const alternates: SitemapAlternate[] = [{ hreflang: locale, href: url }];
 
         if (slug === 'index') {
-            // Index pages always cross-reference the opposite locale's root path.
-            alternates.push({ hreflang: oppositeLocale, href: buildLocaleUrl(oppositeLocale, '/') });
+            if (oppositeContentAvailable) {
+                alternates.push({ hreflang: oppositeLocale, href: buildLocaleUrl(oppositeLocale, '/') });
+            }
         } else {
             const translation = findPageTranslation(page, oppositeContent);
 
@@ -213,20 +216,27 @@ function generateNewsEntries(
  *
  * @param locale - The locale of the news index
  * @param oppositeLocale - The opposite locale for the alternate link
+ * @param oppositeContentAvailable - Whether the opposite locale content loaded successfully
  * @returns Sitemap entry for the news index with alternate links
  */
-function generateNewsIndexEntry(locale: Locale, oppositeLocale: Locale): SitemapEntry {
+function generateNewsIndexEntry(
+    locale: Locale,
+    oppositeLocale: Locale,
+    oppositeContentAvailable: boolean,
+): SitemapEntry {
     const newsRoute = getRoute('news', locale);
-    const oppositeNewsRoute = getRoute('news', oppositeLocale);
+    const alternates: SitemapAlternate[] = [{ hreflang: locale, href: buildLocaleUrl(locale, newsRoute) }];
+
+    if (oppositeContentAvailable) {
+        const oppositeNewsRoute = getRoute('news', oppositeLocale);
+        alternates.push({ hreflang: oppositeLocale, href: buildLocaleUrl(oppositeLocale, oppositeNewsRoute) });
+    }
 
     return {
         url: buildLocaleUrl(locale, newsRoute),
         changefreq: 'daily',
         priority: 0.7,
-        alternates: [
-            { hreflang: locale, href: buildLocaleUrl(locale, newsRoute) },
-            { hreflang: oppositeLocale, href: buildLocaleUrl(oppositeLocale, oppositeNewsRoute) },
-        ],
+        alternates,
     };
 }
 
@@ -246,39 +256,49 @@ export async function generateLocaleSitemapEntries(locale: Locale): Promise<Site
 
     const oppositeLocale = getTranslationLocale(locale);
 
-    // Load primary locale content -- this must succeed.
-    let content: LocaleContent;
-
-    try {
-        content = await loadLocaleContent(locale);
-    } catch (error) {
-        logger.error(`Failed to load primary content for locale: ${locale}`, error);
-        throw error;
-    }
-
-    // Load opposite locale content for hreflang cross-references.
-    // Failures are non-fatal: the sitemap is still valid without alternates.
     const emptyContent: LocaleContent = {
         newsPosts: [],
         pages: [],
         newsPostMap: new Map(),
         pageMap: new Map(),
     };
-    let oppositeContent: LocaleContent;
 
-    try {
-        oppositeContent = await loadLocaleContent(oppositeLocale);
-    } catch (error) {
-        logger.error(`Failed to load opposite locale (${oppositeLocale}) content; alternates will be omitted`, error);
+    // Load both locale contents in parallel.
+    // The primary locale must succeed; opposite-locale failures are non-fatal.
+    const [primaryResult, oppositeResult] = await Promise.allSettled([
+        loadLocaleContent(locale),
+        loadLocaleContent(oppositeLocale),
+    ]);
+
+    if (primaryResult.status === 'rejected') {
+        logger.error(`Failed to load primary content for locale: ${locale}`, primaryResult.reason);
+        throw primaryResult.reason as Error;
+    }
+
+    const content = primaryResult.value;
+    let oppositeContent: LocaleContent;
+    let oppositeContentAvailable: boolean;
+
+    if (oppositeResult.status === 'rejected') {
+        logger.error(
+            `Failed to load opposite locale (${oppositeLocale}) content; alternates will be omitted`,
+            oppositeResult.reason,
+        );
         oppositeContent = emptyContent;
+        oppositeContentAvailable = false;
+    } else {
+        oppositeContent = oppositeResult.value;
+        oppositeContentAvailable = true;
     }
 
     const entries: SitemapEntry[] = [];
 
-    entries.push(...generatePageEntries(content.pages, locale, oppositeContent, oppositeLocale));
+    entries.push(
+        ...generatePageEntries(content.pages, locale, oppositeContent, oppositeLocale, oppositeContentAvailable),
+    );
 
     if (content.newsPosts.length > 0) {
-        entries.push(generateNewsIndexEntry(locale, oppositeLocale));
+        entries.push(generateNewsIndexEntry(locale, oppositeLocale, oppositeContentAvailable));
     }
 
     entries.push(...generateNewsEntries(content.newsPosts, locale, oppositeContent, oppositeLocale));
