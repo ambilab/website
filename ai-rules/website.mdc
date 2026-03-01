@@ -85,6 +85,8 @@ website/
     utils/               # Utility functions
     middleware.ts        # Locale detection, security headers
     env.d.ts             # Environment types
+  tests/
+    e2e/                 # Playwright E2E tests
 ```
 
 ### Bilingual Content
@@ -330,7 +332,7 @@ Format: `<type>(<scope>): <description>`
 
 **Types:** `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`
 
-**Scopes:** `news`, `i18n`, `components`, `seo`, `security`, `api`, `ci`, `docs`
+**Scopes:** `news`, `i18n`, `components`, `seo`, `security`, `api`, `ci`, `docs`, `tests`
 
 ### AI-Assisted Commits
 
@@ -348,6 +350,8 @@ pnpm lint:fix         # Fix linting issues
 pnpm format           # Format code
 pnpm format:check     # Check formatting
 pnpm typecheck        # Run TypeScript checks
+pnpm test:run         # Run unit tests (Vitest, single run)
+pnpm test:e2e         # Run E2E tests (Playwright, requires build)
 pnpm spellcheck       # Check spelling
 pnpm preflight        # Run all quality checks
 pnpm sync-rules       # Sync AI rules to editor configs
@@ -383,12 +387,15 @@ See `ai-rules/agent-workflow.mdc` for detailed workflow guidance.
 
 ## Common Mistakes to Avoid
 
-1. **Using emoji** – Never allowed anywhere
-2. **Forgetting hydration directives** – Svelte components need `client:*`
-3. **Missing translations** – Always create both en/cs versions
-4. **Skipping frontmatter fields** – Required fields must be present
-5. **Using `any` type** – Use proper types or `unknown`
-6. **Hardcoding strings** – Use `src/i18n/translations.ts`
-7. **Hardcoding colors** – Use semantic design tokens (single class names, no `dark:` variants needed)
-8. **Missing alt text** – All images need alt attributes
-9. **Ignoring reduced motion** – Animations must respect `prefers-reduced-motion`
+1. **Using emoji** -- Never allowed anywhere
+2. **Forgetting hydration directives** -- Svelte components need `client:*`
+3. **Missing translations** -- Always create both en/cs versions
+4. **Skipping frontmatter fields** -- Required fields must be present
+5. **Using `any` type** -- Use proper types or `unknown`
+6. **Hardcoding strings** -- Use `src/i18n/translations.ts`
+7. **Hardcoding colors** -- Use semantic design tokens (single class names, no `dark:` variants needed)
+8. **Missing alt text** -- All images need alt attributes
+9. **Ignoring reduced motion** -- Animations must respect `prefers-reduced-motion`
+10. **Forgetting to update tests** -- When changing component behavior, update E2E tests in `tests/e2e/`
+11. **Breaking existing tests** -- Run `pnpm test:run` for unit tests and `pnpm test:e2e` for E2E tests after changes to
+    verify nothing is broken

@@ -12,6 +12,10 @@ const PAGE_BG_VAR = '--color-page-bg';
 const getCssVarValue = (varName: string) => getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
 
 test.describe('System theme detection', () => {
+    /**
+     * Loads the page once with light and once with dark emulated media, then compares the
+     * --color-page-bg CSS variable to confirm distinct values are applied per scheme.
+     */
     test('should apply different styles for dark and light system preferences', async ({ page }) => {
         await page.emulateMedia({ colorScheme: 'light' });
         await page.goto('/');
@@ -28,6 +32,10 @@ test.describe('System theme detection', () => {
         expect(lightBg).not.toEqual(darkBg);
     });
 
+    /**
+     * Switches the emulated color scheme from light to dark without a page reload and waits
+     * for the CSS variable to update reactively, proving the media query listener works at runtime.
+     */
     test('should update styles when system preference changes', async ({ page }) => {
         await page.emulateMedia({ colorScheme: 'light' });
         await page.goto('/');

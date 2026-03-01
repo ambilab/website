@@ -13,6 +13,7 @@ dist/
 !.env.example
 
 .wrangler/
+.dev.vars
 
 # Generated AI assistant rules (source of truth: ai-rules/*.mdc)
 .cursor/rules/
@@ -53,6 +54,7 @@ pnpm-debug.log*
 
 coverage/
 test-results/
+playwright-report/
 .vitest/
 .lighthouseci/
 

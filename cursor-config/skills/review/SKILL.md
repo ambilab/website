@@ -33,6 +33,7 @@ Review current changes against project rules and quality standards.
    - Images have `alt` attributes
    - Animations respect `prefers-reduced-motion`
    - Type imports use `import type` syntax
+   - E2E tests in `tests/e2e/` updated if user-facing behavior changes
 
 4. **Review code quality**
    - Proper error handling (guard clauses, null checks)

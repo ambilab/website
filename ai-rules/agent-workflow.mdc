@@ -124,9 +124,10 @@ using Cursor skills and git hooks.
 
 1. Edit component file(s)
 2. Update types if needed
-3. Stop hook auto-formats and type-checks
-4. Fix any reported issues
-5. Use `/pr` to create a pull request
+3. Update or add E2E tests in `tests/e2e/` if the change affects user-facing behavior
+4. Stop hook auto-formats and type-checks
+5. Fix any reported issues
+6. Use `/pr` to create a pull request
 
 ### Adding News Posts
 
@@ -151,18 +152,20 @@ When the stop hook reports type errors:
 
 ## Quality Commands Reference
 
-| Command               | Purpose                            | When to Use            |
-| --------------------- | ---------------------------------- | ---------------------- |
-| `pnpm format`         | Format code (Biome + Prettier)     | Auto-run by hook       |
-| `pnpm typecheck`      | TypeScript + Astro type checking   | Auto-run by hook       |
-| `pnpm lint`           | Linting (Biome + ESLint)           | Before committing      |
-| `pnpm lint:fix`       | Auto-fix lint issues               | To fix lint errors     |
-| `pnpm spellcheck`     | Check spelling                     | Before committing      |
-| `pnpm preflight`      | ALL checks (comprehensive)         | Before pushing         |
-| `pnpm review:full`    | Preflight + build + security audit | Manual pre-push check  |
-| `pnpm security:audit` | Check dependency vulnerabilities   | Security review        |
-| `pnpm dev`            | Start dev server                   | During development     |
-| `pnpm build`          | Build for production               | Test production builds |
+| Command               | Purpose                            | When to Use               |
+| --------------------- | ---------------------------------- | ------------------------- |
+| `pnpm format`         | Format code (Biome + Prettier)     | Auto-run by hook          |
+| `pnpm typecheck`      | TypeScript + Astro type checking   | Auto-run by hook          |
+| `pnpm lint`           | Linting (Biome + ESLint)           | Before committing         |
+| `pnpm lint:fix`       | Auto-fix lint issues               | To fix lint errors        |
+| `pnpm spellcheck`     | Check spelling                     | Before committing         |
+| `pnpm preflight`      | ALL checks (comprehensive)         | Before pushing            |
+| `pnpm review:full`    | Preflight + build + security audit | Manual pre-push check     |
+| `pnpm security:audit` | Check dependency vulnerabilities   | Security review           |
+| `pnpm test:run`       | Run unit tests (Vitest)            | After logic changes       |
+| `pnpm test:e2e`       | Run E2E tests (Playwright)         | After UI/behavior changes |
+| `pnpm dev`            | Start dev server                   | During development        |
+| `pnpm build`          | Build for production               | Test production builds    |
 
 ## Pre-Push Hook
 
@@ -192,6 +195,8 @@ Before considering a task complete:
 - [ ] Svelte components have `client:*` directives when imported in Astro
 - [ ] Images have alt text
 - [ ] Animations respect `prefers-reduced-motion`
+- [ ] Existing tests still pass (`pnpm test:run` for unit, `pnpm test:e2e` for E2E)
+- [ ] New/changed user-facing behavior has E2E test coverage (see Testing section)
 
 ## Working with the Stop Hook
 
@@ -213,6 +218,55 @@ The stop hook only runs:
 - `pnpm typecheck` (type checking)
 
 It does NOT run linting, spellcheck, or knip. For comprehensive checks, use `/preflight` skill.
+
+## Testing
+
+### Test Infrastructure
+
+- **Unit tests**: Vitest + Testing Library, located in `src/` alongside source files
+- **E2E tests**: Playwright, located in `tests/e2e/`
+- **E2E preview server**: `pnpm preview` (wrangler pages dev) on port 4321
+- **E2E requires a build first**: Run `pnpm build` before `pnpm test:e2e`
+
+### When to Write Tests
+
+- **New interactive component**: Add E2E test in `tests/e2e/` covering key user interactions
+- **Changed component behavior**: Update existing E2E tests to match new behavior
+- **New API route**: Add E2E tests for success, validation, and error responses
+- **Bug fix**: Add a test that would have caught the bug
+
+### E2E Test Conventions
+
+- **Feature-flag gating**: Components behind feature flags must use runtime detection with `test.skip()`:
+
+```typescript
+import type { Page } from '@playwright/test';
+
+async function isFeatureEnabled(page: Page): Promise<boolean> {
+  await page.goto('/');
+  return (await page.locator('[data-testid="my-feature"]').count()) > 0;
+}
+
+test('should do something', async ({ page }) => {
+  const enabled = await isFeatureEnabled(page);
+  test.skip(!enabled, 'Feature flag is disabled');
+  // ... test body
+});
+```
+
+- **Type imports**: Use `import type { Page } from '@playwright/test'` (not inline `import()` annotations)
+- **Test isolation**: Each test gets a fresh browser context (localStorage, cookies are not shared)
+- **Server-side state**: Rate limiters and in-memory caches persist across tests in the same run
+- **Hydration awareness**: Components using `client:idle` or `client:visible` may need explicit waits before interaction
+- **File naming**: `tests/e2e/<feature-name>.spec.ts`
+
+### Running Tests
+
+```bash
+pnpm test:run         # Unit tests (Vitest, single run)
+pnpm test:e2e         # E2E tests (Playwright, requires prior build)
+pnpm test             # Unit tests (Vitest, watch mode)
+```
 
 ## Best Practices
 
