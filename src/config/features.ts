@@ -7,15 +7,15 @@
  */
 
 /**
- * Reads a boolean feature flag from an environment variable.
- * Returns the env var value when explicitly set to "true" or "false",
+ * Parses a resolved environment variable value as a boolean feature flag.
+ * Returns true/false when the value is explicitly "true"/"false",
  * otherwise falls back to the provided default.
  *
- * @param envVar - The PUBLIC_* environment variable name
+ * @param envValue - The resolved env var value (must be passed as a static import.meta.env.PUBLIC_* access)
  * @param defaultValue - Default value when the env var is unset or invalid
  */
-function featureFlag(envVar: string, defaultValue: boolean): boolean {
-    const value = (import.meta.env[envVar] as string | undefined)?.toLowerCase();
+function featureFlag(envValue: string | undefined, defaultValue: boolean): boolean {
+    const value = envValue?.toLowerCase();
 
     if (value === 'true') return true;
     if (value === 'false') return false;
@@ -24,29 +24,29 @@ function featureFlag(envVar: string, defaultValue: boolean): boolean {
 
 export const FEATURES = {
     /** Whether the locale switcher (language toggle) is shown in the menu. */
-    localeSwitcher: featureFlag('PUBLIC_LOCALE_SWITCHER', false),
+    localeSwitcher: featureFlag(import.meta.env.PUBLIC_LOCALE_SWITCHER, false),
 
     /** Whether the newsletter signup form is displayed on pages. */
-    newsletter: featureFlag('PUBLIC_NEWSLETTER', true),
+    newsletter: featureFlag(import.meta.env.PUBLIC_NEWSLETTER, true),
 
     /** Whether the cookie consent banner is shown. */
-    cookieBanner: featureFlag('PUBLIC_COOKIE_BANNER', true),
+    cookieBanner: featureFlag(import.meta.env.PUBLIC_COOKIE_BANNER, true),
 
     /** Whether Plausible analytics scripts are injected (production only). */
-    analytics: featureFlag('PUBLIC_ANALYTICS', true),
+    analytics: featureFlag(import.meta.env.PUBLIC_ANALYTICS, true),
 
     /** Whether the dark/light mode toggle is shown in the menu. */
-    themeSwitcher: featureFlag('PUBLIC_THEME_SWITCHER', true),
+    themeSwitcher: featureFlag(import.meta.env.PUBLIC_THEME_SWITCHER, true),
 
     /** Whether the floating scroll-to-top button is shown. */
-    goToTop: featureFlag('PUBLIC_GO_TO_TOP', true),
+    goToTop: featureFlag(import.meta.env.PUBLIC_GO_TO_TOP, true),
 
     /** Whether interactive demo embeds are rendered. */
-    demoEmbeds: featureFlag('PUBLIC_DEMO_EMBEDS', true),
+    demoEmbeds: featureFlag(import.meta.env.PUBLIC_DEMO_EMBEDS, true),
 
     /** Whether RSS feed links are generated and discoverable. */
-    rssFeed: featureFlag('PUBLIC_RSS_FEED', true),
+    rssFeed: featureFlag(import.meta.env.PUBLIC_RSS_FEED, true),
 
     /** Whether JSON-LD structured data is included in page heads. */
-    structuredData: featureFlag('PUBLIC_STRUCTURED_DATA', true),
+    structuredData: featureFlag(import.meta.env.PUBLIC_STRUCTURED_DATA, true),
 } as const;
