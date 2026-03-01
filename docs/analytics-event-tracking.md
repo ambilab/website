@@ -102,7 +102,7 @@ const handleLocaleSwitch = async (): Promise<void> => {
 - Whether they stay on switched language
 - Pages without translations (when `hasTranslation` is false)
 
-#### 5. Demo Interactions
+#### 4. Demo Interactions
 
 **Component:** `src/components/svelte/DemoEmbed.svelte`  
 **Event:** Demo loaded/interacted with  
@@ -133,7 +133,7 @@ onMount(() => {
 
 ### Lower Priority (Secondary Interactions)
 
-#### 6. Mobile Menu Toggle
+#### 5. Mobile Menu Toggle
 
 **Component:** `src/components/svelte/MobileMenu.svelte`  
 **Event:** Mobile menu opened  
@@ -154,7 +154,7 @@ function toggleMenu(): void {
 - Mobile menu usage frequency
 - Can inform desktop vs mobile design priorities
 
-#### 7. Go to Top Button
+#### 6. Go to Top Button
 
 **Component:** `src/components/svelte/GoToTop.svelte`  
 **Event:** Scroll to top clicked  
@@ -178,7 +178,7 @@ const handleClick = () => {
 - How far users scroll before using button
 - Content length vs engagement patterns
 
-#### 8. Social Link Clicks
+#### 7. Social Link Clicks
 
 **Component:** `src/components/astro/SocialLinks.astro`  
 **Event:** Social media link clicked  
@@ -215,7 +215,7 @@ can add custom props:
 - Bluesky
 - GitHub
 
-#### 9. Internal CTA Buttons
+#### 8. Internal CTA Buttons
 
 **Usage:** Throughout MDX content  
 **Event:** CTA button clicked  
