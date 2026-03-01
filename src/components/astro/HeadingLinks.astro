@@ -168,9 +168,9 @@
         opacity: 1;
     }
 
-    :global(.dark .mdx-content .anchor) {
-        --color-anchor-dark: #4b5563; /* gray.600 */
-
-        color: var(--color-anchor-dark);
+    @media (prefers-color-scheme: dark) {
+        :global(.mdx-content .anchor) {
+            --color-anchor: #4b5563; /* gray.600 */
+        }
     }
 </style>

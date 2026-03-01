@@ -6,9 +6,6 @@ export interface Translations {
         skipNavigationLink: string;
         openMenu: string;
         closeMenu: string;
-        toggleTheme: string;
-        switchToLightMode: string;
-        switchToDarkMode: string;
         goToTop: string;
         switchLanguage: string;
         homeLinkLabel: string;
@@ -97,9 +94,6 @@ export const translations: Record<Locale, Translations> = {
             skipNavigationLink: 'Skip to the main content',
             openMenu: 'Open menu',
             closeMenu: 'Close menu',
-            toggleTheme: 'Toggle theme',
-            switchToLightMode: 'Switch to light mode',
-            switchToDarkMode: 'Switch to dark mode',
             goToTop: 'Go to top',
             switchLanguage: 'Switch language',
             homeLinkLabel: 'Ambilab Home',
@@ -186,9 +180,6 @@ export const translations: Record<Locale, Translations> = {
             skipNavigationLink: 'Přeskočit na hlavní obsah',
             openMenu: 'Otevřít menu',
             closeMenu: 'Zavřít menu',
-            toggleTheme: 'Přepnout motiv',
-            switchToLightMode: 'Přepnout na světlý režim',
-            switchToDarkMode: 'Přepnout na tmavý režim',
             goToTop: 'Zpět nahoru',
             switchLanguage: 'Přepnout jazyk',
             homeLinkLabel: 'Ambilab domovská stránka',

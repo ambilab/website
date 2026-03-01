@@ -2,7 +2,7 @@
 
 @plugin 'tailwindcss-debug-screens';
 
-@custom-variant dark (&:where(.dark, .dark *));
+@custom-variant dark (@media (prefers-color-scheme: dark));
 
 @theme {
     --font-sans: 'Innovator Grotesk', system-ui, sans-serif;
@@ -105,7 +105,8 @@
     --z-index-skip-navigation-link: 200;
 }
 
-.dark {
+@media (prefers-color-scheme: dark) {
+:root {
     color-scheme: dark;
 
     /* Dot pattern background for dark mode */
@@ -184,6 +185,7 @@
     /* Semantic Colors - Footer */
     --color-footer-bg: theme('colors.zinc.900');
     --color-footer-text: theme('colors.zinc.200');
+}
 }
 
 @layer components {
@@ -417,9 +419,11 @@ h3 {
     color: theme('colors.lime.800');
 }
 
-.dark ::selection {
-    background-color: theme('colors.lime.700');
-    color: theme('colors.lime.100');
+@media (prefers-color-scheme: dark) {
+    ::selection {
+        background-color: theme('colors.lime.700');
+        color: theme('colors.lime.100');
+    }
 }
 
 .expressive-code {

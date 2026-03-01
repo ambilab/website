@@ -195,8 +195,10 @@
     }
 }
 
-.dark .mdx-content {
-    --color-table-header-bg: #111827; /* gray.900 */
-    --color-table-header-border: #374151; /* gray.700 */
-    --color-table-border: #1f2937; /* gray.800 */
+@media (prefers-color-scheme: dark) {
+    .mdx-content {
+        --color-table-header-bg: #111827; /* gray.900 */
+        --color-table-header-border: #374151; /* gray.700 */
+        --color-table-border: #1f2937; /* gray.800 */
+    }
 }

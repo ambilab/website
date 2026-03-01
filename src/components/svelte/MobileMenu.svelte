@@ -390,18 +390,14 @@
         background-color: var(--color-menu-dimmer-bg);
     }
 
-    :global(.dark) .menu-dimmer {
-        --color-menu-dimmer-bg: color-mix(in srgb, #3f3f46 80%, transparent); /* zinc.700 */
+    @media (prefers-color-scheme: dark) {
+        .menu-dimmer {
+            --color-menu-dimmer-bg: color-mix(in srgb, #3f3f46 80%, transparent); /* zinc.700 */
+        }
     }
 
     .keyboard-mode :global(a:hover),
     .keyboard-mode :global(button:hover) {
-        background-color: transparent !important;
-        color: inherit !important;
-    }
-
-    :global(.dark) .keyboard-mode :global(a:hover),
-    :global(.dark) .keyboard-mode :global(button:hover) {
         background-color: transparent !important;
         color: inherit !important;
     }

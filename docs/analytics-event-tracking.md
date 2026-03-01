@@ -62,41 +62,7 @@ const handleDismiss = () => {
 
 ### Medium Priority (User Engagement)
 
-#### 3. Theme Toggle
-
-**Component:** `src/components/svelte/ThemeSwitcher.svelte`  
-**Event:** Theme switched (light/dark)  
-**Why:** Understanding user preferences for theme design decisions
-
-```typescript
-const handleThemeToggle = (event: MouseEvent) => {
-  try {
-    toggleDarkMode();
-    updateTheme();
-
-    // Track theme preference
-    window.plausible?.('Theme Switched', {
-      props: {
-        to: currentTheme,
-        from: currentTheme === 'dark' ? 'light' : 'dark',
-      },
-    });
-
-    logger.info(`Theme toggled to ${currentTheme}`);
-    // ... rest of code
-  } catch (error) {
-    logger.error('Failed to toggle theme', error);
-  }
-};
-```
-
-**Metrics:**
-
-- Light vs dark mode preference
-- Time of day patterns (when users switch)
-- Helps inform default theme strategy
-
-#### 4. Language Switch
+#### 3. Language Switch
 
 **Component:** `src/components/svelte/LocaleSwitcher.svelte`  
 **Event:** Language switched  
@@ -136,7 +102,7 @@ const handleLocaleSwitch = async (): Promise<void> => {
 - Whether they stay on switched language
 - Pages without translations (when `hasTranslation` is false)
 
-#### 5. Demo Interactions
+#### 4. Demo Interactions
 
 **Component:** `src/components/svelte/DemoEmbed.svelte`  
 **Event:** Demo loaded/interacted with  
@@ -167,7 +133,7 @@ onMount(() => {
 
 ### Lower Priority (Secondary Interactions)
 
-#### 6. Mobile Menu Toggle
+#### 5. Mobile Menu Toggle
 
 **Component:** `src/components/svelte/MobileMenu.svelte`  
 **Event:** Mobile menu opened  
@@ -188,7 +154,7 @@ function toggleMenu(): void {
 - Mobile menu usage frequency
 - Can inform desktop vs mobile design priorities
 
-#### 7. Go to Top Button
+#### 6. Go to Top Button
 
 **Component:** `src/components/svelte/GoToTop.svelte`  
 **Event:** Scroll to top clicked  
@@ -196,14 +162,10 @@ function toggleMenu(): void {
 
 ```typescript
 const handleClick = () => {
+  const maxScroll = document.body.scrollHeight - window.innerHeight;
+  const scrollDepth = maxScroll > 0 ? (window.scrollY / maxScroll) * 100 : 0;
+  trackScrollToTop(scrollDepth);
   scrollToTop(true);
-
-  // Track scroll-to-top usage
-  window.plausible?.('Scroll To Top', {
-    props: {
-      scrollDepth: Math.round((window.scrollY / document.body.scrollHeight) * 100),
-    },
-  });
 };
 ```
 
@@ -212,7 +174,7 @@ const handleClick = () => {
 - How far users scroll before using button
 - Content length vs engagement patterns
 
-#### 8. Social Link Clicks
+#### 7. Social Link Clicks
 
 **Component:** `src/components/astro/SocialLinks.astro`  
 **Event:** Social media link clicked  
@@ -249,7 +211,7 @@ can add custom props:
 - Bluesky
 - GitHub
 
-#### 9. Internal CTA Buttons
+#### 8. Internal CTA Buttons
 
 **Usage:** Throughout MDX content  
 **Event:** CTA button clicked  
@@ -301,9 +263,8 @@ content engagement is a key metric.
 
 ### Phase 2: User Preferences (Do Next)
 
-1. Theme switching
-2. Language switching
-3. Social link clicks
+1. Language switching
+2. Social link clicks
 
 ### Phase 3: Secondary Engagement (Optional)
 
@@ -359,10 +320,6 @@ export function trackNewsletterError(locale: string, error: string): void {
 
 export function trackCookieBannerDismissed(locale: string): void {
   trackEvent('Cookie Banner Dismissed', { locale });
-}
-
-export function trackThemeSwitch(to: 'light' | 'dark', from: 'light' | 'dark'): void {
-  trackEvent('Theme Switched', { to, from });
 }
 
 export function trackLanguageSwitch(from: string, to: string, hasTranslation: boolean): void {
@@ -431,7 +388,6 @@ After implementing event tracking, set up goals in your Plausible dashboard:
    - `Newsletter Signup` (conversion goal)
    - `Demo Loaded` (engagement goal)
    - `Cookie Banner Dismissed`
-   - `Theme Switched`
    - `Language Switched`
    - etc.
 
