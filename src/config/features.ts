@@ -30,7 +30,7 @@ export const FEATURES = {
     newsletter: featureFlag(import.meta.env.PUBLIC_NEWSLETTER, true),
 
     /** Whether the cookie consent banner is shown. */
-    cookieBanner: featureFlag(import.meta.env.PUBLIC_COOKIE_BANNER, true),
+    cookieBanner: featureFlag(import.meta.env.PUBLIC_COOKIE_BANNER, false),
 
     /** Whether Plausible analytics scripts are injected (production only). */
     analytics: featureFlag(import.meta.env.PUBLIC_ANALYTICS, true),
