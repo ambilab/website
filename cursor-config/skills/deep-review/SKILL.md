@@ -51,6 +51,8 @@ pushing significant changes or creating pull requests.
    - Animations respect `prefers-reduced-motion`
    - Type imports use `import type` syntax
    - JSDoc comments for exported functions
+   - E2E tests in `tests/e2e/` updated if user-facing behavior changed
+   - Existing tests still pass (covered by preflight's `test:run`)
 
 6. **Generate PR-ready summary**
    - Create a summary suitable for PR description
@@ -103,7 +105,10 @@ pushing significant changes or creating pull requests.
 
 ### Test Plan
 
-- [ ] Manual testing steps
+- [ ] Unit tests pass (`pnpm test:run`)
+- [ ] E2E tests pass (`pnpm build && pnpm test:e2e`)
+- [ ] New/changed behavior has E2E coverage in `tests/e2e/`
+- [ ] Manual testing steps (if applicable)
 - [ ] Edge cases to verify
 - [ ] Browser/device testing if applicable
 
