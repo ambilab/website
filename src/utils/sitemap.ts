@@ -82,7 +82,7 @@ function findPageTranslation(
         return undefined;
     }
 
-    return oppositeContent.pageMap.get(translationSlug);
+    return oppositeContent.pageMap.get(normalizeSlug(translationSlug));
 }
 
 /**
@@ -105,7 +105,7 @@ function findNewsTranslation(
         return undefined;
     }
 
-    return oppositeContent.newsPostMap.get(translationSlug);
+    return oppositeContent.newsPostMap.get(normalizeSlug(translationSlug));
 }
 
 // #endregion
@@ -280,7 +280,7 @@ export async function generateLocaleSitemapEntries(locale: Locale): Promise<Site
     let oppositeContentAvailable: boolean;
 
     if (oppositeResult.status === 'rejected') {
-        logger.error(
+        logger.warn(
             `Failed to load opposite locale (${oppositeLocale}) content; alternates will be omitted`,
             oppositeResult.reason,
         );
