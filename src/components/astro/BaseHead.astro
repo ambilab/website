@@ -1,4 +1,5 @@
 ---
+import { FEATURES } from '@config/features';
 import { getRoute } from '@config/routes';
 import { SITE } from '@config/site';
 import { getTranslationLocale } from '@i18n/utils';
@@ -45,6 +46,7 @@ const plausibleScriptCz = import.meta.env.PUBLIC_PLAUSIBLE_SCRIPT_CZ;
 const isComDomain = currentDomain === 'ambilab.com' || currentDomain.endsWith('.ambilab.com');
 const isCzDomain = currentDomain === 'ambilab.cz' || currentDomain.endsWith('.ambilab.cz');
 const plausibleScript = isComDomain ? plausibleScriptCom : isCzDomain ? plausibleScriptCz : undefined;
+const analyticsEnabled = FEATURES.analytics && import.meta.env.PROD && Boolean(plausibleScript);
 
 const translationLocale = getTranslationLocale(locale);
 
@@ -183,7 +185,7 @@ const xDefaultUrl = locale === 'en' ? currentLocaleUrl : alternateLocaleUrl;
 ></style>
 
 {
-    import.meta.env.PROD && plausibleScript && (
+    analyticsEnabled && (
         <>
             <link rel="preconnect" href="https://plausible.io" />
             <link rel="dns-prefetch" href="https://plausible.io" />
@@ -195,20 +197,26 @@ const xDefaultUrl = locale === 'en' ? currentLocaleUrl : alternateLocaleUrl;
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="canonical" href={canonical} />
 <link rel="sitemap" href="/sitemap-index.xml" />
-<link
-    rel="alternate"
-    type="application/rss+xml"
-    hreflang={locale}
-    href={buildLocaleUrl(locale, getRoute('rss', locale))}
-    title={`${SITE.NAME} RSS (${locale === 'en' ? 'English' : 'Čeština'})`}
-/>
-<link
-    rel="alternate"
-    type="application/rss+xml"
-    hreflang={translationLocale}
-    href={buildLocaleUrl(translationLocale, getRoute('rss', translationLocale))}
-    title={`${SITE.NAME} RSS (${locale === 'en' ? 'Čeština' : 'English'})`}
-/>
+{
+    FEATURES.rssFeed && (
+        <>
+            <link
+                rel="alternate"
+                type="application/rss+xml"
+                hreflang={locale}
+                href={buildLocaleUrl(locale, getRoute('rss', locale))}
+                title={`${SITE.NAME} RSS (${locale === 'en' ? 'English' : 'Čeština'})`}
+            />
+            <link
+                rel="alternate"
+                type="application/rss+xml"
+                hreflang={translationLocale}
+                href={buildLocaleUrl(translationLocale, getRoute('rss', translationLocale))}
+                title={`${SITE.NAME} RSS (${locale === 'en' ? 'Čeština' : 'English'})`}
+            />
+        </>
+    )
+}
 
 {/* Hreflang tags for bilingual SEO */}
 <link rel="alternate" hreflang="en" href={locale === 'en' ? currentLocaleUrl : alternateLocaleUrl} />
@@ -261,36 +269,40 @@ const xDefaultUrl = locale === 'en' ? currentLocaleUrl : alternateLocaleUrl;
 <meta name="mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-title" content={SITE.NAME} />
 
-<script
-    is:inline
-    type="application/ld+json"
-    nonce={nonce}
-    set:html={JSON.stringify({
-        '@context': 'https://schema.org',
-        '@type': 'WebSite',
-        name: SITE.NAME,
-        description: SITE.DESCRIPTION,
-        url: siteDomain,
-        author: {
-            '@type': 'Organization',
-            name: SITE.AUTHOR,
-            url: SITE.URL,
-        },
-        publisher: {
-            '@type': 'Organization',
-            name: SITE.NAME,
-            logo: {
-                '@type': 'ImageObject',
-                url: `${siteDomain}/logo.png`,
-                width: 512,
-                height: 512,
-            },
-        },
-    })}
-/>
+{
+    FEATURES.structuredData && (
+        <script
+            is:inline
+            type="application/ld+json"
+            nonce={nonce}
+            set:html={JSON.stringify({
+                '@context': 'https://schema.org',
+                '@type': 'WebSite',
+                name: SITE.NAME,
+                description: SITE.DESCRIPTION,
+                url: siteDomain,
+                author: {
+                    '@type': 'Organization',
+                    name: SITE.AUTHOR,
+                    url: SITE.URL,
+                },
+                publisher: {
+                    '@type': 'Organization',
+                    name: SITE.NAME,
+                    logo: {
+                        '@type': 'ImageObject',
+                        url: `${siteDomain}/logo.png`,
+                        width: 512,
+                        height: 512,
+                    },
+                },
+            })}
+        />
+    )
+}
 
 {
-    import.meta.env.PROD && plausibleScript && (
+    analyticsEnabled && (
         <>
             <script is:inline async src={plausibleScript} nonce={nonce} />
             <script

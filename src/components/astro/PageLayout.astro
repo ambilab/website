@@ -4,6 +4,7 @@ import '@/styles/global.css';
 import CookieBanner from '@components/svelte/CookieBanner.svelte';
 import GoToTop from '@components/svelte/GoToTop.svelte';
 import RhythmDebug from '@components/svelte/RhythmDebug.svelte';
+import { FEATURES } from '@config/features';
 import type { Locale } from '@type/locale';
 import type { ISEOMetadata } from '@type/seo';
 import { loadLocaleContent, type LocaleContent } from '@utils/content-loader';
@@ -62,9 +63,9 @@ const pageMap = providedPageMap ?? (await loadLocaleContent(locale)).pageMap;
 
         <Footer locale={locale} />
 
-        <GoToTop client:visible locale={locale} />
+        {FEATURES.goToTop && <GoToTop client:visible locale={locale} />}
 
-        <CookieBanner client:idle locale={locale} />
+        {FEATURES.cookieBanner && <CookieBanner client:idle locale={locale} />}
 
         {import.meta.env.DEV && <RhythmDebug client:idle />}
     </body>

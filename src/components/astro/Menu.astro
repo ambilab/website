@@ -50,7 +50,7 @@ const t = getTranslation(locale);
                         <LocaleSwitcher client:load currentLocale={locale} translationPath={translationPath} />
                     )
                 }
-                <ThemeSwitcher client:load locale={locale} />
+                {FEATURES.themeSwitcher && <ThemeSwitcher client:load locale={locale} />}
             </div>
 
             <div class="md:hidden">
@@ -70,7 +70,7 @@ const t = getTranslation(locale);
                                     />
                                 )
                             }
-                            <ThemeSwitcher client:load locale={locale} />
+                            {FEATURES.themeSwitcher && <ThemeSwitcher client:load locale={locale} />}
                         </div>
                     </div>
                 </MobileMenu>
