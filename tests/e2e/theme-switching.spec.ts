@@ -7,48 +7,44 @@
 
 import { expect, test } from '@playwright/test';
 
+const getPageBg = () => getComputedStyle(document.documentElement).getPropertyValue('--color-page-bg').trim();
+
 test.describe('System theme detection', () => {
-    test('should apply dark styles when system prefers dark mode', async ({ page }) => {
-        await page.emulateMedia({ colorScheme: 'dark' });
-        await page.goto('/');
-
-        const bgColor = await page.evaluate(() => {
-            return getComputedStyle(document.documentElement).getPropertyValue('--color-page-bg').trim();
-        });
-
-        // In dark mode, page-bg should NOT be the light theme value
-        // (exact value depends on Tailwind resolution, but it should change)
-        expect(bgColor).toBeTruthy();
-    });
-
-    test('should apply light styles when system prefers light mode', async ({ page }) => {
+    test('should apply different styles for dark and light system preferences', async ({ page }) => {
         await page.emulateMedia({ colorScheme: 'light' });
         await page.goto('/');
 
-        const bgColor = await page.evaluate(() => {
-            return getComputedStyle(document.documentElement).getPropertyValue('--color-page-bg').trim();
-        });
-
-        expect(bgColor).toBeTruthy();
-    });
-
-    test('should produce different styles for light and dark preferences', async ({ page }) => {
-        await page.emulateMedia({ colorScheme: 'light' });
-        await page.goto('/');
-
-        const lightBg = await page.evaluate(() => {
-            return getComputedStyle(document.documentElement).getPropertyValue('--color-page-bg').trim();
-        });
+        const lightBg = await page.evaluate(getPageBg);
 
         await page.emulateMedia({ colorScheme: 'dark' });
+        await page.goto('/');
 
-        // Allow CSS to recalculate
-        await page.waitForTimeout(100);
+        const darkBg = await page.evaluate(getPageBg);
 
-        const darkBg = await page.evaluate(() => {
-            return getComputedStyle(document.documentElement).getPropertyValue('--color-page-bg').trim();
-        });
-
+        expect(lightBg).toBeTruthy();
+        expect(darkBg).toBeTruthy();
         expect(lightBg).not.toBe(darkBg);
+    });
+
+    test('should update styles when system preference changes', async ({ page }) => {
+        await page.emulateMedia({ colorScheme: 'light' });
+        await page.goto('/');
+
+        const lightBg = await page.evaluate(getPageBg);
+
+        await page.emulateMedia({ colorScheme: 'dark' });
+
+        await page.waitForFunction(
+            (expectedToChange: string) => {
+                const current = getComputedStyle(document.documentElement).getPropertyValue('--color-page-bg').trim();
+                return current !== expectedToChange;
+            },
+            lightBg,
+            { timeout: 2000 },
+        );
+
+        const darkBg = await page.evaluate(getPageBg);
+
+        expect(darkBg).not.toBe(lightBg);
     });
 });
