@@ -193,12 +193,16 @@ test.describe('Mobile menu', () => {
         // Override the mobile viewport for this single test
         const desktopContext = await browser.newContext({ viewport: { width: 1280, height: 800 } });
         const desktopPage = await desktopContext.newPage();
-        await desktopPage.goto('/');
-        await desktopPage.waitForLoadState('networkidle');
 
-        const menuButton = desktopPage.locator(menuButtonSelector);
-        await expect(menuButton).not.toBeVisible();
+        try {
+            await desktopPage.goto('/');
+            await desktopPage.waitForLoadState('networkidle');
 
-        await desktopContext.close();
+            const menuButton = desktopPage.locator(menuButtonSelector);
+            await expect(menuButton).not.toBeVisible();
+        } finally {
+            await desktopPage.close();
+            await desktopContext.close();
+        }
     });
 });
