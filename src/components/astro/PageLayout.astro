@@ -30,24 +30,6 @@ const pageMap = providedPageMap ?? (await loadLocaleContent(locale)).pageMap;
 <!doctype html>
 <html lang={locale}>
     <head>
-        <script is:inline nonce={Astro.locals.nonce}>
-            function applyTheme() {
-                const theme = localStorage.getItem('theme');
-                const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                const isDark = theme === 'dark' || (!theme && systemPrefersDark);
-
-                if (isDark) {
-                    document.documentElement.classList.add('dark');
-                } else {
-                    document.documentElement.classList.remove('dark');
-                }
-            }
-
-            applyTheme();
-
-            document.addEventListener('astro:after-swap', applyTheme);
-        </script>
-
         <Head {...seoProps} locale={locale} {...translationPath ? { translationPath } : {}} />
     </head>
 

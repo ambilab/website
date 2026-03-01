@@ -35,9 +35,6 @@ export const FEATURES = {
     /** Whether Plausible analytics scripts are injected (production only). */
     analytics: featureFlag(import.meta.env.PUBLIC_ANALYTICS, true),
 
-    /** Whether the dark/light mode toggle is shown in the menu. */
-    themeSwitcher: featureFlag(import.meta.env.PUBLIC_THEME_SWITCHER, true),
-
     /** Whether the floating scroll-to-top button is shown. */
     goToTop: featureFlag(import.meta.env.PUBLIC_GO_TO_TOP, true),
 

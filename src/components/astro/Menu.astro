@@ -2,7 +2,6 @@
 import MenuNav from '@components/astro/MenuNav.astro';
 import LocaleSwitcher from '@components/svelte/LocaleSwitcher.svelte';
 import MobileMenu from '@components/svelte/MobileMenu.svelte';
-import ThemeSwitcher from '@components/svelte/ThemeSwitcher.svelte';
 import { FEATURES } from '@config/features';
 import { getRoute } from '@config/routes';
 import { getTranslation } from '@i18n/translations';
@@ -50,7 +49,6 @@ const t = getTranslation(locale);
                         <LocaleSwitcher client:load currentLocale={locale} translationPath={translationPath} />
                     )
                 }
-                {FEATURES.themeSwitcher && <ThemeSwitcher client:load locale={locale} />}
             </div>
 
             <div class="md:hidden">
@@ -70,7 +68,6 @@ const t = getTranslation(locale);
                                     />
                                 )
                             }
-                            {FEATURES.themeSwitcher && <ThemeSwitcher client:load locale={locale} />}
                         </div>
                     </div>
                 </MobileMenu>

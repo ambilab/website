@@ -113,16 +113,6 @@ export function trackCookieBannerDismissed(locale: string): void {
 }
 
 /**
- * Track theme toggle between light and dark mode.
- *
- * @param to - The theme the user switched to
- * @param from - The theme the user switched from
- */
-export function trackThemeSwitch(to: 'light' | 'dark', from: 'light' | 'dark'): void {
-    trackEvent('Theme Switched', { props: { to, from } });
-}
-
-/**
  * Track language switch between locales.
  *
  * @param from - Source locale
