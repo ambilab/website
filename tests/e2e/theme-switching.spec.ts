@@ -1,52 +1,72 @@
 /**
- * E2E tests for system theme detection.
+ * E2E tests for theme switching (Light <-> Dark mode).
  *
- * Tests that the site follows the OS color scheme preference
- * via CSS prefers-color-scheme media query.
+ * Tests the ThemeSwitcher component and localStorage persistence.
+ * These tests are skipped when the themeSwitcher feature flag is disabled
+ * (PUBLIC_THEME_SWITCHER = "false").
  */
 
+import type { Page } from '@playwright/test';
 import { expect, test } from '@playwright/test';
 
-const PAGE_BG_VAR = '--color-page-bg';
+/**
+ * Checks whether the theme switcher button is rendered on the page.
+ * The component is gated by the themeSwitcher feature flag in src/config/features.ts.
+ */
+async function isThemeSwitcherEnabled(page: Page): Promise<boolean> {
+    await page.goto('/');
+    const button = page.getByRole('button', { name: /Toggle theme|Přepnout motiv/i });
+    return (await button.count()) > 0;
+}
 
-const getCssVarValue = (varName: string) => getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+test.describe('Theme switching', () => {
+    test('should display theme toggle button', async ({ page }) => {
+        const enabled = await isThemeSwitcherEnabled(page);
+        test.skip(!enabled, 'Theme switcher feature flag is disabled');
 
-test.describe('System theme detection', () => {
-    test('should apply different styles for dark and light system preferences', async ({ page }) => {
-        await page.emulateMedia({ colorScheme: 'light' });
-        await page.goto('/');
-
-        const lightBg = await page.evaluate(getCssVarValue, PAGE_BG_VAR);
-
-        await page.emulateMedia({ colorScheme: 'dark' });
-        await page.goto('/');
-
-        const darkBg = await page.evaluate(getCssVarValue, PAGE_BG_VAR);
-
-        expect(lightBg.length, 'light mode should resolve a CSS value').toBeGreaterThan(0);
-        expect(darkBg.length, 'dark mode should resolve a CSS value').toBeGreaterThan(0);
-        expect(lightBg).not.toEqual(darkBg);
+        await expect(page.getByRole('button', { name: /Toggle theme|Přepnout motiv/i })).toBeVisible();
     });
 
-    test('should update styles when system preference changes', async ({ page }) => {
-        await page.emulateMedia({ colorScheme: 'light' });
-        await page.goto('/');
+    test('should toggle dark class on document when clicking theme button', async ({ page }) => {
+        const enabled = await isThemeSwitcherEnabled(page);
+        test.skip(!enabled, 'Theme switcher feature flag is disabled');
 
-        const lightBg = await page.evaluate(getCssVarValue, PAGE_BG_VAR);
+        const themeButton = page.getByRole('button', { name: /Toggle theme|Přepnout motiv/i });
 
-        await page.emulateMedia({ colorScheme: 'dark' });
+        const hadDarkBefore = await page.evaluate(() => document.documentElement.classList.contains('dark'));
 
-        await page.waitForFunction(
-            ([expectedToChange, cssVar]: [string, string]) => {
-                const current = getComputedStyle(document.documentElement).getPropertyValue(cssVar).trim();
-                return current !== expectedToChange;
-            },
-            [lightBg, PAGE_BG_VAR] as [string, string],
-            { timeout: 2000 },
-        );
+        await themeButton.click();
 
-        const darkBg = await page.evaluate(getCssVarValue, PAGE_BG_VAR);
+        const hasDarkAfter = await page.evaluate(() => document.documentElement.classList.contains('dark'));
 
-        expect(darkBg).not.toEqual(lightBg);
+        expect(hasDarkAfter).not.toBe(hadDarkBefore);
+    });
+
+    test('should persist theme preference in localStorage', async ({ page }) => {
+        const enabled = await isThemeSwitcherEnabled(page);
+        test.skip(!enabled, 'Theme switcher feature flag is disabled');
+
+        const themeButton = page.getByRole('button', { name: /Toggle theme|Přepnout motiv/i });
+        await themeButton.click();
+
+        const theme = await page.evaluate(() => localStorage.getItem('theme'));
+
+        expect(theme === 'light' || theme === 'dark').toBeTruthy();
+    });
+
+    test('should toggle theme twice and return to original state', async ({ page }) => {
+        const enabled = await isThemeSwitcherEnabled(page);
+        test.skip(!enabled, 'Theme switcher feature flag is disabled');
+
+        const themeButton = page.getByRole('button', { name: /Toggle theme|Přepnout motiv/i });
+
+        const initialDark = await page.evaluate(() => document.documentElement.classList.contains('dark'));
+
+        await themeButton.click();
+        await themeButton.click();
+
+        const finalDark = await page.evaluate(() => document.documentElement.classList.contains('dark'));
+
+        expect(finalDark).toBe(initialDark);
     });
 });
