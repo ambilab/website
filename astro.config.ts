@@ -34,10 +34,8 @@ export default defineConfig({
         // Expressive Code MUST come before mdx().
         expressiveCode({
             themes: ['github-dark-default', 'github-light-default'],
-            themeCssSelector: (theme) =>
-                theme.name === 'github-dark-default'
-                    ? '@media (prefers-color-scheme: dark)'
-                    : '@media (prefers-color-scheme: light)',
+            useDarkModeMediaQuery: true,
+            themeCssSelector: false,
             defaultProps: {
                 wrap: true,
             },
