@@ -3,6 +3,7 @@ import '@/styles/mdx-content.css';
 
 import Button from '@components/svelte/Button.svelte';
 import NewsletterForm from '@components/svelte/NewsletterForm.svelte';
+import { FEATURES } from '@config/features';
 import { getRoute } from '@config/routes';
 import { SITE } from '@config/site';
 import { getTranslation } from '@i18n/translations';
@@ -114,7 +115,11 @@ const articleMetadata = {
     {...articleMetadata}
 >
     <article class="container mx-auto px-4">
-        <script is:inline type="application/ld+json" nonce={nonce} set:html={jsonLdScript} />
+        {
+            FEATURES.structuredData && (
+                <script is:inline type="application/ld+json" nonce={nonce} set:html={jsonLdScript} />
+            )
+        }
 
         <header class="mx-auto mb-8 mt-[18px] max-w-[764px] pt-3 sm:mt-[21px] md:mb-[43px] md:mt-7 lg:max-w-[896px]">
             <Button href={newsUrl} variant="secondary" size="sm">&larr; {t.news.title}</Button>
@@ -170,9 +175,13 @@ const articleMetadata = {
             </div>
         </div>
 
-        <div class="mx-auto max-w-4xl pb-8 sm:pb-10 md:pb-12">
-            <NewsletterForm client:idle locale={locale} />
-        </div>
+        {
+            FEATURES.newsletter && (
+                <div class="mx-auto max-w-4xl pb-8 sm:pb-10 md:pb-12">
+                    <NewsletterForm client:idle locale={locale} />
+                </div>
+            )
+        }
     </article>
 
     <HeadingLinks />
