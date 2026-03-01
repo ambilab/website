@@ -107,8 +107,6 @@
 
 @media (prefers-color-scheme: dark) {
     :root {
-        color-scheme: dark;
-
         /* Dot pattern background for dark mode */
         --bg-dots-image: radial-gradient(circle, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
 
@@ -169,6 +167,7 @@
 
         /* Semantic Colors - Accents */
         --color-info-bg: theme('colors.lime.950');
+        --color-info-border: theme('colors.lime.700');
         --color-warning-bg: theme('colors.yellow.950');
         --color-warning-border: theme('colors.yellow.900');
         --color-warning-text: theme('colors.yellow.400');
@@ -196,12 +195,12 @@
 
         & h2 {
             @apply mb-2 mt-px text-[20px] leading-5;
-            @apply md:text-[24px] md:mb-3 md:mt-[2px] md:leading-6;
+            @apply md:mb-3 md:mt-[2px] md:text-[24px] md:leading-6;
         }
 
         & h3 {
-            @apply text-[20px] mb-2 mt-px leading-5;
-            @apply md:text-[24px] md:mt-[2px] md:leading-6;
+            @apply mb-2 mt-px text-[20px] leading-5;
+            @apply md:mt-[2px] md:text-[24px] md:leading-6;
         }
 
         & p {

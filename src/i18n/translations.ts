@@ -28,6 +28,8 @@ export interface Translations {
     };
 
     footer: {
+        brand: string;
+        product: string;
         copyright: string;
         allRightsReserved: string;
         description: string;
@@ -116,6 +118,8 @@ export const translations: Record<Locale, Translations> = {
         },
 
         footer: {
+            brand: 'Ambilab',
+            product: 'WebGPU Pixel Engine',
             copyright: 'Copyright',
             allRightsReserved: 'All rights reserved',
             description: 'What pink drop port tired new north highway ugly art finished happy.',
@@ -202,6 +206,8 @@ export const translations: Record<Locale, Translations> = {
         },
 
         footer: {
+            brand: 'Ambilab',
+            product: 'WebGPU Pixel Engine',
             copyright: 'Copyright',
             allRightsReserved: 'Všechna práva vyhrazena',
             description: 'Webová pixel-art herní engine.',
