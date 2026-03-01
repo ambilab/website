@@ -244,29 +244,46 @@ function generateNewsIndexEntry(locale: Locale, oppositeLocale: Locale): Sitemap
 export async function generateLocaleSitemapEntries(locale: Locale): Promise<SitemapEntry[]> {
     logger.info(`Generating sitemap entries for locale: ${locale}`);
 
+    const oppositeLocale = getTranslationLocale(locale);
+
+    // Load primary locale content -- this must succeed.
+    let content: LocaleContent;
+
     try {
-        const oppositeLocale = getTranslationLocale(locale);
-
-        const [content, oppositeContent] = await Promise.all([
-            loadLocaleContent(locale),
-            loadLocaleContent(oppositeLocale),
-        ]);
-
-        const entries: SitemapEntry[] = [];
-
-        entries.push(...generatePageEntries(content.pages, locale, oppositeContent, oppositeLocale));
-
-        if (content.newsPosts.length > 0) {
-            entries.push(generateNewsIndexEntry(locale, oppositeLocale));
-        }
-
-        entries.push(...generateNewsEntries(content.newsPosts, locale, oppositeContent, oppositeLocale));
-
-        logger.info(`Generated ${entries.length} sitemap entries for locale: ${locale}`);
-
-        return entries;
+        content = await loadLocaleContent(locale);
     } catch (error) {
-        logger.error(`Failed to generate sitemap entries for locale: ${locale}`, error);
+        logger.error(`Failed to load primary content for locale: ${locale}`, error);
         throw error;
     }
+
+    // Load opposite locale content for hreflang cross-references.
+    // Failures are non-fatal: the sitemap is still valid without alternates.
+    const emptyContent: LocaleContent = {
+        newsPosts: [],
+        pages: [],
+        newsPostMap: new Map(),
+        pageMap: new Map(),
+    };
+    let oppositeContent: LocaleContent;
+
+    try {
+        oppositeContent = await loadLocaleContent(oppositeLocale);
+    } catch (error) {
+        logger.error(`Failed to load opposite locale (${oppositeLocale}) content; alternates will be omitted`, error);
+        oppositeContent = emptyContent;
+    }
+
+    const entries: SitemapEntry[] = [];
+
+    entries.push(...generatePageEntries(content.pages, locale, oppositeContent, oppositeLocale));
+
+    if (content.newsPosts.length > 0) {
+        entries.push(generateNewsIndexEntry(locale, oppositeLocale));
+    }
+
+    entries.push(...generateNewsEntries(content.newsPosts, locale, oppositeContent, oppositeLocale));
+
+    logger.info(`Generated ${entries.length} sitemap entries for locale: ${locale}`);
+
+    return entries;
 }
