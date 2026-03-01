@@ -41,6 +41,7 @@ async function openMenu(page: Page) {
 }
 
 test.describe('Mobile menu', () => {
+    /** Confirms the hamburger trigger is visible at 375px width and starts in collapsed state. */
     test('should display hamburger button on mobile viewport', async ({ page }) => {
         await gotoAndWaitForHydration(page);
 
@@ -49,6 +50,7 @@ test.describe('Mobile menu', () => {
         await expect(menuButton).toHaveAttribute('aria-expanded', 'false');
     });
 
+    /** Verifies clicking the hamburger opens the panel and sets correct ARIA expanded/hidden states. */
     test('should open menu on button click and set aria-expanded', async ({ page }) => {
         await gotoAndWaitForHydration(page);
         await openMenu(page);
@@ -57,6 +59,7 @@ test.describe('Mobile menu', () => {
         await expect(menuPanel).toHaveAttribute('aria-hidden', 'false');
     });
 
+    /** Toggle behavior: a second click on the hamburger collapses the menu and restores aria-hidden. */
     test('should close menu on second button click', async ({ page }) => {
         await gotoAndWaitForHydration(page);
         await openMenu(page);
@@ -69,6 +72,7 @@ test.describe('Mobile menu', () => {
         await expect(menuPanel).toHaveAttribute('aria-hidden', 'true');
     });
 
+    /** Keyboard accessibility: pressing Escape dismisses the open menu. */
     test('should close menu when pressing Escape', async ({ page }) => {
         await gotoAndWaitForHydration(page);
         await openMenu(page);
@@ -79,6 +83,7 @@ test.describe('Mobile menu', () => {
         await expect(menuButton).toHaveAttribute('aria-expanded', 'false');
     });
 
+    /** Navigating via a menu link auto-closes the panel so the destination page is unobstructed. */
     test('should close menu when clicking a navigation link', async ({ page }) => {
         await gotoAndWaitForHydration(page);
         await openMenu(page);
@@ -94,6 +99,7 @@ test.describe('Mobile menu', () => {
         await expect(newMenuButton).toHaveAttribute('aria-expanded', 'false');
     });
 
+    /** Asserts body overflow is set to "hidden" while the menu is open, and restored on close. */
     test('should lock body scroll when menu is open', async ({ page }) => {
         await gotoAndWaitForHydration(page);
 
@@ -116,6 +122,7 @@ test.describe('Mobile menu', () => {
         expect(overflowRestored).toBe('');
     });
 
+    /** Focus trap: Tab cycles through all focusable elements inside the panel and wraps back to the toggle button. */
     test('should trap focus with Tab key cycling', async ({ page }) => {
         await gotoAndWaitForHydration(page);
         await openMenu(page);
@@ -152,6 +159,7 @@ test.describe('Mobile menu', () => {
         expect(activeElement.isMenuButton).toBe(true);
     });
 
+    /** Clicking the semi-transparent backdrop behind the menu panel dismisses it. */
     test('should close menu when clicking the dimmer overlay', async ({ page }) => {
         await gotoAndWaitForHydration(page);
         await openMenu(page);
@@ -164,6 +172,7 @@ test.describe('Mobile menu', () => {
         await expect(menuButton).toHaveAttribute('aria-expanded', 'false');
     });
 
+    /** The inert attribute prevents assistive tech from interacting with the hidden panel. Removed when open. */
     test('should set inert on menu panel when closed', async ({ page }) => {
         await gotoAndWaitForHydration(page);
 
@@ -179,6 +188,7 @@ test.describe('Mobile menu', () => {
         await expect(menuPanel).not.toHaveAttribute('inert');
     });
 
+    /** At desktop width (1280px) the hamburger button must be hidden; desktop nav takes over. */
     test('should not show mobile menu button on desktop viewport', async ({ browser }) => {
         // Override the mobile viewport for this single test
         const desktopContext = await browser.newContext({ viewport: { width: 1280, height: 800 } });

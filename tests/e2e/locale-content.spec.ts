@@ -10,6 +10,7 @@
 import { expect, test } from '@playwright/test';
 
 test.describe('English content (default locale)', () => {
+    /** Localhost defaults to English; the <html lang> attribute must be "en". */
     test('should render English content on homepage', async ({ page }) => {
         await page.goto('/');
 
@@ -17,6 +18,7 @@ test.describe('English content (default locale)', () => {
         expect(lang).toBe('en');
     });
 
+    /** The /news listing should have lang="en" and show the English post title. */
     test('should display English news on /news', async ({ page }) => {
         await page.goto('/news');
 
@@ -27,6 +29,7 @@ test.describe('English content (default locale)', () => {
         await expect(page.getByText('Hello World: Introducing Ambilab')).toBeVisible();
     });
 
+    /** English detail page /news/hello-world should render lang="en" and the English heading. */
     test('should render English news detail page', async ({ page }) => {
         await page.goto('/news/hello-world');
 
@@ -38,6 +41,7 @@ test.describe('English content (default locale)', () => {
 });
 
 test.describe('Czech content (via locale cookie)', () => {
+    /** Setting locale=cs cookie before navigation forces the homepage to render in Czech. */
     test('should render Czech content on homepage when locale cookie is set', async ({ page, context }) => {
         // Set locale cookie before navigation
         await context.addCookies([{ name: 'locale', value: 'cs', url: 'http://localhost:4321' }]);
@@ -48,6 +52,7 @@ test.describe('Czech content (via locale cookie)', () => {
         expect(lang).toBe('cs');
     });
 
+    /** Czech news uses the localized route /novinky and must show the Czech post title. */
     test('should display Czech news on /novinky', async ({ page, context }) => {
         await context.addCookies([{ name: 'locale', value: 'cs', url: 'http://localhost:4321' }]);
 
@@ -60,6 +65,7 @@ test.describe('Czech content (via locale cookie)', () => {
         await expect(page.getByText('Ahoj Světe: Představujeme Ambilab')).toBeVisible();
     });
 
+    /** The Czech detail page /novinky/ahoj-svete should have lang="cs" and the Czech heading. */
     test('should render Czech news detail page', async ({ page, context }) => {
         await context.addCookies([{ name: 'locale', value: 'cs', url: 'http://localhost:4321' }]);
 
@@ -71,6 +77,7 @@ test.describe('Czech content (via locale cookie)', () => {
         await expect(page.locator('h1')).toHaveText('Ahoj Světe: Představujeme Ambilab');
     });
 
+    /** Navigation labels must be localized: "Novinky" for News, "Projekty" for Projects. */
     test('should show Czech navigation labels', async ({ page, context }) => {
         await context.addCookies([{ name: 'locale', value: 'cs', url: 'http://localhost:4321' }]);
 
@@ -83,6 +90,7 @@ test.describe('Czech content (via locale cookie)', () => {
         await expect(nav.locator('a', { hasText: /Projekty/i })).toBeVisible();
     });
 
+    /** Date strings must use Czech month names (e.g. "unora") and must not contain English month names. */
     test('should format dates in Czech locale', async ({ page, context }) => {
         await context.addCookies([{ name: 'locale', value: 'cs', url: 'http://localhost:4321' }]);
 
@@ -116,6 +124,7 @@ test.describe('Czech content (via locale cookie)', () => {
 });
 
 test.describe('Locale cookie persistence', () => {
+    /** After setting the locale cookie to "cs", navigating between pages must keep lang="cs" intact. */
     test('should persist locale across page navigation', async ({ page, context }) => {
         await context.addCookies([{ name: 'locale', value: 'cs', url: 'http://localhost:4321' }]);
 

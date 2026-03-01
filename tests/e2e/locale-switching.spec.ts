@@ -20,6 +20,7 @@ async function isLocaleSwitcherEnabled(page: Page): Promise<boolean> {
 }
 
 test.describe('Locale switching', () => {
+    /** The locale switcher button must be visible on the homepage when the feature flag is enabled. */
     test('should display locale switcher on homepage', async ({ page }) => {
         const enabled = await isLocaleSwitcherEnabled(page);
         test.skip(!enabled, 'Locale switcher feature flag is disabled');
@@ -27,6 +28,10 @@ test.describe('Locale switching', () => {
         await expect(page.getByRole('button', { name: /Switch language|Přepnout jazyk/i })).toBeVisible();
     });
 
+    /**
+     * Starting from the English homepage, clicking the switcher must transition to Czech:
+     * html lang changes to "cs" and Czech navigation labels ("Projekty", "Domu") appear.
+     */
     test('should switch from English to Czech when clicking locale switcher', async ({ page }) => {
         const enabled = await isLocaleSwitcherEnabled(page);
         test.skip(!enabled, 'Locale switcher feature flag is disabled');
@@ -54,6 +59,7 @@ test.describe('Locale switching', () => {
         expect(bodyTextAfter?.includes('Domů') || bodyTextAfter?.includes('Projekty')).toBeTruthy();
     });
 
+    /** After clicking the switcher, a "locale" cookie must be set matching the new html lang value. */
     test('should persist locale via cookie after switch', async ({ page, context }) => {
         const enabled = await isLocaleSwitcherEnabled(page);
         test.skip(!enabled, 'Locale switcher feature flag is disabled');

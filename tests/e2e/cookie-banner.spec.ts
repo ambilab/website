@@ -40,6 +40,7 @@ async function waitForBannerReady(page: Page) {
 }
 
 test.describe('Cookie banner', () => {
+    /** On a fresh visit (no localStorage), the banner must appear as an accessible alert dialog. */
     test('should display cookie banner on first visit', async ({ page }) => {
         const enabled = await isCookieBannerEnabled(page);
         test.skip(!enabled, 'Cookie banner feature flag is disabled');
@@ -49,6 +50,7 @@ test.describe('Cookie banner', () => {
         await expect(banner).toHaveAttribute('aria-modal', 'true');
     });
 
+    /** Validates aria-label, aria-describedby, and the associated description element for screen readers. */
     test('should have correct accessibility attributes', async ({ page }) => {
         const enabled = await isCookieBannerEnabled(page);
         test.skip(!enabled, 'Cookie banner feature flag is disabled');
@@ -61,6 +63,7 @@ test.describe('Cookie banner', () => {
         await expect(message).toBeVisible();
     });
 
+    /** Clicking the dismiss button hides the banner from the viewport. Waits for hydration first. */
     test('should dismiss banner when clicking the dismiss button', async ({ page }) => {
         const enabled = await isCookieBannerEnabled(page);
         test.skip(!enabled, 'Cookie banner feature flag is disabled');
@@ -74,6 +77,7 @@ test.describe('Cookie banner', () => {
         await expect(banner).not.toBeVisible();
     });
 
+    /** Keyboard accessibility: focusing the banner and pressing Escape dismisses it. */
     test('should dismiss banner when pressing Escape', async ({ page }) => {
         const enabled = await isCookieBannerEnabled(page);
         test.skip(!enabled, 'Cookie banner feature flag is disabled');
@@ -89,6 +93,7 @@ test.describe('Cookie banner', () => {
         await expect(banner).not.toBeVisible();
     });
 
+    /** After dismissal, localStorage key "cookie-banner-dismissed" must be set to "true". */
     test('should persist dismissal in localStorage', async ({ page }) => {
         const enabled = await isCookieBannerEnabled(page);
         test.skip(!enabled, 'Cookie banner feature flag is disabled');
@@ -105,6 +110,7 @@ test.describe('Cookie banner', () => {
         expect(dismissed).toBe('true');
     });
 
+    /** Persistence across navigation: once dismissed, the banner stays hidden after a full page reload. */
     test('should not display banner after dismissal on page reload', async ({ page }) => {
         const enabled = await isCookieBannerEnabled(page);
         test.skip(!enabled, 'Cookie banner feature flag is disabled');
@@ -125,6 +131,7 @@ test.describe('Cookie banner', () => {
         await expect(page.locator('[role="alertdialog"]')).not.toBeVisible();
     });
 
+    /** Removing the localStorage key and reloading brings the banner back, proving the guard works correctly. */
     test('should reappear after clearing localStorage', async ({ page }) => {
         const enabled = await isCookieBannerEnabled(page);
         test.skip(!enabled, 'Cookie banner feature flag is disabled');

@@ -8,6 +8,7 @@
 import { expect, test } from '@playwright/test';
 
 test.describe('Navigation', () => {
+    /** The main nav bar must be visible and contain exactly 3 links (Home, News, Projects). */
     test('should display navigation links on homepage', async ({ page }) => {
         await page.goto('/');
 
@@ -18,6 +19,7 @@ test.describe('Navigation', () => {
         await expect(nav.locator('a')).toHaveCount(3);
     });
 
+    /** Exactly one link should have aria-current="page" on the homepage, and it must point to "/". */
     test('should mark home link as active on homepage', async ({ page }) => {
         await page.goto('/');
 
@@ -31,6 +33,7 @@ test.describe('Navigation', () => {
         await expect(activeLink).toHaveAttribute('href', '/');
     });
 
+    /** On /news, the "News" nav link should carry aria-current="page". */
     test('should mark news link as active on news page', async ({ page }) => {
         await page.goto('/news');
 
@@ -41,6 +44,7 @@ test.describe('Navigation', () => {
         await expect(activeLink).toHaveText(/News/i);
     });
 
+    /** On /projects, the "Projects" nav link should carry aria-current="page". */
     test('should mark projects link as active on projects page', async ({ page }) => {
         await page.goto('/projects');
 
@@ -51,6 +55,7 @@ test.describe('Navigation', () => {
         await expect(activeLink).toHaveText(/Projects/i);
     });
 
+    /** Only one link at a time may be active; the remaining links must lack aria-current. */
     test('should not set aria-current on inactive links', async ({ page }) => {
         await page.goto('/');
 
@@ -66,6 +71,7 @@ test.describe('Navigation', () => {
         expect(totalCount).toBeGreaterThan(activeCount);
     });
 
+    /** Clicking the "News" nav link must navigate to a URL containing /news. */
     test('should navigate to news page when clicking news link', async ({ page }) => {
         await page.goto('/');
 
@@ -78,6 +84,7 @@ test.describe('Navigation', () => {
         expect(page.url()).toContain('/news');
     });
 
+    /** Clicking the "Projects" nav link must navigate to a URL containing /projects. */
     test('should navigate to projects page when clicking projects link', async ({ page }) => {
         await page.goto('/');
 
@@ -90,6 +97,7 @@ test.describe('Navigation', () => {
         expect(page.url()).toContain('/projects');
     });
 
+    /** Clicking the header logo from any page must navigate back to the root "/". */
     test('should navigate home when clicking the logo', async ({ page }) => {
         await page.goto('/news');
 
@@ -103,6 +111,7 @@ test.describe('Navigation', () => {
         expect(url.pathname).toBe('/');
     });
 
+    /** On a news detail page (/news/hello-world), the "News" parent link should remain active. */
     test('should keep news link active on individual news post page', async ({ page }) => {
         await page.goto('/news/hello-world');
 

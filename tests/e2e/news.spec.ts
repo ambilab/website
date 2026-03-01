@@ -9,6 +9,7 @@
 import { expect, test } from '@playwright/test';
 
 test.describe('News listing page', () => {
+    /** Ensures at least one post card (anchor wrapping article.card) renders on /news. */
     test('should display news posts on the news page', async ({ page }) => {
         await page.goto('/news');
 
@@ -18,6 +19,7 @@ test.describe('News listing page', () => {
         expect(count).toBeGreaterThan(0);
     });
 
+    /** Verifies the seed "Hello World" post title is visible on the listing page. */
     test('should display post titles on the news page', async ({ page }) => {
         await page.goto('/news');
 
@@ -25,6 +27,7 @@ test.describe('News listing page', () => {
         await expect(page.getByText('Hello World: Introducing Ambilab')).toBeVisible();
     });
 
+    /** Checks that <time datetime="..."> elements exist and contain parseable ISO date strings. */
     test('should display formatted publication dates', async ({ page }) => {
         await page.goto('/news');
 
@@ -40,6 +43,7 @@ test.describe('News listing page', () => {
         expect(new Date(datetime as string).toString()).not.toBe('Invalid Date');
     });
 
+    /** Confirms the post card links to the correct detail URL (/news/hello-world). */
     test('should link news post to its detail page', async ({ page }) => {
         await page.goto('/news');
 
@@ -50,6 +54,7 @@ test.describe('News listing page', () => {
 });
 
 test.describe('News detail page', () => {
+    /** The h1 on the detail page must match the post's frontmatter title exactly. */
     test('should display the post title as heading', async ({ page }) => {
         await page.goto('/news/hello-world');
 
@@ -58,6 +63,7 @@ test.describe('News detail page', () => {
         await expect(heading).toHaveText('Hello World: Introducing Ambilab');
     });
 
+    /** A visible <time> element with a datetime attribute must be present on the detail page. */
     test('should display publication date on detail page', async ({ page }) => {
         await page.goto('/news/hello-world');
 
@@ -65,6 +71,7 @@ test.describe('News detail page', () => {
         await expect(timeElement).toBeVisible();
     });
 
+    /** The .mdx-content area must be visible and contain rendered text from the MDX source. */
     test('should display post content', async ({ page }) => {
         await page.goto('/news/hello-world');
 
@@ -76,6 +83,7 @@ test.describe('News detail page', () => {
         expect(textContent?.trim().length).toBeGreaterThan(0);
     });
 
+    /** The hello-world post has the "announcement" tag in frontmatter; it should render as #announcement. */
     test('should display tags when present', async ({ page }) => {
         await page.goto('/news/hello-world');
 
@@ -83,6 +91,7 @@ test.describe('News detail page', () => {
         await expect(page.getByText('#announcement')).toBeVisible();
     });
 
+    /** A breadcrumb-style link back to /news must be visible for navigating to the listing. */
     test('should have a back link to the news listing', async ({ page }) => {
         await page.goto('/news/hello-world');
 
@@ -91,6 +100,7 @@ test.describe('News detail page', () => {
         await expect(backLink.first()).toBeVisible();
     });
 
+    /** Clicking the back link actually navigates to /news and away from the detail slug. */
     test('should navigate back to news listing from detail page', async ({ page }) => {
         await page.goto('/news/hello-world');
 
@@ -104,6 +114,7 @@ test.describe('News detail page', () => {
         expect(page.url()).not.toContain('/hello-world');
     });
 
+    /** The <html lang> attribute must reflect the post's frontmatter locale ("en"). */
     test('should set correct HTML lang attribute', async ({ page }) => {
         await page.goto('/news/hello-world');
 
@@ -113,6 +124,7 @@ test.describe('News detail page', () => {
 });
 
 test.describe('News on homepage', () => {
+    /** The homepage must surface at least the "Hello World" post title in its news section. */
     test('should display a news section on the homepage', async ({ page }) => {
         await page.goto('/');
 
@@ -120,6 +132,7 @@ test.describe('News on homepage', () => {
         await expect(page.getByText('Hello World: Introducing Ambilab')).toBeVisible();
     });
 
+    /** The "All posts" / "News" link on the homepage navigates to the /news listing. */
     test('should navigate from homepage news to full news page', async ({ page }) => {
         await page.goto('/');
 
@@ -135,6 +148,7 @@ test.describe('News on homepage', () => {
 });
 
 test.describe('404 error page', () => {
+    /** Requests to an unknown URL must return HTTP 404 status. */
     test('should display 404 page for non-existent routes', async ({ page }) => {
         const response = await page.goto('/this-page-does-not-exist');
 

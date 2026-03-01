@@ -22,6 +22,7 @@ test.describe('Newsletter subscription', () => {
         await context.close();
     });
 
+    /** Checks the form's heading, email input, and submit button are all rendered and visible. */
     test('should display newsletter form on homepage', async ({ page }) => {
         test.skip(!newsletterEnabled, 'Newsletter feature flag is disabled');
 
@@ -31,6 +32,7 @@ test.describe('Newsletter subscription', () => {
         await expect(page.getByTestId('newsletter-submit')).toBeVisible();
     });
 
+    /** Bypasses HTML5 validation with novalidate to exercise the server-side email format check. */
     test('should show error when submitting invalid email', async ({ page }) => {
         test.skip(!newsletterEnabled, 'Newsletter feature flag is disabled');
 
@@ -50,6 +52,10 @@ test.describe('Newsletter subscription', () => {
         await expect(page.getByText(/invalid|Invalid email format|Too many attempts/i)).toBeVisible({ timeout: 5000 });
     });
 
+    /**
+     * Submits a well-formed email and expects one of several valid outcomes
+     * depending on environment (dummy API key, missing key, real key, or rate-limited).
+     */
     test('should show error or success when submitting valid email', async ({ page }) => {
         test.skip(!newsletterEnabled, 'Newsletter feature flag is disabled');
 

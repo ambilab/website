@@ -49,6 +49,7 @@ async function scrollAndWaitForButton(page: Page, scrollY: number) {
 }
 
 test.describe('Go-to-Top button', () => {
+    /** Verifies the button stays hidden when the user hasn't scrolled, preventing UI clutter at the top. */
     test('should not be visible at the top of the page', async ({ page }) => {
         const working = await isGoToTopWorking(page);
         test.skip(!working, 'GoToTop cannot hydrate (client:visible with empty SSR output)');
@@ -60,6 +61,7 @@ test.describe('Go-to-Top button', () => {
         await expect(button).not.toBeVisible();
     });
 
+    /** Verifies the button appears once scrollY exceeds SHOW_AFTER_SCROLL (300px from component config). */
     test('should become visible after scrolling past threshold', async ({ page }) => {
         const working = await isGoToTopWorking(page);
         test.skip(!working, 'GoToTop cannot hydrate (client:visible with empty SSR output)');
@@ -68,6 +70,7 @@ test.describe('Go-to-Top button', () => {
         await scrollAndWaitForButton(page, SHOW_AFTER_SCROLL + 100);
     });
 
+    /** Confirms the button disappears when the user scrolls back to the top of the page. */
     test('should hide when scrolling back to top', async ({ page }) => {
         const working = await isGoToTopWorking(page);
         test.skip(!working, 'GoToTop cannot hydrate (client:visible with empty SSR output)');
@@ -79,6 +82,7 @@ test.describe('Go-to-Top button', () => {
         await expect(page.locator(BUTTON_SELECTOR)).not.toBeVisible();
     });
 
+    /** Clicks the button and asserts window.scrollY reaches 0 after the smooth scroll animation completes. */
     test('should scroll to top when clicked', async ({ page }) => {
         const working = await isGoToTopWorking(page);
         test.skip(!working, 'GoToTop cannot hydrate (client:visible with empty SSR output)');
@@ -93,6 +97,7 @@ test.describe('Go-to-Top button', () => {
         await expect.poll(async () => page.evaluate(() => window.scrollY), { timeout: 2000 }).toBe(0);
     });
 
+    /** Ensures the button has a non-empty aria-label for screen reader users. */
     test('should have an accessible aria-label', async ({ page }) => {
         const working = await isGoToTopWorking(page);
         test.skip(!working, 'GoToTop cannot hydrate (client:visible with empty SSR output)');
