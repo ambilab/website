@@ -126,12 +126,11 @@ test.describe('News on homepage', () => {
         // Find the "All posts" or similar link on the homepage
         const viewAllLink = page.locator('a[href="/news"]', { hasText: /posts|News/i });
         const count = await viewAllLink.count();
+        expect(count).toBeGreaterThan(0);
 
-        if (count > 0) {
-            await viewAllLink.first().click();
-            await page.waitForLoadState('networkidle');
-            expect(page.url()).toContain('/news');
-        }
+        await viewAllLink.first().click();
+        await page.waitForLoadState('networkidle');
+        expect(page.url()).toContain('/news');
     });
 });
 
