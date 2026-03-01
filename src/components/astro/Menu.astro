@@ -3,6 +3,7 @@ import MenuNav from '@components/astro/MenuNav.astro';
 import LocaleSwitcher from '@components/svelte/LocaleSwitcher.svelte';
 import MobileMenu from '@components/svelte/MobileMenu.svelte';
 import ThemeSwitcher from '@components/svelte/ThemeSwitcher.svelte';
+import { FEATURES } from '@config/features';
 import { getRoute } from '@config/routes';
 import { getTranslation } from '@i18n/translations';
 import type { Locale } from '@type/locale';
@@ -44,7 +45,11 @@ const t = getTranslation(locale);
             </div>
 
             <div class="hidden items-center md:flex">
-                <LocaleSwitcher client:load currentLocale={locale} translationPath={translationPath} />
+                {
+                    FEATURES.localeSwitcher && (
+                        <LocaleSwitcher client:load currentLocale={locale} translationPath={translationPath} />
+                    )
+                }
                 <ThemeSwitcher client:load locale={locale} />
             </div>
 
@@ -56,7 +61,15 @@ const t = getTranslation(locale);
                         </div>
 
                         <div class="flex w-full items-end justify-end pb-3 sm:max-w-[608px]">
-                            <LocaleSwitcher client:load currentLocale={locale} translationPath={translationPath} />
+                            {
+                                FEATURES.localeSwitcher && (
+                                    <LocaleSwitcher
+                                        client:load
+                                        currentLocale={locale}
+                                        translationPath={translationPath}
+                                    />
+                                )
+                            }
                             <ThemeSwitcher client:load locale={locale} />
                         </div>
                     </div>
