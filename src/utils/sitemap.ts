@@ -18,6 +18,25 @@ import { createLogger } from './logger';
 
 const logger = createLogger({ prefix: 'Sitemap' });
 
+// #region XML Helpers
+
+/**
+ * Escapes special XML characters in a string to produce valid XML output.
+ *
+ * @param str - The string to escape
+ * @returns The escaped string safe for XML interpolation
+ */
+export function escapeXml(str: string): string {
+    return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&apos;');
+}
+
+// #endregion
+
 // #region Type Definitions
 
 /** A single hreflang alternate link for sitemap xhtml:link output. */

@@ -1,4 +1,4 @@
-import { generateLocaleSitemapEntries } from '@utils/sitemap';
+import { escapeXml, generateLocaleSitemapEntries } from '@utils/sitemap';
 import type { APIRoute } from 'astro';
 
 /**
@@ -22,7 +22,10 @@ ${entries
             entry.alternates && entry.alternates.length > 0
                 ? '\n' +
                   entry.alternates
-                      .map((alt) => `    <xhtml:link rel="alternate" hreflang="${alt.hreflang}" href="${alt.href}" />`)
+                      .map(
+                          (alt) =>
+                              `    <xhtml:link rel="alternate" hreflang="${alt.hreflang}" href="${escapeXml(alt.href)}" />`,
+                      )
                       .join('\n')
                 : '';
         const lastmod = entry.lastmod ? `\n    <lastmod>${entry.lastmod.toISOString()}</lastmod>` : '';
@@ -30,7 +33,7 @@ ${entries
         const priority = entry.priority !== undefined ? `\n    <priority>${entry.priority.toFixed(1)}</priority>` : '';
 
         return `  <url>
-    <loc>${entry.url}</loc>${alternates}${lastmod}${changefreq}${priority}
+    <loc>${escapeXml(entry.url)}</loc>${alternates}${lastmod}${changefreq}${priority}
   </url>`;
     })
     .join('\n')}
