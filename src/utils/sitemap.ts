@@ -2,54 +2,183 @@
  * Sitemap Generation Utilities
  *
  * Generates sitemap entries for all pages, news posts, and special routes
- * across both English and Czech locales.
+ * across both English and Czech locales, including xhtml alternate links
+ * for cross-locale hreflang discovery.
  */
 
 import { getRoute } from '@config/routes';
+import { getTranslationLocale } from '@i18n/utils';
 import type { Locale } from '@type/locale';
 import type { CollectionEntry } from 'astro:content';
 
+import type { LocaleContent } from './content-loader';
 import { loadLocaleContent, normalizeSlug } from './content-loader';
+import { buildLocaleUrl } from './hreflang-urls';
 import { createLogger } from './logger';
 
 const logger = createLogger({ prefix: 'Sitemap' });
+
+// #region XML Helpers
+
+/**
+ * Escapes special XML characters in a string to produce valid XML output.
+ *
+ * @param str - The string to escape
+ * @returns The escaped string safe for XML interpolation
+ */
+export function escapeXml(str: string): string {
+    return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&apos;');
+}
+
+// #endregion
+
+// #region Type Definitions
+
+/** A single hreflang alternate link for sitemap xhtml:link output. */
+export interface SitemapAlternate {
+    /** Supported hreflang values for this project. */
+    hreflang: Locale | 'x-default';
+
+    /** Fully-qualified URL for this language variant. */
+    href: string;
+}
 
 export interface SitemapEntry {
     url: string;
     changefreq?: 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never';
     priority?: number;
     lastmod?: Date;
+
+    /** Alternate language links to include as xhtml:link elements. */
+    alternates?: SitemapAlternate[];
+}
+
+// #endregion
+
+// #region Translation Lookup Utilities
+
+/**
+ * Finds the translated page entry in the opposite locale's content collection.
+ *
+ * Uses the `translationSlug` frontmatter field as the lookup key against
+ * the opposite locale's pageMap for O(1) performance.
+ *
+ * @param entry - The source page entry whose translation we want to find
+ * @param oppositeContent - Pre-loaded content for the opposite locale
+ * @returns The matching translated page entry, or undefined if none exists
+ */
+function findPageTranslation(
+    entry: CollectionEntry<'pages'>,
+    oppositeContent: LocaleContent,
+): CollectionEntry<'pages'> | undefined {
+    const translationSlug = entry.data.translationSlug;
+
+    if (!translationSlug) {
+        return undefined;
+    }
+
+    return oppositeContent.pageMap.get(normalizeSlug(translationSlug));
 }
 
 /**
- * Gets the domain for a given locale.
+ * Finds the translated news post entry in the opposite locale's content collection.
  *
- * @param locale - The locale to get the domain for
- * @returns The domain URL
+ * Uses the `translationSlug` frontmatter field as the lookup key against
+ * the opposite locale's newsPostMap for O(1) performance.
+ *
+ * @param entry - The source news post entry whose translation we want to find
+ * @param oppositeContent - Pre-loaded content for the opposite locale
+ * @returns The matching translated news post entry, or undefined if none exists
  */
-export function getLocaleDomain(locale: Locale): string {
-    return locale === 'cs' ? 'https://ambilab.cz' : 'https://ambilab.com';
+function findNewsTranslation(
+    entry: CollectionEntry<'news'>,
+    oppositeContent: LocaleContent,
+): CollectionEntry<'news'> | undefined {
+    const translationSlug = entry.data.translationSlug;
+
+    if (!translationSlug) {
+        return undefined;
+    }
+
+    return oppositeContent.newsPostMap.get(normalizeSlug(translationSlug));
 }
 
 /**
- * Generates sitemap entries for all pages in a locale.
+ * Builds the hreflang alternates array for a sitemap entry.
  *
- * @param pages - Array of page entries
- * @param locale - The locale of the pages
- * @returns Array of sitemap entries
+ * Always includes the primary locale link; appends the opposite locale link
+ * only when an opposite URL is supplied.
+ *
+ * @param locale - The primary locale of the entry
+ * @param primaryHref - The fully-qualified URL for the primary locale
+ * @param oppositeLocale - The opposite locale code
+ * @param oppositeHref - The fully-qualified URL for the opposite locale, if available
+ * @returns Array of hreflang alternate links
  */
-function generatePageEntries(pages: CollectionEntry<'pages'>[], locale: Locale): SitemapEntry[] {
-    const domain = getLocaleDomain(locale);
+function buildAlternates(
+    locale: Locale,
+    primaryHref: string,
+    oppositeLocale: Locale,
+    oppositeHref?: string,
+): SitemapAlternate[] {
+    const alternates: SitemapAlternate[] = [{ hreflang: locale, href: primaryHref }];
+
+    if (oppositeHref !== undefined) {
+        alternates.push({ hreflang: oppositeLocale, href: oppositeHref });
+    }
+
+    return alternates;
+}
+
+// #endregion
+
+// #region Entry Generators
+
+/**
+ * Generates sitemap entries for all pages in a locale, including alternate links.
+ *
+ * @param pages - Array of page entries for the primary locale
+ * @param locale - The primary locale of the pages
+ * @param oppositeContent - Pre-loaded content for the opposite locale (for translation lookup)
+ * @param oppositeLocale - The locale code for the opposite locale
+ * @param oppositeContentAvailable - Whether the opposite locale content loaded successfully
+ * @returns Array of sitemap entries with alternate links populated
+ */
+function generatePageEntries(
+    pages: CollectionEntry<'pages'>[],
+    locale: Locale,
+    oppositeContent: LocaleContent,
+    oppositeLocale: Locale,
+    oppositeContentAvailable: boolean,
+): SitemapEntry[] {
     const entries: SitemapEntry[] = [];
 
     for (const page of pages) {
         const slug = normalizeSlug(page.id);
-        const url = slug === 'index' ? `${domain}/` : `${domain}/${slug}`;
+        const url = slug === 'index' ? buildLocaleUrl(locale, '/') : buildLocaleUrl(locale, `/${slug}`);
+
+        let oppositeHref: string | undefined;
+
+        if (slug === 'index') {
+            oppositeHref = oppositeContentAvailable ? buildLocaleUrl(oppositeLocale, '/') : undefined;
+        } else {
+            const translation = findPageTranslation(page, oppositeContent);
+
+            if (translation) {
+                oppositeHref = buildLocaleUrl(oppositeLocale, `/${normalizeSlug(translation.id)}`);
+            }
+        }
 
         entries.push({
             url,
             changefreq: 'weekly',
             priority: slug === 'index' ? 1.0 : 0.8,
+            alternates: buildAlternates(locale, url, oppositeLocale, oppositeHref),
         });
     }
 
@@ -57,26 +186,39 @@ function generatePageEntries(pages: CollectionEntry<'pages'>[], locale: Locale):
 }
 
 /**
- * Generates sitemap entries for all news posts in a locale.
+ * Generates sitemap entries for all news posts in a locale, including alternate links.
  *
- * @param posts - Array of news post entries
- * @param locale - The locale of the posts
- * @returns Array of sitemap entries
+ * @param posts - Array of news post entries for the primary locale
+ * @param locale - The primary locale of the posts
+ * @param oppositeContent - Pre-loaded content for the opposite locale (for translation lookup)
+ * @param oppositeLocale - The locale code for the opposite locale
+ * @returns Array of sitemap entries with alternate links populated
  */
-function generateNewsPostEntries(posts: CollectionEntry<'news'>[], locale: Locale): SitemapEntry[] {
-    const domain = getLocaleDomain(locale);
+function generateNewsEntries(
+    posts: CollectionEntry<'news'>[],
+    locale: Locale,
+    oppositeContent: LocaleContent,
+    oppositeLocale: Locale,
+): SitemapEntry[] {
     const entries: SitemapEntry[] = [];
     const newsRoute = getRoute('news', locale);
+    const oppositeNewsRoute = getRoute('news', oppositeLocale);
 
     for (const post of posts) {
         const slug = normalizeSlug(post.id);
-        const url = `${domain}${newsRoute}/${slug}`;
+        const url = buildLocaleUrl(locale, `${newsRoute}/${slug}`);
+
+        const translation = findNewsTranslation(post, oppositeContent);
+        const oppositeHref = translation
+            ? buildLocaleUrl(oppositeLocale, `${oppositeNewsRoute}/${normalizeSlug(translation.id)}`)
+            : undefined;
 
         entries.push({
             url,
             changefreq: 'monthly',
             priority: 0.6,
-            lastmod: post.data.updatedDate || post.data.pubDate,
+            lastmod: post.data.updatedDate ?? post.data.pubDate,
+            alternates: buildAlternates(locale, url, oppositeLocale, oppositeHref),
         });
     }
 
@@ -87,21 +229,36 @@ function generateNewsPostEntries(posts: CollectionEntry<'news'>[], locale: Local
  * Generates sitemap entry for the news index page.
  *
  * @param locale - The locale of the news index
- * @returns Sitemap entry for the news index
+ * @param oppositeLocale - The opposite locale for the alternate link
+ * @param oppositeContentAvailable - Whether the opposite locale content loaded successfully
+ * @returns Sitemap entry for the news index with alternate links
  */
-function generateNewsIndexEntry(locale: Locale): SitemapEntry {
-    const domain = getLocaleDomain(locale);
+function generateNewsIndexEntry(
+    locale: Locale,
+    oppositeLocale: Locale,
+    oppositeContentAvailable: boolean,
+): SitemapEntry {
     const newsRoute = getRoute('news', locale);
+    const url = buildLocaleUrl(locale, newsRoute);
+    const oppositeHref = oppositeContentAvailable
+        ? buildLocaleUrl(oppositeLocale, getRoute('news', oppositeLocale))
+        : undefined;
 
     return {
-        url: `${domain}${newsRoute}`,
+        url,
         changefreq: 'daily',
         priority: 0.7,
+        alternates: buildAlternates(locale, url, oppositeLocale, oppositeHref),
     };
 }
 
+// #endregion
+
 /**
- * Generates all sitemap entries for a specific locale.
+ * Generates all sitemap entries for a specific locale, including xhtml alternate links.
+ *
+ * Loads content for both locales in parallel to enable translation lookup
+ * without redundant fetches.
  *
  * @param locale - The locale to generate entries for
  * @returns Array of all sitemap entries for the locale
@@ -109,26 +266,56 @@ function generateNewsIndexEntry(locale: Locale): SitemapEntry {
 export async function generateLocaleSitemapEntries(locale: Locale): Promise<SitemapEntry[]> {
     logger.info(`Generating sitemap entries for locale: ${locale}`);
 
-    try {
-        const content = await loadLocaleContent(locale);
-        const entries: SitemapEntry[] = [];
+    const oppositeLocale = getTranslationLocale(locale);
 
-        // Add page entries
-        entries.push(...generatePageEntries(content.pages, locale));
+    const emptyContent: LocaleContent = {
+        newsPosts: [],
+        pages: [],
+        newsPostMap: new Map(),
+        pageMap: new Map(),
+    };
 
-        // Add news index entry (only if there are news posts)
-        if (content.newsPosts.length > 0) {
-            entries.push(generateNewsIndexEntry(locale));
-        }
+    // Load both locale contents in parallel.
+    // The primary locale must succeed; opposite-locale failures are non-fatal.
+    const [primaryResult, oppositeResult] = await Promise.allSettled([
+        loadLocaleContent(locale),
+        loadLocaleContent(oppositeLocale),
+    ]);
 
-        // Add news post entries
-        entries.push(...generateNewsPostEntries(content.newsPosts, locale));
-
-        logger.info(`Generated ${entries.length} sitemap entries for locale: ${locale}`);
-
-        return entries;
-    } catch (error) {
-        logger.error(`Failed to generate sitemap entries for locale: ${locale}`, error);
-        throw error;
+    if (primaryResult.status === 'rejected') {
+        logger.error(`Failed to load primary content for locale: ${locale}`, primaryResult.reason);
+        throw primaryResult.reason as Error;
     }
+
+    const content = primaryResult.value;
+    let oppositeContent: LocaleContent;
+    let oppositeContentAvailable: boolean;
+
+    if (oppositeResult.status === 'rejected') {
+        logger.warn(
+            `Failed to load opposite locale (${oppositeLocale}) content; alternates will be omitted`,
+            oppositeResult.reason,
+        );
+        oppositeContent = emptyContent;
+        oppositeContentAvailable = false;
+    } else {
+        oppositeContent = oppositeResult.value;
+        oppositeContentAvailable = true;
+    }
+
+    const entries: SitemapEntry[] = [];
+
+    entries.push(
+        ...generatePageEntries(content.pages, locale, oppositeContent, oppositeLocale, oppositeContentAvailable),
+    );
+
+    if (content.newsPosts.length > 0) {
+        entries.push(generateNewsIndexEntry(locale, oppositeLocale, oppositeContentAvailable));
+    }
+
+    entries.push(...generateNewsEntries(content.newsPosts, locale, oppositeContent, oppositeLocale));
+
+    logger.info(`Generated ${entries.length} sitemap entries for locale: ${locale}`);
+
+    return entries;
 }

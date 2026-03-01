@@ -1,4 +1,4 @@
-import { generateLocaleSitemapEntries } from '@utils/sitemap';
+import { escapeXml, generateLocaleSitemapEntries } from '@utils/sitemap';
 import type { APIRoute } from 'astro';
 
 /**
@@ -15,15 +15,25 @@ export const GET: APIRoute = async () => {
 
         // Generate XML
         const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${entries
     .map((entry) => {
+        const alternates =
+            entry.alternates && entry.alternates.length > 0
+                ? '\n' +
+                  entry.alternates
+                      .map(
+                          (alt) =>
+                              `    <xhtml:link rel="alternate" hreflang="${alt.hreflang}" href="${escapeXml(alt.href)}" />`,
+                      )
+                      .join('\n')
+                : '';
         const lastmod = entry.lastmod ? `\n    <lastmod>${entry.lastmod.toISOString()}</lastmod>` : '';
         const changefreq = entry.changefreq ? `\n    <changefreq>${entry.changefreq}</changefreq>` : '';
         const priority = entry.priority !== undefined ? `\n    <priority>${entry.priority.toFixed(1)}</priority>` : '';
 
         return `  <url>
-    <loc>${entry.url}</loc>${lastmod}${changefreq}${priority}
+    <loc>${escapeXml(entry.url)}</loc>${alternates}${lastmod}${changefreq}${priority}
   </url>`;
     })
     .join('\n')}
