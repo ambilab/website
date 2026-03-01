@@ -162,14 +162,10 @@ function toggleMenu(): void {
 
 ```typescript
 const handleClick = () => {
+  const maxScroll = document.body.scrollHeight - window.innerHeight;
+  const scrollDepth = maxScroll > 0 ? (window.scrollY / maxScroll) * 100 : 0;
+  trackScrollToTop(scrollDepth);
   scrollToTop(true);
-
-  // Track scroll-to-top usage
-  window.plausible?.('Scroll To Top', {
-    props: {
-      scrollDepth: Math.round((window.scrollY / document.body.scrollHeight) * 100),
-    },
-  });
 };
 ```
 
