@@ -182,8 +182,8 @@
         --color-tag-text: theme('colors.lime.200');
 
         /* Semantic Colors - Footer */
-        --color-footer-bg: theme('colors.zinc.200');
-        --color-footer-text: theme('colors.zinc.900');
+        --color-footer-bg: theme('colors.purple.700');
+        --color-footer-text: theme('colors.white');
     }
 }
 

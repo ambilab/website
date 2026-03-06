@@ -43,10 +43,8 @@ const pageMap = providedPageMap ?? (await loadLocaleContent(locale)).pageMap;
             <slot />
         </main>
 
-        <Footer locale={locale} />
-
+        {FEATURES.footer && <Footer locale={locale} />}
         {FEATURES.goToTop && <GoToTop client:visible locale={locale} />}
-
         {FEATURES.cookieBanner && <CookieBanner client:idle locale={locale} />}
 
         {import.meta.env.DEV && <RhythmDebug client:idle />}
