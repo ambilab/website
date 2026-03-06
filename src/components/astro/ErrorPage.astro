@@ -24,18 +24,21 @@ const { code, title, description, homeButtonText, homeLink = '/', locale, reques
     locale={locale}
 >
     <div
-        class="container mx-auto flex select-none flex-col items-start justify-start px-4 py-[27px] sm:py-[22px] md:max-w-screen-md md:py-[33px] lg:max-w-[928px]"
+        class="container mx-auto flex select-none flex-col items-start justify-start px-[16px] py-[20px] sm:py-[30px] md:max-w-screen-md md:py-[35px] lg:max-w-[928px]"
     >
         <h1
-            class="md:leading-18 -ml-[1.5px] mb-[5px] block w-full text-[36px] leading-9 sm:text-[40px] sm:leading-10 md:-ml-1 md:mb-[9px] md:text-[73px] md:font-light md:tracking-tight"
+            class="-ml-[1.5px] mb-[5px] block w-full text-[36px] leading-[28px] sm:text-[40px] sm:leading-[32px] md:-ml-[4px] md:mb-[9px] md:text-[73px] md:leading-[57px] md:tracking-tight"
         >
-            {code}.
+            {code}
             <span class="block text-balance">{description}</span>
         </h1>
 
         {
             requestId && (
-                <p class="meta my-4 text-text-muted" id="request-id">
+                <p
+                    class="meta -ml-px mb-[18px] mt-[12px] text-text-muted sm:mb-[28px] sm:mt-[21px] md:mb-[34px] md:mt-[23px]"
+                    id="request-id"
+                >
                     Request ID: {requestId}
                 </p>
             )
