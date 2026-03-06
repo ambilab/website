@@ -3,6 +3,7 @@ import '@/styles/global.css';
 
 import CookieBanner from '@components/svelte/CookieBanner.svelte';
 import GoToTop from '@components/svelte/GoToTop.svelte';
+import NewsletterForm from '@components/svelte/NewsletterForm.svelte';
 import RhythmDebug from '@components/svelte/RhythmDebug.svelte';
 import { FEATURES } from '@config/features';
 import type { Locale } from '@type/locale';
@@ -43,6 +44,7 @@ const pageMap = providedPageMap ?? (await loadLocaleContent(locale)).pageMap;
             <slot />
         </main>
 
+        {FEATURES.newsletter && <NewsletterForm client:idle locale={locale} />}
         {FEATURES.footer && <Footer locale={locale} />}
         {FEATURES.goToTop && <GoToTop client:visible locale={locale} />}
         {FEATURES.cookieBanner && <CookieBanner client:idle locale={locale} />}

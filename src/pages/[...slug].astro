@@ -3,7 +3,6 @@ import NewsList from '@components/astro/NewsList.astro';
 import NewsPostLayout from '@components/astro/NewsPostLayout.astro';
 import NewsSection from '@components/astro/NewsSection.astro';
 import PageLayout from '@components/astro/PageLayout.astro';
-import NewsletterForm from '@components/svelte/NewsletterForm.svelte';
 import { FEATURES } from '@config/features';
 import { DEFAULT_LOCALE } from '@i18n/config';
 import { getTranslation } from '@i18n/translations';
@@ -79,12 +78,6 @@ const t = getTranslation(detectedLocale);
                     <div class="mx-auto max-w-4xl">
                         <NewsSection locale={resolvedContent.locale} limit={3} />
                     </div>
-
-                    {FEATURES.newsletter && (
-                        <div class="mx-auto mt-8 max-w-4xl">
-                            <NewsletterForm client:idle locale={resolvedContent.locale} />
-                        </div>
-                    )}
                 </div>
             )}
         </PageLayout>

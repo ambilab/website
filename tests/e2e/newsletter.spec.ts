@@ -20,7 +20,7 @@ test.describe('Newsletter subscription', () => {
         // only when PUBLIC_NEWSLETTER is explicitly set to "false".
         // Reading the env var (rather than checking the DOM) ensures tests run and
         // fail with clear assertions when the feature is enabled but broken.
-        const envValue = process.env['PUBLIC_NEWSLETTER']?.toLowerCase();
+        const envValue = process.env.PUBLIC_NEWSLETTER?.toLowerCase();
         newsletterEnabled = envValue !== 'false';
     });
 

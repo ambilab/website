@@ -121,9 +121,11 @@
     @reference "../../styles/global.css";
 
     .newsletter-form {
-        @apply -mx-4 select-none;
+        @apply px-[16px] py-[20px];
+        @apply border-t-2 border-page-bg;
+        @apply sm:py-[30px] md:py-[35px];
         @apply bg-stickie-bg text-stickie-text;
-        @apply px-4 pb-[17px] pt-4;
+        @apply select-none;
 
         /* Scope primary button colors to the stickie palette without class overrides */
         --color-button-primary-bg: var(--color-stickie-text);
@@ -131,38 +133,34 @@
         --color-button-primary-text: white;
         --color-button-primary-text-hover: white;
 
-        @media (min-width: 640px) {
-            box-shadow:
-                0 2px 0 0 var(--color-page-bg),
-                0 4px 0 0 var(--color-stickie-bg);
-        }
-
         & form {
             @apply flex flex-col gap-2 sm:flex-row;
+            @apply sm:mx-auto sm:max-w-[608px];
+            @apply md:max-w-[736px];
+            @apply lg:max-w-[896px];
         }
 
         & p {
-            @apply mb-1;
-            @apply text-[14px] leading-5;
-            @apply md:text-base md:leading-6;
-            @apply text-balance;
+            @apply my-[4px];
+            @apply text-[14px] leading-[20px];
+            @apply sm:mx-auto sm:max-w-[608px];
+            @apply md:max-w-[736px] md:text-base md:leading-[24px];
+            @apply lg:max-w-[896px];
+            @apply leading-0 text-balance;
         }
 
         & h3 {
-            @apply mb-1;
-            @apply text-[24px] leading-6;
-            @apply sm:w-2/3;
-            @apply md:text-[32px] md:leading-8;
+            @apply mb-[7px];
+            @apply text-[24px] leading-[19px];
+            @apply sm:mx-auto sm:max-w-[608px];
+            @apply md:max-w-[736px] md:text-[32px] md:leading-[25px];
+            @apply lg:max-w-[896px];
             @apply text-balance;
-        }
-
-        & [role='status'] p {
-            @apply mb-0 mt-1;
         }
     }
 
     .newsletter-form__email-input {
-        @apply flex-1 border-2 border-stickie-text px-4 py-2 disabled:opacity-50;
+        @apply flex-1 border-2 px-3 py-2 disabled:opacity-50;
 
         &:focus {
             @apply border-stickie-text bg-stickie-text text-white outline-none ring-focus-ring;
