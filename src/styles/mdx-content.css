@@ -150,7 +150,7 @@
     }
 
     & strong {
-        @apply font-bold text-text-primary;
+        @apply font-semibold text-text-primary;
     }
 
     & em {
