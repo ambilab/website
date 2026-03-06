@@ -29,6 +29,9 @@ export const FEATURES = {
     /** Whether the newsletter signup form is displayed on pages. */
     newsletter: featureFlag(import.meta.env.PUBLIC_NEWSLETTER, true),
 
+    /** Whether the footer is shown. */
+    footer: featureFlag(import.meta.env.PUBLIC_FOOTER, true),
+
     /** Whether the cookie consent banner is shown. */
     cookieBanner: featureFlag(import.meta.env.PUBLIC_COOKIE_BANNER, false),
 

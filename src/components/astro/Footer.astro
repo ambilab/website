@@ -15,15 +15,15 @@ const t = getTranslation(locale);
 const currentYear = new Date().getFullYear();
 ---
 
-<footer class="footer select-none bg-footer-bg text-footer-text">
+<footer class="footer select-none border-t-2 border-page-bg bg-footer-bg text-footer-text">
     <div
         class="container mx-auto px-4 pb-[18px] pt-[16px] sm:max-w-[640px] sm:pb-[28px] sm:pt-[26px] md:max-w-[768px] md:pb-[34px] md:pt-[54px] lg:max-w-[928px]"
     >
         <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
             <div class="md:-my-6">
-                <h3 class="-ml-px text-[22px] leading-[24px] text-lime-300 antialiased dark:text-lime-900">
+                <h3 class="-ml-px text-[22px] leading-[24px] antialiased">
                     {t.footer.brand}
-                    <em class="font-light not-italic text-lime-500 dark:text-lime-700">{t.footer.product}</em>
+                    <em class="font-light not-italic">{t.footer.product}</em>
                 </h3>
 
                 <p class="meta -ml-px text-balance">
