@@ -5,8 +5,8 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  svgo: '>=4.0.1'
-  wrangler: '>=4.59.1'
+  svgo: ^4.0.1
+  wrangler: ^4.59.1
   fast-xml-parser: ^5.3.6
   rollup: ^4.59.0
   get-uri>basic-ftp: ^5.2.0
@@ -165,7 +165,7 @@ importers:
         specifier: ^9.0.4
         version: 9.0.4
       wrangler:
-        specifier: '>=4.59.1'
+        specifier: ^4.59.1
         version: 4.63.0(@cloudflare/workers-types@4.20260210.0)
 
 packages:
