@@ -155,7 +155,8 @@
 
         & h3 {
             @apply compact-heading;
-            @apply mb-[7px];
+            @apply -ml-px mb-[7px];
+            @apply font-light;
             @apply sm:mx-auto sm:max-w-[608px];
             @apply md:max-w-[736px];
             @apply lg:max-w-[896px];
