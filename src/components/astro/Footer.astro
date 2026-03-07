@@ -15,24 +15,22 @@ const t = getTranslation(locale);
 const currentYear = new Date().getFullYear();
 ---
 
-<footer class="footer select-none border-t-2 border-page-bg bg-footer-bg text-footer-text">
-    <div
-        class="container mx-auto px-4 pb-[18px] pt-[16px] sm:max-w-[640px] sm:pb-[28px] sm:pt-[26px] md:max-w-[768px] md:pb-[34px] md:pt-[54px] lg:max-w-[928px]"
-    >
-        <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
-            <div class="md:-my-6">
-                <h3 class="-ml-px text-[22px] leading-[24px] antialiased">
+<footer>
+    <div class="footer-inner">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <h3>
                     {t.footer.brand}
-                    <em class="font-light not-italic">{t.footer.product}</em>
+                    <em>{t.footer.product}</em>
                 </h3>
 
-                <p class="meta -ml-px text-balance">
+                <p>
                     {t.footer.description}
                 </p>
             </div>
 
-            <nav aria-label={t.footer.footerNavAria} class="meta -ml-px">
-                <ul class="flex flex-col md:flex-wrap">
+            <nav aria-label={t.footer.footerNavAria} class="footer-nav">
+                <ul>
                     <li>
                         <a href={getRoute('home', locale)}>
                             {t.nav.home}
@@ -53,8 +51,8 @@ const currentYear = new Date().getFullYear();
                 </ul>
             </nav>
 
-            <nav aria-label={t.footer.socialLinksAria} class="meta">
-                <h4 class="-ml-px mb-0.5">
+            <nav aria-label={t.footer.socialLinksAria} class="footer-social">
+                <h4>
                     {t.footer.followAmbilab}
                 </h4>
 
@@ -62,23 +60,82 @@ const currentYear = new Date().getFullYear();
             </nav>
         </div>
 
-        <div class="meta -ml-px mt-[18px]">
+        <div class="footer-copyright">
             {t.footer.copyright} © {currentYear}
             {t.footer.brand}. {t.footer.allRightsReserved}.
         </div>
     </div>
 </footer>
 
-<style lang="postcss">
-    .footer {
-        padding-bottom: var(--cookie-banner-height, 0px);
+<style>
+    @reference "../../styles/global.css";
 
-        @media (min-width: 640px) {
+    footer {
+        @apply select-none border-t-2;
+        @apply border-page-bg bg-footer-bg text-footer-text;
+
+        padding-bottom: var(--cookie-banner-height, 0px);
+    }
+
+    @media (min-width: 640px) {
+        footer {
             padding-bottom: var(--cookie-banner-height-sm, 0px);
         }
+    }
 
-        @media (min-width: 768px) {
+    @media (min-width: 768px) {
+        footer {
             padding-bottom: var(--cookie-banner-height-md, 0px);
         }
+    }
+
+    .footer-inner {
+        @apply container mx-auto px-4 pb-[18px] pt-5;
+        @apply sm:max-w-[640px] sm:pb-7 sm:pt-[26px];
+        @apply md:max-w-[768px] md:pb-[34px] md:pt-[54px];
+        @apply lg:max-w-[928px];
+    }
+
+    .footer-grid {
+        @apply grid grid-cols-1 gap-4;
+        @apply md:grid-cols-3;
+    }
+
+    .footer-brand {
+        @apply md:-my-6;
+
+        & h3 {
+            @apply compact-heading -ml-px mb-1 text-nowrap;
+
+            & em {
+                @apply font-light not-italic text-lime-500 dark:text-rose-300;
+            }
+        }
+
+        & p {
+            @apply meta -ml-px text-balance;
+        }
+    }
+
+    .footer-nav {
+        @apply meta -ml-px;
+
+        & ul {
+            @apply flex flex-col;
+            @apply md:flex-wrap md:pt-[5px];
+        }
+    }
+
+    .footer-social {
+        @apply meta;
+
+        & h4 {
+            @apply -ml-px mb-0.5;
+            @apply md:mt-[5px];
+        }
+    }
+
+    .footer-copyright {
+        @apply meta -ml-px mt-[18px];
     }
 </style>
