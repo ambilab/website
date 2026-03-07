@@ -331,7 +331,7 @@
         aria-hidden={!isOpen}
         inert={!isOpen}
     >
-        <nav>
+        <nav aria-label={t.a11y.mainNavigation}>
             {#if children}
                 {@render children()}
             {/if}

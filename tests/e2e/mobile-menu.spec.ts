@@ -188,6 +188,25 @@ test.describe('Mobile menu', () => {
         await expect(menuPanel).not.toHaveAttribute('inert');
     });
 
+    /** The mobile menu nav element must have a localized aria-label for screen reader landmark lists. */
+    test('should have aria-label on mobile menu nav element', async ({ page }) => {
+        await gotoAndWaitForHydration(page);
+        await openMenu(page);
+
+        const nav = page.locator('#mobile-menu nav');
+        await expect(nav).toHaveAttribute('aria-label', 'Main navigation');
+    });
+
+    /** The mobile menu nav element must have a Czech aria-label when locale is set to CS. */
+    test('should have Czech aria-label on mobile menu nav when locale is cs', async ({ page, context }) => {
+        await context.addCookies([{ name: 'locale', value: 'cs', url: 'http://localhost:4321' }]);
+        await gotoAndWaitForHydration(page);
+        await openMenu(page);
+
+        const nav = page.locator('#mobile-menu nav');
+        await expect(nav).toHaveAttribute('aria-label', 'Hlavní navigace');
+    });
+
     /** At desktop width (1280px) the hamburger button must be hidden; desktop nav takes over. */
     test('should not show mobile menu button on desktop viewport', async ({ browser }) => {
         // Override the mobile viewport for this single test

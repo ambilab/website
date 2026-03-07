@@ -11,6 +11,7 @@ export interface Translations {
         homeLinkLabel: string;
         demoEmbedTitle: string;
         opensInNewTab: string;
+        mainNavigation: string;
     };
 
     nav: {
@@ -101,6 +102,7 @@ export const translations: Record<Locale, Translations> = {
             homeLinkLabel: 'Ambilab Home',
             demoEmbedTitle: 'Demo embed',
             opensInNewTab: 'opens in new tab',
+            mainNavigation: 'Main navigation',
         },
 
         nav: {
@@ -189,6 +191,7 @@ export const translations: Record<Locale, Translations> = {
             homeLinkLabel: 'Ambilab domovská stránka',
             demoEmbedTitle: 'Demo náhled',
             opensInNewTab: 'otevře se v novém panelu',
+            mainNavigation: 'Hlavní navigace',
         },
 
         nav: {
