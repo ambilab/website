@@ -1,9 +1,7 @@
 ---
-import NewsList from '@components/astro/NewsList.astro';
 import NewsPostLayout from '@components/astro/NewsPostLayout.astro';
 import NewsSection from '@components/astro/NewsSection.astro';
 import PageLayout from '@components/astro/PageLayout.astro';
-import { FEATURES } from '@config/features';
 import { DEFAULT_LOCALE } from '@i18n/config';
 import { getTranslation } from '@i18n/translations';
 import { resolveContent } from '@utils/content-resolver';
@@ -48,13 +46,15 @@ const t = getTranslation(detectedLocale);
             pageMap={resolvedContent.content.pageMap}
             translationPath={resolvedContent.translationPath}
         >
-            <div class="container mx-auto px-4">
-                <div class="mx-auto max-w-[764px] md:mb-12 lg:max-w-[896px]">
-                    <h1 class="text-9 sm:text-10 md:leading-18 -ml-[1.5px] mb-4 block w-full pt-[27px] leading-9 sm:pt-[30px] sm:leading-10 md:-ml-1 md:mb-4 md:pt-[33px] md:text-[73px] md:font-light md:tracking-tight">
-                        {t.news.title}
-                    </h1>
+            <div class="news-index-wrapper">
+                <div class="news-index-inner">
+                    <h1>{t.news.title}</h1>
 
-                    <NewsList posts={resolvedContent.sortedNewsPosts} locale={resolvedContent.locale} />
+                    {route.slug === 'index' && (
+                        <div class="news-section-container">
+                            <NewsSection locale={resolvedContent.locale} limit={3} showViewAll={false} />
+                        </div>
+                    )}
                 </div>
             </div>
         </PageLayout>
@@ -67,19 +67,13 @@ const t = getTranslation(detectedLocale);
             pageMap={resolvedContent.content.pageMap}
             {...(resolvedContent.translationPath ? { translationPath: resolvedContent.translationPath } : {})}
         >
-            <article class="container mx-auto px-4 pb-8 sm:pb-10 md:pb-12">
-                <div class="mdx-content prose prose-lg mx-auto max-w-4xl dark:prose-invert">
+            <article class="page-article">
+                <div class="page-content mdx-content prose prose-lg dark:prose-invert">
                     <resolvedContent.Content />
                 </div>
             </article>
 
-            {route.slug === 'index' && (
-                <div class="container mx-auto px-4 pb-8 sm:pb-10 md:pb-12">
-                    <div class="mx-auto max-w-4xl">
-                        <NewsSection locale={resolvedContent.locale} limit={3} />
-                    </div>
-                </div>
-            )}
+            {route.slug === 'index' && <NewsSection locale={resolvedContent.locale} limit={3} />}
         </PageLayout>
     ) : (
         <NewsPostLayout
@@ -98,3 +92,38 @@ const t = getTranslation(detectedLocale);
         </NewsPostLayout>
     )
 }
+
+<style>
+    @reference '../styles/global.css';
+
+    .news-index-wrapper {
+        @apply container mx-auto my-10 px-4;
+        @apply sm:my-[30px];
+        @apply md:my-[70px];
+
+        & .news-index-inner {
+            @apply mx-auto max-w-[764px] select-none;
+            @apply md:mb-12;
+            @apply lg:max-w-[896px];
+        }
+
+        & h1 {
+            @apply mb-[19px];
+            @apply sm:mb-7;
+            @apply md:mb-[33px];
+        }
+
+        & .news-section-container {
+            @apply -mx-4;
+        }
+    }
+
+    .page-article {
+        @apply container mx-auto px-4 py-10;
+        @apply md:py-[70px];
+
+        & .page-content {
+            @apply mx-auto max-w-4xl;
+        }
+    }
+</style>
