@@ -15,7 +15,3 @@ Disallow: /api/
 # Sitemap index (references locale-specific sitemaps)
 Sitemap: https://ambilab.com/sitemap-index.xml
 Sitemap: https://ambilab.cz/sitemap-index.xml
-
-# RSS feeds (optional, but helps discovery)
-Sitemap: https://ambilab.com/en/rss.xml
-Sitemap: https://ambilab.cz/cs/rss.xml
