@@ -24,7 +24,7 @@ function featureFlag(envValue: string | undefined, defaultValue: boolean): boole
 
 export const FEATURES = {
     /** Whether the locale switcher (language toggle) is shown in the menu. */
-    localeSwitcher: featureFlag(import.meta.env.PUBLIC_LOCALE_SWITCHER, true),
+    localeSwitcher: featureFlag(import.meta.env.PUBLIC_LOCALE_SWITCHER, false),
 
     /** Whether the newsletter signup form is displayed on pages. */
     newsletter: featureFlag(import.meta.env.PUBLIC_NEWSLETTER, true),
@@ -33,7 +33,7 @@ export const FEATURES = {
     footer: featureFlag(import.meta.env.PUBLIC_FOOTER, true),
 
     /** Whether the cookie consent banner is shown. */
-    cookieBanner: featureFlag(import.meta.env.PUBLIC_COOKIE_BANNER, true),
+    cookieBanner: featureFlag(import.meta.env.PUBLIC_COOKIE_BANNER, false),
 
     /** Whether Plausible analytics scripts are injected (production only). */
     analytics: featureFlag(import.meta.env.PUBLIC_ANALYTICS, true),
