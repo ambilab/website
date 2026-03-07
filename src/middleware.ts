@@ -68,6 +68,14 @@ export const onRequest = defineMiddleware(async (context, next) => {
             isDev: import.meta.env.DEV,
         });
 
+        // Add Cache-Control for HTML responses to improve TTFB on Cloudflare's CDN edge.
+        // Static assets are cached by Cloudflare Pages automatically.
+        const contentType = response.headers.get('Content-Type') || '';
+
+        if (contentType.includes('text/html')) {
+            response.headers.set('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=300');
+        }
+
         return response;
     } catch (error) {
         logger.error('Middleware error', error);

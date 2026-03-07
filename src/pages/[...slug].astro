@@ -35,6 +35,13 @@ if (!resolvedContent) {
     return Astro.rewrite('/404');
 }
 
+// Set Last-Modified header for news posts based on updatedDate or pubDate
+if (resolvedContent.type === 'news-post') {
+    const lastModified = resolvedContent.entry.data.updatedDate ?? resolvedContent.entry.data.pubDate;
+
+    Astro.response.headers.set('Last-Modified', lastModified.toUTCString());
+}
+
 const t = getTranslation(detectedLocale);
 ---
 
