@@ -23,26 +23,55 @@ const { code, title, description, homeButtonText, homeLink = '/', locale, reques
     permalink={`${Astro.url.origin}/${code}`}
     locale={locale}
 >
-    <div
-        class="container mx-auto flex select-none flex-col items-start justify-start px-[16px] py-[20px] sm:py-[30px] md:max-w-screen-md md:py-[35px] lg:max-w-[928px]"
-    >
-        <h1
-            class="-ml-[1.5px] mb-[5px] block w-full text-[36px] leading-[28px] sm:text-[40px] sm:leading-[31px] md:-ml-[4px] md:mb-[9px] md:text-[73px] md:leading-[56px] md:tracking-tight"
-        >
+    <div class="error-page">
+        <h1>
             {code}
-            <span class="block text-balance">{description}</span>
+            <em>{description}</em>
         </h1>
 
         {
             requestId && (
-                <p
-                    class="meta -ml-px mb-[18px] mt-[12px] text-text-muted sm:mb-[28px] sm:mt-[21px] md:mb-[34px] md:mt-[23px]"
-                    id="request-id"
-                >
-                    Request ID: <em class="select-text not-italic">{requestId}</em>
+                <p id="request-id">
+                    Request ID: <em>{requestId}</em>
                 </p>
             )
         }
         <Button client:load href={homeLink}>{homeButtonText}</Button>
     </div>
 </PageLayout>
+
+<style>
+    @reference "../../styles/global.css";
+
+    .error-page {
+        @apply container mx-auto flex flex-col items-start justify-start;
+        @apply px-4 py-5;
+        @apply select-none;
+        @apply sm:py-[30px];
+        @apply md:max-w-screen-md md:py-[35px];
+        @apply lg:max-w-[928px];
+
+        & h1 {
+            @apply block w-full;
+            @apply -ml-[1.5px] mb-[5px];
+            @apply text-[36px] leading-7;
+            @apply sm:text-[40px] sm:leading-[31px];
+            @apply md:leading-14 md:-ml-[2px] md:mb-[9px] md:text-[73px];
+
+            & em {
+                @apply block text-balance not-italic;
+            }
+        }
+
+        & p#request-id {
+            @apply meta -ml-px mb-[18px] mt-3;
+            @apply text-text-muted;
+            @apply sm:mb-7 sm:mt-[21px];
+            @apply md:mb-[34px] md:mt-[23px];
+
+            & em {
+                @apply select-text not-italic;
+            }
+        }
+    }
+</style>
