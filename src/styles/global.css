@@ -239,11 +239,6 @@
         background-position: 0 3.5px;
     }
 
-    /* Meta typography - monospace label style used across components */
-    .meta {
-        @apply font-mono text-[11px] uppercase leading-3 antialiased;
-    }
-
     /* Vertical Rhythm Debug Overlay */
     @media (min-width: theme('screens.md')) {
         .debug-rhythm {
@@ -257,6 +252,25 @@
                 0 calc(var(--spacing-rhythm) * -2),
                 0 calc(var(--spacing-rhythm) * -2);
         }
+    }
+}
+
+/* Meta typography - monospace label style used across components */
+@utility meta {
+    @apply text-[11px] font-medium uppercase leading-3 antialiased;
+
+    @media (resolution: 1dppx) {
+        /* Use the monospace/pixel font only on 100% and 200% zoom levels */
+        @apply font-mono;
+    }
+}
+
+/* Compact heading style for smaller titles */
+@utility compact-heading {
+    @apply text-balance text-[24px] leading-[19px];
+
+    @variant md {
+        @apply text-[32px] leading-[25px];
     }
 }
 
