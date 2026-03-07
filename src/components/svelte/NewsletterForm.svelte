@@ -112,7 +112,7 @@
     @reference "../../styles/global.css";
 
     .newsletter-form {
-        @apply px-[16px] py-[20px];
+        @apply px-4 py-5;
         @apply border-t-2 border-page-bg;
         @apply bg-stickie-bg text-stickie-text;
         @apply select-none;
@@ -145,11 +145,11 @@
         }
 
         & p {
-            @apply my-[4px];
+            @apply my-1;
             @apply leading-0 text-balance;
-            @apply text-[14px] leading-[20px];
+            @apply text-[14px] leading-5;
             @apply sm:mx-auto sm:max-w-[608px];
-            @apply md:max-w-[736px] md:text-base md:leading-[24px];
+            @apply md:max-w-[736px] md:text-base md:leading-6;
             @apply lg:max-w-[896px];
         }
 
