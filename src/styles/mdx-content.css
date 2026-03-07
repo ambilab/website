@@ -30,16 +30,15 @@
     }
 
     & h1 {
-        @apply -ml-[1.5px] mb-4 mt-[27px];
-        @apply text-[36px] leading-9;
-        @apply sm:text-[40px] sm:-ml-[2px] sm:mt-[30px] sm:leading-10;
-        @apply md:leading-18 md:-ml-1 md:mb-3 md:mt-[33px] md:text-[73px] md:font-light md:tracking-tight;
+        @apply mb-[15px];
+        @apply sm:mb-4;
+        @apply md:mb-7;
     }
 
     & h2 {
         @apply relative mb-4 mt-[30px] pt-[30px];
         @apply text-[32px] leading-8;
-        @apply md:text-[40px] md:mb-[25px] md:mt-[39px] md:pt-10 md:leading-10;
+        @apply md:mb-[25px] md:mt-[39px] md:pt-10 md:text-[40px] md:leading-10;
 
         &::before {
             @apply w-25 absolute left-0 top-0 h-0.5 bg-border-default;
@@ -50,16 +49,16 @@
     & h3 {
         @apply mb-[14px] mt-10;
         @apply text-[24px] leading-6;
-        @apply md:text-[32px] md:mb-[18px] md:mt-[46px] md:leading-8;
+        @apply md:mb-[18px] md:mt-[46px] md:text-[32px] md:leading-8;
     }
 
     & h4 {
-        @apply text-[16px] mb-2 mt-2 font-semibold leading-6;
+        @apply mb-2 mt-2 text-[16px] font-semibold leading-6;
     }
 
     & p {
         @apply mb-4;
-        @apply text-[14px] leading-5;
+        @apply text-[14px] leading-[21px];
         @apply md:text-base md:leading-6;
         @apply lg:max-w-[736px];
         @apply last:mb-0;
