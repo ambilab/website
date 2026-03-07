@@ -65,7 +65,13 @@
         class="go-to-top-button"
         aria-label={t.a11y.goToTop}
     >
-        <svg class="go-to-top-icon" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <svg
+            class="go-to-top-icon"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+        >
             <path d="M12 4L4 12L5.41 13.41L11 7.83V20H13V7.83L18.59 13.41L20 12L12 4Z" />
         </svg>
     </button>
