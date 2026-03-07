@@ -73,9 +73,20 @@ const currentYear = new Date().getFullYear();
     footer {
         @apply select-none border-t-2;
         @apply border-page-bg bg-footer-bg text-footer-text;
-        @apply pb-(--cookie-banner-height,0px);
-        @apply sm:pb-(--cookie-banner-height-sm,0px);
-        @apply md:pb-(--cookie-banner-height-md,0px);
+
+        padding-bottom: var(--cookie-banner-height, 0px);
+    }
+
+    @media (min-width: 640px) {
+        footer {
+            padding-bottom: var(--cookie-banner-height-sm, 0px);
+        }
+    }
+
+    @media (min-width: 768px) {
+        footer {
+            padding-bottom: var(--cookie-banner-height-md, 0px);
+        }
     }
 
     .footer-inner {
