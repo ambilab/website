@@ -49,8 +49,21 @@
 <button
     onclick={handleLocaleSwitch}
     disabled={isAnimating}
-    class="meta [&:hover,&:focus]:text-text-primary [&:hover,&:focus]:bg-active flex cursor-pointer items-center px-2 py-[6px] text-text-secondary disabled:opacity-50"
+    class="meta locale-switcher"
     aria-label={t.a11y.switchLanguage}
 >
     <span>&rarr; {otherConfig.name}</span>
 </button>
+
+<style>
+    @reference "../../styles/global.css";
+
+    .locale-switcher {
+        @apply flex cursor-pointer items-center;
+        @apply px-2 py-[6px];
+        @apply text-text-secondary;
+        @apply hover:bg-active hover:text-text-primary;
+        @apply focus:bg-active focus:text-text-primary;
+        @apply disabled:opacity-50;
+    }
+</style>

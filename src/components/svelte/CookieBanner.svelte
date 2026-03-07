@@ -139,39 +139,47 @@
         aria-modal="true"
         tabindex="-1"
         onkeydown={handleKeydown}
-        class="cookie-banner fixed bottom-0 left-0 right-0 z-cookie-banner select-none border-t-2 border-page-bg px-4 pb-3 pt-2.5 antialiased sm:pt-3 md:py-7"
+        class="cookie-banner"
     >
-        <div
-            class="container mx-auto flex flex-col items-start justify-between gap-1 sm:max-w-[608px] sm:flex-row sm:items-center md:max-w-[736px] lg:max-w-[896px]"
-        >
-            <p id="cookie-banner-message" class="meta -ml-px max-w-[200px] text-balance sm:max-w-none">
+        <div class="cookie-banner-inner">
+            <p id="cookie-banner-message">
                 {t.cookie.message}
             </p>
 
-            <button
-                onclick={handleDismiss}
-                class="meta cookie-banner-button flex cursor-pointer items-center px-2 py-[6px] disabled:opacity-50"
-                aria-label={t.cookie.dismissLabel}
-            >
+            <button onclick={handleDismiss} aria-label={t.cookie.dismissLabel}>
                 {t.cookie.button}
             </button>
         </div>
     </div>
 {/if}
 
-<style lang="postcss">
+<style>
+    @reference "../../styles/global.css";
+
     .cookie-banner {
-        --color-cookie-banner-bg: #2563eb; /* blue.600 */
-        --color-cookie-banner-text: #ffffff; /* white */
-        --color-cookie-banner-button-bg: #ffffff; /* white */
-        --color-cookie-banner-button-text: #1e3a8a; /* blue.900 */
+        @apply fixed bottom-0 left-0 right-0 z-cookie-banner border-t-2 px-4 pb-3 pt-2.5;
+        @apply border-page-bg bg-blue-600;
+        @apply select-none text-white antialiased;
+        @apply sm:pt-3;
+        @apply md:py-7;
 
-        background-color: var(--color-cookie-banner-bg);
-        color: var(--color-cookie-banner-text);
-    }
+        & .cookie-banner-inner {
+            @apply container mx-auto flex flex-col items-start justify-between gap-1;
+            @apply sm:max-w-[608px] sm:flex-row sm:items-center;
+            @apply md:max-w-[736px];
+            @apply lg:max-w-[896px];
+        }
 
-    .cookie-banner-button {
-        background-color: var(--color-cookie-banner-button-bg);
-        color: var(--color-cookie-banner-button-text);
+        & p {
+            @apply meta -ml-px max-w-[200px];
+            @apply text-balance;
+            @apply sm:max-w-none;
+        }
+
+        & button {
+            @apply meta flex cursor-pointer items-center disabled:opacity-50;
+            @apply px-2 py-[6px];
+            @apply bg-white text-blue-600;
+        }
     }
 </style>

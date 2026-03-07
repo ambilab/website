@@ -40,38 +40,48 @@ const navItems = [
         isActive: isRouteActive(currentPath, 'projects'),
     },
 ];
-
-const getNavItemClasses = (isActive: boolean): string => {
-    return isActive
-        ? 'bg-text-primary text-page-bg'
-        : 'text-text-secondary ' + '[&:hover,&:focus]:bg-active ' + '[&:hover,&:focus]:text-text-primary';
-};
 ---
 
 {
     mobile ? (
-        <div class="flex w-full flex-col">
+        <div class="nav-mobile">
             {navItems.map((item) => (
-                <a
-                    href={item.href}
-                    aria-current={item.isActive ? 'page' : undefined}
-                    class:list={['meta px-2 py-[6px]', getNavItemClasses(item.isActive)]}
-                >
+                <a href={item.href} aria-current={item.isActive ? 'page' : undefined}>
                     {item.label}
                 </a>
             ))}
         </div>
     ) : (
-        <div class="flex items-center">
+        <div class="nav-desktop">
             {navItems.map((item) => (
-                <a
-                    href={item.href}
-                    aria-current={item.isActive ? 'page' : undefined}
-                    class:list={['meta px-2 py-[6px]', getNavItemClasses(item.isActive)]}
-                >
+                <a href={item.href} aria-current={item.isActive ? 'page' : undefined}>
                     {item.label}
                 </a>
             ))}
         </div>
     )
 }
+
+<style>
+    @reference '../../styles/global.css';
+
+    .nav-mobile {
+        @apply flex w-full flex-col;
+    }
+
+    .nav-desktop {
+        @apply flex items-center;
+    }
+
+    .nav-mobile a,
+    .nav-desktop a {
+        @apply meta px-2 py-[6px];
+        @apply text-text-secondary;
+        @apply hover:bg-active hover:text-text-primary;
+        @apply focus:bg-active focus:text-text-primary;
+
+        &[aria-current='page'] {
+            @apply bg-text-primary text-page-bg;
+        }
+    }
+</style>

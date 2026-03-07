@@ -17,9 +17,16 @@ const { locale } = Astro.props as Props;
 const t = getTranslation(locale);
 ---
 
-<a
-    href="#main-content"
-    class="meta sr-only focus:not-sr-only focus:absolute focus:left-2 focus:top-2 focus:z-skip-navigation-link focus:bg-page-bg focus:px-2 focus:py-1 focus:text-text-primary focus:outline-none focus:ring-4 focus:ring-focus-ring"
->
+<a href="#main-content" class="meta skip-link">
     {t.a11y.skipNavigationLink}
 </a>
+
+<style>
+    @reference "../../styles/global.css";
+
+    .skip-link {
+        @apply sr-only focus:not-sr-only;
+        @apply focus:absolute focus:left-2 focus:top-2 focus:z-skip-navigation-link focus:px-2 focus:py-1 focus:outline-none focus:ring-4;
+        @apply focus:bg-page-bg focus:text-text-primary focus:ring-focus-ring;
+    }
+</style>

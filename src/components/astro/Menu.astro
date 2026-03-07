@@ -20,14 +20,12 @@ const { locale, currentPath, translationPath, pageMap } = Astro.props as Props;
 const t = getTranslation(locale);
 ---
 
-<header class="sticky top-0 z-header select-none antialiased">
-    <div class="relative z-header-bar mx-auto border-b-2 border-border-default bg-page-bg px-4">
-        <div
-            class="mx-auto flex h-12 items-center justify-between pb-px sm:max-w-[608px] md:h-20 md:max-w-[736px] lg:max-w-[896px]"
-        >
-            <div class="flex items-center gap-8">
-                <div class="shrink-0">
-                    <a href={getRoute('home', locale)} class="block" aria-label={t.a11y.homeLinkLabel}>
+<header class="site-header">
+    <div class="header-bar">
+        <div class="header-inner">
+            <div class="header-left">
+                <div class="header-logo">
+                    <a href={getRoute('home', locale)} aria-label={t.a11y.homeLinkLabel}>
                         <svg width="72" height="24" viewBox="0 0 72 24" xmlns="http://www.w3.org/2000/svg">
                             <path d="M72 0v24H0V0z" class="fill-text-primary"></path>
                             <path
@@ -38,12 +36,12 @@ const t = getTranslation(locale);
                     </a>
                 </div>
 
-                <nav aria-label="Main navigation" class="hidden items-center md:flex">
+                <nav aria-label="Main navigation" class="header-nav">
                     <MenuNav locale={locale} currentPath={currentPath} mobile={false} pageMap={pageMap} />
                 </nav>
             </div>
 
-            <div class="hidden items-center md:flex">
+            <div class="header-right">
                 {
                     FEATURES.localeSwitcher && (
                         <LocaleSwitcher client:load currentLocale={locale} translationPath={translationPath} />
@@ -51,14 +49,14 @@ const t = getTranslation(locale);
                 }
             </div>
 
-            <div class="md:hidden">
+            <div class="header-mobile">
                 <MobileMenu client:load locale={locale}>
-                    <div class="flex flex-col items-center justify-start gap-3 border-b-2 px-4">
-                        <div class="w-full text-left sm:max-w-[608px]">
+                    <div class="mobile-nav-panel">
+                        <div class="mobile-nav-links">
                             <MenuNav locale={locale} currentPath={currentPath} mobile={true} pageMap={pageMap} />
                         </div>
 
-                        <div class="flex w-full items-end justify-end pb-3 sm:max-w-[608px]">
+                        <div class="mobile-nav-locale">
                             {
                                 FEATURES.localeSwitcher && (
                                     <LocaleSwitcher
@@ -75,3 +73,60 @@ const t = getTranslation(locale);
         </div>
     </div>
 </header>
+
+<style>
+    @reference '../../styles/global.css';
+
+    .site-header {
+        @apply sticky top-0 z-header;
+        @apply select-none antialiased;
+    }
+
+    .header-bar {
+        @apply relative z-header-bar mx-auto border-b-2 px-4;
+        @apply border-border-default bg-page-bg;
+    }
+
+    .header-inner {
+        @apply mx-auto flex h-12 items-center justify-between pb-px;
+        @apply sm:max-w-[608px];
+        @apply md:h-20 md:max-w-[736px];
+        @apply lg:max-w-[896px];
+    }
+
+    .header-left {
+        @apply flex items-center gap-8;
+    }
+
+    .header-logo {
+        @apply shrink-0;
+
+        & a {
+            @apply block;
+        }
+    }
+
+    .header-nav,
+    .header-right {
+        @apply hidden items-center;
+        @apply md:flex;
+    }
+
+    .header-mobile {
+        @apply md:hidden;
+    }
+
+    .mobile-nav-panel {
+        @apply flex flex-col items-center justify-start gap-3 border-b-2 px-4;
+    }
+
+    .mobile-nav-links {
+        @apply w-full text-left;
+        @apply sm:max-w-[608px];
+    }
+
+    .mobile-nav-locale {
+        @apply flex w-full items-end justify-end pb-3;
+        @apply sm:max-w-[608px];
+    }
+</style>

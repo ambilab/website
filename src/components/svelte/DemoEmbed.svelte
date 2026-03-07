@@ -197,15 +197,13 @@
     </figure>
 {/if}
 
-<style lang="postcss">
-    .demo-embed {
-        margin: 2rem 0;
+<style>
+    @reference "../../styles/global.css";
 
-        & .demo-embed__panel {
-            box-shadow:
-                0 2px 0 0 var(--color-page-bg),
-                0 4px 0 0 var(--color-black);
-        }
+    .demo-embed__panel {
+        box-shadow:
+            0 2px 0 0 var(--color-page-bg),
+            0 4px 0 0 var(--color-black);
     }
 
     iframe {

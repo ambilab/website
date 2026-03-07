@@ -20,10 +20,10 @@ const sortedPosts = sortNewsPostsByDate(content.newsPosts);
 const newsUrl = getRoute('news', locale);
 ---
 
-<section>
+<section class="news-section">
     <NewsList posts={sortedPosts} locale={locale} limit={limit} />
 
-    <div class="mt-8">
+    <div class="view-all">
         {
             showViewAll && sortedPosts.length > 0 && (
                 <Button href={newsUrl} variant="secondary">
@@ -33,3 +33,17 @@ const newsUrl = getRoute('news', locale);
         }
     </div>
 </section>
+
+<style>
+    @reference '../../styles/global.css';
+
+    .news-section {
+        @apply container mx-auto mb-10 px-4;
+        @apply md:pb-12;
+        @apply lg:max-w-[928px] lg:pb-16;
+
+        & .view-all {
+            @apply mt-6;
+        }
+    }
+</style>
