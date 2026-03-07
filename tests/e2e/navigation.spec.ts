@@ -12,7 +12,7 @@ test.describe('Navigation', () => {
     test('should display navigation links on homepage', async ({ page }) => {
         await page.goto('/');
 
-        const nav = page.locator('nav[aria-label="Main navigation"]');
+        const nav = page.locator('header nav.header-nav');
         await expect(nav).toBeVisible();
 
         // Verify all three nav items are present
@@ -23,7 +23,7 @@ test.describe('Navigation', () => {
     test('should mark home link as active on homepage', async ({ page }) => {
         await page.goto('/');
 
-        const nav = page.locator('nav[aria-label="Main navigation"]');
+        const nav = page.locator('header nav.header-nav');
         const activeLink = nav.locator('a[aria-current="page"]');
 
         await expect(activeLink).toHaveCount(1);
@@ -37,7 +37,7 @@ test.describe('Navigation', () => {
     test('should mark news link as active on news page', async ({ page }) => {
         await page.goto('/news');
 
-        const nav = page.locator('nav[aria-label="Main navigation"]');
+        const nav = page.locator('header nav.header-nav');
         const activeLink = nav.locator('a[aria-current="page"]');
 
         await expect(activeLink).toHaveCount(1);
@@ -48,7 +48,7 @@ test.describe('Navigation', () => {
     test('should mark projects link as active on projects page', async ({ page }) => {
         await page.goto('/projects');
 
-        const nav = page.locator('nav[aria-label="Main navigation"]');
+        const nav = page.locator('header nav.header-nav');
         const activeLink = nav.locator('a[aria-current="page"]');
 
         await expect(activeLink).toHaveCount(1);
@@ -59,7 +59,7 @@ test.describe('Navigation', () => {
     test('should not set aria-current on inactive links', async ({ page }) => {
         await page.goto('/');
 
-        const nav = page.locator('nav[aria-label="Main navigation"]');
+        const nav = page.locator('header nav.header-nav');
         const allLinks = nav.locator('a');
         const activeLinks = nav.locator('a[aria-current="page"]');
 
@@ -75,7 +75,7 @@ test.describe('Navigation', () => {
     test('should navigate to news page when clicking news link', async ({ page }) => {
         await page.goto('/');
 
-        const nav = page.locator('nav[aria-label="Main navigation"]');
+        const nav = page.locator('header nav.header-nav');
         const newsLink = nav.locator('a', { hasText: /News/i });
         await newsLink.click();
 
@@ -88,7 +88,7 @@ test.describe('Navigation', () => {
     test('should navigate to projects page when clicking projects link', async ({ page }) => {
         await page.goto('/');
 
-        const nav = page.locator('nav[aria-label="Main navigation"]');
+        const nav = page.locator('header nav.header-nav');
         const projectsLink = nav.locator('a', { hasText: /Projects/i });
         await projectsLink.click();
 
@@ -115,10 +115,19 @@ test.describe('Navigation', () => {
     test('should keep news link active on individual news post page', async ({ page }) => {
         await page.goto('/news/hello-world');
 
-        const nav = page.locator('nav[aria-label="Main navigation"]');
+        const nav = page.locator('header nav.header-nav');
         const activeLink = nav.locator('a[aria-current="page"]');
 
         await expect(activeLink).toHaveCount(1);
         await expect(activeLink).toHaveText(/News/i);
+    });
+
+    /** The desktop nav must have a Czech aria-label when locale is set to CS. */
+    test('should have Czech aria-label on desktop nav when locale is cs', async ({ page, context }) => {
+        await context.addCookies([{ name: 'locale', value: 'cs', url: 'http://localhost:4321' }]);
+        await page.goto('/');
+
+        const nav = page.locator('header nav.header-nav');
+        await expect(nav).toHaveAttribute('aria-label', 'Hlavní navigace');
     });
 });
