@@ -62,17 +62,24 @@
     <button
         transition:fade={transitionConfig}
         onclick={handleClick}
-        class="go-to-top-button [&:hover,&:focus]:bg-button-primary-hover [&:hover,&:focus]:shadow-xl bg-button-primary fixed z-go-to-top p-3 text-button-primary-text shadow-lg"
+        class="go-to-top-button"
         aria-label={t.a11y.goToTop}
     >
-        <svg class="h-6 w-6" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <svg class="go-to-top-icon" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
             <path d="M12 4L4 12L5.41 13.41L11 7.83V20H13V7.83L18.59 13.41L20 12L12 4Z" />
         </svg>
     </button>
 {/if}
 
-<style lang="postcss">
+<style>
+    @reference "../../styles/global.css";
+
     .go-to-top-button {
+        @apply fixed z-go-to-top bg-red-400 p-3 shadow-lg;
+        @apply text-button-primary-text;
+        @apply hover:bg-red-500 hover:shadow-xl;
+        @apply focus:bg-red-500 focus:shadow-xl;
+
         bottom: calc(2rem + var(--cookie-banner-height, 0px));
         right: 2rem;
 
@@ -82,6 +89,10 @@
 
         @media (min-width: 768px) {
             bottom: calc(2rem + var(--cookie-banner-height-md, 0px));
+        }
+
+        & .go-to-top-icon {
+            @apply h-6 w-6;
         }
     }
 </style>

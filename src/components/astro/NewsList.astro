@@ -22,13 +22,13 @@ const displayPosts = hasLimit ? posts.slice(0, Math.max(0, limit)) : posts;
     displayPosts.length === 0 ? (
         <p class="meta">{t.news.noPosts}</p>
     ) : (
-        <div class="select-none space-y-8">
+        <div class="news-list">
             {displayPosts.map((post) => {
                 const postSlug = normalizeSlug(post.id);
                 const postUrl = `${getRoute('news', locale)}/${postSlug}`;
 
                 return (
-                    <a href={postUrl} aria-label={post.data.title} class="block">
+                    <a href={postUrl} aria-label={post.data.title}>
                         <article class="card card-shadows">
                             <h2>{post.data.title}</h2>
 
@@ -46,3 +46,29 @@ const displayPosts = hasLimit ? posts.slice(0, Math.max(0, limit)) : posts;
         </div>
     )
 }
+
+<style>
+    @reference '../../styles/global.css';
+
+    .news-list {
+        @apply select-none space-y-8;
+
+        & a {
+            @apply block;
+        }
+
+        & h2 {
+            @apply compact-heading font-light;
+            @apply mb-4;
+        }
+
+        & .meta {
+            @apply mb-2;
+        }
+
+        & p {
+            @apply mb-1;
+            @apply md:mb-0;
+        }
+    }
+</style>

@@ -20,7 +20,7 @@ const t = getTranslation(locale);
 const socialLinks: SocialLink[] = [{ name: 'GitHub', url: SITE.SOCIAL.GITHUB }];
 ---
 
-<div class="flex flex-wrap gap-1">
+<div class="social-links">
     {
         socialLinks.map((link) => (
             <a
@@ -28,7 +28,6 @@ const socialLinks: SocialLink[] = [{ name: 'GitHub', url: SITE.SOCIAL.GITHUB }];
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={`${link.name} (${t.a11y.opensInNewTab})`}
-                class="border border-zinc-200 px-[7px] py-[5px] dark:border-white"
                 data-track-platform={link.name}
             >
                 {link.name}
@@ -36,6 +35,18 @@ const socialLinks: SocialLink[] = [{ name: 'GitHub', url: SITE.SOCIAL.GITHUB }];
         ))
     }
 </div>
+
+<style>
+    @reference "../../styles/global.css";
+
+    .social-links {
+        @apply flex flex-wrap gap-1;
+
+        & a {
+            @apply border border-zinc-200 px-[7px] py-[5px] dark:border-white;
+        }
+    }
+</style>
 
 <script>
     function handleSocialClick(event: MouseEvent, link: HTMLAnchorElement): void {
