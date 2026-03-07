@@ -309,11 +309,10 @@ body {
      * - tnum: Tabular numbers for alignment in tables
      * - cv01: Character variant 1
      * - cv08: Character variant 8
-     * - cv13: Character variant 13
      *
      * Disabled features (0):
      * - calt: Contextual alternates (disabled for consistency)
-     * - cv02-cv07, cv09-cv12, cv14-cv15: Character variants (not used)
+     * - cv02-cv07, cv09-cv13, cv14-cv15: Character variants (not used)
      * - ss01-ss03: Stylistic sets (not used)
      *
      * Note: Unsupported features are silently ignored by browsers.
