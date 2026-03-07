@@ -190,17 +190,17 @@
 @layer components {
     /* Card component - full-bleed layout card with semantic colors and scoped element styles */
     .card {
-        @apply -mx-4 px-4 pb-[2px] pt-4;
+        @apply -mx-4 px-4 pb-0.5 pt-4;
         @apply bg-card-bg text-card-text;
 
         & h2 {
             @apply mb-2 mt-px text-[20px] leading-5;
-            @apply md:mb-3 md:mt-[2px] md:text-[24px] md:leading-6;
+            @apply md:mb-3 md:mt-0.5 md:text-[24px] md:leading-6;
         }
 
         & h3 {
             @apply mb-2 mt-px text-[20px] leading-5;
-            @apply md:mt-[2px] md:text-[24px] md:leading-6;
+            @apply md:mt-0.5 md:text-[24px] md:leading-6;
         }
 
         & p {
@@ -213,13 +213,11 @@
         }
     }
 
-    /* Card shadow modifier - stacked shadow effect at sm+ breakpoint */
+    /* Card shadow modifier */
     .card-shadows {
-        @media (min-width: theme('screens.sm')) {
-            box-shadow:
-                0 2px 0 0 var(--color-page-bg),
-                0 4px 0 0 var(--color-card-bg);
-        }
+        box-shadow:
+            0 2px 0 0 var(--color-page-bg),
+            0 4px 0 0 var(--color-card-bg);
     }
 }
 
@@ -259,8 +257,8 @@
 @utility meta {
     @apply text-[11px] font-medium uppercase leading-3 antialiased;
 
-    @media (resolution: 1dppx) {
-        /* Use the monospace/pixel font only on 100% and 200% zoom levels */
+    @media (resolution: 1dppx), (resolution: 2dppx), (resolution: 3dppx), (resolution: 4dppx) {
+        /* Use the monospace/pixel font only on 100%, 200%, 300%, and 400% zoom levels */
         @apply font-mono;
     }
 }
@@ -311,11 +309,10 @@ body {
      * - tnum: Tabular numbers for alignment in tables
      * - cv01: Character variant 1
      * - cv08: Character variant 8
-     * - cv13: Character variant 13
      *
      * Disabled features (0):
      * - calt: Contextual alternates (disabled for consistency)
-     * - cv02-cv07, cv09-cv12, cv14-cv15: Character variants (not used)
+     * - cv02-cv07, cv09-cv13, cv14-cv15: Character variants (not used)
      * - ss01-ss03: Stylistic sets (not used)
      *
      * Note: Unsupported features are silently ignored by browsers.
@@ -340,7 +337,7 @@ body {
         'cv10' 0,
         'cv11' 0,
         'cv12' 0,
-        'cv13' 1,
+        'cv13' 0,
         'cv14' 0,
         'cv15' 0,
         'ss01' 0,
@@ -385,6 +382,18 @@ h3 {
     font-variant-numeric: lining-nums;
     text-transform: uppercase;
     text-wrap: balance;
+}
+
+h1 {
+    @apply -ml-[1.5px];
+    @apply text-[36px] leading-7;
+    @apply sm:text-[40px] sm:leading-[31px];
+    @apply md:leading-14 md:-ml-[2px] md:text-[73px] md:tracking-tight;
+    @apply lg:text-[130px] lg:leading-[98px];
+
+    & em {
+        @apply block text-balance not-italic;
+    }
 }
 
 /* Focus styles for accessibility */
