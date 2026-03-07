@@ -30,21 +30,13 @@ test.describe('Error pages', () => {
 
     /** The 404 response should not be a 3xx redirect. */
     test('should not redirect on 404', async ({ page }) => {
-        const redirects: number[] = [];
-        page.on('response', (resp) => {
-            const status = resp.status();
-            if (status >= 300 && status < 400) {
-                redirects.push(status);
-            }
-        });
-
         const response = await page.goto('/another-nonexistent-page');
 
         expect(response).not.toBeNull();
         expect(response!.status()).toBe(404);
 
-        // No redirect responses should have been seen
-        expect(redirects).toHaveLength(0);
+        // The navigation request itself should not have been redirected
+        expect(response!.request().redirectedFrom()).toBeNull();
     });
 
     /** Deeply nested non-existent paths should also return 404. */
