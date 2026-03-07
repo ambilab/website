@@ -30,19 +30,6 @@
     // Keyboard mode is enabled when the menu is open and the user is using the keyboard.
     let isKeyboardMode = $state(false);
 
-    const baseMenuPanelClasses = [
-        'z-mobile-menu fixed left-1/2 top-0 w-screen -translate-x-1/2 md:hidden pt-12',
-        'bg-page-bg',
-        'motion-safe:duration-333 motion-safe:transition-[clip-path]',
-    ].join(' ');
-
-    let menuPanelClass = $derived(
-        isOpen
-            ? baseMenuPanelClasses +
-                  ' translate-y-0 pointer-events-auto [clip-path:inset(36px_0_0_0)] motion-safe:ease-out'
-            : baseMenuPanelClasses + ' pointer-events-none [clip-path:inset(36px_0_100%_0)] motion-safe:ease-in',
-    );
-
     let menuButtonElement: HTMLButtonElement | undefined = $state();
     let menuPanelElement: HTMLDivElement | undefined = $state();
     let menuContainerElement: HTMLDivElement | undefined = $state();
@@ -314,69 +301,37 @@
     });
 </script>
 
-<div bind:this={menuContainerElement} class="h-6 w-6">
+<div bind:this={menuContainerElement} class="mobile-menu-container">
     <button
         bind:this={menuButtonElement}
         type="button"
-        class="cursor-pointer bg-text-primary text-text-secondary md:hidden"
+        class="menu-button"
+        class:is-open={isOpen}
         aria-label={isOpen ? t.a11y.closeMenu : t.a11y.openMenu}
         aria-expanded={isOpen}
         aria-controls="mobile-menu"
         onclick={toggleMenu}
     >
         <svg {...svgProps}>
-            <rect
-                x="6"
-                y={isOpen ? '6' : '6'}
-                width="12"
-                height="3"
-                class="motion-safe:duration-333 motion-safe:transition-all"
-                class:motion-safe:ease-out={isOpen}
-                class:motion-safe:ease-in={!isOpen}
-            />
-            <rect
-                x="6"
-                y={isOpen ? '6' : '10.5'}
-                width="12"
-                height="3"
-                class="motion-safe:duration-333 motion-safe:transition-all"
-                class:motion-safe:ease-out={isOpen}
-                class:motion-safe:ease-in={!isOpen}
-            />
-            <rect
-                x="6"
-                y={isOpen ? '6' : '15'}
-                width="12"
-                height="3"
-                class="motion-safe:duration-333 motion-safe:transition-all"
-                class:motion-safe:ease-out={isOpen}
-                class:motion-safe:ease-in={!isOpen}
-            />
+            <rect x="6" y="6" width="12" height="3" class="menu-icon-bar" />
+            <rect x="6" y={isOpen ? '6' : '10.5'} width="12" height="3" class="menu-icon-bar" />
+            <rect x="6" y={isOpen ? '6' : '15'} width="12" height="3" class="menu-icon-bar" />
         </svg>
     </button>
 
-    <div
-        class="menu-dimmer motion-safe:duration-333 fixed inset-x-0 bottom-0 top-12 opacity-0 motion-safe:transition-opacity md:hidden"
-        class:opacity-100={isOpen}
-        class:motion-safe:ease-out={isOpen}
-        class:motion-safe:ease-in={!isOpen}
-        class:pointer-events-auto={isOpen}
-        class:pointer-events-none={!isOpen}
-        onclick={closeMenu}
-        aria-hidden={!isOpen}
-        inert={!isOpen}
-    ></div>
+    <div class="menu-dimmer" class:is-open={isOpen} onclick={closeMenu} aria-hidden={!isOpen} inert={!isOpen}></div>
 
     <div
         bind:this={menuPanelElement}
         id="mobile-menu"
-        class={menuPanelClass}
+        class="menu-panel"
+        class:is-open={isOpen}
         class:keyboard-mode={isKeyboardMode}
         onclick={handleMenuClick}
         aria-hidden={!isOpen}
         inert={!isOpen}
     >
-        <nav class="">
+        <nav>
             {#if children}
                 {@render children()}
             {/if}
@@ -384,15 +339,60 @@
     </div>
 </div>
 
-<style lang="postcss">
+<style>
+    @reference "../../styles/global.css";
+
+    .mobile-menu-container {
+        @apply h-6 w-6;
+    }
+
+    .menu-button {
+        @apply cursor-pointer;
+        @apply bg-text-primary text-text-secondary;
+        @apply md:hidden;
+
+        & .menu-icon-bar {
+            @apply motion-safe:duration-333 motion-safe:transition-all motion-safe:ease-in;
+        }
+
+        &.is-open .menu-icon-bar {
+            @apply motion-safe:ease-out;
+        }
+    }
+
     .menu-dimmer {
         --color-menu-dimmer-bg: color-mix(in srgb, #a1a1aa 80%, transparent); /* zinc.400 */
+
+        @apply pointer-events-none fixed inset-x-0 bottom-0 top-12 opacity-0;
+        @apply motion-safe:duration-333 motion-safe:transition-opacity motion-safe:ease-in md:hidden;
+
         background-color: var(--color-menu-dimmer-bg);
+
+        &.is-open {
+            @apply pointer-events-auto opacity-100;
+            @apply motion-safe:ease-out;
+        }
     }
 
     @media (prefers-color-scheme: dark) {
         .menu-dimmer {
             --color-menu-dimmer-bg: color-mix(in srgb, #3f3f46 80%, transparent); /* zinc.700 */
+        }
+    }
+
+    .menu-panel {
+        @apply pointer-events-none fixed left-1/2 top-0 z-mobile-menu w-screen -translate-x-1/2 pt-12;
+        @apply bg-page-bg;
+        @apply motion-safe:duration-333 motion-safe:transition-[clip-path] motion-safe:ease-in;
+        @apply md:hidden;
+
+        clip-path: inset(36px 0 100% 0);
+
+        &.is-open {
+            @apply pointer-events-auto translate-y-0;
+            @apply motion-safe:ease-out;
+
+            clip-path: inset(36px 0 0 0);
         }
     }
 
