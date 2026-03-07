@@ -73,17 +73,9 @@
     <h3 data-testid="newsletter-heading">{t.newsletter.title}</h3>
 
     <form onsubmit={handleSubmit} aria-busy={status === 'loading'}>
-        <label for="newsletter-email" class="sr-only">{t.newsletter.emailPlaceholder}</label>
+        <label for="newsletter-email">{t.newsletter.emailPlaceholder}</label>
 
-        <input
-            type="text"
-            name="website"
-            bind:value={honeypot}
-            tabindex="-1"
-            autocomplete="off"
-            aria-hidden="true"
-            class="absolute -left-[9999px] size-px opacity-0"
-        />
+        <input type="text" name="website" bind:value={honeypot} tabindex="-1" autocomplete="off" aria-hidden="true" />
 
         <input
             type="email"
@@ -96,7 +88,6 @@
             aria-invalid={hasValidationError}
             aria-describedby={hasValidationError && message ? 'newsletter-status' : undefined}
             data-testid="newsletter-email"
-            class="newsletter-form__email-input"
         />
 
         <Button type="submit" disabled={status === 'loading'} data-testid="newsletter-submit">
@@ -123,9 +114,9 @@
     .newsletter-form {
         @apply px-[16px] py-[20px];
         @apply border-t-2 border-page-bg;
-        @apply sm:py-[30px] md:py-[35px];
         @apply bg-stickie-bg text-stickie-text;
         @apply select-none;
+        @apply sm:py-[30px] md:py-[35px];
 
         /* Scope primary button colors to the stickie palette without class overrides */
         --color-button-primary-bg: var(--color-stickie-text);
@@ -140,30 +131,34 @@
             @apply lg:max-w-[896px];
         }
 
+        & label {
+            @apply sr-only;
+        }
+
+        & input[type='text'] {
+            @apply absolute -left-[9999px] size-px opacity-0;
+        }
+
+        & input[type='email'] {
+            @apply flex-1 border-2 px-3 py-2 disabled:opacity-50;
+            @apply focus:border-stickie-text focus:bg-stickie-text focus:text-white focus:outline-none;
+        }
+
         & p {
             @apply my-[4px];
+            @apply leading-0 text-balance;
             @apply text-[14px] leading-[20px];
             @apply sm:mx-auto sm:max-w-[608px];
             @apply md:max-w-[736px] md:text-base md:leading-[24px];
             @apply lg:max-w-[896px];
-            @apply leading-0 text-balance;
         }
 
         & h3 {
+            @apply compact-heading;
             @apply mb-[7px];
-            @apply text-[24px] leading-[19px];
             @apply sm:mx-auto sm:max-w-[608px];
-            @apply md:max-w-[736px] md:text-[32px] md:leading-[25px];
+            @apply md:max-w-[736px];
             @apply lg:max-w-[896px];
-            @apply text-balance;
-        }
-    }
-
-    .newsletter-form__email-input {
-        @apply flex-1 border-2 px-3 py-2 disabled:opacity-50;
-
-        &:focus {
-            @apply border-stickie-text bg-stickie-text text-white outline-none ring-focus-ring;
         }
     }
 </style>
