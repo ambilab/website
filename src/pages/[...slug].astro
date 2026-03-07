@@ -135,6 +135,7 @@ const breadcrumbs = buildBreadcrumbs();
             {...(resolvedContent.translationPath ? { translationPath: resolvedContent.translationPath } : {})}
             {...(breadcrumbs ? { breadcrumbs } : {})}
             {...(resolvedContent.entry.data.draft ? { noindex: true } : {})}
+            {...(breadcrumbs ? { breadcrumbs } : {})}
         >
             <resolvedContent.Content />
         </NewsPostLayout>
