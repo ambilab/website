@@ -108,7 +108,7 @@
     </div>
 </div>
 
-<style lang="postcss">
+<style>
     @reference "../../styles/global.css";
 
     .newsletter-form {
