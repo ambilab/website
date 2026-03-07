@@ -313,7 +313,7 @@
         onclick={toggleMenu}
     >
         <svg {...svgProps}>
-            <rect x="6" y={isOpen ? '6' : '6'} width="12" height="3" class="menu-icon-bar" />
+            <rect x="6" y="6" width="12" height="3" class="menu-icon-bar" />
             <rect x="6" y={isOpen ? '6' : '10.5'} width="12" height="3" class="menu-icon-bar" />
             <rect x="6" y={isOpen ? '6' : '15'} width="12" height="3" class="menu-icon-bar" />
         </svg>
