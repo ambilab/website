@@ -10,7 +10,13 @@ const { title, class: className = '' } = Astro.props as Props;
 <div class:list={['card card-shadows', className]}>
     {title && <h3>{title}</h3>}
 
-    <div class="text-balance">
+    <div class="card-body">
         <slot />
     </div>
 </div>
+
+<style>
+    .card-body {
+        @apply text-balance;
+    }
+</style>
