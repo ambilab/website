@@ -25,8 +25,8 @@ const { code, title, description, homeButtonText, homeLink = '/', locale, reques
 >
     <div class="error-page">
         <h1>
-            {code}
-            <em>{description}</em>
+            <em class="code">{code}</em>
+            <em class="description">{description}</em>
         </h1>
 
         {
@@ -45,29 +45,20 @@ const { code, title, description, homeButtonText, homeLink = '/', locale, reques
 
     .error-page {
         @apply container mx-auto flex flex-col items-start justify-start;
-        @apply px-4 py-5;
+        @apply px-4 py-10;
         @apply select-none;
-        @apply sm:py-[30px];
-        @apply md:max-w-screen-md md:py-[35px];
+        @apply md:max-w-screen-md md:py-[70px];
         @apply lg:max-w-[928px];
 
-        & h1 {
-            @apply block w-full;
-            @apply -ml-[1.5px] mb-[5px];
-            @apply text-[36px] leading-7;
-            @apply sm:text-[40px] sm:leading-[31px];
-            @apply md:leading-14 md:-ml-[2px] md:mb-[9px] md:text-[73px];
-
-            & em {
-                @apply block text-balance not-italic;
-            }
+        & h1 em.code {
+            @apply text-rose-800 dark:text-rose-500;
         }
 
         & p#request-id {
-            @apply meta -ml-px mb-[18px] mt-3;
+            @apply meta -ml-px mb-[18px] mt-[17px];
             @apply text-text-muted;
-            @apply sm:mb-7 sm:mt-[21px];
-            @apply md:mb-[34px] md:mt-[23px];
+            @apply sm:mb-7 sm:mt-[26px];
+            @apply md:mb-[34px] md:mt-8;
 
             & em {
                 @apply select-text not-italic;
