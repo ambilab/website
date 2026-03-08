@@ -72,7 +72,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
         // Static assets are cached by Cloudflare Pages automatically.
         const contentType = response.headers.get('Content-Type') || '';
 
-        if (contentType.includes('text/html')) {
+        if (contentType.includes('text/html') && response.status < 500) {
             response.headers.set('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=300');
         }
 

@@ -39,6 +39,14 @@ test.describe('Cache-Control headers', () => {
         expect(response).not.toBeNull();
         expect(response!.headers()['cache-control']).toBe('public, s-maxage=60, stale-while-revalidate=300');
     });
+
+    /** Static assets should not have their Cache-Control overridden by the middleware. */
+    test('should not override Cache-Control for static assets', async ({ page }) => {
+        const response = await page.goto('/favicon.png');
+
+        expect(response).not.toBeNull();
+        expect(response!.headers()['cache-control']).not.toBe('public, s-maxage=60, stale-while-revalidate=300');
+    });
 });
 
 test.describe('Last-Modified header', () => {
@@ -69,6 +77,21 @@ test.describe('Last-Modified header', () => {
         expect(parsed.getUTCFullYear()).toBe(2026);
         expect(parsed.getUTCMonth()).toBe(1); // February is month 1 (zero-indexed)
         expect(parsed.getUTCDate()).toBe(8);
+    });
+
+    /** The Last-Modified value should match updatedDate when it is present. */
+    test('should use updatedDate as Last-Modified when present', async ({ page }) => {
+        const response = await page.goto('/news/hello-world-updated');
+
+        expect(response).not.toBeNull();
+
+        const lastModified = response!.headers()['last-modified'];
+        const parsed = new Date(lastModified);
+
+        // hello-world-updated post has updatedDate: 2026-03-01
+        expect(parsed.getUTCFullYear()).toBe(2026);
+        expect(parsed.getUTCMonth()).toBe(2); // March is month 2 (zero-indexed)
+        expect(parsed.getUTCDate()).toBe(1);
     });
 
     /** The homepage should not have a Last-Modified header (it is not a news post). */
