@@ -7,7 +7,13 @@
  * the locale cookie before navigation.
  */
 
+import type { BrowserContext } from '@playwright/test';
 import { expect, test } from '@playwright/test';
+
+async function setLocaleCookie(context: BrowserContext, baseURL: string | undefined, locale = 'cs'): Promise<void> {
+    const { origin } = new URL(baseURL ?? 'http://localhost:4321');
+    await context.addCookies([{ name: 'locale', value: locale, url: origin }]);
+}
 
 test.describe('English content (default locale)', () => {
     /** Localhost defaults to English; the <html lang> attribute must be "en". */
@@ -43,9 +49,7 @@ test.describe('English content (default locale)', () => {
 test.describe('Czech content (via locale cookie)', () => {
     /** Setting locale=cs cookie before navigation forces the homepage to render in Czech. */
     test('should render Czech content on homepage when locale cookie is set', async ({ page, context }, testInfo) => {
-        const { origin } = new URL(testInfo.project.use.baseURL ?? 'http://localhost:4321');
-        // Set locale cookie before navigation
-        await context.addCookies([{ name: 'locale', value: 'cs', url: origin }]);
+        await setLocaleCookie(context, testInfo.project.use.baseURL);
 
         await page.goto('/');
 
@@ -55,8 +59,7 @@ test.describe('Czech content (via locale cookie)', () => {
 
     /** Czech news uses the localized route /novinky and must show the Czech post title. */
     test('should display Czech news on /novinky', async ({ page, context }, testInfo) => {
-        const { origin } = new URL(testInfo.project.use.baseURL ?? 'http://localhost:4321');
-        await context.addCookies([{ name: 'locale', value: 'cs', url: origin }]);
+        await setLocaleCookie(context, testInfo.project.use.baseURL);
 
         await page.goto('/novinky');
 
@@ -69,8 +72,7 @@ test.describe('Czech content (via locale cookie)', () => {
 
     /** The Czech detail page /novinky/ahoj-svete should have lang="cs" and the Czech heading. */
     test('should render Czech news detail page', async ({ page, context }, testInfo) => {
-        const { origin } = new URL(testInfo.project.use.baseURL ?? 'http://localhost:4321');
-        await context.addCookies([{ name: 'locale', value: 'cs', url: origin }]);
+        await setLocaleCookie(context, testInfo.project.use.baseURL);
 
         await page.goto('/novinky/ahoj-svete');
 
@@ -82,8 +84,7 @@ test.describe('Czech content (via locale cookie)', () => {
 
     /** Navigation labels must be localized: "Novinky" for News, "Projekty" for Projects. */
     test('should show Czech navigation labels', async ({ page, context }, testInfo) => {
-        const { origin } = new URL(testInfo.project.use.baseURL ?? 'http://localhost:4321');
-        await context.addCookies([{ name: 'locale', value: 'cs', url: origin }]);
+        await setLocaleCookie(context, testInfo.project.use.baseURL);
 
         await page.goto('/');
 
@@ -96,8 +97,7 @@ test.describe('Czech content (via locale cookie)', () => {
 
     /** Date strings must use Czech month names (e.g. "unora") and must not contain English month names. */
     test('should format dates in Czech locale', async ({ page, context }, testInfo) => {
-        const { origin } = new URL(testInfo.project.use.baseURL ?? 'http://localhost:4321');
-        await context.addCookies([{ name: 'locale', value: 'cs', url: origin }]);
+        await setLocaleCookie(context, testInfo.project.use.baseURL);
 
         await page.goto('/novinky');
 
@@ -131,8 +131,7 @@ test.describe('Czech content (via locale cookie)', () => {
 test.describe('Locale cookie persistence', () => {
     /** After setting the locale cookie to "cs", navigating between pages must keep lang="cs" intact. */
     test('should persist locale across page navigation', async ({ page, context }, testInfo) => {
-        const { origin } = new URL(testInfo.project.use.baseURL ?? 'http://localhost:4321');
-        await context.addCookies([{ name: 'locale', value: 'cs', url: origin }]);
+        await setLocaleCookie(context, testInfo.project.use.baseURL);
 
         // Navigate to homepage
         await page.goto('/');
