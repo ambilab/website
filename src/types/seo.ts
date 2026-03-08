@@ -1,3 +1,12 @@
+/** A single item in a BreadcrumbList structured data trail. */
+export interface IBreadcrumbItem {
+    /** Display name for this breadcrumb level. */
+    name: string;
+
+    /** Full URL for this breadcrumb level. */
+    url: string;
+}
+
 export interface ISEOMetadata {
     title: string;
     description: string;
@@ -9,4 +18,7 @@ export interface ISEOMetadata {
     articleAuthor?: string;
     articleSection?: string;
     articleTags?: string[];
+
+    /** Breadcrumb trail for BreadcrumbList JSON-LD. Omit for the home page. */
+    breadcrumbs?: IBreadcrumbItem[];
 }
