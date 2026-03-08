@@ -14,6 +14,7 @@ test.describe('RSS Feed Links', () => {
 
         const rssLink = page.locator('head link[type="application/rss+xml"][hreflang="en"]');
         await expect(rssLink).toHaveCount(1);
+        await expect(rssLink).toHaveAttribute('rel', 'alternate');
         await expect(rssLink).toHaveAttribute('href', /\/en\/news\.xml$/);
     });
 
@@ -36,9 +37,11 @@ test.describe('RSS Feed Links', () => {
     /** English RSS link should be present and Czech RSS link absent on the Czech homepage. */
     test('should include English RSS link on Czech homepage', async ({ page }) => {
         await page.goto('/cs');
+        await expect(page.locator('html[lang="cs"]')).toHaveCount(1);
 
         const englishRssLink = page.locator('head link[type="application/rss+xml"][hreflang="en"]');
         await expect(englishRssLink).toHaveCount(1);
+        await expect(englishRssLink).toHaveAttribute('rel', 'alternate');
 
         const czechRssLink = page.locator('head link[type="application/rss+xml"][hreflang="cs"]');
         await expect(czechRssLink).toHaveCount(0);
