@@ -116,8 +116,9 @@ test.describe('BreadcrumbList structured data', () => {
         expect(items[0]!.position).toBe(1);
         expect(items[0]!.name).toBe('Home');
 
-        // Second item: Page title
+        // Second item: Page title (from projects.mdx frontmatter)
         expect(items[1]!.position).toBe(2);
+        expect(items[1]!.name).toBe('Ambilab Projects');
         expect(items[1]!.item).toContain('/projects');
     });
 
