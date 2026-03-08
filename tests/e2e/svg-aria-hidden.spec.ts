@@ -5,30 +5,10 @@
  * have aria-hidden="true" to prevent double announcements by screen readers.
  */
 
-import type { Page } from '@playwright/test';
 import { expect, test } from '@playwright/test';
 
-// Matches COMPONENT_CONFIG.goToTop.showAfterScroll in src/config/components.ts
-const SHOW_AFTER_SCROLL = 300;
-
-/**
- * Checks whether the Go-to-Top button can actually appear on the page.
- * Returns false when client:visible hydration prevents the component
- * from initializing (zero-height SSR output).
- */
-async function isGoToTopWorking(page: Page): Promise<boolean> {
-    await page.goto('/');
-    await page.waitForLoadState('networkidle');
-
-    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
-
-    try {
-        await page.locator('.go-to-top-button').waitFor({ state: 'attached', timeout: 2000 });
-        return true;
-    } catch {
-        return false;
-    }
-}
+/** Fixture page that renders GoToTop with forceVisible and client:load. */
+const GO_TO_TOP_FIXTURE_PATH = '/e2e/go-to-top';
 
 test.describe('SVG aria-hidden attributes', () => {
     test.beforeEach(async ({ page }) => {
@@ -58,16 +38,13 @@ test.describe('SVG aria-hidden attributes', () => {
 
     /** The arrow icon SVG inside the Go-to-Top button must be hidden from assistive technology. */
     test('Go-to-Top button SVG should have aria-hidden', async ({ page }) => {
-        const working = await isGoToTopWorking(page);
-        test.skip(!working, 'GoToTop cannot hydrate (client:visible with empty SSR output)');
-
-        await page.goto('/');
+        await page.goto(GO_TO_TOP_FIXTURE_PATH);
         await page.waitForLoadState('networkidle');
 
-        await page.evaluate((px) => window.scrollTo(0, px), SHOW_AFTER_SCROLL + 200);
-        await expect(page.locator('.go-to-top-button')).toBeVisible();
+        const goToTopButton = page.locator('.go-to-top-button');
+        await expect(goToTopButton).toBeVisible();
 
-        const goToTopSvg = page.locator('.go-to-top-button svg');
+        const goToTopSvg = goToTopButton.locator('svg');
         await expect(goToTopSvg).toHaveAttribute('aria-hidden', 'true');
     });
 });
