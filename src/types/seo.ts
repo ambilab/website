@@ -13,6 +13,8 @@ export interface ISEOMetadata {
     permalink: string;
     ogImage?: string;
     translationPath?: string;
+    /** When true, renders `noindex, nofollow` robots meta tag (for error pages, drafts). */
+    noindex?: boolean;
     articlePublishedTime?: Date;
     articleModifiedTime?: Date;
     articleAuthor?: string;
