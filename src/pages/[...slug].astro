@@ -2,8 +2,10 @@
 import NewsPostLayout from '@components/astro/NewsPostLayout.astro';
 import NewsSection from '@components/astro/NewsSection.astro';
 import PageLayout from '@components/astro/PageLayout.astro';
+import { getRoute } from '@config/routes';
 import { DEFAULT_LOCALE } from '@i18n/config';
 import { getTranslation } from '@i18n/translations';
+import type { IBreadcrumbItem } from '@type/seo';
 import { resolveContent } from '@utils/content-resolver';
 import { createLogger } from '@utils/logger';
 import { parseRoute } from '@utils/route-parser';
@@ -35,7 +37,47 @@ if (!resolvedContent) {
     return Astro.rewrite('/404');
 }
 
+// Set Last-Modified header for news posts based on updatedDate or pubDate
+if (resolvedContent.type === 'news-post') {
+    const lastModified = resolvedContent.entry.data.updatedDate ?? resolvedContent.entry.data.pubDate;
+
+    Astro.response.headers.set('Last-Modified', lastModified.toUTCString());
+}
+
 const t = getTranslation(detectedLocale);
+const siteOrigin = Astro.url.origin;
+
+/**
+ * Builds breadcrumb items based on content type.
+ * Returns undefined for the home page (no breadcrumbs needed).
+ */
+function buildBreadcrumbs(): IBreadcrumbItem[] | undefined {
+    const homeItem: IBreadcrumbItem = { name: t.nav.home, url: `${siteOrigin}/` };
+
+    if (resolvedContent!.type === 'news-index') {
+        return [homeItem, { name: t.news.title, url: resolvedContent!.permalink }];
+    }
+
+    if (resolvedContent!.type === 'news-post') {
+        const newsIndexUrl = `${siteOrigin}${getRoute('news', resolvedContent!.locale)}`;
+        const postTitle = resolvedContent!.entry.data.title;
+
+        return [
+            homeItem,
+            { name: t.news.title, url: newsIndexUrl },
+            { name: postTitle, url: resolvedContent!.permalink },
+        ];
+    }
+
+    // Regular page -- skip home page (slug 'index')
+    if (route.slug === 'index') {
+        return undefined;
+    }
+
+    return [homeItem, { name: resolvedContent!.entry.data.title, url: resolvedContent!.permalink }];
+}
+
+const breadcrumbs = buildBreadcrumbs();
 ---
 
 {
@@ -47,6 +89,7 @@ const t = getTranslation(detectedLocale);
             locale={resolvedContent.locale}
             pageMap={resolvedContent.content.pageMap}
             translationPath={resolvedContent.translationPath}
+            {...(breadcrumbs ? { breadcrumbs } : {})}
         >
             <div class="news-index-wrapper">
                 <div class="news-index-inner">
@@ -68,6 +111,7 @@ const t = getTranslation(detectedLocale);
             locale={resolvedContent.locale}
             pageMap={resolvedContent.content.pageMap}
             {...(resolvedContent.translationPath ? { translationPath: resolvedContent.translationPath } : {})}
+            {...(breadcrumbs ? { breadcrumbs } : {})}
         >
             <article class="page-article">
                 <div class="page-content mdx-content prose prose-lg dark:prose-invert">
@@ -89,6 +133,7 @@ const t = getTranslation(detectedLocale);
             content={resolvedContent.entry.body}
             pageMap={resolvedContent.content.pageMap}
             {...(resolvedContent.translationPath ? { translationPath: resolvedContent.translationPath } : {})}
+            {...(breadcrumbs ? { breadcrumbs } : {})}
         >
             <resolvedContent.Content />
         </NewsPostLayout>

@@ -27,6 +27,8 @@ export default [
             '.astro/',
             'node_modules/',
             '.wrangler/',
+            'playwright-report/',
+            'test-results/',
             '*.min.js',
             '*.min.css',
             '.env',
