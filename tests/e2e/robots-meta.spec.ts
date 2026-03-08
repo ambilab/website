@@ -43,7 +43,7 @@ test.describe('Robots meta tag - error pages', () => {
 
 test.describe('Robots meta tag - published pages', () => {
     /** The homepage should allow indexing. */
-    test('should render index,follow on the homepage', async ({ page }) => {
+    test('should render index, follow on the homepage', async ({ page }) => {
         await page.goto('/');
 
         const robotsMeta = page.locator('meta[name="robots"]');
@@ -51,7 +51,7 @@ test.describe('Robots meta tag - published pages', () => {
     });
 
     /** The news listing page should allow indexing. */
-    test('should render index,follow on the news listing', async ({ page }) => {
+    test('should render index, follow on the news listing', async ({ page }) => {
         await page.goto('/news');
 
         const robotsMeta = page.locator('meta[name="robots"]');
@@ -62,10 +62,23 @@ test.describe('Robots meta tag - published pages', () => {
      * A published news post should allow indexing.
      * Depends on src/content/news/en/hello-world.mdx being present and published.
      */
-    test('should render index,follow on a news post', async ({ page }) => {
+    test('should render index, follow on a news post', async ({ page }) => {
         await page.goto('/news/hello-world');
 
         const robotsMeta = page.locator('meta[name="robots"]');
         await expect(robotsMeta).toHaveAttribute('content', 'index, follow');
+    });
+});
+
+test.describe('Robots meta tag - draft pages', () => {
+    /**
+     * A draft news post should have noindex to prevent search engine indexing.
+     * Depends on src/content/news/en/draft-post.mdx being present with draft: true.
+     */
+    test('should render noindex on a draft news post', async ({ page }) => {
+        await page.goto('/news/draft-post');
+
+        const robotsMeta = page.locator('meta[name="robots"]');
+        await expect(robotsMeta).toHaveAttribute('content', 'noindex, nofollow');
     });
 });
