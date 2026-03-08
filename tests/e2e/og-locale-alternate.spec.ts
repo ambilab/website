@@ -34,8 +34,9 @@ test.describe('og:locale:alternate on English pages', () => {
 
 test.describe('og:locale:alternate on Czech pages', () => {
     /** CS homepage must declare cs_CZ as locale and en_US as alternate. */
-    test('should have correct og:locale tags on homepage', async ({ page, context }) => {
-        await context.addCookies([{ name: 'locale', value: 'cs', url: 'http://localhost:4321' }]);
+    test('should have correct og:locale tags on homepage', async ({ page, context }, testInfo) => {
+        const { origin } = new URL(testInfo.project.use.baseURL ?? 'http://localhost:4321');
+        await context.addCookies([{ name: 'locale', value: 'cs', url: origin }]);
 
         await page.goto('/');
 
@@ -47,8 +48,9 @@ test.describe('og:locale:alternate on Czech pages', () => {
     });
 
     /** CS news listing must declare cs_CZ as locale and en_US as alternate. */
-    test('should have correct og:locale tags on /novinky', async ({ page, context }) => {
-        await context.addCookies([{ name: 'locale', value: 'cs', url: 'http://localhost:4321' }]);
+    test('should have correct og:locale tags on /novinky', async ({ page, context }, testInfo) => {
+        const { origin } = new URL(testInfo.project.use.baseURL ?? 'http://localhost:4321');
+        await context.addCookies([{ name: 'locale', value: 'cs', url: origin }]);
 
         await page.goto('/novinky');
 
