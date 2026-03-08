@@ -67,21 +67,21 @@ test.describe('BreadcrumbList structured data', () => {
 
         const breadcrumbs = await getBreadcrumbJsonLd(page);
         expect(breadcrumbs).not.toBeNull();
-        expect(breadcrumbs!['@context']).toBe('https://schema.org');
-        expect(breadcrumbs!['@type']).toBe('BreadcrumbList');
+        expect(breadcrumbs?.['@context']).toBe('https://schema.org');
+        expect(breadcrumbs?.['@type']).toBe('BreadcrumbList');
 
-        const items = breadcrumbs!.itemListElement;
+        const items = breadcrumbs?.itemListElement;
         expect(items).toHaveLength(2);
 
         // First item: Home
-        expect(items[0]!.position).toBe(1);
-        expect(items[0]!.name).toBe('Home');
-        expect(items[0]!.item).toMatch(/\/$/);
+        expect(items[0]?.position).toBe(1);
+        expect(items[0]?.name).toBe('Home');
+        expect(items[0]?.item).toMatch(/\/$/);
 
         // Second item: News
-        expect(items[1]!.position).toBe(2);
-        expect(items[1]!.name).toBe('News');
-        expect(items[1]!.item).toContain('/news');
+        expect(items[1]?.position).toBe(2);
+        expect(items[1]?.name).toBe('News');
+        expect(items[1]?.item).toContain('/news');
     });
 
     /** A news post should have a 3-item breadcrumb: Home > News > Post Title. */
@@ -91,22 +91,22 @@ test.describe('BreadcrumbList structured data', () => {
         const breadcrumbs = await getBreadcrumbJsonLd(page);
         expect(breadcrumbs).not.toBeNull();
 
-        const items = breadcrumbs!.itemListElement;
+        const items = breadcrumbs?.itemListElement;
         expect(items).toHaveLength(3);
 
         // First item: Home
-        expect(items[0]!.position).toBe(1);
-        expect(items[0]!.name).toBe('Home');
+        expect(items[0]?.position).toBe(1);
+        expect(items[0]?.name).toBe('Home');
 
         // Second item: News
-        expect(items[1]!.position).toBe(2);
-        expect(items[1]!.name).toBe('News');
-        expect(items[1]!.item).toContain('/news');
+        expect(items[1]?.position).toBe(2);
+        expect(items[1]?.name).toBe('News');
+        expect(items[1]?.item).toContain('/news');
 
         // Third item: Post title
-        expect(items[2]!.position).toBe(3);
-        expect(items[2]!.name).toBe('Hello World: Introducing Ambilab');
-        expect(items[2]!.item).toContain('/news/hello-world');
+        expect(items[2]?.position).toBe(3);
+        expect(items[2]?.name).toBe('Hello World: Introducing Ambilab');
+        expect(items[2]?.item).toContain('/news/hello-world');
     });
 
     /** A subpage (/projects) should have a 2-item breadcrumb: Home > Page Title. */
@@ -116,17 +116,17 @@ test.describe('BreadcrumbList structured data', () => {
         const breadcrumbs = await getBreadcrumbJsonLd(page);
         expect(breadcrumbs).not.toBeNull();
 
-        const items = breadcrumbs!.itemListElement;
+        const items = breadcrumbs?.itemListElement;
         expect(items).toHaveLength(2);
 
         // First item: Home
-        expect(items[0]!.position).toBe(1);
-        expect(items[0]!.name).toBe('Home');
+        expect(items[0]?.position).toBe(1);
+        expect(items[0]?.name).toBe('Home');
 
         // Second item: Page title (from projects.mdx frontmatter)
-        expect(items[1]!.position).toBe(2);
-        expect(items[1]!.name).toBe('Ambilab Projects');
-        expect(items[1]!.item).toContain('/projects');
+        expect(items[1]?.position).toBe(2);
+        expect(items[1]?.name).toBe('Ambilab Projects');
+        expect(items[1]?.item).toContain('/projects');
     });
 
     /** All breadcrumb items must use absolute URLs (starting with http). */
@@ -136,7 +136,7 @@ test.describe('BreadcrumbList structured data', () => {
         const breadcrumbs = await getBreadcrumbJsonLd(page);
         expect(breadcrumbs).not.toBeNull();
 
-        for (const item of breadcrumbs!.itemListElement) {
+        for (const item of breadcrumbs?.itemListElement ?? []) {
             expect(item.item).toMatch(/^https?:\/\//);
         }
     });
@@ -148,11 +148,11 @@ test.describe('BreadcrumbList structured data', () => {
         const breadcrumbs = await getBreadcrumbJsonLd(page);
         expect(breadcrumbs).not.toBeNull();
 
-        const items = breadcrumbs!.itemListElement;
+        const items = breadcrumbs?.itemListElement;
 
         for (let i = 0; i < items.length; i++) {
-            expect(items[i]!['@type']).toBe('ListItem');
-            expect(items[i]!.position).toBe(i + 1);
+            expect(items[i]?.['@type']).toBe('ListItem');
+            expect(items[i]?.position).toBe(i + 1);
         }
     });
 });

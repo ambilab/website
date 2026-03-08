@@ -13,7 +13,7 @@ test.describe('Error pages', () => {
         const response = await page.goto('/this-page-does-not-exist');
 
         expect(response).not.toBeNull();
-        expect(response!.status()).toBe(404);
+        expect(response?.status()).toBe(404);
     });
 
     /** The 404 response should render the error page content inline. */
@@ -33,10 +33,10 @@ test.describe('Error pages', () => {
         const response = await page.goto('/another-nonexistent-page');
 
         expect(response).not.toBeNull();
-        expect(response!.status()).toBe(404);
+        expect(response?.status()).toBe(404);
 
         // The navigation request itself should not have been redirected
-        expect(response!.request().redirectedFrom()).toBeNull();
+        expect(response?.request().redirectedFrom()).toBeNull();
     });
 
     /** Deeply nested non-existent paths should also return 404. */
@@ -44,7 +44,7 @@ test.describe('Error pages', () => {
         const response = await page.goto('/some/deeply/nested/nonexistent/path');
 
         expect(response).not.toBeNull();
-        expect(response!.status()).toBe(404);
+        expect(response?.status()).toBe(404);
 
         const codeElement = page.locator('.error-page h1 em.code');
         await expect(codeElement).toHaveText('404');

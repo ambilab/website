@@ -13,7 +13,7 @@ test.describe('Cache-Control headers', () => {
         const response = await page.goto('/');
 
         expect(response).not.toBeNull();
-        expect(response!.headers()['cache-control']).toBe('public, s-maxage=60, stale-while-revalidate=300');
+        expect(response?.headers()['cache-control']).toBe('public, s-maxage=60, stale-while-revalidate=300');
     });
 
     /** News listing page should also have Cache-Control. */
@@ -21,7 +21,7 @@ test.describe('Cache-Control headers', () => {
         const response = await page.goto('/news');
 
         expect(response).not.toBeNull();
-        expect(response!.headers()['cache-control']).toBe('public, s-maxage=60, stale-while-revalidate=300');
+        expect(response?.headers()['cache-control']).toBe('public, s-maxage=60, stale-while-revalidate=300');
     });
 
     /** News detail pages should have Cache-Control. */
@@ -29,7 +29,7 @@ test.describe('Cache-Control headers', () => {
         const response = await page.goto('/news/hello-world');
 
         expect(response).not.toBeNull();
-        expect(response!.headers()['cache-control']).toBe('public, s-maxage=60, stale-while-revalidate=300');
+        expect(response?.headers()['cache-control']).toBe('public, s-maxage=60, stale-while-revalidate=300');
     });
 
     /** Error pages should still get Cache-Control since they are HTML. */
@@ -37,7 +37,7 @@ test.describe('Cache-Control headers', () => {
         const response = await page.goto('/this-page-does-not-exist');
 
         expect(response).not.toBeNull();
-        expect(response!.headers()['cache-control']).toBe('public, s-maxage=60, stale-while-revalidate=300');
+        expect(response?.headers()['cache-control']).toBe('public, s-maxage=60, stale-while-revalidate=300');
     });
 
     /** Static assets should not have their Cache-Control overridden by the middleware. */
@@ -45,7 +45,7 @@ test.describe('Cache-Control headers', () => {
         const response = await page.goto('/favicon.png');
 
         expect(response).not.toBeNull();
-        expect(response!.headers()['cache-control']).not.toBe('public, s-maxage=60, stale-while-revalidate=300');
+        expect(response?.headers()['cache-control']).not.toBe('public, s-maxage=60, stale-while-revalidate=300');
     });
 });
 
@@ -56,7 +56,7 @@ test.describe('Last-Modified header', () => {
 
         expect(response).not.toBeNull();
 
-        const lastModified = response!.headers()['last-modified'];
+        const lastModified = response?.headers()['last-modified'];
         expect(lastModified).toBeTruthy();
 
         // Verify the value is a valid HTTP date
@@ -70,7 +70,7 @@ test.describe('Last-Modified header', () => {
 
         expect(response).not.toBeNull();
 
-        const lastModified = response!.headers()['last-modified'];
+        const lastModified = response?.headers()['last-modified'];
         const parsed = new Date(lastModified);
 
         // hello-world post has pubDate: 2026-02-08
@@ -85,7 +85,7 @@ test.describe('Last-Modified header', () => {
 
         expect(response).not.toBeNull();
 
-        const lastModified = response!.headers()['last-modified'];
+        const lastModified = response?.headers()['last-modified'];
         const parsed = new Date(lastModified);
 
         // hello-world-updated post has updatedDate: 2026-03-01
@@ -99,7 +99,7 @@ test.describe('Last-Modified header', () => {
         const response = await page.goto('/');
 
         expect(response).not.toBeNull();
-        expect(response!.headers()['last-modified']).toBeUndefined();
+        expect(response?.headers()['last-modified']).toBeUndefined();
     });
 
     /** The news listing page should not have a Last-Modified header. */
@@ -107,6 +107,6 @@ test.describe('Last-Modified header', () => {
         const response = await page.goto('/news');
 
         expect(response).not.toBeNull();
-        expect(response!.headers()['last-modified']).toBeUndefined();
+        expect(response?.headers()['last-modified']).toBeUndefined();
     });
 });
