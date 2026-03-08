@@ -33,6 +33,17 @@ test.describe('RSS Feed Links', () => {
         await expect(rssLinks).toHaveCount(1);
     });
 
+    /** English RSS link should be present and Czech RSS link absent on the Czech homepage. */
+    test('should include English RSS link on Czech homepage', async ({ page }) => {
+        await page.goto('/cs');
+
+        const englishRssLink = page.locator('head link[type="application/rss+xml"][hreflang="en"]');
+        await expect(englishRssLink).toHaveCount(1);
+
+        const czechRssLink = page.locator('head link[type="application/rss+xml"][hreflang="cs"]');
+        await expect(czechRssLink).toHaveCount(0);
+    });
+
     /** The RSS link title should reference English. */
     test('should have correct title on RSS link', async ({ page }) => {
         await page.goto('/');
