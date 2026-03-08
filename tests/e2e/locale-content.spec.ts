@@ -83,7 +83,7 @@ test.describe('Czech content (via locale cookie)', () => {
 
         await page.goto('/');
 
-        const nav = page.locator('nav[aria-label="Main navigation"]');
+        const nav = page.locator('header nav.header-nav');
 
         // Czech nav labels: Novinky (News), Projekty (Projects)
         await expect(nav.locator('a', { hasText: /Novinky/i })).toBeVisible();
