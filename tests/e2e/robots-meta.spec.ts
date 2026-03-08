@@ -23,6 +23,22 @@ test.describe('Robots meta tag - error pages', () => {
         const robotsMeta = page.locator('meta[name="robots"]');
         await expect(robotsMeta).toHaveAttribute('content', 'noindex, nofollow');
     });
+
+    /** The preview-500 route renders the 500 error page and should have noindex. */
+    test('should render noindex on 500 page', async ({ page }) => {
+        await page.goto('/preview-500');
+
+        const robotsMeta = page.locator('meta[name="robots"]');
+        await expect(robotsMeta).toHaveAttribute('content', 'noindex, nofollow');
+    });
+
+    /** The preview-503 route renders the 503 error page and should have noindex. */
+    test('should render noindex on 503 page', async ({ page }) => {
+        await page.goto('/preview-503');
+
+        const robotsMeta = page.locator('meta[name="robots"]');
+        await expect(robotsMeta).toHaveAttribute('content', 'noindex, nofollow');
+    });
 });
 
 test.describe('Robots meta tag - published pages', () => {
@@ -42,7 +58,10 @@ test.describe('Robots meta tag - published pages', () => {
         await expect(robotsMeta).toHaveAttribute('content', 'index, follow');
     });
 
-    /** A published news post should allow indexing. */
+    /**
+     * A published news post should allow indexing.
+     * Depends on src/content/news/en/hello-world.mdx being present and published.
+     */
     test('should render index,follow on a news post', async ({ page }) => {
         await page.goto('/news/hello-world');
 
