@@ -5,7 +5,13 @@
  * while the Czech site is not yet live (AL-320).
  */
 
+import type { BrowserContext } from '@playwright/test';
 import { expect, test } from '@playwright/test';
+
+async function setLocaleCookie(context: BrowserContext, baseURL: string | undefined, locale = 'cs'): Promise<void> {
+    const { origin } = new URL(baseURL ?? 'http://localhost:4321');
+    await context.addCookies([{ name: 'locale', value: locale, url: origin }]);
+}
 
 test.describe('RSS Feed Links', () => {
     /** English RSS link should be present in <head> on the homepage. */
@@ -35,8 +41,9 @@ test.describe('RSS Feed Links', () => {
     });
 
     /** English RSS link should be present and Czech RSS link absent on the Czech homepage. */
-    test('should include English RSS link on Czech homepage', async ({ page }) => {
-        await page.goto('/cs');
+    test('should include English RSS link on Czech homepage', async ({ page, context }, testInfo) => {
+        await setLocaleCookie(context, testInfo.project.use.baseURL);
+        await page.goto('/');
         await expect(page.locator('html[lang="cs"]')).toHaveCount(1);
 
         const englishRssLink = page.locator('head link[type="application/rss+xml"][hreflang="en"]');
