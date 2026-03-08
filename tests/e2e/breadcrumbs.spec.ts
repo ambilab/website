@@ -35,7 +35,14 @@ async function getBreadcrumbJsonLd(page: Page): Promise<BreadcrumbListSchema | n
 
         if (!content) continue;
 
-        const parsed = JSON.parse(content) as Record<string, unknown>;
+        let parsed: Record<string, unknown>;
+
+        try {
+            parsed = JSON.parse(content) as Record<string, unknown>;
+        } catch (err) {
+            const snippet = content.length > 100 ? `${content.slice(0, 100)}…` : content;
+            throw new Error(`Failed to parse JSON-LD script[${i}]: ${(err as Error).message}\nContent: ${snippet}`);
+        }
 
         if (parsed['@type'] === 'BreadcrumbList') {
             return parsed as unknown as BreadcrumbListSchema;
