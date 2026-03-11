@@ -1,4 +1,4 @@
-import { applySecurityHeaders, generateNonce } from '@config/security';
+import { applySecurityHeaders } from '@config/security';
 import { DEFAULT_LOCALE } from '@i18n/config';
 import { detectLocaleFromHostname, getLocaleFromCookie } from '@i18n/utils';
 import type { Locale } from '@type/locale';
@@ -52,16 +52,11 @@ export const onRequest = defineMiddleware(async (context, next) => {
     }
 
     try {
-        const nonce = generateNonce();
-
-        context.locals.nonce = nonce;
         context.locals.locale = resolveLocale(context.request);
         context.locals.requestId = nanoid();
 
         const response = await next();
 
-        // CSP uses unsafe-inline for scripts since Astro hydration doesn't support nonces.
-        // Nonce is still available in context.locals for inline scripts in templates.
         applySecurityHeaders(response.headers, {
             isDev: import.meta.env.DEV,
         });

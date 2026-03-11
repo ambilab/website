@@ -1,11 +1,3 @@
-export function generateNonce(): string {
-    const array = new Uint8Array(16);
-
-    crypto.getRandomValues(array);
-
-    return btoa(Array.from(array, (byte) => String.fromCharCode(byte)).join(''));
-}
-
 export const STATIC_SECURITY_HEADERS = {
     'X-Content-Type-Options': 'nosniff',
     'X-Frame-Options': 'SAMEORIGIN',
@@ -20,8 +12,7 @@ export interface CSPConfig {
 export function buildCSP(config: CSPConfig): string {
     const { isDev = false } = config;
 
-    // Astro doesn't support CSP nonces for hydration scripts yet, so we use unsafe-inline
-    // for both dev and prod. Nonce generation is still available for inline scripts in templates.
+    // Astro doesn't support CSP nonces for hydration scripts, so we use unsafe-inline for both dev and prod.
     // Plausible Analytics: https://plausible.io is allowed for privacy-friendly analytics tracking
     const scriptSrc = `'self' https://plausible.io 'unsafe-inline'`;
 

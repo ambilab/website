@@ -47,7 +47,6 @@ const readingTime = calculateReadingTime(content);
 const displayTitle = providedDisplayTitle || title.replace(/ ￭ Ambilab$/, '');
 const newsUrl = `${getRoute('news', locale)}`;
 
-const nonce = Astro.locals.nonce;
 const siteDomain = Astro.url.origin;
 const wordCount = calculateWordCount(content);
 const rawImage = seoProps.ogImage || SITE.DEFAULT_OG_IMAGE;
@@ -114,11 +113,7 @@ const articleMetadata = {
     {...articleMetadata}
 >
     <article class="news-post-layout">
-        {
-            FEATURES.structuredData && (
-                <script is:inline type="application/ld+json" nonce={nonce} set:html={jsonLdScript} />
-            )
-        }
+        {FEATURES.structuredData && <script is:inline type="application/ld+json" set:html={jsonLdScript} />}
 
         <header>
             <Button href={newsUrl} variant="secondary" size="sm">&larr; {t.news.title}</Button>

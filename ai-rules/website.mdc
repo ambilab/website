@@ -187,7 +187,7 @@ Note: `z.coerce.date()` automatically converts date strings from frontmatter to 
 
 Configured in `src/config/security.ts` and applied via `src/middleware.ts`:
 
-- Content Security Policy with nonce support
+- Content Security Policy with `unsafe-inline` (Astro hydration limitation)
 - X-Content-Type-Options, X-Frame-Options, X-XSS-Protection
 - Referrer-Policy, Permissions-Policy
 - Environment-aware (relaxed in development)
