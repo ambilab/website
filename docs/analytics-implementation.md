@@ -72,7 +72,7 @@ implementation.
 3. **Graceful Degradation**: Works without environment variables (no errors)
 4. **Production-Only**: Analytics only load in production builds
 5. **Better Performance**: Uses preconnect/dns-prefetch for optimal loading
-6. **CSP Compliant**: Uses nonces for inline scripts
+6. **CSP Compliant**: Inline scripts permitted via `unsafe-inline` (Astro hydration limitation)
 7. **Type-Safe**: Environment variables validated with Zod
 
 ### Over NPM Package Approach
@@ -165,9 +165,8 @@ This works for:
 
 ### Security
 
-Scripts use CSP nonces for security. See the implementation in `src/components/astro/BaseHead.astro`.
-
-The nonce is generated per-request in middleware and ensures only server-rendered scripts can execute.
+Inline scripts are permitted via `unsafe-inline` in the CSP. See `src/config/security.ts` for the policy and
+`src/components/astro/BaseHead.astro` for the script tags.
 
 ### Performance
 
@@ -201,7 +200,7 @@ The nonce is generated per-request in middleware and ensures only server-rendere
 **Verify:**
 
 1. `src/config/security.ts` includes `https://plausible.io`
-2. Scripts use `nonce={nonce}` attribute
+2. Scripts rely on `unsafe-inline` in the CSP defined in `src/config/security.ts` (no nonce needed)
 3. No additional restrictions in Cloudflare
 
 ## Next Steps

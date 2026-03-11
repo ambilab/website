@@ -50,7 +50,7 @@ Content Security Policy (CSP) is configured in `src/config/security.ts`:
 
 - `script-src` allows `https://plausible.io` for loading the tracking script
 - `connect-src` allows `https://plausible.io` for sending analytics events
-- Inline scripts use CSP nonces for additional security
+- Inline scripts are permitted via `unsafe-inline` (Astro hydration limitation)
 
 ### Code Structure
 
@@ -68,8 +68,8 @@ const plausibleScript = isComDomain ? plausibleScriptCom : isCzDomain ? plausibl
     <>
       <link rel="preconnect" href="https://plausible.io" />
       <link rel="dns-prefetch" href="https://plausible.io" />
-      <script is:inline async src={plausibleScript} nonce={nonce} />
-      <script is:inline nonce={nonce}>
+      <script is:inline async src={plausibleScript} />
+      <script is:inline>
         window.plausible=window.plausible||function(){(plausible.q = plausible.q || []).push(arguments)};
         plausible.init=plausible.init||function(i){(plausible.o = i || {})}; plausible.init();
       </script>
@@ -189,7 +189,7 @@ If you see CSP errors in the console:
 1. Verify `src/config/security.ts` includes `https://plausible.io` in:
    - `script-src`
    - `connect-src`
-2. Check that inline scripts use the `nonce={nonce}` attribute
+2. Inline scripts use `unsafe-inline` -- no nonce attribute needed
 
 ### Multiple Domains
 

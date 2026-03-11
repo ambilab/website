@@ -1,4 +1,4 @@
-import { buildCSP, generateNonce, STATIC_SECURITY_HEADERS } from '../config/security';
+import { buildCSP, STATIC_SECURITY_HEADERS } from '../config/security';
 
 interface ValidationResult {
     success: boolean;
@@ -7,37 +7,6 @@ interface ValidationResult {
 
 function createResult(success: boolean, message: string): ValidationResult {
     return { success, message };
-}
-
-function validateNonceGeneration(): ValidationResult[] {
-    const results: ValidationResult[] = [];
-
-    try {
-        const nonce1 = generateNonce();
-        const nonce2 = generateNonce();
-
-        const isUnique = nonce1 !== nonce2;
-
-        results.push(
-            createResult(
-                isUnique,
-                isUnique
-                    ? '[PASS] Nonce generation: Produces unique nonces'
-                    : '[FAIL] Nonce generation: Multiple calls returned the same nonce',
-            ),
-        );
-
-        try {
-            atob(nonce1);
-            results.push(createResult(true, '[PASS] Nonce format: Valid base64 encoding'));
-        } catch {
-            results.push(createResult(false, '[FAIL] Nonce format: Invalid base64 encoding'));
-        }
-    } catch (error) {
-        results.push(createResult(false, `[FAIL] Nonce generation: ${error}`));
-    }
-
-    return results;
 }
 
 function validateProductionCSP(): ValidationResult[] {
@@ -169,12 +138,7 @@ function validateStaticHeaders(): ValidationResult[] {
 }
 
 function validateSecurityHeaders(): ValidationResult[] {
-    return [
-        ...validateNonceGeneration(),
-        ...validateProductionCSP(),
-        ...validateDevelopmentCSP(),
-        ...validateStaticHeaders(),
-    ];
+    return [...validateProductionCSP(), ...validateDevelopmentCSP(), ...validateStaticHeaders()];
 }
 
 console.log('Validating Security Headers Configuration\n');
