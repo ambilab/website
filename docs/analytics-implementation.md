@@ -200,7 +200,7 @@ Inline scripts are permitted via `unsafe-inline` in the CSP. See `src/config/sec
 **Verify:**
 
 1. `src/config/security.ts` includes `https://plausible.io`
-2. Scripts use `nonce={nonce}` attribute
+2. Scripts rely on `unsafe-inline` in the CSP defined in `src/config/security.ts` (no nonce needed)
 3. No additional restrictions in Cloudflare
 
 ## Next Steps
