@@ -6,9 +6,6 @@ import type { Locale } from '@type/locale';
 import type { APIContext } from 'astro';
 
 import { loadLocaleContent, normalizeSlug, sortNewsPostsByDate } from './content-loader';
-import { createLogger } from './logger';
-
-const logger = createLogger({ prefix: 'RSS' });
 
 export function getNewsPostLink(postId: string, locale: Locale): string {
     if (!postId.includes('/')) {
@@ -65,7 +62,7 @@ export async function generateRssFeed(
             },
         });
     } catch (error) {
-        logger.error(`Failed to generate RSS feed for locale ${locale}`, error);
+        console.error(`Failed to generate RSS feed for locale ${locale}`, error);
 
         const t = getTranslation(locale);
 

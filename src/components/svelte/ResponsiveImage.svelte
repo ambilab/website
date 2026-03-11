@@ -1,9 +1,6 @@
 <script lang="ts">
     import { getResponsiveSizes } from '@lib/images';
-    import { createLogger } from '@utils/logger';
     import type { ImageMetadata } from 'astro';
-
-    const logger = createLogger({ prefix: 'ResponsiveImage' });
 
     type Props =
         | {
@@ -41,7 +38,7 @@
         if (import.meta.env?.DEV && typeof src === 'string' && (width == null || height == null)) {
             const truncatedSrc = src.length > 80 ? `${src.slice(0, 77)}...` : src;
 
-            logger.warn(
+            console.warn(
                 `ResponsiveImage: width and height are required when src is a string URL.\n` +
                     `  src: "${truncatedSrc}"\n` +
                     `  width: ${width}\n` +

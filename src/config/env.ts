@@ -5,10 +5,7 @@
  * Provides type-safe access to environment variables.
  */
 
-import { createLogger } from '@utils/logger';
 import { z } from 'zod';
-
-const logger = createLogger({ prefix: 'EnvValidation' });
 
 /**
  * Schema for environment variables.
@@ -98,15 +95,10 @@ export function validateEnv(env?: Record<string, unknown>): ValidatedEnv {
         };
 
         validatedEnv = envSchema.parse(envObject);
-        logger.info('Environment variables validated successfully');
         return validatedEnv;
     } catch (error: unknown) {
         if (error instanceof z.ZodError) {
             const missingVars = error.issues.map((err) => `${err.path.join('.')}: ${err.message}`).join('\n');
-
-            logger.error('Environment variable validation failed', {
-                errors: error.issues,
-            });
 
             throw new Error(
                 `Environment variable validation failed:\n${missingVars}\n\nPlease check your .env file or environment configuration.`,

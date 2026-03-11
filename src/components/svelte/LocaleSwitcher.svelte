@@ -4,10 +4,7 @@
     import { getTranslationLocale, setLocaleCookie } from '@i18n/utils';
     import type { Locale } from '@type/locale';
     import { trackLanguageSwitch } from '@utils/analytics';
-    import { createLogger } from '@utils/logger';
     import { navigate } from 'astro:transitions/client';
-
-    const logger = createLogger({ prefix: 'LocaleSwitcher' });
 
     interface Props {
         currentLocale: Locale;
@@ -39,7 +36,7 @@
 
             await navigate(targetPath);
         } catch (error) {
-            logger.error('Failed to switch locale', error);
+            console.error('Failed to switch locale', error);
         } finally {
             isAnimating = false;
         }

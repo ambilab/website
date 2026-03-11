@@ -3,9 +3,6 @@
     import { getTranslation } from '@i18n/translations';
     import type { Locale } from '@type/locale';
     import { trackNewsletterError, trackNewsletterSignup } from '@utils/analytics';
-    import { createLogger } from '@utils/logger';
-
-    const logger = createLogger({ prefix: 'NewsletterForm' });
 
     interface Props {
         locale?: Locale;
@@ -56,7 +53,7 @@
                 hasValidationError = response.status === 400;
 
                 trackNewsletterError(locale, data.error ?? 'unknown');
-                logger.warn(`Newsletter subscription failed: ${data.error ?? 'Unknown error'}`);
+                console.warn(`Newsletter subscription failed: ${data.error ?? 'Unknown error'}`);
             }
         } catch (error) {
             status = 'error';
@@ -64,7 +61,7 @@
             hasValidationError = false;
 
             trackNewsletterError(locale, 'network_error');
-            logger.error('Failed to submit the newsletter form', error);
+            console.error('Failed to submit the newsletter form', error);
         }
     };
 </script>

@@ -1,6 +1,4 @@
 <script>
-    import { createLogger } from '@utils/logger';
-    import { safeExecute } from '@utils/safe-execute';
     import { smoothScrollTo } from '@utils/scroll';
 
     declare global {
@@ -8,8 +6,6 @@
             __headingLinksInitialized?: boolean;
         }
     }
-
-    const logger = createLogger({ prefix: 'HeadingLinks' });
 
     class HeadingLinksManager {
         private usedIds: Set<string> = new Set();
@@ -63,7 +59,7 @@
                 void smoothScrollTo({ targetId: id })
                     .then(({ success, element }) => {
                         if (!success && element) {
-                            logger.warn(`Smooth scroll failed for #${id}, falling back to immediate scroll`);
+                            console.warn(`Smooth scroll failed for #${id}, falling back to immediate scroll`);
 
                             element.scrollIntoView({ behavior: 'auto' });
                         }
@@ -73,7 +69,7 @@
                         return;
                     })
                     .catch((err) => {
-                        logger.error(`Failed to scroll to #${id}`, err);
+                        console.error(`Failed to scroll to #${id}`, err);
                     });
 
                 // Handle clipboard copy separately.
@@ -113,16 +109,12 @@
                 }
             });
 
-            logger.info(`Processed ${processedCount} new headings (${headings.length} total)`);
+            console.log(`Processed ${processedCount} new headings (${headings.length} total)`);
         }
     }
 
-    safeExecute(
-        () => {
-            if (window.__headingLinksInitialized) {
-                return;
-            }
-
+    try {
+        if (!window.__headingLinksInitialized) {
             window.__headingLinksInitialized = true;
 
             const manager = new HeadingLinksManager();
@@ -134,10 +126,10 @@
             }
 
             document.addEventListener('astro:page-load', manager.refresh);
-        },
-        undefined,
-        'Failed to initialize HeadingLinks',
-    );
+        }
+    } catch (error) {
+        console.error('Failed to initialize HeadingLinks', error);
+    }
 </script>
 
 <style>

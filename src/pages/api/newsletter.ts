@@ -1,8 +1,5 @@
-import { createLogger } from '@utils/logger';
 import type { APIRoute } from 'astro';
 import { getSecret } from 'astro:env/server';
-
-const logger = createLogger({ prefix: 'Newsletter API' });
 
 const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000;
 const RATE_LIMIT_MAX_SUBMISSIONS = 3;
@@ -84,14 +81,14 @@ async function parseButtondownError(response: Response): Promise<ButtondownError
         const errorData = JSON.parse(errorText) as ButtondownErrorResponse;
 
         if (!isAlreadySubscribed(errorData)) {
-            logger.error(
+            console.error(
                 `Buttondown API error: Status ${response.status} ${response.statusText} - ${errorData.detail ?? errorData.code ?? 'Unknown error'}`,
             );
         }
 
         return errorData;
     } catch {
-        logger.error(`Buttondown API error: Status ${response.status} ${response.statusText} (unparseable response)`);
+        console.error(`Buttondown API error: Status ${response.status} ${response.statusText} (unparseable response)`);
 
         return null;
     }
@@ -133,7 +130,7 @@ async function subscribeToButtondown(email: string, apiKey: string): Promise<Sub
         clearTimeout(timeoutId);
 
         if (error instanceof Error && error.name === 'AbortError') {
-            logger.error('Buttondown API request timed out after 10s');
+            console.error('Buttondown API request timed out after 10s');
             return { success: false, error: 'Request timed out. Please try again later.', status: 408 };
         }
 
@@ -165,7 +162,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
         const apiKey = getSecret('BUTTONDOWN_API_KEY');
 
         if (!apiKey) {
-            logger.error('BUTTONDOWN_API_KEY is not configured');
+            console.error('BUTTONDOWN_API_KEY is not configured');
             return jsonResponse({ error: 'Newsletter service is not configured' }, 500);
         }
 
@@ -177,7 +174,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
 
         return jsonResponse({ success: true, message: 'Successfully subscribed!' }, 200);
     } catch (error) {
-        logger.error('Newsletter API error', error);
+        console.error('Newsletter API error', error);
 
         return jsonResponse({ error: 'An unexpected error occurred' }, 500);
     }

@@ -8,12 +8,8 @@
  */
 
 import type { Locale } from '@type/locale';
-import { ContentError } from '@utils/errors';
-import { createLogger } from '@utils/logger';
 import type { CollectionEntry } from 'astro:content';
 import { getCollection } from 'astro:content';
-
-const logger = createLogger({ prefix: 'ContentLoader' });
 
 /**
  * Normalized slug extracted from a content entry ID.
@@ -82,10 +78,6 @@ function createEntryMap<T extends 'news' | 'pages'>(
  * const post = content.newsPostMap.get('hello-world'); // O(1) lookup
  */
 export async function loadLocaleContent(locale: Locale): Promise<LocaleContent> {
-    logger.info(`Loading content collections for locale: ${locale}`);
-
-    const startTime = performance.now();
-
     try {
         // Fetch both collections in parallel (major optimization)
         const [newsPosts, pages] = await Promise.all([
@@ -100,14 +92,6 @@ export async function loadLocaleContent(locale: Locale): Promise<LocaleContent> 
         const newsPostMap = createEntryMap(newsPosts);
         const pageMap = createEntryMap(pages);
 
-        const duration = performance.now() - startTime;
-
-        logger.info(`Loaded ${newsPosts.length} news posts and ${pages.length} pages in ${duration.toFixed(2)}ms`, {
-            locale,
-            newsPostCount: newsPosts.length,
-            pageCount: pages.length,
-        });
-
         return {
             newsPosts,
             pages,
@@ -115,8 +99,8 @@ export async function loadLocaleContent(locale: Locale): Promise<LocaleContent> 
             pageMap,
         };
     } catch (error) {
-        logger.error(`Failed to load content for locale: ${locale}`, error);
-        throw new ContentError(`Failed to load content collections for locale: ${locale}`);
+        console.error(`Failed to load content for locale: ${locale}`, error);
+        throw new Error(`Failed to load content collections for locale: ${locale}`);
     }
 }
 
