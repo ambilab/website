@@ -125,7 +125,7 @@
             };
 
             if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', safeRefresh);
+                document.addEventListener('DOMContentLoaded', safeRefresh, { once: true });
             } else {
                 safeRefresh();
             }
