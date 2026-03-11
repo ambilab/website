@@ -210,14 +210,14 @@ const breadcrumbJsonLd =
                 type="application/rss+xml"
                 hreflang={locale}
                 href={buildLocaleUrl(locale, getRoute('rss', locale))}
-                title={`${SITE.NAME} RSS (${locale === 'en' ? 'English' : 'Čeština'})`}
+                title={`${SITE.NAME} RSS (${locale === 'en' ? 'English' : 'čeština'})`}
             />
             <link
                 rel="alternate"
                 type="application/rss+xml"
                 hreflang={translationLocale}
                 href={buildLocaleUrl(translationLocale, getRoute('rss', translationLocale))}
-                title={`${SITE.NAME} RSS (${locale === 'en' ? 'Čeština' : 'English'})`}
+                title={`${SITE.NAME} RSS (${locale === 'en' ? 'čeština' : 'English'})`}
             />
         </>
     )
