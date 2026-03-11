@@ -200,13 +200,22 @@ const breadcrumbJsonLd =
 <link rel="sitemap" href="/sitemap-index.xml" />
 {
     FEATURES.rssFeed && (
-        <link
-            rel="alternate"
-            type="application/rss+xml"
-            hreflang="en"
-            href={buildLocaleUrl('en', getRoute('rss', 'en'))}
-            title={`${SITE.NAME} RSS (English)`}
-        />
+        <>
+            <link
+                rel="alternate"
+                type="application/rss+xml"
+                hreflang={locale}
+                href={buildLocaleUrl(locale, getRoute('rss', locale))}
+                title={`${SITE.NAME} RSS (${locale === 'en' ? 'English' : 'čeština'})`}
+            />
+            <link
+                rel="alternate"
+                type="application/rss+xml"
+                hreflang={translationLocale}
+                href={buildLocaleUrl(translationLocale, getRoute('rss', translationLocale))}
+                title={`${SITE.NAME} RSS (${locale === 'en' ? 'čeština' : 'English'})`}
+            />
+        </>
     )
 }
 

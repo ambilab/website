@@ -43,12 +43,16 @@ function isErrorPage(pathname: string): boolean {
 }
 
 export const onRequest = defineMiddleware(async (context, next) => {
-    // Redirect both ambilab.com and ambilab.cz to vancura.dev (project hiatus, AL-322)
+    // Redirect ambilab.cz to ambilab.com, preserving path and query (AL-318)
     const url = new URL(context.request.url);
     const host = url.hostname.toLowerCase().replace(/^www\./, '');
 
-    if (host === 'ambilab.cz' || host === 'ambilab.com') {
-        return context.redirect('https://vancura.dev', 302);
+    if (host === 'ambilab.cz') {
+        const target = new URL(context.request.url);
+        target.hostname = 'ambilab.com';
+        const response = context.redirect(target.toString(), 302);
+        response.headers.set('Set-Cookie', 'locale=cs; Path=/; SameSite=Lax');
+        return response;
     }
 
     try {
