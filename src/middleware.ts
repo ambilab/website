@@ -72,7 +72,11 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
         return response;
     } catch (error) {
-        console.error('Middleware error', error);
+        console.error('Middleware error', {
+            url: context.request.url,
+            requestId: context.locals.requestId,
+            error,
+        });
 
         const url = new URL(context.request.url);
         const pathname = url.pathname.replace(/\/$/, '') || '/';

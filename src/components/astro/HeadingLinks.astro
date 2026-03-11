@@ -115,8 +115,6 @@
 
     try {
         if (!window.__headingLinksInitialized) {
-            window.__headingLinksInitialized = true;
-
             const manager = new HeadingLinksManager();
 
             if (document.readyState === 'loading') {
@@ -126,6 +124,7 @@
             }
 
             document.addEventListener('astro:page-load', manager.refresh);
+            window.__headingLinksInitialized = true;
         }
     } catch (error) {
         console.error('Failed to initialize HeadingLinks', error);

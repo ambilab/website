@@ -100,7 +100,7 @@ export async function loadLocaleContent(locale: Locale): Promise<LocaleContent> 
         };
     } catch (error) {
         console.error(`Failed to load content for locale: ${locale}`, error);
-        throw new Error(`Failed to load content collections for locale: ${locale}`);
+        throw new Error(`Failed to load content collections for locale: ${locale}`, { cause: error });
     }
 }
 

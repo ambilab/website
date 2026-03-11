@@ -81,8 +81,9 @@ async function parseButtondownError(response: Response): Promise<ButtondownError
         const errorData = JSON.parse(errorText) as ButtondownErrorResponse;
 
         if (!isAlreadySubscribed(errorData)) {
+            const sanitizedDetail = (errorData.detail ?? '').replace(/[^\s@]+@[^\s@]+\.[^\s@]+/g, '[REDACTED]');
             console.error(
-                `Buttondown API error: Status ${response.status} ${response.statusText} - ${errorData.detail ?? errorData.code ?? 'Unknown error'}`,
+                `Buttondown API error: Status ${response.status} ${response.statusText} - code=${errorData.code ?? 'none'} detail=${sanitizedDetail || 'Unknown error'}`,
             );
         }
 
