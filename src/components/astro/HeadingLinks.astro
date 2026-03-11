@@ -116,14 +116,21 @@
     try {
         if (!window.__headingLinksInitialized) {
             const manager = new HeadingLinksManager();
+            const safeRefresh = () => {
+                try {
+                    manager.refresh();
+                } catch (err) {
+                    console.error('HeadingLinks refresh failed', err);
+                }
+            };
 
             if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', manager.refresh);
+                document.addEventListener('DOMContentLoaded', safeRefresh);
             } else {
-                manager.refresh();
+                safeRefresh();
             }
 
-            document.addEventListener('astro:page-load', manager.refresh);
+            document.addEventListener('astro:page-load', safeRefresh);
             window.__headingLinksInitialized = true;
         }
     } catch (error) {
