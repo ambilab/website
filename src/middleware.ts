@@ -52,9 +52,11 @@ export const onRequest = defineMiddleware(async (context, next) => {
         return response;
     }
 
+    const requestId = nanoid();
+
     try {
         context.locals.locale = resolveLocale(context.request);
-        context.locals.requestId = nanoid();
+        context.locals.requestId = requestId;
 
         const response = await next();
 
@@ -74,7 +76,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
     } catch (error) {
         console.error('Middleware error', {
             url: context.request.url,
-            requestId: context.locals.requestId,
+            requestId,
             error,
         });
 
