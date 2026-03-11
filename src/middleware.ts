@@ -50,7 +50,9 @@ export const onRequest = defineMiddleware(async (context, next) => {
     if (host === 'ambilab.cz') {
         const target = new URL(context.request.url);
         target.hostname = 'ambilab.com';
-        return context.redirect(target.toString(), 302);
+        const response = context.redirect(target.toString(), 302);
+        response.headers.set('Set-Cookie', 'locale=cs; Path=/; SameSite=Lax');
+        return response;
     }
 
     try {
