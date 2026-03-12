@@ -6,8 +6,6 @@ dist/
 pnpm-lock.yaml
 package-lock.json
 
-CLAUDE.md
-.rules
 CHANGELOG.md
 
 *.min.js
