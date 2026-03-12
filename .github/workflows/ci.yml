@@ -38,6 +38,8 @@ jobs:
               - 'tsconfig.json'
               - '*.config.{ts,js,cjs,mjs}'
               - '.github/workflows/**'
+              - '.github/actions/setup/**'
+              - '.node-version'
             docs:
               - '**/*.md'
               - 'docs/**'
