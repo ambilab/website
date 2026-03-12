@@ -27,10 +27,11 @@
     let dialogElement: HTMLDialogElement | undefined = $state();
 
     function openMenu(): void {
-        dialogElement?.show();
+        if (!dialogElement) return;
+        dialogElement.show();
         // Force synchronous reflow so the browser computes the initial clip-path
         // before isOpen triggers the transition. Removing this breaks the animation.
-        void dialogElement?.offsetHeight;
+        void dialogElement.offsetHeight;
         isOpen = true;
         trackMobileMenuOpened();
     }
