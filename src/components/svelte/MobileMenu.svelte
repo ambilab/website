@@ -28,6 +28,8 @@
 
     function openMenu(): void {
         dialogElement?.show();
+        // Force synchronous reflow so the browser computes the initial clip-path
+        // before isOpen triggers the transition. Removing this breaks the animation.
         void dialogElement?.offsetHeight;
         isOpen = true;
         trackMobileMenuOpened();
@@ -37,7 +39,11 @@
         if (!dialogElement) return;
         isOpen = false;
 
+        let timeoutId: ReturnType<typeof setTimeout> | undefined;
+
         const finish = (): void => {
+            if (timeoutId !== undefined) clearTimeout(timeoutId);
+            dialogElement?.removeEventListener('transitionend', finish);
             dialogElement?.close();
         };
 
@@ -45,7 +51,7 @@
             finish();
         } else {
             dialogElement.addEventListener('transitionend', finish, { once: true });
-            setTimeout(finish, 400);
+            timeoutId = setTimeout(finish, 400);
         }
     }
 
@@ -63,11 +69,6 @@
         if (target.closest('a')) {
             closeMenu();
         }
-    }
-
-    function handleDialogCancel(event: Event): void {
-        event.preventDefault();
-        closeMenu();
     }
 
     $effect(() => {
@@ -102,6 +103,9 @@
         return undefined;
     });
 
+    // Custom focus trap that includes menuButtonElement (outside the dialog) in the
+    // tab cycle, so users can keyboard-close via the toggle button. Native showModal()
+    // focus trapping would exclude it, which is why we use show() + this manual trap.
     $effect(() => {
         if (isOpen && dialogElement && menuButtonElement) {
             const focusableSelector =
@@ -183,7 +187,6 @@
         class="menu-panel"
         class:is-open={isOpen}
         onclick={handleMenuClick}
-        oncancel={handleDialogCancel}
         aria-hidden={!isOpen}
         inert={!isOpen || undefined}
     >
