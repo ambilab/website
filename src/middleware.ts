@@ -2,11 +2,8 @@ import { applySecurityHeaders } from '@config/security';
 import { DEFAULT_LOCALE } from '@i18n/config';
 import { detectLocaleFromHostname, getLocaleFromCookie } from '@i18n/utils';
 import type { Locale } from '@type/locale';
-import { createLogger } from '@utils/logger';
 import { defineMiddleware } from 'astro:middleware';
 import { nanoid } from 'nanoid';
-
-const logger = createLogger({ prefix: 'Middleware' });
 
 const ERROR_STATUS_MAP: Record<string, number> = {
     '/404': 404,
@@ -55,9 +52,11 @@ export const onRequest = defineMiddleware(async (context, next) => {
         return response;
     }
 
+    const requestId = nanoid();
+
     try {
         context.locals.locale = resolveLocale(context.request);
-        context.locals.requestId = nanoid();
+        context.locals.requestId = requestId;
 
         const response = await next();
 
@@ -75,7 +74,11 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
         return response;
     } catch (error) {
-        logger.error('Middleware error', error);
+        console.error('Middleware error', {
+            url: context.request.url,
+            requestId,
+            error,
+        });
 
         const url = new URL(context.request.url);
         const pathname = url.pathname.replace(/\/$/, '') || '/';

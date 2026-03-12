@@ -14,9 +14,6 @@ import type { CollectionEntry } from 'astro:content';
 import type { LocaleContent } from './content-loader';
 import { loadLocaleContent, normalizeSlug } from './content-loader';
 import { buildLocaleUrl } from './hreflang-urls';
-import { createLogger } from './logger';
-
-const logger = createLogger({ prefix: 'Sitemap' });
 
 // #region XML Helpers
 
@@ -264,8 +261,6 @@ function generateNewsIndexEntry(
  * @returns Array of all sitemap entries for the locale
  */
 export async function generateLocaleSitemapEntries(locale: Locale): Promise<SitemapEntry[]> {
-    logger.info(`Generating sitemap entries for locale: ${locale}`);
-
     const oppositeLocale = getTranslationLocale(locale);
 
     const emptyContent: LocaleContent = {
@@ -283,7 +278,7 @@ export async function generateLocaleSitemapEntries(locale: Locale): Promise<Site
     ]);
 
     if (primaryResult.status === 'rejected') {
-        logger.error(`Failed to load primary content for locale: ${locale}`, primaryResult.reason);
+        console.error(`Failed to load primary content for locale: ${locale}`, primaryResult.reason);
         throw primaryResult.reason as Error;
     }
 
@@ -292,7 +287,7 @@ export async function generateLocaleSitemapEntries(locale: Locale): Promise<Site
     let oppositeContentAvailable: boolean;
 
     if (oppositeResult.status === 'rejected') {
-        logger.warn(
+        console.warn(
             `Failed to load opposite locale (${oppositeLocale}) content; alternates will be omitted`,
             oppositeResult.reason,
         );
@@ -314,8 +309,6 @@ export async function generateLocaleSitemapEntries(locale: Locale): Promise<Site
     }
 
     entries.push(...generateNewsEntries(content.newsPosts, locale, oppositeContent, oppositeLocale));
-
-    logger.info(`Generated ${entries.length} sitemap entries for locale: ${locale}`);
 
     return entries;
 }

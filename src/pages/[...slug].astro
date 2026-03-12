@@ -7,10 +7,7 @@ import { DEFAULT_LOCALE } from '@i18n/config';
 import { getTranslation } from '@i18n/translations';
 import type { IBreadcrumbItem } from '@type/seo';
 import { resolveContent } from '@utils/content-resolver';
-import { createLogger } from '@utils/logger';
 import { parseRoute } from '@utils/route-parser';
-
-const logger = createLogger({ prefix: '[...slug]' });
 const detectedLocale = Astro.locals.locale ?? DEFAULT_LOCALE;
 const route = parseRoute(Astro.params.slug);
 
@@ -18,16 +15,13 @@ let resolvedContent;
 try {
     resolvedContent = await resolveContent(route, detectedLocale, Astro.url.origin);
 } catch (err) {
-    logger.errorWithContext(
-        'Failed to resolve content',
-        {
-            requestId: Astro.locals.requestId,
-            url: Astro.url.href,
-            locale: detectedLocale,
-            route: route.requestPath,
-        },
-        err,
-    );
+    console.error('Failed to resolve content', {
+        requestId: Astro.locals.requestId,
+        url: Astro.url.href,
+        locale: detectedLocale,
+        route: route.requestPath,
+        error: err,
+    });
     Astro.response.status = 500;
     return Astro.rewrite('/500');
 }

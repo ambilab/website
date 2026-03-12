@@ -1,8 +1,5 @@
 <script lang="ts">
-    import { createLogger } from '@utils/logger';
     import { onMount } from 'svelte';
-
-    const logger = createLogger({ prefix: 'RhythmDebug' });
 
     let active = $state(false);
 
@@ -13,7 +10,7 @@
             document.body.classList.toggle('debug-rhythm', active);
         }
 
-        logger.info(`Rhythm grid ${active ? 'enabled' : 'disabled'} (Ctrl+Shift+G)`);
+        console.log(`Rhythm grid ${active ? 'enabled' : 'disabled'} (Ctrl+Shift+G)`);
     };
 
     const handleKeydown = (event: KeyboardEvent) => {

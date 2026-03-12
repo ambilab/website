@@ -2,11 +2,8 @@ import { getRoute } from '@config/routes';
 import { getTranslationLocale } from '@i18n/utils';
 import type { Locale } from '@type/locale';
 import { findNewsPost, findPage, loadLocaleContent, normalizeSlug, sortNewsPostsByDate } from '@utils/content-loader';
-import { createLogger } from '@utils/logger';
 import type { ParsedRoute } from '@utils/route-parser';
 import type { CollectionEntry } from 'astro:content';
-
-const logger = createLogger({ prefix: 'ContentResolver' });
 
 type RenderedContent<T extends 'news' | 'pages'> = Awaited<ReturnType<CollectionEntry<T>['render']>>['Content'];
 
@@ -162,7 +159,7 @@ export async function resolveContent(
 
         return await resolvePage(route.slug, locale, siteUrl);
     } catch (error) {
-        logger.error(`Failed to resolve content for path: ${route.requestPath}`, error);
+        console.error(`Failed to resolve content for path: ${route.requestPath}`, error);
         throw error;
     }
 }
