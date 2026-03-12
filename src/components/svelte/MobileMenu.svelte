@@ -45,6 +45,7 @@
             if (timeoutId !== undefined) clearTimeout(timeoutId);
             dialogElement?.removeEventListener('transitionend', finish);
             dialogElement?.close();
+            menuButtonElement?.focus({ preventScroll: true });
         };
 
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
