@@ -28,7 +28,7 @@
 
     // Hoisted pending-close state so openMenu() can cancel a stale deferred close.
     let pendingCloseTimeoutId: ReturnType<typeof setTimeout> | undefined;
-    let pendingFinish: (() => void) | undefined;
+    let pendingFinish: ((event: TransitionEvent) => void) | undefined;
 
     function cancelPendingClose(): void {
         if (pendingCloseTimeoutId !== undefined) {
@@ -52,25 +52,36 @@
         trackMobileMenuOpened();
     }
 
-    function closeMenu(): void {
+    function closeMenu(skipFocusRestore = false): void {
         if (!dialogElement) return;
         cancelPendingClose();
         isOpen = false;
 
-        const finish = (): void => {
-            pendingCloseTimeoutId = undefined;
-            pendingFinish = undefined;
-            dialogElement?.removeEventListener('transitionend', finish);
-            dialogElement?.close();
-            menuButtonElement?.focus({ preventScroll: true });
+        const transitionEndHandler = (event: TransitionEvent): void => {
+            if (event.target === dialogElement && event.propertyName === 'clip-path') {
+                finish();
+            }
         };
 
-        pendingFinish = finish;
+        const finish = (): void => {
+            if (pendingCloseTimeoutId !== undefined) {
+                clearTimeout(pendingCloseTimeoutId);
+                pendingCloseTimeoutId = undefined;
+            }
+            dialogElement?.removeEventListener('transitionend', transitionEndHandler);
+            pendingFinish = undefined;
+            dialogElement?.close();
+            if (!skipFocusRestore) {
+                menuButtonElement?.focus({ preventScroll: true });
+            }
+        };
+
+        pendingFinish = transitionEndHandler;
 
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
             finish();
         } else {
-            dialogElement.addEventListener('transitionend', finish, { once: true });
+            dialogElement.addEventListener('transitionend', transitionEndHandler);
             pendingCloseTimeoutId = setTimeout(finish, 400);
         }
     }
@@ -87,7 +98,7 @@
         const target = event.target as HTMLElement;
 
         if (target.closest('a')) {
-            closeMenu();
+            closeMenu(true);
         }
     }
 
