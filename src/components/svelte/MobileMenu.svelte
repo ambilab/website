@@ -225,7 +225,7 @@
 
         @apply pointer-events-none fixed inset-x-0 bottom-0 top-12 opacity-0;
         @apply motion-safe:duration-333 motion-safe:transition-opacity motion-safe:ease-in md:hidden;
-        @apply bg-[var(--color-menu-dimmer-bg)];
+        @apply bg-(--color-menu-dimmer-bg);
 
         &.is-open {
             @apply pointer-events-auto opacity-100;
