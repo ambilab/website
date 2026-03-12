@@ -26,8 +26,24 @@
     let menuButtonElement: HTMLButtonElement | undefined = $state();
     let dialogElement: HTMLDialogElement | undefined = $state();
 
+    // Hoisted pending-close state so openMenu() can cancel a stale deferred close.
+    let pendingCloseTimeoutId: ReturnType<typeof setTimeout> | undefined;
+    let pendingFinish: (() => void) | undefined;
+
+    function cancelPendingClose(): void {
+        if (pendingCloseTimeoutId !== undefined) {
+            clearTimeout(pendingCloseTimeoutId);
+            pendingCloseTimeoutId = undefined;
+        }
+        if (pendingFinish) {
+            dialogElement?.removeEventListener('transitionend', pendingFinish);
+            pendingFinish = undefined;
+        }
+    }
+
     function openMenu(): void {
         if (!dialogElement) return;
+        cancelPendingClose();
         dialogElement.show();
         // Force synchronous reflow so the browser computes the initial clip-path
         // before isOpen triggers the transition. Removing this breaks the animation.
@@ -38,22 +54,24 @@
 
     function closeMenu(): void {
         if (!dialogElement) return;
+        cancelPendingClose();
         isOpen = false;
 
-        let timeoutId: ReturnType<typeof setTimeout> | undefined;
-
         const finish = (): void => {
-            if (timeoutId !== undefined) clearTimeout(timeoutId);
+            pendingCloseTimeoutId = undefined;
+            pendingFinish = undefined;
             dialogElement?.removeEventListener('transitionend', finish);
             dialogElement?.close();
             menuButtonElement?.focus({ preventScroll: true });
         };
 
+        pendingFinish = finish;
+
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
             finish();
         } else {
             dialogElement.addEventListener('transitionend', finish, { once: true });
-            timeoutId = setTimeout(finish, 400);
+            pendingCloseTimeoutId = setTimeout(finish, 400);
         }
     }
 
