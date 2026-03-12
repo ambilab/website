@@ -98,6 +98,15 @@ jobs:
       - name: Setup
         uses: ./.github/actions/setup
 
+      - name: Set Plausible env
+        run: |
+          if [ -n "${{ secrets.PUBLIC_PLAUSIBLE_SCRIPT_COM }}" ]; then
+            echo "PUBLIC_PLAUSIBLE_SCRIPT_COM=${{ secrets.PUBLIC_PLAUSIBLE_SCRIPT_COM }}" >> "$GITHUB_ENV"
+          fi
+          if [ -n "${{ secrets.PUBLIC_PLAUSIBLE_SCRIPT_CZ }}" ]; then
+            echo "PUBLIC_PLAUSIBLE_SCRIPT_CZ=${{ secrets.PUBLIC_PLAUSIBLE_SCRIPT_CZ }}" >> "$GITHUB_ENV"
+          fi
+
       - name: Build project
         run: pnpm build
         env:
@@ -114,3 +123,25 @@ jobs:
           path: dist/
           retention-days: 7
           compression-level: 9
+
+  deploy:
+    name: Deploy to Cloudflare Pages
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    permissions:
+      contents: read
+      deployments: write
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v8
+        with:
+          name: dist
+          path: dist/
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy dist/ --project-name=ambilab-website
