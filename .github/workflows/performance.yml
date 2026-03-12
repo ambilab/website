@@ -1,13 +1,6 @@
 name: Performance Testing
 
 on:
-  pull_request:
-    branches:
-      - main
-      - develop
-  push:
-    branches:
-      - main
   workflow_dispatch:
 
 concurrency:
@@ -62,70 +55,3 @@ jobs:
           name: lighthouse-results
           path: .lighthouseci/
           retention-days: 30
-
-      - name: Comment PR with results
-        if: github.event_name == 'pull_request'
-        uses: actions/github-script@v8
-        with:
-          script: |
-            const fs = require('fs');
-            const path = require('path');
-
-            // Read the Lighthouse results
-            const lighthouseDir = '.lighthouseci';
-            if (!fs.existsSync(lighthouseDir)) {
-              console.log('No Lighthouse results found');
-              return;
-            }
-
-            // Find the manifest file
-            const manifestPath = path.join(lighthouseDir, 'manifest.json');
-            if (!fs.existsSync(manifestPath)) {
-              console.log('No manifest.json found');
-              return;
-            }
-
-            // Parse and validate manifest structure
-            const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
-
-            if (!Array.isArray(manifest) || manifest.length === 0) {
-              console.log('Manifest is empty or invalid');
-              return;
-            }
-
-            const results = manifest[0];
-
-            if (!results || !results.summary) {
-              console.log('No results summary found');
-              return;
-            }
-
-            // Build score table with safe property access
-            const scores = {
-              performance: results.summary.performance ?? 0,
-              accessibility: results.summary.accessibility ?? 0,
-              'best-practices': results.summary['best-practices'] ?? 0,
-              seo: results.summary.seo ?? 0,
-            };
-
-            // Format the comment
-            const comment = `## Lighthouse Performance Report
-
-            | Category | Score |
-            |----------|-------|
-            | Performance | ${Math.round(scores.performance * 100)}% |
-            | Accessibility | ${Math.round(scores.accessibility * 100)}% |
-            | Best Practices | ${Math.round(scores['best-practices'] * 100)}% |
-            | SEO | ${Math.round(scores.seo * 100)}% |
-
-            [View detailed report](${results.url})
-
-            *Tested on commit ${context.sha.substring(0, 7)}*`;
-
-            // Post the comment
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: comment
-            });
