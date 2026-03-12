@@ -100,16 +100,7 @@ jobs:
         run: pnpm typecheck
 
       - name: Run tests
-        run: pnpm test:coverage
-
-      - name: Upload coverage reports
-        uses: codecov/codecov-action@v5
-        if: always()
-        with:
-          files: ./coverage/coverage-final.json
-          flags: unittests
-          name: codecov-umbrella
-        continue-on-error: true
+        run: pnpm test:run
 
       - name: Run spell check
         run: pnpm spellcheck
