@@ -8,7 +8,7 @@ Create a pull request with automatic quality checks and proper commit message.
 
 ## Usage
 
-```cursor
+```text
 /pr Add newsletter subscription feature
 ```
 
@@ -35,7 +35,7 @@ The description after `/pr` becomes the commit subject.
    - Generate conventional commit message:
      - Format: `<type>(<scope>): <description>`
      - Types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `chore`
-     - Scopes: `api`, `ci`, `components`, `docs`, `i18n`, `news`, `security`, `seo`, `test`
+     - Scopes: `api`, `ci`, `components`, `docs`, `i18n`, `news`, `security`, `seo`, `tests`
    - Include trailer: `Co-Authored-By: Claude <noreply@anthropic.com>`
 
 5. **Push and create PR**

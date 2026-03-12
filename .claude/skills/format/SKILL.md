@@ -8,7 +8,7 @@ Format all code files using the project's formatters and verify results.
 
 ## Usage
 
-```cursor
+```text
 /format
 ```
 
@@ -32,9 +32,9 @@ Format all code files using the project's formatters and verify results.
 | File Types                         | Tool     | Config               |
 | ---------------------------------- | -------- | -------------------- |
 | `.ts`, `.tsx`, `.js`, `.json`      | Biome    | `biome.json`         |
+| `.css`                             | Biome    | `biome.json`         |
 | `.astro`, `.svelte`, `.md`, `.mdx` | Prettier | `prettier.config.js` |
-| `.css`                             | Prettier | `prettier.config.js` |
-| `.yaml`, `.yml`                    | Prettier | `prettier.config.js` |
+| `.svg`, `.yaml`, `.yml`            | Prettier | `prettier.config.js` |
 
 ## Formatting Rules
 

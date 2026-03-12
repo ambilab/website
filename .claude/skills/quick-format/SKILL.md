@@ -9,7 +9,7 @@ verification steps for maximum speed.
 
 ## Usage
 
-```cursor
+```text
 /quick-format
 ```
 
