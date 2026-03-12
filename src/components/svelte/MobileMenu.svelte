@@ -2,7 +2,6 @@
     import { getTranslation } from '@i18n/translations';
     import type { Locale } from '@type/locale';
     import { trackMobileMenuOpened } from '@utils/analytics';
-    import { debounce } from '@utils/debounce';
     import type { Snippet } from 'svelte';
 
     interface Props {
@@ -23,76 +22,88 @@
         'aria-hidden': 'true',
     } as const;
 
-    const focusableSelector =
-        'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
-
     let isOpen = $state(false);
-
-    // Keyboard mode is enabled when the menu is open and the user is using the keyboard.
-    let isKeyboardMode = $state(false);
-
     let menuButtonElement: HTMLButtonElement | undefined = $state();
-    let menuPanelElement: HTMLDivElement | undefined = $state();
-    let menuContainerElement: HTMLDivElement | undefined = $state();
+    let dialogElement: HTMLDialogElement | undefined = $state();
 
-    function getFocusableElements(): HTMLElement[] {
-        if (!menuPanelElement || !menuButtonElement) {
-            return [];
+    // Hoisted pending-close state so openMenu() can cancel a stale deferred close.
+    let pendingCloseTimeoutId: ReturnType<typeof setTimeout> | undefined;
+    let pendingFinish: ((event: TransitionEvent) => void) | undefined;
+
+    function cancelPendingClose(): void {
+        if (pendingCloseTimeoutId !== undefined) {
+            clearTimeout(pendingCloseTimeoutId);
+            pendingCloseTimeoutId = undefined;
         }
+        if (pendingFinish) {
+            dialogElement?.removeEventListener('transitionend', pendingFinish);
+            pendingFinish = undefined;
+        }
+    }
 
-        return [menuButtonElement, ...Array.from(menuPanelElement.querySelectorAll<HTMLElement>(focusableSelector))];
+    function openMenu(): void {
+        if (!dialogElement) return;
+        cancelPendingClose();
+        dialogElement.show();
+        // Force synchronous reflow so the browser computes the initial clip-path
+        // before isOpen triggers the transition. Removing this breaks the animation.
+        void dialogElement.offsetHeight;
+        isOpen = true;
+        trackMobileMenuOpened();
+    }
+
+    function closeMenu(skipFocusRestore = false): void {
+        if (!dialogElement) return;
+        cancelPendingClose();
+        isOpen = false;
+
+        const transitionEndHandler = (event: TransitionEvent): void => {
+            if (event.target === dialogElement && event.propertyName === 'clip-path') {
+                finish();
+            }
+        };
+
+        const finish = (): void => {
+            if (pendingCloseTimeoutId !== undefined) {
+                clearTimeout(pendingCloseTimeoutId);
+                pendingCloseTimeoutId = undefined;
+            }
+            dialogElement?.removeEventListener('transitionend', transitionEndHandler);
+            pendingFinish = undefined;
+            dialogElement?.close();
+            if (!skipFocusRestore) {
+                menuButtonElement?.focus({ preventScroll: true });
+            }
+        };
+
+        pendingFinish = transitionEndHandler;
+
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            finish();
+        } else {
+            dialogElement.addEventListener('transitionend', transitionEndHandler);
+            pendingCloseTimeoutId = setTimeout(finish, 400);
+        }
     }
 
     function toggleMenu(): void {
-        isOpen = !isOpen;
-
         if (isOpen) {
-            trackMobileMenuOpened();
+            closeMenu();
+        } else {
+            openMenu();
         }
-    }
-
-    function closeMenu(): void {
-        isOpen = false;
     }
 
     function handleMenuClick(event: MouseEvent): void {
         const target = event.target as HTMLElement;
 
         if (target.closest('a')) {
-            closeMenu();
+            closeMenu(true);
         }
     }
-
-    function disableKeyboardMode(): void {
-        // Disables keyboard focus mode when mouse interaction is detected.
-        isKeyboardMode = false;
-    }
-
-    function blurActiveIfInside(container: HTMLElement | undefined): void {
-        if (container) {
-            const activeElement = document.activeElement as HTMLElement;
-
-            if (container.contains(activeElement)) {
-                // Blurs the active element if it's within the specified container.
-                activeElement.blur();
-            }
-        }
-    }
-
-    $effect(() => {
-        // Updates keyboard mode state when menu opens/closes or menu button element changes.
-        // Keyboard mode is active when the menu is open and the menu button has focus.
-        if (typeof document !== 'undefined' && menuButtonElement) {
-            isKeyboardMode = isOpen && document.activeElement === menuButtonElement;
-        }
-
-        return undefined;
-    });
 
     $effect(() => {
         if (isOpen) {
-            // Prevents body scrolling when menu is open.
-            // Restores original overflow value on cleanup.
             const originalOverflow = document.body.style.overflow;
 
             document.body.style.overflow = 'hidden';
@@ -107,7 +118,6 @@
 
     $effect(() => {
         if (isOpen) {
-            // Closes menu when Escape key is pressed.
             const handleEscape = (event: KeyboardEvent): void => {
                 if (event.key === 'Escape') {
                     closeMenu();
@@ -124,39 +134,34 @@
         return undefined;
     });
 
+    // Custom focus trap that includes menuButtonElement (outside the dialog) in the
+    // tab cycle, so users can keyboard-close via the toggle button. Native showModal()
+    // focus trapping would exclude it, which is why we use show() + this manual trap.
     $effect(() => {
-        if (isOpen && menuPanelElement) {
-            // Implements focus trap within the mobile menu.
-            // When Tab is pressed, cycles focus between menu button and panel items.
+        if (isOpen && dialogElement && menuButtonElement) {
+            const focusableSelector =
+                'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
             const handleFocusTrap = (event: KeyboardEvent): void => {
-                if (event.key !== 'Tab') {
-                    // If the key pressed is not Tab, do nothing.
-                    return;
-                }
+                if (event.key !== 'Tab') return;
 
-                isKeyboardMode = true;
+                const focusable = [
+                    menuButtonElement!,
+                    ...Array.from(dialogElement!.querySelectorAll<HTMLElement>(focusableSelector)),
+                ];
 
-                const focusableElements = getFocusableElements();
+                if (focusable.length === 0) return;
 
-                if (focusableElements.length === 0) {
-                    // If there are no focusable elements, do nothing.
-                    return;
-                }
+                const first = focusable[0]!;
+                const last = focusable[focusable.length - 1]!;
+                const active = document.activeElement as HTMLElement;
 
-                const firstElement = focusableElements[0]!;
-                const lastElement = focusableElements[focusableElements.length - 1]!;
-                const activeElement = document.activeElement as HTMLElement;
-
-                if (event.shiftKey && activeElement === firstElement) {
-                    // If the key pressed is Shift + Tab and the active element is the first element,
-                    // prevent default behavior and focus the last element.
+                if (event.shiftKey && active === first) {
                     event.preventDefault();
-                    lastElement.focus();
-                } else if (!event.shiftKey && activeElement === lastElement) {
-                    // If the key pressed is Tab and the active element is the last element,
-                    // prevent default behavior and focus the first element.
+                    last.focus();
+                } else if (!event.shiftKey && active === last) {
                     event.preventDefault();
-                    firstElement.focus();
+                    first.focus();
                 }
             };
 
@@ -171,138 +176,23 @@
     });
 
     $effect(() => {
-        if (isOpen && menuPanelElement) {
-            // Manages focus behavior for mouse interactions with menu panel items.
-            // - On mouseenter: focuses the element (unless in keyboard mode)
-            // - On mousemove: disables keyboard mode to allow hover styles
-            const focusableElements = Array.from(menuPanelElement.querySelectorAll<HTMLElement>(focusableSelector));
+        const mql = window.matchMedia('(min-width: 768px)');
 
-            const handleMouseEnter = (element: HTMLElement) => (): void => {
-                if (!isKeyboardMode) {
-                    element.focus();
-                }
-            };
-
-            const handlers = focusableElements.map((element) => {
-                const enterHandler = handleMouseEnter(element);
-
-                element.addEventListener('mouseenter', enterHandler);
-                element.addEventListener('mousemove', disableKeyboardMode);
-
-                return { element, enterHandler };
-            });
-
-            return () => {
-                handlers.forEach(({ element, enterHandler }) => {
-                    element.removeEventListener('mouseenter', enterHandler);
-                    element.removeEventListener('mousemove', disableKeyboardMode);
-                });
-            };
-        }
-
-        return undefined;
-    });
-
-    $effect(() => {
-        if (isOpen && menuButtonElement && menuPanelElement) {
-            // Manages focus behavior when hovering over the menu button while menu is open.
-            // - On mouseenter: blurs any focused element inside the panel
-            // - On mouseleave: blurs the button itself if focused
-            const handleButtonEnter = (): void => {
-                disableKeyboardMode();
-                blurActiveIfInside(menuPanelElement);
-            };
-
-            const handleButtonLeave = (): void => {
-                disableKeyboardMode();
-
-                if (menuButtonElement && document.activeElement === menuButtonElement) {
-                    menuButtonElement.blur();
-                }
-            };
-
-            menuButtonElement.addEventListener('mouseenter', handleButtonEnter);
-            menuButtonElement.addEventListener('mouseleave', handleButtonLeave);
-
-            return () => {
-                if (menuButtonElement) {
-                    menuButtonElement.removeEventListener('mouseenter', handleButtonEnter);
-                    menuButtonElement.removeEventListener('mouseleave', handleButtonLeave);
-                }
-            };
-        }
-
-        return undefined;
-    });
-
-    $effect(() => {
-        if (isOpen && menuPanelElement) {
-            // Blurs focused elements when mouse leaves the menu panel area.
-            const handleMenuLeave = (): void => {
-                disableKeyboardMode();
-
-                const activeElement = document.activeElement as HTMLElement;
-
-                if (
-                    menuPanelElement &&
-                    (menuPanelElement.contains(activeElement) || activeElement === menuButtonElement)
-                ) {
-                    activeElement.blur();
-                }
-            };
-
-            menuPanelElement.addEventListener('mouseleave', handleMenuLeave);
-
-            return () => {
-                if (menuPanelElement) {
-                    menuPanelElement.removeEventListener('mouseleave', handleMenuLeave);
-                }
-            };
-        }
-
-        return undefined;
-    });
-
-    $effect(() => {
-        if (!isOpen && menuContainerElement && menuButtonElement) {
-            // Blurs the menu button when mouse leaves the container while menu is closed.
-            const handleContainerLeave = (): void => {
-                if (menuButtonElement && document.activeElement === menuButtonElement) {
-                    menuButtonElement.blur();
-                }
-            };
-
-            menuContainerElement.addEventListener('mouseleave', handleContainerLeave);
-
-            return () => {
-                if (menuContainerElement) {
-                    menuContainerElement.removeEventListener('mouseleave', handleContainerLeave);
-                }
-            };
-        }
-
-        return undefined;
-    });
-
-    $effect(() => {
-        // Closes menu when window is resized.
-        // Debounced to avoid excessive calls during resize operations.
-        const handleResize = debounce(() => {
-            if (isOpen) {
+        const handler = (e: MediaQueryListEvent): void => {
+            if (e.matches && isOpen) {
                 closeMenu();
             }
-        }, 150);
+        };
 
-        window.addEventListener('resize', handleResize);
+        mql.addEventListener('change', handler);
 
         return () => {
-            window.removeEventListener('resize', handleResize);
-            handleResize.cancel();
+            mql.removeEventListener('change', handler);
         };
     });
 </script>
 
-<div bind:this={menuContainerElement} class="mobile-menu-container">
+<div class="mobile-menu-container">
     <button
         bind:this={menuButtonElement}
         type="button"
@@ -320,24 +210,23 @@
         </svg>
     </button>
 
-    <div class="menu-dimmer" class:is-open={isOpen} onclick={closeMenu} aria-hidden={!isOpen} inert={!isOpen}></div>
+    <div class="menu-dimmer" class:is-open={isOpen} onclick={closeMenu} aria-hidden="true"></div>
 
-    <div
-        bind:this={menuPanelElement}
+    <dialog
+        bind:this={dialogElement}
         id="mobile-menu"
         class="menu-panel"
         class:is-open={isOpen}
-        class:keyboard-mode={isKeyboardMode}
         onclick={handleMenuClick}
         aria-hidden={!isOpen}
-        inert={!isOpen}
+        inert={!isOpen || undefined}
     >
         <nav aria-label={t.a11y.mainNavigation}>
             {#if children}
                 {@render children()}
             {/if}
         </nav>
-    </div>
+    </dialog>
 </div>
 
 <style>
@@ -366,8 +255,7 @@
 
         @apply pointer-events-none fixed inset-x-0 bottom-0 top-12 opacity-0;
         @apply motion-safe:duration-333 motion-safe:transition-opacity motion-safe:ease-in md:hidden;
-
-        background-color: var(--color-menu-dimmer-bg);
+        @apply bg-(--color-menu-dimmer-bg);
 
         &.is-open {
             @apply pointer-events-auto opacity-100;
@@ -382,24 +270,17 @@
     }
 
     .menu-panel {
+        @apply m-0 max-h-none max-w-none border-none bg-transparent p-0;
         @apply pointer-events-none fixed left-1/2 top-0 z-mobile-menu w-screen -translate-x-1/2 pt-12;
         @apply bg-page-bg;
         @apply motion-safe:duration-333 motion-safe:transition-[clip-path] motion-safe:ease-in;
         @apply md:hidden;
-
-        clip-path: inset(36px 0 100% 0);
+        @apply [clip-path:inset(36px_0_100%_0)];
 
         &.is-open {
             @apply pointer-events-auto translate-y-0;
             @apply motion-safe:ease-out;
-
-            clip-path: inset(36px 0 0 0);
+            @apply [clip-path:inset(36px_0_0_0)];
         }
-    }
-
-    .keyboard-mode :global(a:hover),
-    .keyboard-mode :global(button:hover) {
-        background-color: transparent !important;
-        color: inherit !important;
     }
 </style>

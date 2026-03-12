@@ -89,22 +89,22 @@
 
     const variantClasses = $derived({
         primary: [
-            'bg-[var(--color-button-primary-bg)]',
-            '[&:hover,&:focus]:bg-[var(--color-button-primary-bg-hover)]',
-            'text-[var(--color-button-primary-text)]',
-            '[&:hover,&:focus]:text-[var(--color-button-primary-text-hover)]',
+            'bg-(--color-button-primary-bg)',
+            '[&:hover,&:focus]:bg-(--color-button-primary-bg-hover)',
+            'text-(--color-button-primary-text)',
+            '[&:hover,&:focus]:text-(--color-button-primary-text-hover)',
         ].join(' '),
         secondary: [
-            'bg-[var(--color-button-secondary-bg)]',
-            '[&:hover,&:focus]:bg-[var(--color-button-secondary-bg-hover)]',
-            'text-[var(--color-button-secondary-text)]',
-            '[&:hover,&:focus]:text-[var(--color-button-secondary-text-hover)]',
+            'bg-(--color-button-secondary-bg)',
+            '[&:hover,&:focus]:bg-(--color-button-secondary-bg-hover)',
+            'text-(--color-button-secondary-text)',
+            '[&:hover,&:focus]:text-(--color-button-secondary-text-hover)',
         ].join(' '),
         outline: [
-            'bg-[var(--color-button-outline-bg)]',
-            '[&:hover,&:focus]:bg-[var(--color-button-outline-bg-hover)]',
-            'text-[var(--color-button-outline-text)]',
-            '[&:hover,&:focus]:text-[var(--color-button-outline-text-hover)]',
+            'bg-(--color-button-outline-bg)',
+            '[&:hover,&:focus]:bg-(--color-button-outline-bg-hover)',
+            'text-(--color-button-outline-text)',
+            '[&:hover,&:focus]:text-(--color-button-outline-text-hover)',
             outlineBorder,
         ].join(' '),
     });
