@@ -60,7 +60,7 @@
         @apply px-2 py-[6px];
         @apply text-text-secondary;
         @apply hover:bg-active hover:text-text-primary;
-        @apply focus:bg-active focus:text-text-primary;
+        @apply focus-visible:bg-active focus-visible:text-text-primary;
         @apply disabled:opacity-50;
     }
 </style>
