@@ -26,8 +26,8 @@ const { code, title, description, homeButtonText, homeLink = '/', locale, reques
 >
     <div class="error-page">
         <h1>
-            <em class="code">{code}</em>
-            <em class="description">{description}</em>
+            <span class="code">{code}</span>
+            <span class="description">{description}</span>
         </h1>
 
         {
@@ -51,8 +51,12 @@ const { code, title, description, homeButtonText, homeLink = '/', locale, reques
         @apply md:max-w-screen-md md:py-[70px];
         @apply lg:max-w-[928px];
 
-        & h1 em.code {
-            @apply text-rose-800 dark:text-rose-500;
+        & h1 span {
+            @apply block;
+
+            &.code {
+                @apply text-rose-800 dark:text-rose-500;
+            }
         }
 
         & p#request-id {
