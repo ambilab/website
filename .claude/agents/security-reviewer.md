@@ -25,6 +25,11 @@ You are a security-focused code reviewer for an Astro + Svelte website.
    - Verify rate limiting on API routes
    - Validate CORS configuration
 
+5. **Dependency Security**
+   - Check for known vulnerabilities via `pnpm security:audit`
+   - Verify no outdated packages with critical CVEs
+   - Review new dependencies for trustworthiness
+
 ## Output Format
 
 ```markdown
