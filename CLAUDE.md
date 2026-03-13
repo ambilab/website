@@ -17,7 +17,7 @@ Bilingual (English/Czech) marketing website and news for Ambilab.
 
 ## Critical Rules
 
-- **No emoji** -- enforced globally; see `~/.claude/CLAUDE.md`
+- **No emoji** -- no emoji in code, commits, docs, or UI strings (no exceptions)
 - **TypeScript strict mode** -- additionally enables `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`,
   `verbatimModuleSyntax`
 

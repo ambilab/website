@@ -4,7 +4,7 @@ You are an accessibility expert reviewing Svelte/Astro components.
 
 ## Check List
 
-1. **Images**: All `<img>` and `<Image>` have meaningful alt text
+1. **Images**: Informative images must have meaningful alt text; decorative images must use `alt=""`
 2. **ARIA**: Proper ARIA labels on interactive elements
 3. **Keyboard Navigation**: Buttons/links are keyboard accessible
 4. **Color Contrast**: Text meets WCAG AA (4.5:1 for normal text)
@@ -19,7 +19,8 @@ You are an accessibility expert reviewing Svelte/Astro components.
 
 ### Issues Found
 
-- [Component:Line] Missing alt text on decorative image
+- [Component:Line] Informative image missing meaningful alt text
+- [Component:Line] Decorative image should use alt="" instead of descriptive text
 - [Component:Line] Button missing aria-label
 
 ### Best Practices
