@@ -66,7 +66,7 @@ test.describe('RSS Feed Links', () => {
         await expect(englishRssLink).toHaveAttribute('title', /English/);
 
         const czechRssLink = page.locator('head link[type="application/rss+xml"][hreflang="cs"]');
-        await expect(czechRssLink).toHaveAttribute('title', /Čeština/);
+        await expect(czechRssLink).toHaveAttribute('title', /čeština/);
     });
 
     /** On the Czech homepage, titles should be swapped. */
@@ -76,7 +76,7 @@ test.describe('RSS Feed Links', () => {
         await expect(page.locator('html[lang="cs"]')).toHaveCount(1);
 
         const czechRssLink = page.locator('head link[type="application/rss+xml"][hreflang="cs"]');
-        await expect(czechRssLink).toHaveAttribute('title', /Čeština/);
+        await expect(czechRssLink).toHaveAttribute('title', /čeština/);
 
         const englishRssLink = page.locator('head link[type="application/rss+xml"][hreflang="en"]');
         await expect(englishRssLink).toHaveAttribute('title', /English/);
