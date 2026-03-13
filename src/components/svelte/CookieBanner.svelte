@@ -133,10 +133,9 @@
 {#if isVisible}
     <div
         bind:this={bannerEl}
-        role="alertdialog"
+        role="dialog"
         aria-label={t.cookie.bannerLabel}
         aria-describedby="cookie-banner-message"
-        aria-modal="true"
         tabindex="-1"
         onkeydown={handleKeydown}
         class="cookie-banner"
