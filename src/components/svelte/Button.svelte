@@ -71,8 +71,8 @@
     const baseClasses =
         'button select-none inline-flex items-center justify-center ' +
         'disabled:opacity-50 disabled:pointer-events-none ' +
-        'focus:outline-none focus:ring-4 focus:ring-offset-2 ' +
-        'focus:ring-offset-page-bg focus:ring-focus-ring';
+        'focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-offset-2 ' +
+        'focus-visible:ring-offset-page-bg focus-visible:ring-focus-ring';
 
     // Outline border thickness: 1px for sm, 2px for md
     const outlineBorder = $derived(
@@ -115,26 +115,10 @@
     };
 
     const classes = $derived(`${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${className}`);
-
-    function handleKeydown(event: KeyboardEvent) {
-        if (event.key === ' ' || event.key === 'Spacebar' || event.code === 'Space') {
-            event.preventDefault();
-            (event.currentTarget as HTMLAnchorElement).click();
-        }
-    }
 </script>
 
 {#if href}
-    <a
-        {href}
-        {target}
-        rel={safeRel}
-        class={classes}
-        role="button"
-        onkeydown={handleKeydown}
-        onclick={handleClick}
-        data-testid={dataTestId}
-    >
+    <a {href} {target} rel={safeRel} class={classes} onclick={handleClick} data-testid={dataTestId}>
         {@render children?.()}
     </a>
 {:else}
