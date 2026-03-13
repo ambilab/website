@@ -186,17 +186,6 @@
         "panel": "shared"
       },
       "group": "test"
-    },
-    {
-      "label": "Utils: Sync AI rules",
-      "type": "shell",
-      "command": "pnpm sync-rules",
-      "problemMatcher": [],
-      "presentation": {
-        "reveal": "always",
-        "panel": "shared"
-      },
-      "group": "none"
     }
   ]
 }

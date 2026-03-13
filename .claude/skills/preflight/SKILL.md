@@ -8,7 +8,7 @@ Run comprehensive quality checks before committing or pushing code.
 
 ## Usage
 
-```cursor
+```text
 /preflight
 ```
 

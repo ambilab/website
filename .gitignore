@@ -15,13 +15,6 @@ dist/
 .wrangler/
 .dev.vars
 
-# Generated AI assistant rules (source of truth: ai-rules/*.mdc)
-.cursor/rules/
-.aiassistant/
-.rules
-CLAUDE.md
-.claude
-
 # Editor configurations
 # VS Code: Version settings.json and extensions.json
 .vscode/launch.json
@@ -33,16 +26,16 @@ CLAUDE.md
 .idea/
 *.iml
 
-# Zed: Version settings.json, ignore generated files
+# Zed
 .zed/*
 !.zed/settings.json
 
-# Cursor: Ignore generated files, version cursor-config/ (source of truth)
+# Cursor
 .cursor/
-!cursor-config/
 
-# Claude Code: Ignore generated files, version claude-config/ (source of truth)
-!claude-config/
+# Claude Code local overrides
+.claude.local.md
+.claude/settings.local.json
 
 # Vim/Emacs swap files
 *.swp

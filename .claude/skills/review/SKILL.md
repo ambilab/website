@@ -8,7 +8,7 @@ Review current changes against project rules and quality standards.
 
 ## Usage
 
-```cursor
+```text
 /review
 ```
 

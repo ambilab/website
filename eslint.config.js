@@ -34,7 +34,6 @@ export default [
             '.env',
             '.env.*',
             'CLAUDE.md',
-            '.rules',
         ],
     },
 

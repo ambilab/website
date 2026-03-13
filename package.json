@@ -81,15 +81,6 @@
     "wrangler": "^4.63.0",
     "zod": "^4.3.6"
   },
-  "syncRules": {
-    "source": "ai-rules",
-    "targets": {
-      "cursor": true,
-      "webstorm": true,
-      "zed": true,
-      "claude": true
-    }
-  },
   "scripts": {
     "dev": "astro dev --host",
     "build": "astro build",
@@ -114,7 +105,6 @@
     "knip": "knip",
     "knip:fix": "knip --fix",
     "preflight": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test:run && pnpm spellcheck && pnpm knip",
-    "sync-rules": "node scripts/sync-rules.mjs",
     "prepare": "husky",
     "validate:security": "tsx src/scripts/validate-security-headers.ts",
     "validate:env": "tsx src/scripts/validate-env.ts",

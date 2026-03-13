@@ -9,7 +9,7 @@ pushing significant changes or creating pull requests.
 
 ## Usage
 
-```cursor
+```text
 /deep-review
 ```
 

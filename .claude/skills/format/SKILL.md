@@ -8,7 +8,7 @@ Format all code files using the project's formatters and verify results.
 
 ## Usage
 
-```cursor
+```text
 /format
 ```
 
@@ -16,8 +16,8 @@ Format all code files using the project's formatters and verify results.
 
 1. **Run formatters**
    - Execute `pnpm format` which runs:
-     - Biome for TypeScript/JavaScript/JSON
-     - Prettier for Astro/Svelte/Markdown/CSS
+     - Biome for TypeScript/JavaScript/JSON/CSS
+     - Prettier for Astro/Svelte/Markdown
 
 2. **Show what changed**
    - Run `git diff --stat` to show summary of reformatted files
@@ -32,9 +32,9 @@ Format all code files using the project's formatters and verify results.
 | File Types                         | Tool     | Config               |
 | ---------------------------------- | -------- | -------------------- |
 | `.ts`, `.tsx`, `.js`, `.json`      | Biome    | `biome.json`         |
+| `.css`                             | Biome    | `biome.json`         |
 | `.astro`, `.svelte`, `.md`, `.mdx` | Prettier | `prettier.config.js` |
-| `.css`                             | Prettier | `prettier.config.js` |
-| `.yaml`, `.yml`                    | Prettier | `prettier.config.js` |
+| `.svg`, `.yaml`, `.yml`            | Prettier | `prettier.config.js` |
 
 ## Formatting Rules
 
