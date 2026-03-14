@@ -2,9 +2,6 @@
  * E2E tests for the newsletter subscription flow.
  *
  * Tests form validation, submission, and error handling.
- * These tests are skipped when the newsletter feature flag is disabled
- * (PUBLIC_NEWSLETTER = "false").
- *
  * A dummy BUTTONDOWN_API_KEY must be available in the preview environment
  * (via .dev.vars) so the API route returns predictable responses.
  */
@@ -12,22 +9,8 @@
 import { expect, test } from '@playwright/test';
 
 test.describe('Newsletter subscription', () => {
-    let newsletterEnabled = false;
-
-    test.beforeAll(() => {
-        // Read the feature flag from the environment variable used during the build.
-        // Mirrors featureFlag() in src/config/features.ts: enabled by default, disabled
-        // only when PUBLIC_NEWSLETTER is explicitly set to "false".
-        // Reading the env var (rather than checking the DOM) ensures tests run and
-        // fail with clear assertions when the feature is enabled but broken.
-        const envValue = process.env.PUBLIC_NEWSLETTER?.toLowerCase();
-        newsletterEnabled = envValue !== 'false';
-    });
-
     /** Checks the form's heading, email input, and submit button are all rendered and visible. */
     test('should display newsletter form on homepage', async ({ page }) => {
-        test.skip(!newsletterEnabled, 'Newsletter feature flag is disabled');
-
         await page.goto('/');
         await expect(page.getByTestId('newsletter-heading')).toBeVisible();
         await expect(page.getByTestId('newsletter-email')).toBeVisible();
@@ -36,8 +19,6 @@ test.describe('Newsletter subscription', () => {
 
     /** Bypasses HTML5 validation with novalidate to exercise the server-side email format check. */
     test('should show error when submitting invalid email', async ({ page }) => {
-        test.skip(!newsletterEnabled, 'Newsletter feature flag is disabled');
-
         await page.goto('/');
 
         // Bypass browser HTML5 validation so the server-side check runs.
@@ -59,8 +40,6 @@ test.describe('Newsletter subscription', () => {
      * depending on environment (dummy API key, missing key, real key, or rate-limited).
      */
     test('should show error or success when submitting valid email', async ({ page }) => {
-        test.skip(!newsletterEnabled, 'Newsletter feature flag is disabled');
-
         await page.goto('/');
         await page.getByTestId('newsletter-email').fill('test@example.com');
         await page.getByTestId('newsletter-submit').click();

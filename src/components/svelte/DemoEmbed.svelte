@@ -1,6 +1,5 @@
 <script lang="ts">
     import Button from '@components/svelte/Button.svelte';
-    import { FEATURES } from '@config/features';
     import { getTranslation } from '@i18n/translations';
     import type { Locale } from '@type/locale';
 
@@ -132,57 +131,53 @@
     const aspectRatioStyle = $derived(`aspect-ratio: ${safeAspectRatio}; width: 100%;`);
 </script>
 
-{#if !FEATURES.demoEmbeds}
-    <!-- Demo embeds disabled via feature flag -->
-{:else}
-    <figure class:list={['demo-embed', className]}>
-        {#if shouldShowLink}
-            <div
-                class="demo-embed__panel flex min-h-[200px] select-none flex-col items-center justify-center bg-black p-8 text-center"
-                style={aspectRatioStyle}
-            >
-                <p class="meta mb-4 text-balance text-white md:w-1/2">
-                    {#if isValidSrc}
-                        Demo preview is not available in development due to CSP restrictions.
-                    {:else}
-                        Invalid demo source URL
-                    {/if}
-                </p>
-
+<figure class:list={['demo-embed', className]}>
+    {#if shouldShowLink}
+        <div
+            class="demo-embed__panel flex min-h-[200px] select-none flex-col items-center justify-center bg-black p-8 text-center"
+            style={aspectRatioStyle}
+        >
+            <p class="meta mb-4 text-balance text-white md:w-1/2">
                 {#if isValidSrc}
-                    <Button href={validatedSrc} target="_blank" rel="noopener noreferrer" size="sm" variant="outline">
-                        Open Demo in New Tab
-                    </Button>
+                    Demo preview is not available in development due to CSP restrictions.
+                {:else}
+                    Invalid demo source URL
                 {/if}
-            </div>
-        {:else if !isValidSrc}
-            <div
-                class="demo-embed__panel flex min-h-[200px] flex-col items-center justify-center bg-error-bg p-8 text-center"
-                style={aspectRatioStyle}
-            >
-                <p class="meta mb-4 text-balance text-error-text md:w-1/2">
-                    Invalid or untrusted demo source. Only allowlisted sources are allowed for security reasons.
-                </p>
-            </div>
-        {:else}
-            <iframe
-                src={validatedSrc}
-                title={title ?? t.a11y.demoEmbedTitle}
-                style={aspectRatioStyle}
-                loading="lazy"
-                allow={allowPermissions}
-                allowfullscreen
-                sandbox={sandboxPermissions}
-            ></iframe>
-        {/if}
+            </p>
 
-        {#if title}
-            <figcaption>
-                {title}
-            </figcaption>
-        {/if}
-    </figure>
-{/if}
+            {#if isValidSrc}
+                <Button href={validatedSrc} target="_blank" rel="noopener noreferrer" size="sm" variant="outline">
+                    Open Demo in New Tab
+                </Button>
+            {/if}
+        </div>
+    {:else if !isValidSrc}
+        <div
+            class="demo-embed__panel flex min-h-[200px] flex-col items-center justify-center bg-error-bg p-8 text-center"
+            style={aspectRatioStyle}
+        >
+            <p class="meta mb-4 text-balance text-error-text md:w-1/2">
+                Invalid or untrusted demo source. Only allowlisted sources are allowed for security reasons.
+            </p>
+        </div>
+    {:else}
+        <iframe
+            src={validatedSrc}
+            title={title ?? t.a11y.demoEmbedTitle}
+            style={aspectRatioStyle}
+            loading="lazy"
+            allow={allowPermissions}
+            allowfullscreen
+            sandbox={sandboxPermissions}
+        ></iframe>
+    {/if}
+
+    {#if title}
+        <figcaption>
+            {title}
+        </figcaption>
+    {/if}
+</figure>
 
 <style>
     @reference "../../styles/global.css";
