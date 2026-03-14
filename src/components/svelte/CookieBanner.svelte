@@ -134,6 +134,7 @@
     <div
         bind:this={bannerEl}
         role="dialog"
+        aria-modal="true"
         aria-label={t.cookie.bannerLabel}
         aria-describedby="cookie-banner-message"
         tabindex="-1"
