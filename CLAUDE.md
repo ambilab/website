@@ -262,15 +262,10 @@ Managed by Husky (auto-installed via `prepare` script on `pnpm install`).
 
 **Pre-push** -- runs automatically on `git push`:
 
-1. Format check
+1. Type check
 2. Lint check
-3. Spell check
-4. Type check
-5. Unused exports (knip)
-6. Production build
-7. Security audit (`--audit-level=moderate`)
 
-Blocked push = fix issues and retry. Manual equivalent: `pnpm review:full`
+Blocked push = fix issues and retry. Full suite (format, spellcheck, knip, build, security audit) runs in CI.
 
 ## Common Mistakes
 
