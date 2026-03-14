@@ -1,14 +1,8 @@
-<script lang="ts" module>
-    // Module-level record to dedupe tracking across remounts (e.g., client:visible).
-    const trackedDemos: Record<string, true> = {};
-</script>
-
 <script lang="ts">
     import Button from '@components/svelte/Button.svelte';
     import { FEATURES } from '@config/features';
     import { getTranslation } from '@i18n/translations';
     import type { Locale } from '@type/locale';
-    import { trackDemoLoaded } from '@utils/analytics';
 
     interface Props {
         src: string;
@@ -179,13 +173,6 @@
                 allow={allowPermissions}
                 allowfullscreen
                 sandbox={sandboxPermissions}
-                onload={() => {
-                    const key = `${validatedSrc}::${title ?? 'Untitled demo'}`;
-                    if (!trackedDemos[key]) {
-                        trackedDemos[key] = true;
-                        trackDemoLoaded(validatedSrc, title ?? 'Untitled demo');
-                    }
-                }}
             ></iframe>
         {/if}
 

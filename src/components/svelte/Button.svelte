@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { trackCTAClick } from '@utils/analytics';
     import type { Snippet } from 'svelte';
 
     interface Props {
@@ -14,10 +13,6 @@
         onclick?: (ev: MouseEvent) => void;
         children?: Snippet;
         'data-testid'?: string;
-        /** Source page/section identifier for CTA tracking. Enables tracking when set. */
-        trackFrom?: string;
-        /** CTA label text for tracking. Defaults to 'CTA'. */
-        trackLabel?: string;
     }
 
     let {
@@ -32,14 +27,9 @@
         onclick,
         children,
         'data-testid': dataTestId,
-        trackFrom,
-        trackLabel = 'CTA',
     }: Props = $props();
 
     function handleClick(ev: MouseEvent): void {
-        if (trackFrom && href) {
-            trackCTAClick(trackFrom, href, trackLabel);
-        }
         onclick?.(ev);
     }
 

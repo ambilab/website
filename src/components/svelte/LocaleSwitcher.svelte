@@ -3,7 +3,6 @@
     import { getTranslation } from '@i18n/translations';
     import { getTranslationLocale, setLocaleCookie } from '@i18n/utils';
     import type { Locale } from '@type/locale';
-    import { trackLanguageSwitch } from '@utils/analytics';
     import { navigate } from 'astro:transitions/client';
 
     interface Props {
@@ -30,7 +29,6 @@
 
         try {
             document.cookie = setLocaleCookie(otherLocale);
-            trackLanguageSwitch(currentLocale, otherLocale, !!translationPath);
 
             const targetPath = translationPath || window.location.pathname;
 
