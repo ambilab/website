@@ -16,7 +16,7 @@ pushing significant changes or creating pull requests.
 ## Steps
 
 1. **Run preflight checks**
-   - Execute `pnpm preflight` (format, lint, typecheck, tests, spellcheck, knip)
+   - Execute `pnpm preflight` (format, lint, typecheck, spellcheck, knip)
    - If any check fails, report issues and stop
    - All automated checks must pass before AI review
 
@@ -51,8 +51,6 @@ pushing significant changes or creating pull requests.
    - Animations respect `prefers-reduced-motion`
    - Type imports use `import type` syntax
    - JSDoc comments for exported functions
-   - E2E tests in `tests/e2e/` updated if user-facing behavior changed
-   - Existing tests still pass (covered by preflight's `test:run`)
 
 6. **Generate PR-ready summary**
    - Create a summary suitable for PR description
@@ -103,11 +101,8 @@ pushing significant changes or creating pull requests.
 - Potential risks or side effects
 - Areas that may need additional testing
 
-### Test Plan
+### Manual Test Plan
 
-- [ ] Unit tests pass (`pnpm test:run`)
-- [ ] E2E tests pass (`pnpm build && pnpm test:e2e`)
-- [ ] New/changed behavior has E2E coverage in `tests/e2e/`
 - [ ] Manual testing steps (if applicable)
 - [ ] Edge cases to verify
 - [ ] Browser/device testing if applicable
@@ -129,13 +124,13 @@ Recommendation: [Brief recommendation]
 
 ## Comparison to /review
 
-| Aspect      | /review                     | /deep-review                    |
-| ----------- | --------------------------- | ------------------------------- |
-| Speed       | Fast (seconds)              | Thorough (1-2 minutes)          |
-| Checks      | lint, typecheck, spellcheck | Full preflight + security audit |
-| AI Analysis | Rule-based only             | Comprehensive manual review     |
-| Output      | Issue list                  | PR-ready summary                |
-| Use Case    | Quick iteration             | Pre-push/PR                     |
+| Aspect      | /review                     | /deep-review                |
+| ----------- | --------------------------- | --------------------------- |
+| Speed       | Fast (seconds)              | Thorough (1-2 minutes)      |
+| Checks      | lint, typecheck, spellcheck | preflight + security audit  |
+| AI Analysis | Rule-based only             | Comprehensive manual review |
+| Output      | Issue list                  | PR-ready summary            |
+| Use Case    | Quick iteration             | Pre-push/PR                 |
 
 ## Tips
 

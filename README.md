@@ -9,10 +9,8 @@ pnpm install
 pnpm dev
 ```
 
-## Testing
+## Validation
 
-- **Unit tests** (Vitest): `pnpm test` or `pnpm test:run`
-- **E2E tests** (Playwright): `pnpm build && pnpm test:e2e`
 - **Translation validation**: `pnpm validate:translations`
 
 ## Performance monitoring
