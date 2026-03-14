@@ -1,7 +1,6 @@
 <script lang="ts">
     import { getTranslation } from '@i18n/translations';
     import type { Locale } from '@type/locale';
-    import { trackMobileMenuOpened } from '@utils/analytics';
     import type { Snippet } from 'svelte';
 
     interface Props {
@@ -49,7 +48,6 @@
         // before isOpen triggers the transition. Removing this breaks the animation.
         void dialogElement.offsetHeight;
         isOpen = true;
-        trackMobileMenuOpened();
     }
 
     function closeMenu(skipFocusRestore = false): void {

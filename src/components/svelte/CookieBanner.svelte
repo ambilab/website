@@ -2,7 +2,6 @@
     import { COMPONENT_CONFIG } from '@config/components';
     import { getTranslation } from '@i18n/translations';
     import type { Locale } from '@type/locale';
-    import { trackCookieBannerDismissed } from '@utils/analytics';
     import { onMount } from 'svelte';
 
     interface Props {
@@ -119,7 +118,6 @@
         } catch {
             // Silent fail: banner hides regardless of storage success.
         }
-        trackCookieBannerDismissed(locale);
         isVisible = false;
 
         // Restore focus to the previously focused element
