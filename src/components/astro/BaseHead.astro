@@ -77,8 +77,12 @@ function buildBreadcrumbListJsonLd(items: IBreadcrumbItem[]) {
     };
 }
 
+function serializeJsonLd(value: unknown): string {
+    return JSON.stringify(value).replace(/&/g, '\\u0026').replace(/</g, '\\u003C').replace(/>/g, '\\u003E');
+}
+
 const breadcrumbJsonLd =
-    breadcrumbs && breadcrumbs.length > 0 ? JSON.stringify(buildBreadcrumbListJsonLd(breadcrumbs)) : undefined;
+    breadcrumbs && breadcrumbs.length > 0 ? serializeJsonLd(buildBreadcrumbListJsonLd(breadcrumbs)) : undefined;
 ---
 
 <ClientRouter />
@@ -267,7 +271,7 @@ const breadcrumbJsonLd =
 <script
     is:inline
     type="application/ld+json"
-    set:html={JSON.stringify({
+    set:html={serializeJsonLd({
         '@context': 'https://schema.org',
         '@type': 'WebSite',
         name: SITE.NAME,
