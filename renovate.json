@@ -28,12 +28,6 @@
       "schedule": ["before 6am on Monday"]
     },
     {
-      "description": "Testing tools",
-      "matchPackagePatterns": ["vitest", "@vitest/"],
-      "groupName": "testing tools",
-      "schedule": ["before 6am on Monday"]
-    },
-    {
       "description": "Tailwind and styling",
       "matchPackagePatterns": ["tailwind"],
       "groupName": "tailwind",

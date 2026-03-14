@@ -1,5 +1,5 @@
 ---
-description: Run all quality checks (format, lint, typecheck, tests, spellcheck, knip) before committing
+description: Run all quality checks (format, lint, typecheck, spellcheck, knip) before committing
 ---
 
 # Preflight Checks
@@ -19,7 +19,6 @@ Run comprehensive quality checks before committing or pushing code.
      - `format:check` - Verify all files are formatted
      - `lint` - Check for lint errors (Biome + ESLint)
      - `typecheck` - Validate TypeScript types (tsc + Astro check)
-     - `test:run` - Run all unit tests (Vitest)
      - `spellcheck` - Check spelling in code and docs
      - `knip` - Find unused exports and dependencies
 
@@ -31,7 +30,6 @@ Run comprehensive quality checks before committing or pushing code.
    - For formatting issues: Suggest `pnpm format`
    - For lint errors: Suggest `pnpm lint:fix`
    - For type errors: Review the specific TypeScript issues
-   - For test failures: Review failing test cases and fix implementation
    - For spelling: Add words to `cspell.json` or fix typos
    - For unused exports: Remove unused code or add to knip ignore
 

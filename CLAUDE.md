@@ -42,11 +42,8 @@ website/
     styles/              # Global and MDX styles
     types/               # TypeScript type definitions
     utils/               # Utility functions
-    test/                # Test setup (Vitest)
     middleware.ts        # Locale detection, security headers
     env.d.ts             # Environment types
-  tests/
-    e2e/                 # Playwright E2E tests
 ```
 
 ## Development Commands
@@ -60,9 +57,6 @@ pnpm lint:fix         # Auto-fix lint issues
 pnpm format           # Format (Biome + Prettier)
 pnpm format:check     # Check formatting
 pnpm typecheck        # TypeScript + Astro type checking
-pnpm test:run         # Unit tests (Vitest, single run)
-pnpm test:coverage    # Unit tests with coverage report
-pnpm test:e2e         # E2E tests (Playwright, requires prior build)
 pnpm spellcheck       # Check spelling
 pnpm knip             # Find unused exports
 pnpm preflight        # ALL quality checks before committing
@@ -76,7 +70,6 @@ pnpm security:audit   # Run security audit on dependencies
 # Shortcuts and extras
 pnpm check:quick      # Quick check (format + lint only)
 pnpm knip:fix         # Auto-fix unused exports
-pnpm test:ui          # Vitest interactive UI
 pnpm perf             # Run Lighthouse performance audit
 pnpm validate:all     # Full validation (preflight + validate + security)
 ```
@@ -223,30 +216,9 @@ Key config files in `src/config/`:
 - **`env.ts`** -- Environment variable validation via Zod.
 - **`site.ts`** -- Site metadata (name, URLs, social links, default OG image).
 
-## Testing
-
-- **Unit tests**: Vitest + Testing Library, co-located in `src/`
-- **E2E tests**: Playwright, in `tests/e2e/`, file naming: `tests/e2e/<feature-name>.spec.ts`
-- **E2E preview**: `pnpm preview` on port 4321, requires `pnpm build` first
-
-### When to Write Tests
-
-- New interactive component: E2E test for key interactions
-- Changed behavior: update existing tests
-- New API route: E2E for success, validation, and error responses
-- Bug fix: add a test that catches it
-
-### E2E Conventions
-
-- Feature flags: use `test.skip()` with runtime detection
-- Use `import type { Page }` (not inline `import()`)
-- Each test gets fresh browser context (localStorage/cookies not shared)
-- Server-side state (rate limiters, caches) persists across tests in same run
-- Components with `client:idle`/`client:visible` may need explicit waits
-
 ## Git Commits
 
-Project-specific scopes: `news`, `i18n`, `components`, `seo`, `security`, `api`, `ci`, `docs`, `tests`
+Project-specific scopes: `news`, `i18n`, `components`, `seo`, `security`, `api`, `ci`, `docs`
 
 AI-assisted commits: include `Co-Authored-By: Claude <noreply@anthropic.com>`
 
@@ -274,8 +246,7 @@ Blocked push = fix issues and retry. Full suite (format, spellcheck, knip, build
 5. Hardcoding colors -- use semantic design tokens (no `dark:` variants)
 6. Missing alt text on images
 7. Ignoring `prefers-reduced-motion`
-8. Forgetting to update/run tests after behavior changes
-9. Adding Astro integrations in wrong order -- Expressive Code must come before MDX in `astro.config.ts`
+8. Adding Astro integrations in wrong order -- Expressive Code must come before MDX in `astro.config.ts`
 
 ## Pre-Completion Checklist
 
@@ -285,5 +256,3 @@ Blocked push = fix issues and retry. Full suite (format, spellcheck, knip, build
 - [ ] Svelte components have `client:*` directives in Astro
 - [ ] Images have alt text
 - [ ] Animations respect `prefers-reduced-motion`
-- [ ] Tests pass (`pnpm test:run` and `pnpm test:e2e`)
-- [ ] New behavior has test coverage
