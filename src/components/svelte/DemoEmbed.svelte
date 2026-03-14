@@ -2,6 +2,7 @@
     import Button from '@components/svelte/Button.svelte';
     import { getTranslation } from '@i18n/translations';
     import type { Locale } from '@type/locale';
+    import { onMount } from 'svelte';
 
     interface Props {
         src: string;
@@ -65,12 +66,10 @@
 
     let isLocalhost = $state(false);
 
-    $effect(() => {
-        if (typeof window !== 'undefined') {
-            const hostname = window.location.hostname;
+    onMount(() => {
+        const hostname = window.location.hostname;
 
-            isLocalhost = hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '::1';
-        }
+        isLocalhost = hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '::1';
     });
 
     const shouldShowLink = $derived(isDev && isLocalhost);
