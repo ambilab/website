@@ -228,8 +228,6 @@ Managed by Husky (auto-installed via `prepare` script on `pnpm install`).
 
 **Pre-commit** (via lint-staged): auto-formats and lints staged files.
 
-**Commit-msg** (via commitlint): enforces conventional commit format.
-
 **Pre-push** -- runs automatically on `git push`:
 
 1. Type check
