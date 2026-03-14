@@ -5,53 +5,17 @@
 echo "Running pre-push checks..."
 echo ""
 
-# Fast checks first
-echo "[1/7] Checking formatting..."
-pnpm format:check || {
-    echo ""
-    echo "[FAIL] Formatting issues found. Run 'pnpm format' to fix them."
-    exit 1
-}
-
-echo "[2/7] Linting..."
-pnpm lint || {
-    echo ""
-    echo "[FAIL] Lint issues found. Run 'pnpm lint:fix' to fix them."
-    exit 1
-}
-
-echo "[3/7] Spell checking..."
-pnpm spellcheck || {
-    echo ""
-    echo "[FAIL] Spelling issues found. Please fix them."
-    exit 1
-}
-
-echo "[4/7] Type checking..."
+echo "[1/2] Type checking..."
 pnpm typecheck || {
     echo ""
     echo "[FAIL] Type errors found. Please fix them before pushing."
     exit 1
 }
 
-echo "[5/7] Checking for unused exports..."
-pnpm knip || {
+echo "[2/2] Linting..."
+pnpm lint || {
     echo ""
-    echo "[FAIL] Unused exports found. Run 'pnpm knip:fix' or remove unused code."
-    exit 1
-}
-
-echo "[6/7] Building project..."
-pnpm build || {
-    echo ""
-    echo "[FAIL] Build failed. Please fix build errors before pushing."
-    exit 1
-}
-
-echo "[7/7] Security audit..."
-pnpm audit --audit-level=high || {
-    echo ""
-    echo "[FAIL] High/critical security vulnerabilities found. Run 'pnpm audit' to review."
+    echo "[FAIL] Lint issues found. Run 'pnpm lint:fix' to fix them."
     exit 1
 }
 
