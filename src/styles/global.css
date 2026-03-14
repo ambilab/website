@@ -73,7 +73,7 @@
     --color-warning-heading: theme('colors.yellow.800');
     --color-warning-highlight: theme('colors.yellow.200');
     --color-success-text: theme('colors.lime.600');
-    --color-error-text: theme('colors.red.600');
+    --color-error-text: theme('colors.red.800');
     --color-error-bg: theme('colors.red.50');
 
     /* Semantic Colors - Tags/Badges */
@@ -174,7 +174,7 @@
         --color-warning-heading: theme('colors.yellow.200');
         --color-warning-highlight: theme('colors.yellow.800');
         --color-success-text: theme('colors.lime.400');
-        --color-error-text: theme('colors.red.400');
+        --color-error-text: theme('colors.red.500');
         --color-error-bg: theme('colors.red.950');
 
         /* Semantic Colors - Tags/Badges */

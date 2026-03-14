@@ -27,7 +27,10 @@ const newsUrl = getRoute('news', locale);
         {
             showViewAll && sortedPosts.length > 0 && (
                 <Button href={newsUrl} variant="secondary">
-                    {t.news.allPosts} →
+                    {t.news.allPosts}{' '}
+                    <span class="news-arrow" aria-hidden="true">
+                        →
+                    </span>
                 </Button>
             )
         }
@@ -44,6 +47,10 @@ const newsUrl = getRoute('news', locale);
 
         & .view-all {
             @apply mt-6;
+        }
+
+        & .news-arrow {
+            @apply ml-1;
         }
     }
 </style>
