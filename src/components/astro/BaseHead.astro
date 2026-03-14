@@ -1,5 +1,4 @@
 ---
-import { FEATURES } from '@config/features';
 import { getRoute } from '@config/routes';
 import { SITE } from '@config/site';
 import { getTranslationLocale } from '@i18n/utils';
@@ -45,7 +44,7 @@ const plausibleScriptCz = import.meta.env.PUBLIC_PLAUSIBLE_SCRIPT_CZ;
 const isComDomain = currentDomain === 'ambilab.com' || currentDomain.endsWith('.ambilab.com');
 const isCzDomain = currentDomain === 'ambilab.cz' || currentDomain.endsWith('.ambilab.cz');
 const plausibleScript = isComDomain ? plausibleScriptCom : isCzDomain ? plausibleScriptCz : undefined;
-const analyticsEnabled = FEATURES.analytics && import.meta.env.PROD && Boolean(plausibleScript);
+const analyticsEnabled = import.meta.env.PROD && Boolean(plausibleScript);
 
 const translationLocale = getTranslationLocale(locale);
 
@@ -78,8 +77,12 @@ function buildBreadcrumbListJsonLd(items: IBreadcrumbItem[]) {
     };
 }
 
+function serializeJsonLd(value: unknown): string {
+    return JSON.stringify(value).replace(/&/g, '\\u0026').replace(/</g, '\\u003C').replace(/>/g, '\\u003E');
+}
+
 const breadcrumbJsonLd =
-    breadcrumbs && breadcrumbs.length > 0 ? JSON.stringify(buildBreadcrumbListJsonLd(breadcrumbs)) : undefined;
+    breadcrumbs && breadcrumbs.length > 0 ? serializeJsonLd(buildBreadcrumbListJsonLd(breadcrumbs)) : undefined;
 ---
 
 <ClientRouter />
@@ -198,26 +201,20 @@ const breadcrumbJsonLd =
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="canonical" href={canonical} />
 <link rel="sitemap" href="/sitemap-index.xml" />
-{
-    FEATURES.rssFeed && (
-        <>
-            <link
-                rel="alternate"
-                type="application/rss+xml"
-                hreflang={locale}
-                href={buildLocaleUrl(locale, getRoute('rss', locale))}
-                title={`${SITE.NAME} RSS (${locale === 'en' ? 'English' : 'čeština'})`}
-            />
-            <link
-                rel="alternate"
-                type="application/rss+xml"
-                hreflang={translationLocale}
-                href={buildLocaleUrl(translationLocale, getRoute('rss', translationLocale))}
-                title={`${SITE.NAME} RSS (${locale === 'en' ? 'čeština' : 'English'})`}
-            />
-        </>
-    )
-}
+<link
+    rel="alternate"
+    type="application/rss+xml"
+    hreflang={locale}
+    href={buildLocaleUrl(locale, getRoute('rss', locale))}
+    title={`${SITE.NAME} RSS (${locale === 'en' ? 'English' : 'čeština'})`}
+/>
+<link
+    rel="alternate"
+    type="application/rss+xml"
+    hreflang={translationLocale}
+    href={buildLocaleUrl(translationLocale, getRoute('rss', translationLocale))}
+    title={`${SITE.NAME} RSS (${locale === 'en' ? 'čeština' : 'English'})`}
+/>
 
 {/* Hreflang tags for bilingual SEO */}
 <link rel="alternate" hreflang="en" href={locale === 'en' ? currentLocaleUrl : alternateLocaleUrl} />
@@ -271,42 +268,34 @@ const breadcrumbJsonLd =
 <meta name="mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-title" content={SITE.NAME} />
 
-{
-    FEATURES.structuredData && (
-        <script
-            is:inline
-            type="application/ld+json"
-            set:html={JSON.stringify({
-                '@context': 'https://schema.org',
-                '@type': 'WebSite',
-                name: SITE.NAME,
-                description: SITE.DESCRIPTION,
-                url: siteDomain,
-                author: {
-                    '@type': 'Organization',
-                    name: SITE.AUTHOR,
-                    url: SITE.URL,
-                },
-                publisher: {
-                    '@type': 'Organization',
-                    name: SITE.NAME,
-                    logo: {
-                        '@type': 'ImageObject',
-                        url: `${siteDomain}/logo.png`,
-                        width: 512,
-                        height: 512,
-                    },
-                },
-            })}
-        />
-    )
-}
+<script
+    is:inline
+    type="application/ld+json"
+    set:html={serializeJsonLd({
+        '@context': 'https://schema.org',
+        '@type': 'WebSite',
+        name: SITE.NAME,
+        description: SITE.DESCRIPTION,
+        url: siteDomain,
+        author: {
+            '@type': 'Organization',
+            name: SITE.AUTHOR,
+            url: SITE.URL,
+        },
+        publisher: {
+            '@type': 'Organization',
+            name: SITE.NAME,
+            logo: {
+                '@type': 'ImageObject',
+                url: `${siteDomain}/logo.png`,
+                width: 512,
+                height: 512,
+            },
+        },
+    })}
+/>
 
-{
-    FEATURES.structuredData && breadcrumbJsonLd && (
-        <script is:inline type="application/ld+json" set:html={breadcrumbJsonLd} />
-    )
-}
+{breadcrumbJsonLd && <script is:inline type="application/ld+json" set:html={breadcrumbJsonLd} />}
 
 {
     analyticsEnabled && (

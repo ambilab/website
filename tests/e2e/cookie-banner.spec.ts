@@ -3,8 +3,6 @@
  *
  * Tests display, dismissal, localStorage persistence, keyboard interaction,
  * and accessibility attributes.
- * These tests are skipped when the cookieBanner feature flag is disabled
- * (PUBLIC_COOKIE_BANNER = "false").
  */
 
 import type { Page } from '@playwright/test';
@@ -14,7 +12,6 @@ const DISMISSED_KEY = 'cookie-banner-dismissed';
 
 /**
  * Checks whether the cookie banner is rendered on the page.
- * The component is gated by the cookieBanner feature flag in src/config/features.ts.
  */
 async function isCookieBannerEnabled(page: Page): Promise<boolean> {
     await page.goto('/');

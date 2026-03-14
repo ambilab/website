@@ -2,8 +2,6 @@
  * E2E tests for locale switching (EN <-> CS).
  *
  * Tests the LocaleSwitcher component and cookie-based locale persistence.
- * These tests are skipped when the localeSwitcher feature flag is disabled
- * (PUBLIC_LOCALE_SWITCHER != "true").
  */
 
 import type { Page } from '@playwright/test';
@@ -11,7 +9,6 @@ import { expect, test } from '@playwright/test';
 
 /**
  * Checks whether the locale switcher button is rendered on the page.
- * The component is gated by the localeSwitcher feature flag in src/config/features.ts.
  */
 async function isLocaleSwitcherEnabled(page: Page): Promise<boolean> {
     await page.goto('/');

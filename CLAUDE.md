@@ -215,8 +215,6 @@ Expressive Code (Shiki-based) with syntax highlighting. Supports `title`, line h
 
 Key config files in `src/config/`:
 
-- **`features.ts`** -- Feature flags (newsletter, analytics, cookieBanner, localeSwitcher, goToTop, demoEmbeds, rssFeed,
-  structuredData). Each overridable via `PUBLIC_*` env vars (e.g., `PUBLIC_NEWSLETTER=false`).
 - **`routes.ts`** -- Centralized route definitions. Use `getRoute(route, locale)` for paths, `isRouteActive()` for nav
   state. Never hardcode route paths.
 - **`security.ts`** -- CSP and security headers (unsafe-inline for Astro hydration), applied via middleware.
