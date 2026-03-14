@@ -139,15 +139,15 @@
         >
             <p class="meta mb-4 text-balance text-white md:w-1/2">
                 {#if isValidSrc}
-                    Demo preview is not available in development due to CSP restrictions.
+                    {t.demo.devMessage}
                 {:else}
-                    Invalid demo source URL
+                    {t.demo.invalidUrl}
                 {/if}
             </p>
 
             {#if isValidSrc}
                 <Button href={validatedSrc} target="_blank" rel="noopener noreferrer" size="sm" variant="outline">
-                    Open Demo in New Tab
+                    {t.demo.openButton}
                 </Button>
             {/if}
         </div>

@@ -89,6 +89,12 @@ export interface Translations {
     rss: {
         errorMessage: string;
     };
+
+    demo: {
+        devMessage: string;
+        invalidUrl: string;
+        openButton: string;
+    };
 }
 
 export const translations: Record<Locale, Translations> = {
@@ -180,6 +186,12 @@ export const translations: Record<Locale, Translations> = {
         rss: {
             errorMessage: 'Failed to generate RSS feed. Please try again later.',
         },
+
+        demo: {
+            devMessage: 'Demo preview is not available in development due to CSP restrictions.',
+            invalidUrl: 'Invalid demo source URL',
+            openButton: 'Open Demo in New Tab',
+        },
     },
     cs: {
         a11y: {
@@ -268,6 +280,12 @@ export const translations: Record<Locale, Translations> = {
 
         rss: {
             errorMessage: 'Nepodařilo se vygenerovat RSS kanál. Zkuste to prosím později.',
+        },
+
+        demo: {
+            devMessage: 'Demo náhled není v prostředí vývoje k dispozici kvůli omezením CSP.',
+            invalidUrl: 'Neplatná URL adresa dema',
+            openButton: 'Otevřít demo v novém panelu',
         },
     },
 };
