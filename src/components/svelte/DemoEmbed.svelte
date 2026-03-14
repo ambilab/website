@@ -156,7 +156,7 @@
             style={aspectRatioStyle}
         >
             <p class="meta mb-4 text-balance text-error-text md:w-1/2">
-                Invalid or untrusted demo source. Only allowlisted sources are allowed for security reasons.
+                {t.demo.invalidUrl}
             </p>
         </div>
     {:else}
