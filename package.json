@@ -31,8 +31,7 @@
   },
   "dependencies": {
     "astro": "^5.18.0",
-    "nanoid": "5.1.6",
-    "zod": "^4.3.6"
+    "nanoid": "5.1.6"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.6",
@@ -70,8 +69,7 @@
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
     "vite": "^6.4.1",
-    "wrangler": "^4.63.0",
-    "zod": "^4.3.6"
+    "wrangler": "^4.63.0"
   },
   "scripts": {
     "dev": "astro dev --host",
