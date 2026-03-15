@@ -3,7 +3,6 @@ import { DEFAULT_LOCALE } from '@i18n/config';
 import { detectLocaleFromHostname, getLocaleFromCookie } from '@i18n/utils';
 import type { Locale } from '@type/locale';
 import { defineMiddleware } from 'astro:middleware';
-import { nanoid } from 'nanoid';
 
 const ERROR_STATUS_MAP: Record<string, number> = {
     '/404': 404,
@@ -52,7 +51,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
         return response;
     }
 
-    const requestId = nanoid();
+    const requestId = crypto.randomUUID();
 
     try {
         context.locals.locale = resolveLocale(context.request);
