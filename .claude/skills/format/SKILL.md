@@ -33,6 +33,7 @@ Format all code files using the project's formatters and verify results.
 | ---------------------------------- | -------- | -------------------- |
 | `.ts`, `.tsx`, `.js`, `.json`      | Biome    | `biome.json`         |
 | `.css`                             | Biome    | `biome.json`         |
+| All JS/TS (fixable lint rules)     | ESLint   | `eslint.config.ts`   |
 | `.astro`, `.svelte`, `.md`, `.mdx` | Prettier | `prettier.config.js` |
 | `.svg`, `.yaml`, `.yml`            | Prettier | `prettier.config.js` |
 
