@@ -25,8 +25,8 @@ You are an accessibility expert reviewing Svelte/Astro components.
 
 ### Best Practices
 
-- ✅ Proper heading hierarchy
-- ✅ Reduced motion support
+- [PASS] Proper heading hierarchy
+- [PASS] Reduced motion support
 
 ### Recommendations
 

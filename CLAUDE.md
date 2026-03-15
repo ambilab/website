@@ -31,7 +31,7 @@ website/
     components/
       astro/             # Astro-only components (server-rendered)
       svelte/            # Interactive Svelte components (hydratable)
-    config/              # Site, security, component config
+    config/              # Site, security, route config
     content/
       news/              # News posts by locale (en/, cs/)
       pages/             # Static pages by locale
@@ -62,7 +62,7 @@ pnpm knip             # Find unused exports
 pnpm preflight        # ALL quality checks before committing
 pnpm review:full      # Preflight + build + security audit
 pnpm validate:content # Validate MDX content files
-pnpm validate         # Run all validators (security, env, content, translations)
+pnpm validate         # Run all validators (security, content, translations)
 pnpm fix:all          # Auto-fix everything (format + lint + knip)
 pnpm clean            # Clean build artifacts
 pnpm security:audit   # Run security audit on dependencies
@@ -212,8 +212,6 @@ Key config files in `src/config/`:
   state. Never hardcode route paths.
 - **`security.ts`** -- CSP and security headers (unsafe-inline for Astro hydration), applied via middleware.
   Environment-aware (relaxed in dev).
-- **`components.ts`** -- Component-level config (scroll thresholds, animation timing).
-- **`env.ts`** -- Environment variable validation via Zod.
 - **`site.ts`** -- Site metadata (name, URLs, social links, default OG image).
 
 ## Git Commits
