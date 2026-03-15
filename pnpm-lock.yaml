@@ -5,17 +5,15 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  vite-node: ^5.2.0
-  esbuild: ^0.25.0
-  tmp@<=0.2.3: '>=0.2.4'
-  lodash-es@>=4.0.0 <=4.17.22: '>=4.17.23'
-  lodash@>=4.0.0 <=4.17.22: '>=4.17.23'
-  axios@<=1.13.4: '>=1.13.5'
-  qs@>=6.7.0 <=6.14.1: '>=6.14.2'
-  devalue@<=5.6.2: '>=5.6.3'
-  devalue@<5.6.4: '>=5.6.4'
-  devalue@<=5.6.3: '>=5.6.4'
-  flatted@<3.4.0: '>=3.4.0'
+  svgo: ^4.0.1
+  wrangler: ^4.59.1
+  fast-xml-parser: ^5.3.6
+  rollup: ^4.59.0
+  get-uri>basic-ftp: ^5.2.0
+  minimatch@<3.1.4: 3.1.5
+  flatted@<3.4.0: ^3.4.0
+  lodash@<=4.17.22: ^4.17.23
+  devalue@<5.6.4: ^5.6.4
 
 importers:
 
