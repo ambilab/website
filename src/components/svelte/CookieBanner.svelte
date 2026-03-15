@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { COMPONENT_CONFIG } from '@config/components';
     import { getTranslation } from '@i18n/translations';
     import type { Locale } from '@type/locale';
     import { onMount } from 'svelte';
@@ -9,6 +8,8 @@
     }
 
     let { locale = 'en' }: Props = $props();
+
+    const COOKIE_BANNER_DISMISSED_KEY = 'cookie-banner-dismissed';
 
     const t = $derived(getTranslation(locale));
 
@@ -61,7 +62,7 @@
 
     onMount(() => {
         try {
-            const dismissed = localStorage.getItem(COMPONENT_CONFIG.cookieBanner.dismissedKey);
+            const dismissed = localStorage.getItem(COOKIE_BANNER_DISMISSED_KEY);
 
             if (dismissed) {
                 isVisible = false;
@@ -114,7 +115,7 @@
 
     const handleDismiss = () => {
         try {
-            localStorage.setItem(COMPONENT_CONFIG.cookieBanner.dismissedKey, 'true');
+            localStorage.setItem(COOKIE_BANNER_DISMISSED_KEY, 'true');
         } catch {
             // Silent fail: banner hides regardless of storage success.
         }

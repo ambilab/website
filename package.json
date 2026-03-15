@@ -31,8 +31,7 @@
   },
   "dependencies": {
     "astro": "^5.18.0",
-    "nanoid": "5.1.6",
-    "zod": "^4.3.6"
+    "nanoid": "5.1.6"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.6",
@@ -70,8 +69,7 @@
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
     "vite": "^6.4.1",
-    "wrangler": "^4.63.0",
-    "zod": "^4.3.6"
+    "wrangler": "^4.63.0"
   },
   "scripts": {
     "dev": "astro dev --host",
@@ -94,10 +92,9 @@
     "preflight": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm spellcheck && pnpm knip",
     "prepare": "husky",
     "validate:security": "tsx src/scripts/validate-security-headers.ts",
-    "validate:env": "tsx src/scripts/validate-env.ts",
     "validate:content": "node scripts/validate-content.mjs",
     "validate:translations": "tsx src/scripts/validate-translations.ts",
-    "validate": "pnpm validate:security && pnpm validate:env && pnpm validate:content && pnpm validate:translations",
+    "validate": "pnpm validate:security && pnpm validate:content && pnpm validate:translations",
     "security:audit": "pnpm audit --audit-level=moderate",
     "security:audit:fix": "pnpm audit --fix",
     "perf": "node scripts/run-lighthouse.mjs",

@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { COMPONENT_CONFIG } from '@config/components';
     import { getTranslation } from '@i18n/translations';
     import type { Locale } from '@type/locale';
     import { debounce } from '@utils/debounce';
@@ -15,18 +14,19 @@
 
     let { locale, forceVisible = false }: Props = $props();
 
+    const SCROLL_THRESHOLD = 300;
+    const ANIMATION_DURATION = 200;
+
     const t = $derived(getTranslation(locale));
 
     let isVisible = $state(false);
     let reducedMotion = $state(false);
 
-    const transitionConfig = $derived(
-        reducedMotion ? { duration: 0 } : { duration: COMPONENT_CONFIG.goToTop.animationDuration },
-    );
+    const transitionConfig = $derived(reducedMotion ? { duration: 0 } : { duration: ANIMATION_DURATION });
 
     const handleScroll = debounce(() => {
         if (!forceVisible) {
-            isVisible = window.scrollY > COMPONENT_CONFIG.goToTop.showAfterScroll;
+            isVisible = window.scrollY > SCROLL_THRESHOLD;
         }
     }, 100);
 
