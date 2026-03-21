@@ -4,6 +4,16 @@ import { detectLocaleFromHostname, getLocaleFromCookie } from '@i18n/utils';
 import type { Locale } from '@type/locale';
 import { defineMiddleware } from 'astro:middleware';
 
+const OCTET = '(?:25[0-5]|2[0-4]\\d|1\\d{2}|[1-9]?\\d)';
+const IPV4_LOOPBACK_RE = new RegExp(`^127\\.${OCTET}\\.${OCTET}\\.${OCTET}$`);
+
+function isLocalhost(hostname: string): boolean {
+    if (hostname === 'localhost' || hostname.endsWith('.localhost')) return true;
+    if (hostname === '::1' || hostname === '[::1]') return true;
+
+    return IPV4_LOOPBACK_RE.test(hostname);
+}
+
 const ERROR_STATUS_MAP: Record<string, number> = {
     '/404': 404,
     '/500': 500,
@@ -42,7 +52,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
     // TEMPORARY: Redirect all traffic to vancura.dev
     const incomingUrl = new URL(context.request.url);
 
-    if (incomingUrl.hostname !== 'localhost' && !incomingUrl.hostname.startsWith('127.')) {
+    if (!isLocalhost(incomingUrl.hostname)) {
         return context.redirect('https://vancura.dev', 302);
     }
 
