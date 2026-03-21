@@ -39,6 +39,13 @@ function isErrorPage(pathname: string): boolean {
 }
 
 export const onRequest = defineMiddleware(async (context, next) => {
+    // TEMPORARY: Redirect all traffic to vancura.dev
+    const incomingUrl = new URL(context.request.url);
+
+    if (incomingUrl.hostname !== 'localhost' && !incomingUrl.hostname.startsWith('127.')) {
+        return context.redirect('https://vancura.dev', 302);
+    }
+
     // Redirect ambilab.cz to ambilab.com, preserving path and query (AL-318)
     const url = new URL(context.request.url);
     const host = url.hostname.toLowerCase().replace(/^www\./, '');
